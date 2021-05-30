@@ -18,6 +18,9 @@ ApplicationWindow::ApplicationWindow(const int windowW, const int windowH, const
 ApplicationWindow::~ApplicationWindow()
 {
 	glfwTerminate();
+	
+	window = nullptr;
+	mainLoopCallback = nullptr;
 }
 
 int ApplicationWindow::InitGLFW(const char* windowName)
