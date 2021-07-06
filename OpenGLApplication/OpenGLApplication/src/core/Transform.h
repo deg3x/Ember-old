@@ -8,6 +8,7 @@ public:
 	glm::vec3 position;
 	glm::vec3 rotation; // Switch to quaternions later
 	glm::vec3 scale;
+	glm::vec3 pivotOffset;
 
 	static const glm::vec3 worldForward;
 	static const glm::vec3 worldRight;
@@ -15,8 +16,10 @@ public:
 
 	Transform();
 	Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale);
+	Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale, glm::vec3 initPivotOffset);
 	virtual ~Transform();
 
+	glm::mat4x4 GetModelMatrix() const;
 	//void SetRotationEuler(glm::vec3 newRotationEuler);
 	//glm::vec3 GetRotationEuler() const;
 
