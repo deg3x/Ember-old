@@ -9,10 +9,3 @@ struct Color
 	float b;
 	float a;
 };
-
-struct Transform
-{
-	glm::vec3 position;
-	glm::quat rotation;
-	glm::vec3 scale;
-};
