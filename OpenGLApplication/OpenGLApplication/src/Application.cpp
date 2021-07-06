@@ -27,6 +27,10 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 	glm::vec4 clearColor = glm::vec4(0.12f, 0.12f, 0.12f, 1.0f);
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 
+	Sphere sphere(32, 32, 1.0f);
+	Mesh sphereMesh(sphere.GetVertexData(), sphere.GetIndices());
+	Transform sphereTransform;
+
 	Shader shader("./src/shaders/vertexPhong.shader", "./src/shaders/fragmentPhong.shader");
 
 	while (!glfwWindowShouldClose(appWindow->GetWindow()))
@@ -35,14 +39,9 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Sphere sphere(32, 32, 1.0f);
-		Mesh sphereMesh(sphere.GetVertexData(), sphere.GetIndices());
-
 		glm::mat4x4 model = glm::mat4x4(1.0f);
 		glm::mat4x4 view = glm::mat4x4(1.0f);
 		glm::mat4x4 proj = glm::mat4x4(1.0f);
-
-		Transform sphereTransform;
 
 		model = glm::translate(model, sphereTransform.position);
 
@@ -58,37 +57,21 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 		view = cam.GetViewMatrix();
 		proj = glm::perspective(glm::radians(90.0f), 1024.0f / 768.0f, 0.1f, 1000.0f);
 
-
-
 		glm::vec3 lightPos = glm::vec3(10.0f, 10.0f, 10.0f);
-		glm::vec3 lightColor = glm::vec3(0.9f, 0.9f, 0.8f);
-
-		GLuint lightPosLoc = glGetUniformLocation(shader.GetShaderID(), "lightPos");
-		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
-		GLuint lightColorLoc = glGetUniformLocation(shader.GetShaderID(), "lightColor");
-		glUniform4f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z, 1.0f);
-
-		shader.SetUniform4f("color", glm::vec4(0.9f, 0.3f, 0.4f, 1.0f));
-
-		shader.SetUniform3f("cameraPos", cam.transform.position);				// AND THIS
-
-		GLuint modelLoc = glGetUniformLocation(shader.GetShaderID(), "model");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-		GLuint viewLoc = glGetUniformLocation(shader.GetShaderID(), "view");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-		GLuint projLoc = glGetUniformLocation(shader.GetShaderID(), "projection");
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+		glm::vec4 lightColor = glm::vec4(0.9f, 0.9f, 0.8f, 1.0f);
 
 		glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
-		GLuint normLoc = glGetUniformLocation(shader.GetShaderID(), "normalMatrix");
-		glUniformMatrix4fv(normLoc, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+		shader.SetUniform4f("color", glm::vec4(0.9f, 0.3f, 0.4f, 1.0f));
+		shader.SetUniform3f("cameraPos", cam.transform.position);
+		shader.SetUniform4f("lightColor", lightColor);
+		shader.SetUniform3f("lightPos", lightPos);
+		shader.SetMatrix4fv("model", model);
+		shader.SetMatrix4fv("view", view);
+		shader.SetMatrix4fv("projection", proj);
+		shader.SetMatrix4fv("normalMatrix", normalMatrix);
 
 		shader.Use();
-
-
-
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		sphereMesh.DrawMesh();
