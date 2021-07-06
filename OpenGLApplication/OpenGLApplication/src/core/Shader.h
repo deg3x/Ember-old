@@ -24,4 +24,5 @@ public:
 	void SetFloat(const std::string& name, float value) const;
 	void SetUniform3f(const std::string& name, glm::vec3 value) const;
 	void SetUniform4f(const std::string& name, glm::vec4 value) const;
+	void SetMatrix4fv(const std::string& name, glm::mat4x4 value) const;
 };

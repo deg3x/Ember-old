@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -135,4 +136,9 @@ void Shader::SetUniform3f(const std::string& name, glm::vec3 value) const
 void Shader::SetUniform4f(const std::string& name, glm::vec4 value) const
 {
 	glUniform4f(glGetUniformLocation(this->id, name.c_str()), value.x, value.y, value.z, value.w);
+}
+
+void Shader::SetMatrix4fv(const std::string& name, glm::mat4x4 value) const
+{
+	glUniformMatrix4fv(glGetUniformLocation(this->id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
