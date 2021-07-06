@@ -9,6 +9,7 @@
 #include "utils/Sphere.h"
 #include "core/Mesh.h"
 #include "core/Shader.h"
+#include "utils/Plane.h"
 
 void MainWindowCallback(const ApplicationWindow* appWindow);
 
@@ -31,6 +32,10 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 	Sphere sphere(32, 32, 1.0f);
 	Mesh sphereMesh(sphere.GetVertexData(), sphere.GetIndices());
 	Transform sphereTransform;
+
+	Plane plane(10, 1.0f);
+	Mesh planeMesh(plane.GetVertexData(), plane.GetIndices());
+	Transform planeTransform(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 45.0f, 0.0f), glm::vec3(3.0f, 3.0f, 3.0f));
 
 	Shader shader("./src/shaders/vertexPhong.shader", "./src/shaders/fragmentPhong.shader");
 
@@ -62,6 +67,12 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		sphereMesh.DrawMesh();
+
+		model = planeTransform.GetModelMatrix();
+		shader.SetMatrix4fv("model", model);
+		normalMatrix = glm::transpose(glm::inverse(model));
+		shader.SetMatrix4fv("normalMatrix", normalMatrix);
+		planeMesh.DrawMesh();
 
 		glfwSwapBuffers(appWindow->GetWindow());
 		glfwPollEvents();
