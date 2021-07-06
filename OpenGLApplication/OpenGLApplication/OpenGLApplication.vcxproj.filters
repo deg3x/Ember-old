@@ -63,4 +63,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shaders\fragmentBasic.shader" />
+    <None Include="src\shaders\fragmentPhong.shader" />
+    <None Include="src\shaders\vertexBasic.shader" />
+    <None Include="src\shaders\vertexPhong.shader" />
+  </ItemGroup>
 </Project>

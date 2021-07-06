@@ -110,6 +110,12 @@
     <ClInclude Include="src\utils\Sphere.h" />
     <ClInclude Include="src\utils\Types.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shaders\fragmentBasic.shader" />
+    <None Include="src\shaders\fragmentPhong.shader" />
+    <None Include="src\shaders\vertexBasic.shader" />
+    <None Include="src\shaders\vertexPhong.shader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
