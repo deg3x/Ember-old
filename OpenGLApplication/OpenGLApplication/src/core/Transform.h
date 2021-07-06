@@ -9,10 +9,6 @@ public:
 	glm::vec3 rotation; // Switch to quaternions later
 	glm::vec3 scale;
 
-	glm::vec3 forward;
-	glm::vec3 right;
-	glm::vec3 up;
-
 	static const glm::vec3 worldForward;
 	static const glm::vec3 worldRight;
 	static const glm::vec3 worldUp;
