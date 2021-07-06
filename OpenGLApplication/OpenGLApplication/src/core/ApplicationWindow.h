@@ -11,13 +11,11 @@ private:
 	float aspectRatio;
 	Color clearColor = { 0.12f, 0.12f, 0.12f, 1.0f };
 
-	void (*mainLoopCallback)() = nullptr;
+	void (*mainLoopCallback)(const ApplicationWindow* appWindow) = nullptr;
 
 	int InitGLFW(const char* windowName);
 	int InitGLAD() const;
 	int InitOpenGL() const;
-
-	void ProcessUserInput() const;
 
 public:
 	ApplicationWindow() {}
@@ -25,8 +23,9 @@ public:
 	virtual ~ApplicationWindow();
 
 	int MainLoop() const;
+	void ProcessUserInput() const;
 
-	void SetMainLoopCallback(void (*callback)());
+	void SetMainLoopCallback(void (*callback)(const ApplicationWindow* appWindow));
 	void SetClearColor(const float r, const float g, const float b, const float a);
 	void SetClearColor(const Color c);
 

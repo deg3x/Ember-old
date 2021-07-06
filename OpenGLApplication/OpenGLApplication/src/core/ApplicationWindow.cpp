@@ -73,25 +73,15 @@ void ApplicationWindow::ProcessUserInput() const
 
 int ApplicationWindow::MainLoop() const
 {
-	glClearColor(this->clearColor.r, this->clearColor.g, this->clearColor.b, this->clearColor.a);
-
-	while (!glfwWindowShouldClose(this->window))
+	if (this->mainLoopCallback != nullptr)
 	{
-		this->ProcessUserInput();
-
-		if (this->mainLoopCallback != nullptr)
-		{
-			this->mainLoopCallback();
-		}
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		this->mainLoopCallback(this);
 	}
 
 	return 0;
 }
 
-void ApplicationWindow::SetMainLoopCallback(void (*callback)())
+void ApplicationWindow::SetMainLoopCallback(void (*callback)(const ApplicationWindow* appWindow))
 {
 	this->mainLoopCallback = callback;
 }
