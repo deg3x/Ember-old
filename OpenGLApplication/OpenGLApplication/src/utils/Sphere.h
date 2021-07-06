@@ -1,16 +1,13 @@
 #pragma once
 
 #include <vector>
+#include "Types.h"
 
 class Sphere
 {
 private:
-	std::vector<float> vertexData;
+	std::vector<VertexData> vertexData;
 	std::vector<unsigned int> indices;
-
-	unsigned int VAO;
-	unsigned int VBO;
-	unsigned int EBO;
 
 	int sectors;
 	int stacks;
@@ -21,29 +18,6 @@ public:
 	Sphere(int sectors, int stacks, float radius);
 	~Sphere();
 
-	void Init();
-	void Draw(bool wireframe);
-	void CreateVertices();
-	void CreateIndices();
-
-	inline unsigned int GetVAO()
-	{
-		return VAO;
-	}
-
-	inline unsigned int GetVBO()
-	{
-		return VBO;
-	}
-
-	inline unsigned int GetEBO()
-	{
-		return EBO;
-	}
-
-	inline unsigned int GetIndicesSize()
-	{
-		return indices.size();
-	}
-		
+	void GenerateVertexData();
+	void GenerateIndices();
 };
