@@ -96,13 +96,17 @@
     <ClCompile Include="src\core\ApplicationWindow.cpp" />
     <ClCompile Include="src\core\Camera.cpp" />
     <ClCompile Include="src\core\glad.c" />
+    <ClCompile Include="src\core\Mesh.cpp" />
     <ClCompile Include="src\core\Shader.cpp" />
+    <ClCompile Include="src\core\Transform.cpp" />
     <ClCompile Include="src\utils\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ApplicationWindow.h" />
     <ClInclude Include="src\core\Camera.h" />
+    <ClInclude Include="src\core\Mesh.h" />
     <ClInclude Include="src\core\Shader.h" />
+    <ClInclude Include="src\core\Transform.h" />
     <ClInclude Include="src\utils\Sphere.h" />
     <ClInclude Include="src\utils\Types.h" />
   </ItemGroup>
