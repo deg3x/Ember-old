@@ -27,8 +27,7 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 	glm::vec4 clearColor = glm::vec4(0.12f, 0.12f, 0.12f, 1.0f);
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 
-	Shader shader("C:\\dev\\GraphicsPlayground\\OpenGLApplication\\OpenGLApplication\\src\\shaders\\vertexPhong.shader",
-		"C:\\dev\\GraphicsPlayground\\OpenGLApplication\\OpenGLApplication\\src\\shaders\\fragmentPhong.shader");
+	Shader shader("./src/shaders/vertexPhong.shader", "./src/shaders/fragmentPhong.shader");
 
 	while (!glfwWindowShouldClose(appWindow->GetWindow()))
 	{
@@ -69,15 +68,9 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 		GLuint lightColorLoc = glGetUniformLocation(shader.GetShaderID(), "lightColor");
 		glUniform4f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z, 1.0f);
 
-		//shader.SetUniform4f("color", glm::vec4(0.9f, 0.3f, 0.4f, 1.0f));		// FIX THIS
-		glm::vec4 color = glm::vec4(0.9f, 0.3f, 0.4f, 1.0f);
-		GLuint colorLoc = glGetUniformLocation(shader.GetShaderID(), "color");
-		glUniform4f(colorLoc, color.x, color.y, color.z, color.a);
+		shader.SetUniform4f("color", glm::vec4(0.9f, 0.3f, 0.4f, 1.0f));
 
-		GLuint camPos = glGetUniformLocation(shader.GetShaderID(), "cameraPos");
-		glUniform3f(camPos, cam.transform.position.x, cam.transform.position.y, cam.transform.position.z);
-
-		//shader.SetUniform3f("cameraPos", cam.transform.position);				// AND THIS
+		shader.SetUniform3f("cameraPos", cam.transform.position);				// AND THIS
 
 		GLuint modelLoc = glGetUniformLocation(shader.GetShaderID(), "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
