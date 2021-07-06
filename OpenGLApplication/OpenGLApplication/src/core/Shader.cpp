@@ -32,12 +32,12 @@ Shader::Shader(const char* vertPath, const char* fragPath)
 
 	CheckShaderCompiled(fragID);
 
-	this->ID = glCreateProgram();
-	glAttachShader(this->ID, vertID);
-	glAttachShader(this->ID, fragID);
-	glLinkProgram(this->ID);
+	this->id = glCreateProgram();
+	glAttachShader(this->id, vertID);
+	glAttachShader(this->id, fragID);
+	glLinkProgram(this->id);
 
-	CheckProgramLinked(this->ID);
+	CheckProgramLinked(this->id);
 
 	glDeleteShader(vertID);
 	glDeleteShader(fragID);
@@ -103,25 +103,35 @@ int Shader::CheckProgramLinked(GLuint shaderProgramID)
 
 void Shader::Use()
 {
-	glUseProgram(this->ID);
+	glUseProgram(this->id);
 }
 
 unsigned int Shader::GetShaderID()
 {
-	return this->ID;
+	return this->id;
 }
 
 void Shader::SetBool(const std::string& name, bool value) const
 {
-	glUniform1i(glGetUniformLocation(this->ID, name.c_str()), (int)value);
+	glUniform1i(glGetUniformLocation(this->id, name.c_str()), (int)value);
 }
 
 void Shader::SetInt(const std::string& name, int value) const
 {
-	glUniform1i(glGetUniformLocation(this->ID, name.c_str()), value);
+	glUniform1i(glGetUniformLocation(this->id, name.c_str()), value);
 }
 
 void Shader::SetFloat(const std::string& name, float value) const
 {
-	glUniform1f(glGetUniformLocation(this->ID, name.c_str()), value);
+	glUniform1f(glGetUniformLocation(this->id, name.c_str()), value);
+}
+
+void Shader::SetUniform3f(const std::string& name, glm::vec3 value) const
+{
+	glUniform3f(glGetAttribLocation(this->id, name.c_str()), value.x, value.y, value.z);
+}
+
+void Shader::SetUniform4f(const std::string& name, glm::vec4 value) const
+{
+	glUniform4f(glGetAttribLocation(this->id, name.c_str()), value.x, value.y, value.z, value.w);
 }
