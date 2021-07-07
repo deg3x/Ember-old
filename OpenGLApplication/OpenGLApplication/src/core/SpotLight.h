@@ -5,7 +5,7 @@ class SpotLight : public Light
 {
 public:
 	float cutOffAngle;
-	float cutOffAngleOuter;
+	float cutOffAngleOut;
 
 	SpotLight();
 	~SpotLight();

@@ -15,5 +15,9 @@ PointLight::~PointLight()
 
 void PointLight::SetShaderProperties(const Shader& shaderProgram) const
 {
-	
+	shaderProgram.SetVector3("pointLight.position", this->transform.position);
+	shaderProgram.SetFloat("pointLight.intensity", this->intensity);
+	shaderProgram.SetFloat("pointLight.constantAttenuation", this->constantAttenuation);
+	shaderProgram.SetFloat("pointLight.linearAttenuation", this->linearAttenuation);
+	shaderProgram.SetFloat("pointLight.quadraticAttenuation", this->quadraticAttenuation);
 }
