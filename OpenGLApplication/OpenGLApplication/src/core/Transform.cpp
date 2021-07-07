@@ -64,7 +64,7 @@ glm::vec3 Transform::GetRightVector() const
 
 glm::vec3 Transform::GetUpVector() const
 {
-	return glm::normalize(glm::cross(Transform::worldRight, this->GetForwardVector()));
+	return glm::normalize(glm::cross(this->GetRightVector(), this->GetForwardVector()));
 }
 
 const glm::vec3 Transform::worldForward = glm::vec3(0.0f, 0.0f, 1.0f);

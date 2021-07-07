@@ -3,8 +3,8 @@
 
 SpotLight::SpotLight() : Light()
 {
-	this->cutOffAngle = 20.0f;
-	this->cutOffAngleOut = 25.0f;
+	this->cutOffAngle = 12.5f;
+	this->cutOffAngleOut = 13.0f;
 	this->constantAttenuation = 1.0f;
 	this->linearAttenuation = 0.045f;
 	this->quadraticAttenuation = 0.0075f;

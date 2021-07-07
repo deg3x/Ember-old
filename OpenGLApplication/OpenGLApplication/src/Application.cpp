@@ -11,6 +11,8 @@
 #include "core/Shader.h"
 #include "utils/Plane.h"
 #include "core/PointLight.h"
+#include "core/DirectionalLight.h"
+#include "core/SpotLight.h"
 
 void MainWindowCallback(const ApplicationWindow* appWindow);
 
@@ -39,6 +41,8 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 	Transform planeTransform(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 45.0f, 0.0f), glm::vec3(3.0f, 3.0f, 3.0f));
 
 	PointLight pLight;
+	DirectionalLight dLight;
+	SpotLight sLight;
 
 	Shader shader("./src/shaders/vertexPhong.shader", "./src/shaders/fragmentPhong.shader");
 
@@ -52,9 +56,6 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 		glm::mat4x4 view = camera.GetViewMatrix();
 		glm::mat4x4 proj = glm::perspective(glm::radians(90.0f), 1024.0f / 768.0f, 0.1f, 1000.0f);
 
-		glm::vec3 lightPos = glm::vec3(10.0f, 10.0f, 10.0f);
-		glm::vec4 lightColor = glm::vec4(0.9f, 0.9f, 0.8f, 1.0f);
-
 		glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
 
 		shader.SetVector3("cameraPosition", camera.transform.position);
@@ -62,8 +63,20 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 		shader.SetMatrix4x4("view", view);
 		shader.SetMatrix4x4("projection", proj);
 		shader.SetMatrix4x4("normalMatrix", normalMatrix);
+		shader.SetVector3("material.diffuse", glm::vec3(0.9f, 0.3f, 0.4f));
+		shader.SetVector3("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
+		shader.SetFloat("material.shininess", 64);
 
-		pLight.SetShaderProperties(shader);
+		//pLight.transform.position.x = glm::sin(glfwGetTime() * 3.0f);
+		//pLight.transform.position.z = glm::cos(glfwGetTime() * 3.0f);
+		//pLight.SetShaderProperties(shader);
+		//dLight.transform.rotation.x = (glm::cos(glfwGetTime() * 5.0f) + 1.0f) * 180.0f;
+		//dLight.SetShaderProperties(shader);
+		sLight.transform.position = glm::vec3(0.0f, 0.0f, 3.0f);
+		sLight.transform.rotation.x = 90.0f;
+		sLight.transform.rotation.y = 90.0f;
+		std::cout << -sLight.transform.GetUpVector().x << " : " << -sLight.transform.GetUpVector().y << " : " << -sLight.transform.GetUpVector().z << std::endl;
+		sLight.SetShaderProperties(shader);
 
 		shader.Use();
 

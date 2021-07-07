@@ -12,6 +12,14 @@ struct Material
 	float shininess;
 };
 
+struct DirectionalLight
+{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 direction;
+	float intensity;
+};
+
 struct PointLight
 {
 	vec3 ambient;
@@ -21,14 +29,6 @@ struct PointLight
 	float constantAttenuation;
 	float linearAttenuation;
 	float quadraticAttenuation;
-};
-
-struct DirectionalLight
-{
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 direction;
-	float intensity;
 };
 
 struct SpotLight
@@ -60,10 +60,10 @@ void main()
 	vec3 normal = normalize(Normal);
 	vec3 viewDirection = normalize(cameraPosition - WorldPosition);
 
-	vec3 color = vec3(0.0f, 0.0f, 0.0f);
-	color += CalculateDirectionalLight(directionalLight, normal, viewDirection);
-	color += CalculatePointLight(pointLight, normal, viewDirection);
-	color += CalculateSpotLight(spotLight, normal, viewDirection);
+	vec3 color = CalculateSpotLight(spotLight, normal, viewDirection);
+	//color += CalculateDirectionalLight(directionalLight, normal, viewDirection);
+	//color += CalculatePointLight(pointLight, normal, viewDirection);
+	//color += CalculateSpotLight(spotLight, normal, viewDirection);
 
 	FragmentColor = vec4(color, 1.0f);
 }
