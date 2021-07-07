@@ -6,6 +6,9 @@ class SpotLight : public Light
 public:
 	float cutOffAngle;
 	float cutOffAngleOut;
+	float constantAttenuation;
+	float linearAttenuation;
+	float quadraticAttenuation;
 
 	SpotLight();
 	~SpotLight();
