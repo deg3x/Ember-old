@@ -22,7 +22,7 @@ public:
 	void SetBool(const std::string& name, bool value) const;
 	void SetInt(const std::string& name, int value) const;
 	void SetFloat(const std::string& name, float value) const;
-	void SetUniform3f(const std::string& name, glm::vec3 value) const;
-	void SetUniform4f(const std::string& name, glm::vec4 value) const;
-	void SetMatrix4fv(const std::string& name, glm::mat4x4 value) const;
+	void SetVector3(const std::string& name, const glm::vec3& vector) const;
+	void SetVector4(const std::string& name, const glm::vec4& vector) const;
+	void SetMatrix4x4(const std::string& name, const glm::mat4x4& matrix) const;
 };
