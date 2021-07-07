@@ -17,8 +17,8 @@ SpotLight::~SpotLight()
 
 void SpotLight::SetShaderProperties(const Shader& shaderProgram) const
 {
-	shaderProgram.SetVector4("spotLight.ambient", this->ambient);
-	shaderProgram.SetVector4("spotLight.diffuse", this->diffuse);
+	shaderProgram.SetVector3("spotLight.ambient", this->ambient);
+	shaderProgram.SetVector3("spotLight.diffuse", this->diffuse);
 	shaderProgram.SetVector3("spotLight.position", this->transform.position);
 	shaderProgram.SetVector3("spotLight.direction", -this->transform.GetUpVector());
 	shaderProgram.SetFloat("spotLight.intensity", this->intensity);

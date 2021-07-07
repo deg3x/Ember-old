@@ -10,6 +10,7 @@
 #include "core/Mesh.h"
 #include "core/Shader.h"
 #include "utils/Plane.h"
+#include "core/PointLight.h"
 
 void MainWindowCallback(const ApplicationWindow* appWindow);
 
@@ -37,6 +38,8 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 	Mesh planeMesh(plane.GetVertexData(), plane.GetIndices());
 	Transform planeTransform(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 45.0f, 0.0f), glm::vec3(3.0f, 3.0f, 3.0f));
 
+	PointLight pLight;
+
 	Shader shader("./src/shaders/vertexPhong.shader", "./src/shaders/fragmentPhong.shader");
 
 	while (!glfwWindowShouldClose(appWindow->GetWindow()))
@@ -54,14 +57,13 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 
 		glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
 
-		shader.SetUniform4f("color", glm::vec4(0.9f, 0.3f, 0.4f, 1.0f));
-		shader.SetUniform3f("cameraPos", camera.transform.position);
-		shader.SetUniform4f("lightColor", lightColor);
-		shader.SetUniform3f("lightPos", lightPos);
-		shader.SetMatrix4fv("model", model);
-		shader.SetMatrix4fv("view", view);
-		shader.SetMatrix4fv("projection", proj);
-		shader.SetMatrix4fv("normalMatrix", normalMatrix);
+		shader.SetVector3("cameraPosition", camera.transform.position);
+		shader.SetMatrix4x4("model", model);
+		shader.SetMatrix4x4("view", view);
+		shader.SetMatrix4x4("projection", proj);
+		shader.SetMatrix4x4("normalMatrix", normalMatrix);
+
+		pLight.SetShaderProperties(shader);
 
 		shader.Use();
 
@@ -69,9 +71,9 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 		sphereMesh.DrawMesh();
 
 		model = planeTransform.GetModelMatrix();
-		shader.SetMatrix4fv("model", model);
+		shader.SetMatrix4x4("model", model);
 		normalMatrix = glm::transpose(glm::inverse(model));
-		shader.SetMatrix4fv("normalMatrix", normalMatrix);
+		shader.SetMatrix4x4("normalMatrix", normalMatrix);
 		planeMesh.DrawMesh();
 
 		glfwSwapBuffers(appWindow->GetWindow());

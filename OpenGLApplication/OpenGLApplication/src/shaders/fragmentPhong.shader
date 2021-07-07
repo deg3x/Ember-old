@@ -9,13 +9,13 @@ struct Material
 {
 	vec3 diffuse;
 	vec3 specular;
-	float shininess
+	float shininess;
 };
 
 struct PointLight
 {
-	vec4 ambient;
-	vec4 diffuse;
+	vec3 ambient;
+	vec3 diffuse;
 	vec3 position;
 	float intensity;
 	float constantAttenuation;
@@ -25,19 +25,22 @@ struct PointLight
 
 struct DirectionalLight
 {
-	vec4 ambient;
-	vec4 diffuse;
+	vec3 ambient;
+	vec3 diffuse;
 	vec3 direction;
 	float intensity;
 };
 
 struct SpotLight
 {
-	vec4 ambient;
-	vec4 diffuse;
+	vec3 ambient;
+	vec3 diffuse;
 	vec3 position;
 	vec3 direction;
 	float intensity;
+	float constantAttenuation;
+	float linearAttenuation;
+	float quadraticAttenuation;
 	float cutOffAngleCos;
 	float cutOffAngleOutCos;
 };
@@ -62,7 +65,7 @@ void main()
 	color += CalculatePointLight(pointLight, normal, viewDirection);
 	color += CalculateSpotLight(spotLight, normal, viewDirection);
 
-	FragmentColor = vec4(fragmentColor, 1.0f);
+	FragmentColor = vec4(color, 1.0f);
 }
 
 vec3 CalculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection)
@@ -120,7 +123,7 @@ vec3 CalculateSpotLight(SpotLight light, vec3 normal, vec3 viewDirection)
 
 	vec3 ambient = light.ambient * material.diffuse;
 	vec3 diffuse = light.diffuse * diff * material.diffuse, TexCoords;
-	vec3 specular = light.specular * spec * material.specular;
+	vec3 specular = light.diffuse * spec * material.specular;
 
 	return light.intensity * attenuation * intensity * (ambient + diffuse + specular);
 }

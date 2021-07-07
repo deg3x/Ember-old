@@ -5,12 +5,13 @@
 
 class Light
 {
-protected:
+public:
 	Transform transform;
-	glm::vec4 ambient;
-	glm::vec4 diffuse;
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
 	float intensity;
-	
+
+protected:
 	Light();
 	virtual ~Light();
 

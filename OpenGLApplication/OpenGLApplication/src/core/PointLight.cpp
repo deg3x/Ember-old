@@ -15,8 +15,8 @@ PointLight::~PointLight()
 
 void PointLight::SetShaderProperties(const Shader& shaderProgram) const
 {
-	shaderProgram.SetVector4("pointLight.ambient", this->ambient);
-	shaderProgram.SetVector4("pointLight.diffuse", this->diffuse);
+	shaderProgram.SetVector3("pointLight.ambient", this->ambient);
+	shaderProgram.SetVector3("pointLight.diffuse", this->diffuse);
 	shaderProgram.SetVector3("pointLight.position", this->transform.position);
 	shaderProgram.SetFloat("pointLight.intensity", this->intensity);
 	shaderProgram.SetFloat("pointLight.constantAttenuation", this->constantAttenuation);
