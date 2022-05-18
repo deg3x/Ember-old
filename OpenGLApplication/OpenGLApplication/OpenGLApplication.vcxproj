@@ -45,8 +45,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)</OutDir>
-    <IntDir>$(SolutionDir)\intermediate\$(Configuration)-$(Platform)</IntDir>
+    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\intermediate\$(Configuration)-$(Platform)\</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);</LibraryPath>
   </PropertyGroup>
@@ -98,11 +98,11 @@
     <ClCompile Include="src\core\DirectionalLight.cpp" />
     <ClCompile Include="src\core\glad.c" />
     <ClCompile Include="src\core\Light.cpp" />
-    <ClCompile Include="src\core\Mesh.cpp" />
     <ClCompile Include="src\core\PointLight.cpp" />
     <ClCompile Include="src\core\Shader.cpp" />
     <ClCompile Include="src\core\SpotLight.cpp" />
     <ClCompile Include="src\core\Transform.cpp" />
+    <ClCompile Include="src\utils\Mesh.cpp" />
     <ClCompile Include="src\utils\Plane.cpp" />
     <ClCompile Include="src\utils\Sphere.cpp" />
   </ItemGroup>
@@ -111,11 +111,11 @@
     <ClInclude Include="src\core\Camera.h" />
     <ClInclude Include="src\core\DirectionalLight.h" />
     <ClInclude Include="src\core\Light.h" />
-    <ClInclude Include="src\core\Mesh.h" />
     <ClInclude Include="src\core\PointLight.h" />
     <ClInclude Include="src\core\Shader.h" />
     <ClInclude Include="src\core\SpotLight.h" />
     <ClInclude Include="src\core\Transform.h" />
+    <ClInclude Include="src\utils\Mesh.h" />
     <ClInclude Include="src\utils\Plane.h" />
     <ClInclude Include="src\utils\Sphere.h" />
     <ClInclude Include="src\utils\Types.h" />
