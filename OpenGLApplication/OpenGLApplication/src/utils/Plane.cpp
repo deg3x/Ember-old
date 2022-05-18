@@ -7,6 +7,7 @@ Plane::Plane()
 
 	this->GenerateVertexData();
 	this->GenerateIndices();
+	this->SetupMesh();
 }
 
 Plane::Plane(int initResolution, float initSize)
@@ -16,6 +17,7 @@ Plane::Plane(int initResolution, float initSize)
 
 	this->GenerateVertexData();
 	this->GenerateIndices();
+	this->SetupMesh();
 }
 
 Plane::~Plane()
@@ -25,7 +27,7 @@ Plane::~Plane()
 
 void Plane::GenerateVertexData()
 {
-	std::vector<VertexData>().swap(vertexData);
+	std::vector<VertexData>().swap(this->vertexData);
 
 	float stepSize = this->size / (float)this->resolution;
 	float initPosX = -this->size / 2.0f;
@@ -45,14 +47,14 @@ void Plane::GenerateVertexData()
 			currentVertex.position = glm::vec3(currentPosX, 0.0f, currentPosZ);
 			currentVertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
-			vertexData.push_back(currentVertex);
+			this->vertexData.push_back(currentVertex);
 		}
 	}
 }
 
 void Plane::GenerateIndices()
 {
-	std::vector<unsigned int>().swap(indices);
+	std::vector<unsigned int>().swap(this->indices);
 
 	unsigned int vertId;
 	unsigned int nextRowVertId;

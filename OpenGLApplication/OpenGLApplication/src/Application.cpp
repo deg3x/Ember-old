@@ -7,7 +7,6 @@
 #include "core/ApplicationWindow.h"
 #include "core/Camera.h"
 #include "utils/Sphere.h"
-#include "core/Mesh.h"
 #include "core/Shader.h"
 #include "utils/Plane.h"
 #include "core/PointLight.h"
@@ -33,11 +32,9 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 
 	Camera camera;
 	Sphere sphere(32, 32, 1.0f);
-	Mesh sphereMesh(sphere.GetVertexData(), sphere.GetIndices());
 	Transform sphereTransform;
 
 	Plane plane(10, 1.0f);
-	Mesh planeMesh(plane.GetVertexData(), plane.GetIndices());
 	Transform planeTransform(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 45.0f, 0.0f), glm::vec3(3.0f, 3.0f, 3.0f));
 
 	PointLight pLight;
@@ -81,13 +78,13 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 		shader.Use();
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		sphereMesh.DrawMesh();
+		sphere.DrawMesh();
 
 		model = planeTransform.GetModelMatrix();
 		shader.SetMatrix4x4("model", model);
 		normalMatrix = glm::transpose(glm::inverse(model));
 		shader.SetMatrix4x4("normalMatrix", normalMatrix);
-		planeMesh.DrawMesh();
+		plane.DrawMesh();
 
 		glfwSwapBuffers(appWindow->GetWindow());
 		glfwPollEvents();

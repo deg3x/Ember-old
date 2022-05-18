@@ -18,7 +18,7 @@ private:
 	int InitOpenGL() const;
 
 public:
-	ApplicationWindow() {}
+	ApplicationWindow() = delete;
 	ApplicationWindow(const int windowW, const int windowH, const char* windowName);
 	virtual ~ApplicationWindow();
 

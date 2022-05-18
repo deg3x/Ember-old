@@ -1,23 +1,24 @@
 #pragma once
 #include <vector>
-#include "Shader.h"
+#include "../core/Shader.h"
 #include "../utils/Types.h"
 
 class Mesh
 {
-private:
-	// Add support for textures later
+protected:
 	std::vector<VertexData> vertexData;
 	std::vector<unsigned int> indices;
 
+private:
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
 
+protected:
 	void SetupMesh();
 
 public:
-	Mesh() = delete;
+	Mesh() {}
 	Mesh(std::vector<VertexData> data, std::vector<unsigned int> indices);
 	virtual ~Mesh();
 

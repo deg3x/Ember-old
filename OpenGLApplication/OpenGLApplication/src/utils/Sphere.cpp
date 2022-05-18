@@ -13,8 +13,9 @@ Sphere::Sphere()
 	this->stacks = 10;
 	this->radius = 0.5f;
 
-	GenerateVertexData();
-	GenerateIndices();
+	this->GenerateVertexData();
+	this->GenerateIndices();
+	this->SetupMesh();
 }
 
 Sphere::Sphere(int sectors, int stacks, float radius)
@@ -23,8 +24,9 @@ Sphere::Sphere(int sectors, int stacks, float radius)
 	this->stacks = stacks < 3 ? 3 : stacks;
 	this->radius = radius;
 
-	GenerateVertexData();
-	GenerateIndices();
+	this->GenerateVertexData();
+	this->GenerateIndices();
+	this->SetupMesh();
 }
 
 Sphere::~Sphere()
@@ -34,7 +36,7 @@ Sphere::~Sphere()
 
 void Sphere::GenerateVertexData()
 {
-	std::vector<VertexData>().swap(vertexData);
+	std::vector<VertexData>().swap(this->vertexData);
 
 	float x;
 	float y;
@@ -61,14 +63,14 @@ void Sphere::GenerateVertexData()
 			currentVertex.position = glm::vec3(x, y, z);
 			currentVertex.normal = glm::normalize(currentVertex.position);
 
-			vertexData.push_back(currentVertex);
+			this->vertexData.push_back(currentVertex);
 		}
 	}
 }
 
 void Sphere::GenerateIndices()
 {
-	std::vector<unsigned int>().swap(indices);
+	std::vector<unsigned int>().swap(this->indices);
 
 	unsigned int sid;
 	unsigned int nsid;
@@ -82,16 +84,16 @@ void Sphere::GenerateIndices()
 		{
 			if (i != 0)
 			{
-				indices.push_back(sid);
-				indices.push_back(nsid);
-				indices.push_back(sid + 1);
+				this->indices.push_back(sid);
+				this->indices.push_back(nsid);
+				this->indices.push_back(sid + 1);
 			}
 
 			if (i != stacks - 1)
 			{
-				indices.push_back(sid + 1);
-				indices.push_back(nsid);
-				indices.push_back(nsid + 1);
+				this->indices.push_back(sid + 1);
+				this->indices.push_back(nsid);
+				this->indices.push_back(nsid + 1);
 			}
 
 			sid++;

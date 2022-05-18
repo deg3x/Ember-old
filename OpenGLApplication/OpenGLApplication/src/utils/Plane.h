@@ -1,13 +1,11 @@
 #pragma once
 #include <vector>
 #include "Types.h"
+#include "Mesh.h"
 
-class Plane
+class Plane : public Mesh
 {
 private:
-	std::vector<VertexData> vertexData;
-	std::vector<unsigned int> indices;
-
 	int resolution;
 	float size;
 
