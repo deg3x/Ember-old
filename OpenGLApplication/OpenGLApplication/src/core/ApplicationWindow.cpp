@@ -3,16 +3,16 @@
 
 #include "ApplicationWindow.h"
 
-ApplicationWindow::ApplicationWindow(const int windowW, const int windowH, const char* windowName) : windowW(windowW), windowH(windowH)
+ApplicationWindow::ApplicationWindow(const int windowW, const int windowH, const char* windowName)
 {
-	this->aspectRatio = (float)windowW / (float)windowH;
+	windowData.windowW = windowW;
+	windowData.windowH = windowH;
+	windowData.aspectRatio = (float)windowW / (float)windowH;
 
 	if (!(this->InitGLFW(windowName) + this->InitGLAD() + this->InitOpenGL()))
 	{
 		return;
 	}
-
-	//glfwSetFramebufferSizeCallback(this->window, this->WindowResizeCallback);
 }
 
 ApplicationWindow::~ApplicationWindow()
@@ -30,7 +30,7 @@ int ApplicationWindow::InitGLFW(const char* windowName)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	this->window = glfwCreateWindow(this->windowW, this->windowH, windowName, NULL, NULL);
+	this->window = glfwCreateWindow(windowData.windowW, windowData.windowH, windowName, NULL, NULL);
 	if (this->window == NULL)
 	{
 		std::cerr << "Failed to create window!" << std::endl;
@@ -57,21 +57,106 @@ int ApplicationWindow::InitGLAD() const
 
 int ApplicationWindow::InitOpenGL() const
 {
-	glViewport(0, 0, windowW, windowH);
+	glViewport(0, 0, windowData.windowW, windowData.windowH);
 	glEnable(GL_DEPTH_TEST);
 
 	return 0;
 }
 
-void ApplicationWindow::ProcessUserInput() const
+void ApplicationWindow::MouseButtonCallback()
+{
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
+		if (!mouseData.leftButtonPressed)
+		{
+			glfwGetCursorPos(window, &mouseData.lastMouseX, &mouseData.lastMouseY);
+		}
+
+		mouseData.leftButtonPressed = true;
+	}
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+	{
+		mouseData.leftButtonPressed = false;
+	}
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	{
+		if (!mouseData.rightButtonPressed)
+		{
+			glfwGetCursorPos(window, &mouseData.lastMouseX, &mouseData.lastMouseY);
+		}
+
+		mouseData.rightButtonPressed = true;
+	}
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+	{
+		mouseData.rightButtonPressed = false;
+	}
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS)
+	{
+		if (!mouseData.middleButtonPressed)
+		{
+			glfwGetCursorPos(window, &mouseData.lastMouseX, &mouseData.lastMouseY);
+		}
+
+		mouseData.middleButtonPressed = true;
+	}
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_RELEASE)
+	{
+		mouseData.middleButtonPressed = false;
+	}
+}
+
+void ApplicationWindow::MousePositionCallback()
+{
+	double mouseX;
+	double mouseY;
+
+	glfwGetCursorPos(window, &mouseX, &mouseY);
+	
+	if (glm::epsilonEqual(mouseX, mouseData.lastMouseX, DBL_EPSILON) && glm::epsilonEqual(mouseY, mouseData.lastMouseY, DBL_EPSILON))
+	{
+		return;
+	}
+
+	if (mouseData.leftButtonPressed)
+	{
+		mouseData.leftMouseXOffset = mouseX - mouseData.lastMouseX;
+		mouseData.leftMouseYOffset = mouseY - mouseData.lastMouseY;
+		mouseData.lastMouseX = mouseX;
+		mouseData.lastMouseY = mouseY;
+	}
+	else
+	{
+		mouseData.ResetLeftMouseOffsetData();
+	}
+
+	if (mouseData.rightButtonPressed)
+	{
+		mouseData.rightMouseXOffset = mouseX - mouseData.lastMouseX;
+		mouseData.rightMouseYOffset = mouseY - mouseData.lastMouseY;
+		mouseData.lastMouseX = mouseX;
+		mouseData.lastMouseY = mouseY;
+	}
+	else
+	{
+		mouseData.ResetRightMouseOffsetData();
+	}
+}
+
+void ApplicationWindow::ProcessUserInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(this->window, true);
 	}
+
+	MouseButtonCallback();
+	MousePositionCallback();
 }
 
-int ApplicationWindow::MainLoop() const
+int ApplicationWindow::MainLoop()
 {
 	if (this->mainLoopCallback != nullptr)
 	{
@@ -81,22 +166,28 @@ int ApplicationWindow::MainLoop() const
 	return 0;
 }
 
-void ApplicationWindow::SetMainLoopCallback(void (*callback)(const ApplicationWindow* appWindow))
+void ApplicationWindow::SetMainLoopCallback(void (*callback)(ApplicationWindow* appWindow))
 {
 	this->mainLoopCallback = callback;
 }
 
 void ApplicationWindow::SetClearColor(const float r, const float g, const float b, const float a)
 {
-	this->clearColor.r = r;
-	this->clearColor.g = g;
-	this->clearColor.b = b;
-	this->clearColor.a = a;
+	windowData.clearColor.r = r;
+	windowData.clearColor.g = g;
+	windowData.clearColor.b = b;
+	windowData.clearColor.a = a;
 }
 
 void ApplicationWindow::SetClearColor(const Color c)
 {
-	this->clearColor = c;
+	windowData.clearColor = c;
+}
+
+void ApplicationWindow::ResetMouseOffsetData()
+{
+	mouseData.ResetLeftMouseOffsetData();
+	mouseData.ResetRightMouseOffsetData();
 }
 
 GLFWwindow* ApplicationWindow::GetWindow() const
@@ -106,15 +197,15 @@ GLFWwindow* ApplicationWindow::GetWindow() const
 
 GLsizei ApplicationWindow::GetWindowWidth() const
 {
-	return this->windowW;
+	return windowData.windowW;
 }
 
 GLsizei ApplicationWindow::GetWindowHeight() const
 {
-	return this->windowH;
+	return windowData.windowH;
 }
 
 float ApplicationWindow::GetAspectRatio() const
 {
-	return this->aspectRatio;
+	return windowData.aspectRatio;
 }

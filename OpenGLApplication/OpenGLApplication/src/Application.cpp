@@ -13,7 +13,7 @@
 #include "core/DirectionalLight.h"
 #include "core/SpotLight.h"
 
-void MainWindowCallback(const ApplicationWindow* appWindow);
+void MainWindowCallback(ApplicationWindow* appWindow);
 
 int main()
 {
@@ -25,7 +25,7 @@ int main()
 	return 0;
 }
 
-void MainWindowCallback(const ApplicationWindow* appWindow)
+void MainWindowCallback(ApplicationWindow* appWindow)
 {
 	glm::vec4 clearColor = glm::vec4(0.12f, 0.12f, 0.12f, 1.0f);
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
@@ -43,14 +43,33 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 
 	Shader shader("./src/shaders/vertexPhong.shader", "./src/shaders/fragmentPhong.shader");
 
+	float theta = -glm::quarter_pi<float>();
+	float phi = -glm::half_pi<float>();
+	float radius = camera.transform.position.length();
+
 	while (!glfwWindowShouldClose(appWindow->GetWindow()))
 	{
 		appWindow->ProcessUserInput();
 
+		MouseData mouse = appWindow->GetMouseData();
+		//camera.transform.position = camera.transform.position - (float)mouse.rightMouseYOffset * camera.transform.GetForwardVector() * mouse.sensitivity;
+
+		theta += mouse.leftMouseXOffset * mouse.sensitivity;
+		phi += mouse.leftMouseYOffset * mouse.sensitivity;
+		radius -= (float)mouse.rightMouseYOffset * mouse.sensitivity;
+		
+		camera.transform.position.x = radius * glm::cos(theta) * glm::sin(phi);
+		camera.transform.position.z = radius * glm::sin(theta) * glm::sin(phi);
+		camera.transform.position.y = radius * glm::cos(phi);
+
+		glm::mat4x4 viewMat = glm::lookAt(camera.transform.position, glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+		
+		appWindow->ResetMouseOffsetData();
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::mat4x4 model = sphereTransform.GetModelMatrix();
-		glm::mat4x4 view = camera.GetViewMatrix();
+		glm::mat4x4 view = viewMat;//camera.GetViewMatrix();
 		glm::mat4x4 proj = glm::perspective(glm::radians(90.0f), 1024.0f / 768.0f, 0.1f, 1000.0f);
 
 		glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
@@ -67,13 +86,15 @@ void MainWindowCallback(const ApplicationWindow* appWindow)
 		//pLight.transform.position.x = glm::sin(glfwGetTime() * 3.0f);
 		//pLight.transform.position.z = glm::cos(glfwGetTime() * 3.0f);
 		//pLight.SetShaderProperties(shader);
-		//dLight.transform.rotation.x = (glm::cos(glfwGetTime() * 5.0f) + 1.0f) * 180.0f;
-		//dLight.SetShaderProperties(shader);
-		sLight.transform.position = glm::vec3(0.0f, 0.0f, 3.0f);
-		sLight.transform.rotation.x = 90.0f;
-		sLight.transform.rotation.y = 90.0f;
-		std::cout << -sLight.transform.GetUpVector().x << " : " << -sLight.transform.GetUpVector().y << " : " << -sLight.transform.GetUpVector().z << std::endl;
-		sLight.SetShaderProperties(shader);
+
+		dLight.transform.rotation.x = 30.0f;
+		dLight.transform.rotation.y = -30.0f;
+		dLight.SetShaderProperties(shader);
+		
+		//sLight.transform.position = glm::vec3(0.0f, 0.0f, 3.0f);
+		//sLight.transform.rotation.x = 90.0f;
+		//sLight.transform.rotation.y = 90.0f;
+		//sLight.SetShaderProperties(shader);
 
 		shader.Use();
 

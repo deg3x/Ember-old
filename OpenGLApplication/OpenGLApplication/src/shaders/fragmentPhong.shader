@@ -60,7 +60,8 @@ void main()
 	vec3 normal = normalize(Normal);
 	vec3 viewDirection = normalize(cameraPosition - WorldPosition);
 
-	vec3 color = CalculateSpotLight(spotLight, normal, viewDirection);
+	//vec3 color = CalculateSpotLight(spotLight, normal, viewDirection);
+	vec3 color = CalculateDirectionalLight(directionalLight, normal, viewDirection);
 	//color += CalculateDirectionalLight(directionalLight, normal, viewDirection);
 	//color += CalculatePointLight(pointLight, normal, viewDirection);
 	//color += CalculateSpotLight(spotLight, normal, viewDirection);
