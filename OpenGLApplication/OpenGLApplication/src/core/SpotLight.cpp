@@ -3,11 +3,11 @@
 
 SpotLight::SpotLight() : Light()
 {
-	this->cutOffAngle = 12.5f;
-	this->cutOffAngleOut = 13.0f;
-	this->constantAttenuation = 1.0f;
-	this->linearAttenuation = 0.045f;
-	this->quadraticAttenuation = 0.0075f;
+	cutOffAngle = 12.5f;
+	cutOffAngleOut = 13.0f;
+	constantAttenuation = 1.0f;
+	linearAttenuation = 0.045f;
+	quadraticAttenuation = 0.0075f;
 }
 
 SpotLight::~SpotLight()
@@ -17,14 +17,14 @@ SpotLight::~SpotLight()
 
 void SpotLight::SetShaderProperties(const Shader& shaderProgram) const
 {
-	shaderProgram.SetVector3("spotLight.ambient", this->ambient);
-	shaderProgram.SetVector3("spotLight.diffuse", this->diffuse);
-	shaderProgram.SetVector3("spotLight.position", this->transform.position);
-	shaderProgram.SetVector3("spotLight.direction", -this->transform.GetUpVector());
-	shaderProgram.SetFloat("spotLight.intensity", this->intensity);
-	shaderProgram.SetFloat("spotLight.constantAttenuation", this->constantAttenuation);
-	shaderProgram.SetFloat("spotLight.linearAttenuation", this->linearAttenuation);
-	shaderProgram.SetFloat("spotLight.quadraticAttenuation", this->quadraticAttenuation);
-	shaderProgram.SetFloat("spotLight.cutOffAngleCos", glm::cos(this->cutOffAngle));
-	shaderProgram.SetFloat("spotLight.cutOffAngleOutCos", glm::cos(this->cutOffAngleOut));
+	shaderProgram.SetVector3("spotLight.ambient", ambient);
+	shaderProgram.SetVector3("spotLight.diffuse", diffuse);
+	shaderProgram.SetVector3("spotLight.position", transform.position);
+	shaderProgram.SetVector3("spotLight.direction", -transform.GetUpVector());
+	shaderProgram.SetFloat("spotLight.intensity", intensity);
+	shaderProgram.SetFloat("spotLight.constantAttenuation", constantAttenuation);
+	shaderProgram.SetFloat("spotLight.linearAttenuation", linearAttenuation);
+	shaderProgram.SetFloat("spotLight.quadraticAttenuation", quadraticAttenuation);
+	shaderProgram.SetFloat("spotLight.cutOffAngleCos", glm::cos(cutOffAngle));
+	shaderProgram.SetFloat("spotLight.cutOffAngleOutCos", glm::cos(cutOffAngleOut));
 }

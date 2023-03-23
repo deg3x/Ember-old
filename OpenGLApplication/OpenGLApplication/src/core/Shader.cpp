@@ -34,12 +34,12 @@ Shader::Shader(const char* vertPath, const char* fragPath)
 
 	CheckShaderCompiled(fragID);
 
-	this->id = glCreateProgram();
-	glAttachShader(this->id, vertID);
-	glAttachShader(this->id, fragID);
-	glLinkProgram(this->id);
+	id = glCreateProgram();
+	glAttachShader(id, vertID);
+	glAttachShader(id, fragID);
+	glLinkProgram(id);
 
-	CheckProgramLinked(this->id);
+	CheckProgramLinked(id);
 
 	glDeleteShader(vertID);
 	glDeleteShader(fragID);
@@ -105,40 +105,40 @@ int Shader::CheckProgramLinked(GLuint shaderProgramID)
 
 void Shader::Use()
 {
-	glUseProgram(this->id);
+	glUseProgram(id);
 }
 
 unsigned int Shader::GetShaderID()
 {
-	return this->id;
+	return id;
 }
 
 void Shader::SetBool(const std::string& name, bool value) const
 {
-	glUniform1i(glGetUniformLocation(this->id, name.c_str()), (int)value);
+	glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
 }
 
 void Shader::SetInt(const std::string& name, int value) const
 {
-	glUniform1i(glGetUniformLocation(this->id, name.c_str()), value);
+	glUniform1i(glGetUniformLocation(id, name.c_str()), value);
 }
 
 void Shader::SetFloat(const std::string& name, float value) const
 {
-	glUniform1f(glGetUniformLocation(this->id, name.c_str()), value);
+	glUniform1f(glGetUniformLocation(id, name.c_str()), value);
 }
 
 void Shader::SetVector3(const std::string& name, const glm::vec3& value) const
 {
-	glUniform3fv(glGetUniformLocation(this->id, name.c_str()), 1, &value[0]);
+	glUniform3fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
 }
 
 void Shader::SetVector4(const std::string& name, const glm::vec4& value) const
 {
-	glUniform4fv(glGetUniformLocation(this->id, name.c_str()), 1, &value[0]);
+	glUniform4fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
 }
 
 void Shader::SetMatrix4x4(const std::string& name, const glm::mat4x4& value) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(this->id, name.c_str()), 1, GL_FALSE, &value[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }

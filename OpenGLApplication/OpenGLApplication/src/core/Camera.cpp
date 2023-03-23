@@ -12,5 +12,5 @@ Camera::~Camera()
 
 glm::mat4x4 Camera::GetViewMatrix() const
 {
-	return glm::lookAt(this->transform.position, this->transform.position + this->transform.GetForwardVector(), this->transform.GetUpVector());
+	return glm::lookAt(transform.position, transform.position + transform.GetForwardVector(), transform.GetUpVector());
 }

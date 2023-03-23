@@ -12,7 +12,7 @@ private:
 
 public:
 	Sphere();
-	Sphere(int sectors, int stacks, float radius);
+	Sphere(int initSectors, int initStacks, float initRadius);
 	~Sphere();
 
 	void GenerateVertexData();

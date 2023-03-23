@@ -9,7 +9,7 @@ ApplicationWindow::ApplicationWindow(const int windowW, const int windowH, const
 	windowData.windowH = windowH;
 	windowData.aspectRatio = (float)windowW / (float)windowH;
 
-	if (!(this->InitGLFW(windowName) + this->InitGLAD() + this->InitOpenGL()))
+	if (!(InitGLFW(windowName) + InitGLAD() + InitOpenGL()))
 	{
 		return;
 	}
@@ -30,8 +30,8 @@ int ApplicationWindow::InitGLFW(const char* windowName)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	this->window = glfwCreateWindow(windowData.windowW, windowData.windowH, windowName, NULL, NULL);
-	if (this->window == NULL)
+	window = glfwCreateWindow(windowData.windowW, windowData.windowH, windowName, NULL, NULL);
+	if (window == NULL)
 	{
 		std::cerr << "Failed to create window!" << std::endl;
 		glfwTerminate();
@@ -39,7 +39,7 @@ int ApplicationWindow::InitGLFW(const char* windowName)
 		return -1;
 	}
 
-	glfwMakeContextCurrent(this->window);
+	glfwMakeContextCurrent(window);
 
 	return 0;
 }
@@ -149,7 +149,7 @@ void ApplicationWindow::ProcessUserInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
-		glfwSetWindowShouldClose(this->window, true);
+		glfwSetWindowShouldClose(window, true);
 	}
 
 	MouseButtonCallback();
@@ -158,9 +158,9 @@ void ApplicationWindow::ProcessUserInput()
 
 int ApplicationWindow::MainLoop()
 {
-	if (this->mainLoopCallback != nullptr)
+	if (mainLoopCallback != nullptr)
 	{
-		this->mainLoopCallback(this);
+		mainLoopCallback(this);
 	}
 
 	return 0;
@@ -168,7 +168,7 @@ int ApplicationWindow::MainLoop()
 
 void ApplicationWindow::SetMainLoopCallback(void (*callback)(ApplicationWindow* appWindow))
 {
-	this->mainLoopCallback = callback;
+	mainLoopCallback = callback;
 }
 
 void ApplicationWindow::SetClearColor(const float r, const float g, const float b, const float a)
@@ -192,7 +192,7 @@ void ApplicationWindow::ResetMouseOffsetData()
 
 GLFWwindow* ApplicationWindow::GetWindow() const
 {
-	return this->window;
+	return window;
 }
 
 GLsizei ApplicationWindow::GetWindowWidth() const

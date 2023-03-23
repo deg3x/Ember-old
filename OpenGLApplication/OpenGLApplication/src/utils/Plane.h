@@ -19,11 +19,11 @@ public:
 
 	inline std::vector<VertexData> GetVertexData()
 	{
-		return this->vertexData;
+		return vertexData;
 	}
 
 	inline std::vector<unsigned int> GetIndices()
 	{
-		return this->indices;
+		return indices;
 	}
 };

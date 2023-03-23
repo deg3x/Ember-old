@@ -19,7 +19,7 @@ protected:
 
 public:
 	Mesh() {}
-	Mesh(std::vector<VertexData> data, std::vector<unsigned int> indices);
+	Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices);
 	virtual ~Mesh();
 
 	void DrawMesh() const;
