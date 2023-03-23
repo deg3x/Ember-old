@@ -189,23 +189,3 @@ void ApplicationWindow::ResetMouseOffsetData()
 	mouseData.ResetLeftMouseOffsetData();
 	mouseData.ResetRightMouseOffsetData();
 }
-
-GLFWwindow* ApplicationWindow::GetWindow() const
-{
-	return window;
-}
-
-GLsizei ApplicationWindow::GetWindowWidth() const
-{
-	return windowData.windowW;
-}
-
-GLsizei ApplicationWindow::GetWindowHeight() const
-{
-	return windowData.windowH;
-}
-
-float ApplicationWindow::GetAspectRatio() const
-{
-	return windowData.aspectRatio;
-}

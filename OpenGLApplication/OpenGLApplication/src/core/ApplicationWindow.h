@@ -2,40 +2,6 @@
 #include <GLFW64/glfw3.h>
 #include "../utils/Types.h"
 
-struct MouseData
-{
-	float sensitivity = 0.01f;
-	bool leftButtonPressed;
-	bool rightButtonPressed;
-	bool middleButtonPressed;
-	double lastMouseX;
-	double lastMouseY;
-	double leftMouseXOffset;
-	double leftMouseYOffset;
-	double rightMouseXOffset;
-	double rightMouseYOffset;
-
-	void ResetLeftMouseOffsetData()
-	{
-		leftMouseXOffset = 0.0;
-		leftMouseYOffset = 0.0;
-	}
-
-	void ResetRightMouseOffsetData()
-	{
-		rightMouseXOffset = 0.0;
-		rightMouseYOffset = 0.0;
-	}
-};
-
-struct WindowData
-{
-	GLsizei windowW;
-	GLsizei windowH;
-	float aspectRatio;
-	Color clearColor = { 0.12f, 0.12f, 0.12f, 1.0f };
-};
-
 class ApplicationWindow
 {
 private:
@@ -66,9 +32,33 @@ public:
 
 	void ResetMouseOffsetData();
 
-	GLFWwindow* GetWindow() const;
-	GLsizei GetWindowWidth() const;
-	GLsizei GetWindowHeight() const;
-	float GetAspectRatio() const;
-	inline MouseData GetMouseData() const { return mouseData; }
+	inline WindowData GetWindowData() const
+	{
+		return windowData;
+	}
+
+	inline GLFWwindow* GetWindow() const
+	{
+		return window;
+	}
+
+	inline GLsizei GetWindowWidth() const
+	{
+		return windowData.windowW;
+	}
+
+	inline GLsizei GetWindowHeight() const
+	{
+		return windowData.windowH;
+	}
+
+	float GetAspectRatio() const
+	{
+		return windowData.aspectRatio;
+	}
+
+	inline MouseData GetMouseData() const 
+	{ 
+		return mouseData; 
+	}
 };
