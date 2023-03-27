@@ -351,3 +351,4 @@ MigrationBackup/
 
 # CUSTOM DEFINITIONS
 intermediate/
+.idea/
