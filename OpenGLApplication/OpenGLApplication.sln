@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLApplication", "OpenGLApplication\OpenGLApplication.vcxproj", "{BCE7AB6B-8384-491D-8109-7B148AFDE810}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{BCE7AB6B-8384-491D-8109-7B148AFDE810}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

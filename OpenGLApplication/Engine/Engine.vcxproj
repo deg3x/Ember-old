@@ -16,6 +16,7 @@
     <ProjectGuid>{bce7ab6b-8384-491d-8109-7b148afde810}</ProjectGuid>
     <RootNamespace>OpenGLApplication</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Engine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
