@@ -7,6 +7,7 @@
 #include "core/ApplicationWindow.h"
 #include "core/Camera.h"
 #include "utils/Sphere.h"
+#include "core/Material.h"
 #include "core/Shader.h"
 #include "utils/Plane.h"
 #include "core/PointLight.h"
@@ -41,12 +42,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	DirectionalLight dLight;
 	SpotLight sLight;
 
-    // Dirty way to fight with Premake being unable to change the product scheme working dir
-#ifdef __APPLE__
-    Shader shader("../../Engine/shaders/vertexPhong.shader", "../../Engine/shaders/fragmentPhong.shader");
-#else
-    Shader shader("./Engine/shaders/vertexPhong.shader", "./Engine/shaders/fragmentPhong.shader");
-#endif
+    Material material;
 
 	float theta = -glm::quarter_pi<float>();
 	float phi = -glm::half_pi<float>();
@@ -79,14 +75,14 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 		glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
 
-		shader.SetVector3("cameraPosition", camera.transform.position);
-		shader.SetMatrix4x4("model", model);
-		shader.SetMatrix4x4("view", view);
-		shader.SetMatrix4x4("projection", proj);
-		shader.SetMatrix4x4("normalMatrix", normalMatrix);
-		shader.SetVector3("material.diffuse", glm::vec3(0.9f, 0.3f, 0.4f));
-		shader.SetVector3("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-		shader.SetFloat("material.shininess", 64);
+		material.GetShader()->SetVector3("cameraPosition", camera.transform.position);
+		material.GetShader()->SetMatrix4x4("model", model);
+		material.GetShader()->SetMatrix4x4("view", view);
+		material.GetShader()->SetMatrix4x4("projection", proj);
+		material.GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
+		material.GetShader()->SetVector3("material.diffuse", glm::vec3(0.9f, 0.3f, 0.4f));
+		material.GetShader()->SetVector3("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
+		material.GetShader()->SetFloat("material.shininess", 64);
 
 		//pLight.transform.position.x = glm::sin(glfwGetTime() * 3.0f);
 		//pLight.transform.position.z = glm::cos(glfwGetTime() * 3.0f);
@@ -94,22 +90,22 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 		dLight.transform.rotation.x = 30.0f;
 		dLight.transform.rotation.y = -30.0f;
-		dLight.SetShaderProperties(shader);
+		dLight.SetShaderProperties(*material.GetShader());
 		
 		//sLight.transform.position = glm::vec3(0.0f, 0.0f, 3.0f);
 		//sLight.transform.rotation.x = 90.0f;
 		//sLight.transform.rotation.y = 90.0f;
 		//sLight.SetShaderProperties(shader);
 
-		shader.Use();
+		material.GetShader()->Use();
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		sphere.DrawMesh();
 
 		model = planeTransform.GetModelMatrix();
-		shader.SetMatrix4x4("model", model);
+		material.GetShader()->SetMatrix4x4("model", model);
 		normalMatrix = glm::transpose(glm::inverse(model));
-		shader.SetMatrix4x4("normalMatrix", normalMatrix);
+		material.GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
 		plane.DrawMesh();
 
 		glfwSwapBuffers(appWindow->GetWindow());
