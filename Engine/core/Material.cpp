@@ -1,8 +1,6 @@
 ﻿#include "Material.h"
 #include "Shader.h"
 #define STB_IMAGE_IMPLEMENTATION 
-#include <iostream>
-
 #include "stb_image.h"
 
 Material::Material()
@@ -77,7 +75,7 @@ void Material::InitializeTexture(const char* imagePath)
     {
         return;
     }
-    std::cout << nChannels << std::endl;
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
