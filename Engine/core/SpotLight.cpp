@@ -1,5 +1,5 @@
 #include "SpotLight.h"
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 
 SpotLight::SpotLight() : Light()
 {

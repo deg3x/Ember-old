@@ -1,5 +1,5 @@
 #include "Light.h"
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 
 Light::Light()
 {

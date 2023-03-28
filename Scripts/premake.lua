@@ -9,12 +9,14 @@ OBJ_DIR = "../obj"
 ENGINE_PROJ_NAME = "Engine"
 ENGINE_DIR = "../Engine"
 ENGINE_LIBS_WIN = { "glfw3" }
-ENGINE_LIBS_OSX = { "libglfw3", "IOKit.framework", "Cocoa.framework" }
+ENGINE_LIBS_OSX = { "glfw3", "IOKit.framework", "Cocoa.framework" }
 ENGINE_INCL_PATH = { "../ThirdParty/includes/universal" }
 ENGINE_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }
 ENGINE_INCL_PATH_OSX = { "../ThirdParty/includes/osx" }
 ENGINE_LIBS_PATH_WIN = { "../ThirdParty/libraries/windows" }
 ENGINE_LIBS_PATH_OSX = { "../ThirdParty/libraries/osx" }
+-- ENGINE_FILES_EXCLUDE_WIN = { ENGINE_DIR .. "/core/glad_osx.c" }
+-- ENGINE_FILES_EXCLUDE_OSX = { ENGINE_DIR .. "/core/glad.c" }
 
 -------------------------------------------------
 
@@ -50,10 +52,12 @@ project (ENGINE_PROJ_NAME)
         links (ENGINE_LIBS_WIN)
         libdirs (ENGINE_LIBS_PATH_WIN)
         includedirs (ENGINE_INCL_PATH_WIN)
+        -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
     elseif os.target() == "macosx" then
         links (ENGINE_LIBS_OSX)
         libdirs (ENGINE_LIBS_PATH_OSX)
         includedirs (ENGINE_INCL_PATH_OSX)
+        -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
     end
 
     flags { "MultiProcessorCompile" }

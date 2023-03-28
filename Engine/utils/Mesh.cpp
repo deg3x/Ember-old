@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include "Mesh.h"
 
 Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices)

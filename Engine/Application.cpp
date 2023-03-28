@@ -1,8 +1,8 @@
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include <iostream>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include "core/ApplicationWindow.h"
 #include "core/Camera.h"
@@ -41,7 +41,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	DirectionalLight dLight;
 	SpotLight sLight;
 
-	Shader shader("./Engine/shaders/vertexPhong.shader", "./Engine/shaders/fragmentPhong.shader");
+	Shader shader("../../Engine/shaders/vertexPhong.shader", "../../Engine/shaders/fragmentPhong.shader");
 
 	float theta = -glm::quarter_pi<float>();
 	float phi = -glm::half_pi<float>();
