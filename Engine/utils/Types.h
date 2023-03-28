@@ -18,6 +18,8 @@ struct VertexData
 	glm::vec2 uv;
 	glm::vec3 tangent;
 	glm::vec3 bitangent;
+	
+	Color color;
 };
 
 struct WindowData
