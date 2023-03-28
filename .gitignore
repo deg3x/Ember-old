@@ -3,6 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# CUSTOM DEFINITIONS
+intermediate/
+.idea/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
 # User-specific files
 *.rsuser
 *.suo
@@ -348,7 +355,3 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-
-# CUSTOM DEFINITIONS
-intermediate/
-.idea/
