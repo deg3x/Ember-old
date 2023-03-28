@@ -41,7 +41,12 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	DirectionalLight dLight;
 	SpotLight sLight;
 
-	Shader shader("./Engine/shaders/vertexPhong.shader", "./Engine/shaders/fragmentPhong.shader");
+    // Dirty way to fight with Premake being unable to change the product scheme working dir
+#ifdef __APPLE__
+    Shader shader("../../Engine/shaders/vertexPhong.shader", "../../Engine/shaders/fragmentPhong.shader");
+#else
+    Shader shader("./Engine/shaders/vertexPhong.shader", "./Engine/shaders/fragmentPhong.shader");
+#endif
 
 	float theta = -glm::quarter_pi<float>();
 	float phi = -glm::half_pi<float>();

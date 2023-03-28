@@ -37,7 +37,6 @@ project (ENGINE_PROJ_NAME)
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"
-    debugdir (ENGINE_DIR)
 
     files 
     {

@@ -61,7 +61,12 @@ int ApplicationWindow::InitGLAD() const
 
 int ApplicationWindow::InitOpenGL() const
 {
+    // For some reason OSX requires double the window dimensions
+#if defined(_WIN32)
 	glViewport(0, 0, windowData.windowW, windowData.windowH);
+#elif __APPLE__
+    glViewport(0, 0, 2 * windowData.windowW, 2 * windowData.windowH);
+#endif
 	glEnable(GL_DEPTH_TEST);
 
 	return 0;
