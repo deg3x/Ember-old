@@ -41,7 +41,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	DirectionalLight dLight;
 	SpotLight sLight;
 
-	Shader shader("../../Engine/shaders/vertexPhong.shader", "../../Engine/shaders/fragmentPhong.shader");
+	Shader shader("./Engine/shaders/vertexPhong.shader", "./Engine/shaders/fragmentPhong.shader");
 
 	float theta = -glm::quarter_pi<float>();
 	float phi = -glm::half_pi<float>();
