@@ -32,8 +32,10 @@ void Mesh::SetupMesh()
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, normal));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, uv));
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 }
 
 void Mesh::DrawMesh() const

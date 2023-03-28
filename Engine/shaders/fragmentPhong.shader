@@ -1,6 +1,7 @@
 #version 330 core
 
 in vec3 Normal;
+in vec2 TexCoord;
 in vec3 WorldPosition;
 
 out vec4 FragmentColor;
@@ -50,6 +51,7 @@ uniform DirectionalLight directionalLight;
 uniform PointLight pointLight;
 uniform SpotLight spotLight;
 uniform vec3 cameraPosition;
+uniform sampler2D diffuseTexture;
 
 vec3 CalculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection);
 vec3 CalculatePointLight(PointLight light, vec3 normal, vec3 viewDirection);
@@ -66,7 +68,7 @@ void main()
 	//color += CalculatePointLight(pointLight, normal, viewDirection);
 	//color += CalculateSpotLight(spotLight, normal, viewDirection);
 
-	FragmentColor = vec4(color, 1.0f);
+	FragmentColor = texture(diffuseTexture, TexCoord) * vec4(color, 1.0f);
 }
 
 vec3 CalculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection)

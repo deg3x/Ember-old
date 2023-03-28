@@ -46,6 +46,7 @@ void Plane::GenerateVertexData()
 			
 			currentVertex.position = glm::vec3(currentPosX, 0.0f, currentPosZ);
 			currentVertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+			currentVertex.uv = glm::vec2((float)i / (float)resolution, (float)j / (float)resolution);
 
 			vertexData.push_back(currentVertex);
 		}

@@ -10,16 +10,23 @@ class Material
 {
 protected:
     Shader* shader;
+    unsigned int diffuseTexID;
 
 public:
     Material();
     Material(const char* vertShader, const char* fragShader);
+    Material(const char* vertShader, const char* fragShader, const char* diffuseTexturePath);
     virtual ~Material();
 
     void SetShader(const char* vertShader, const char* fragShader);
+    void Use();
 
     inline Shader* GetShader() const
     {
         return shader;
     }
+
+protected:
+    void InitializeTexture(const char* imagePath);
+    
 };

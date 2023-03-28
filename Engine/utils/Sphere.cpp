@@ -62,6 +62,7 @@ void Sphere::GenerateVertexData()
 
 			currentVertex.position = glm::vec3(x, y, z);
 			currentVertex.normal = glm::normalize(currentVertex.position);
+			currentVertex.uv = glm::vec2((float)j / (float)sectors, (float)i / (float)stacks);
 
 			vertexData.push_back(currentVertex);
 		}

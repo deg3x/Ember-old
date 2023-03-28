@@ -80,7 +80,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		material.GetShader()->SetMatrix4x4("view", view);
 		material.GetShader()->SetMatrix4x4("projection", proj);
 		material.GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
-		material.GetShader()->SetVector3("material.diffuse", glm::vec3(0.9f, 0.3f, 0.4f));
+		material.GetShader()->SetVector3("material.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		material.GetShader()->SetVector3("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
 		material.GetShader()->SetFloat("material.shininess", 64);
 
