@@ -3,7 +3,7 @@
 
 Material::Material()
 {
-    // Dirty way to fight with Premake being unable to change the product scheme working dir
+    // Dirty way to fight with Premake being unable to change the product scheme working directory for xcode
     
 #if defined(_WIN32)
     shader = new Shader("./Engine/shaders/vertexPhong.shader", "./Engine/shaders/fragmentPhong.shader");
@@ -17,17 +17,18 @@ Material::Material(const char* vertShader, const char* fragShader)
     shader = new Shader(vertShader, fragShader);
 }
 
-Material::Material(Shader* shader)
+Material::~Material()
 {
-    this->shader = shader;
+    if (shader == nullptr)
+    {
+        return;
+    }
+
+    delete shader;
+    shader = nullptr;
 }
 
 void Material::SetShader(const char* vertShader, const char* fragShader)
 {
     shader = new Shader(vertShader, fragShader);
-}
-
-void Material::SetShader(Shader* shader)
-{
-    this->shader = shader;
 }

@@ -2,6 +2,10 @@
 
 class Shader;
 
+//
+// Currently we do not allow creating multiple materials with the same shader instance
+// to prevent memory deref apocalypse. Improve in the future!
+// 
 class Material
 {
 protected:
@@ -10,10 +14,9 @@ protected:
 public:
     Material();
     Material(const char* vertShader, const char* fragShader);
-    Material(Shader* shader);
+    virtual ~Material();
 
     void SetShader(const char* vertShader, const char* fragShader);
-    void SetShader(Shader* shader);
 
     inline Shader* GetShader() const
     {
