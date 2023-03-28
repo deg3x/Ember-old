@@ -97,7 +97,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		//sLight.transform.rotation.y = 90.0f;
 		//sLight.SetShaderProperties(shader);
 
-		material.GetShader()->Use();
+		material.Use();
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		sphere.DrawMesh();
