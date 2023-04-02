@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "../core/Shader.h"
 #include "../utils/Types.h"
 
 class Mesh

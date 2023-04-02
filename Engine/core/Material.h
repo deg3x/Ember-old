@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 class Shader;
+class Texture;
 
 //
 // Currently we do not allow creating multiple materials with the same shader instance
@@ -10,16 +11,15 @@ class Material
 {
 protected:
     Shader* shader;
-    unsigned int diffuseTexID;
+    Texture* diffuseTexture;
 
 public:
     Material();
     Material(const char* vertShader, const char* fragShader);
-    Material(const char* vertShader, const char* fragShader, const char* diffuseTexturePath);
     virtual ~Material();
 
     void SetShader(const char* vertShader, const char* fragShader);
-    void Use();
+    void Use() const;
 
     inline Shader* GetShader() const
     {
@@ -27,6 +27,6 @@ public:
     }
 
 protected:
-    void InitializeTexture(const char* imagePath);
+    void SetupShaderVariables() const;
     
 };
