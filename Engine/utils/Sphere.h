@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Types.h"
-#include "Mesh.h"
+#include "../core/Mesh.h"
 
 class Sphere : public Mesh
 {
