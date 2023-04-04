@@ -8,7 +8,7 @@ OBJ_DIR = "../obj"
 
 ENGINE_PROJ_NAME = "Engine"
 ENGINE_DIR = "../Engine"
-ENGINE_LIBS_WIN = { "glfw3" }
+ENGINE_LIBS_WIN = { "glfw3", "assimp"}
 ENGINE_LIBS_OSX = { "glfw3", "IOKit.framework", "Cocoa.framework" }
 ENGINE_INCL_PATH = { "../ThirdParty/includes/universal" }
 ENGINE_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }
@@ -52,6 +52,11 @@ project (ENGINE_PROJ_NAME)
         links (ENGINE_LIBS_WIN)
         libdirs (ENGINE_LIBS_PATH_WIN)
         includedirs (ENGINE_INCL_PATH_WIN)
+        
+        postbuildcommands
+        {
+            "{COPY} %{wks.location}/ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}" 
+        }
         -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
     elseif os.target() == "macosx" then
         links (ENGINE_LIBS_OSX)
