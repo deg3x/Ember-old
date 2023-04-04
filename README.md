@@ -30,10 +30,10 @@ If you want to avoid installing it, you can manually run premake and build the p
 3. Execute the project generation python script: `python ./generate_project.py` 
 
 ## Incoming Features
-- [ ] Textures (diffuse, normals, etc.)
+- [x] Textures (diffuse, normals, etc.) [not fully implemented]
 - [ ] Shadows
 - [ ] Cubemaps
-- [ ] Custom Model Loading
+- [x] Custom Model Loading [not fully implemented]
 - [ ] Deferred Rendering
 - [ ] PBR
 - [ ] Text Rendering
