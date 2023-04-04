@@ -13,6 +13,7 @@
 #include "core/PointLight.h"
 #include "core/DirectionalLight.h"
 #include "core/SpotLight.h"
+#include "core/Model.h"
 
 void MainWindowCallback(ApplicationWindow* appWindow);
 
@@ -35,6 +36,9 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	Sphere sphere(32, 32, 1.0f);
 	Transform sphereTransform;
 
+	Model bunny("./Data/models/bunny.obj");
+	Transform bunnyTransform(glm::vec3(0.0f, -0.8f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.6f, 0.6f, 0.6f));
+	
 	Plane plane(10, 1.0f);
 	Transform planeTransform(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 45.0f, 0.0f), glm::vec3(3.0f, 3.0f, 3.0f));
 
@@ -100,13 +104,19 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		material.Use();
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		sphere.DrawMesh();
+		//sphere.DrawMesh();
 
 		model = planeTransform.GetModelMatrix();
 		material.GetShader()->SetMatrix4x4("model", model);
 		normalMatrix = glm::transpose(glm::inverse(model));
 		material.GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
 		plane.DrawMesh();
+
+		model = bunnyTransform.GetModelMatrix();
+		material.GetShader()->SetMatrix4x4("model", model);
+		normalMatrix = glm::transpose(glm::inverse(model));
+		material.GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
+		bunny.Draw();
 
 		glfwSwapBuffers(appWindow->GetWindow());
 		glfwPollEvents();

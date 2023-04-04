@@ -8,7 +8,7 @@ OBJ_DIR = "../obj"
 
 ENGINE_PROJ_NAME = "Engine"
 ENGINE_DIR = "../Engine"
-ENGINE_LIBS_WIN = { "glfw3", "assimp"}
+ENGINE_LIBS_WIN = { "glfw3", "assimp-vc142-mt"}
 ENGINE_LIBS_OSX = { "glfw3", "IOKit.framework", "Cocoa.framework" }
 ENGINE_INCL_PATH = { "../ThirdParty/includes/universal" }
 ENGINE_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }

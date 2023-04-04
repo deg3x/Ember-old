@@ -24,11 +24,6 @@ Transform::Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 i
 	pivotOffset = initPivotOffset;
 }
 
-Transform::~Transform()
-{
-
-}
-
 glm::mat4x4 Transform::GetModelMatrix() const
 {
 	glm::mat4x4 model = glm::mat4x4(1.0f);

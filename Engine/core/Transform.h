@@ -17,7 +17,7 @@ public:
 	Transform();
 	Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale);
 	Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale, glm::vec3 initPivotOffset);
-	virtual ~Transform();
+	virtual ~Transform() = default;
 
 	glm::mat4x4 GetModelMatrix() const;
 	//void SetRotationEuler(glm::vec3 newRotationEuler);
