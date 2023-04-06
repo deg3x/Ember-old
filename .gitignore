@@ -3,17 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# CUSTOM DEFINITIONS
-.idea/
-*.sln
-*.vcxproj
-*.vcxproj.filters
-
-**/.DS_Store
-*.pbxproj
-*.xcodeproj
-*.xcworkspace
-
 # User-specific files
 *.rsuser
 *.suo
@@ -359,3 +348,18 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+##############################
+##    CUSTOM DEFINITIONS    ##
+##############################
+.idea/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
+**/.DS_Store
+*.pbxproj
+*.xcodeproj
+*.xcworkspace
+
+!Data/**/*.obj
