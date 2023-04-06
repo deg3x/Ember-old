@@ -58,15 +58,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <sys/types.h>
 
 // Our compile configuration
-#include <assimp/defs.h>
+#include "assimp/defs.h"
 
 // Some types moved to separate header due to size of operators
-#include <assimp/vector2.h>
-#include <assimp/vector3.h>
-#include <assimp/color4.h>
-#include <assimp/matrix3x3.h>
-#include <assimp/matrix4x4.h>
-#include <assimp/quaternion.h>
+#include "assimp/vector2.h"
+#include "assimp/vector3.h"
+#include "assimp/color4.h"
+#include "assimp/matrix3x3.h"
+#include "assimp/matrix4x4.h"
+#include "assimp/quaternion.h"
 
 typedef int32_t ai_int32;
 typedef uint32_t ai_uint32;

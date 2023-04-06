@@ -36,7 +36,11 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	Sphere sphere(32, 32, 1.0f);
 	Transform sphereTransform;
 
+#if defined(_WIN32)
 	Model bunny("./Data/models/bunny.obj");
+#elif __APPLE__
+    Model bunny("../../Data/models/bunny.obj");
+#endif
 	Transform bunnyTransform(glm::vec3(0.0f, -0.8f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.6f, 0.6f, 0.6f));
 	
 	Plane plane(10, 1.0f);

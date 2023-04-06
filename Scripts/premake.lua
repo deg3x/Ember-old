@@ -9,7 +9,7 @@ OBJ_DIR = "../obj"
 ENGINE_PROJ_NAME = "Engine"
 ENGINE_DIR = "../Engine"
 ENGINE_LIBS_WIN = { "glfw3", "assimp-vc142-mt"}
-ENGINE_LIBS_OSX = { "glfw3", "IOKit.framework", "Cocoa.framework" }
+ENGINE_LIBS_OSX = { "glfw3", "assimp.5.2.4", "IOKit.framework", "Cocoa.framework" }
 ENGINE_INCL_PATH = { "../ThirdParty/includes/universal" }
 ENGINE_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }
 ENGINE_INCL_PATH_OSX = { "../ThirdParty/includes/osx" }
@@ -62,6 +62,13 @@ project (ENGINE_PROJ_NAME)
         links (ENGINE_LIBS_OSX)
         libdirs (ENGINE_LIBS_PATH_OSX)
         includedirs (ENGINE_INCL_PATH_OSX)
+
+        postbuildcommands
+        {
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.2.4.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.dylib %{cfg.targetdir}" 
+        }
         -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
     end
 

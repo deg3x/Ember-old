@@ -55,8 +55,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma warning(disable : 4351)
 #endif // _MSC_VER
 
-#include <assimp/aabb.h>
-#include <assimp/types.h>
+#include "assimp/aabb.h"
+#include "assimp/types.h"
 
 #ifdef __cplusplus
 extern "C" {
