@@ -42,14 +42,14 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	Object planeObject;
 	planeObject.CreateComponent<Plane>(10, 1.0f);
 	planeObject.AddComponent<Material>(sphereObject.GetComponent<Material>());
-	planeObject.GetComponent<Transform>()->position = glm::vec3(0.0f, -1.0f, 0.0f);
-	planeObject.GetComponent<Transform>()->rotation = glm::vec3(0.0f, 45.0f, 0.0f);
-	planeObject.GetComponent<Transform>()->scale = glm::vec3(3.0f, 3.0f, 3.0f);
+	planeObject.transform->position = glm::vec3(0.0f, -1.0f, 0.0f);
+	planeObject.transform->rotation = glm::vec3(0.0f, 45.0f, 0.0f);
+	planeObject.transform->scale = glm::vec3(3.0f, 3.0f, 3.0f);
 
 	Object bunnyObject;
 	bunnyObject.AddComponent<Material>(sphereObject.GetComponent<Material>());
-	bunnyObject.GetComponent<Transform>()->position = glm::vec3(0.0f, -0.8f, 0.0f);
-	bunnyObject.GetComponent<Transform>()->scale =glm::vec3(0.6f, 0.6f, 0.6f);
+	bunnyObject.transform->position = glm::vec3(0.0f, -0.8f, 0.0f);
+	bunnyObject.transform->scale =glm::vec3(0.6f, 0.6f, 0.6f);
 #if defined(_WIN32)
 	bunnyObject.CreateComponent<Model>("./Data/models/bunny.obj");
 #elif __APPLE__

@@ -7,7 +7,8 @@
 
 Object::Object()
 {
-    AddComponent(std::dynamic_pointer_cast<Component>(Component::CreateDefaultComponent<Transform>()));
+    transform = Component::CreateDefaultComponent<Transform>();
+    AddComponent(std::dynamic_pointer_cast<Component>(transform));
 }
 
 void Object::Draw() const

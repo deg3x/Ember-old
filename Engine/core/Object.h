@@ -4,12 +4,16 @@
 
 #include <vector>
 #include <memory>
-#include <iostream>
+
+class Transform;
 
 class Object
 {
 private:
     std::vector<std::shared_ptr<Component>> components;
+
+public:
+    std::shared_ptr<Transform> transform;
     
 public:
     Object();
