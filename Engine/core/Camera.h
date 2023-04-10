@@ -8,7 +8,7 @@ public:
 	Transform transform;
 
 	Camera();
-	virtual ~Camera();
+	virtual ~Camera() = default;
 
 	glm::mat4x4 GetViewMatrix() const;
 };

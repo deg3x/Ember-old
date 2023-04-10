@@ -1,10 +1,14 @@
 #pragma once
+
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
+#include "Component.h"
 
-class Transform
+class Transform : public Component
 {
 public:
+	MAKE_UNIQUE_COMPONENT()
+	
 	glm::vec3 position;
 	glm::vec3 rotation; // Switch to quaternions later
 	glm::vec3 scale;

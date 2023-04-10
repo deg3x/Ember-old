@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "Component.h"
+
 class Shader;
 class Texture;
 
@@ -7,7 +9,7 @@ class Texture;
 // Currently we do not allow creating multiple materials with the same shader instance
 // to prevent memory deref apocalypse. Improve in the future!
 // 
-class Material
+class Material : public Component
 {
 protected:
     Shader* shader;
@@ -28,5 +30,4 @@ public:
 
 protected:
     void SetupShaderVariables() const;
-    
 };

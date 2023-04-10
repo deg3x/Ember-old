@@ -29,11 +29,6 @@ Sphere::Sphere(int initSectors, int initStacks, float initRadius)
 	SetupMesh();
 }
 
-Sphere::~Sphere()
-{
-
-}
-
 void Sphere::GenerateVertexData()
 {
 	std::vector<VertexData>().swap(vertexData);

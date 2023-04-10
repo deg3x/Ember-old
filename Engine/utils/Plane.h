@@ -12,7 +12,7 @@ private:
 public:
 	Plane();
 	Plane(int initResolution, float initSize);
-	virtual ~Plane();
+	virtual ~Plane() override = default;
 
 	void GenerateVertexData();
 	void GenerateIndices();

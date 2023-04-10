@@ -13,7 +13,7 @@ private:
 public:
 	Sphere();
 	Sphere(int initSectors, int initStacks, float initRadius);
-	~Sphere();
+	virtual ~Sphere() override = default;
 
 	void GenerateVertexData();
 	void GenerateIndices();

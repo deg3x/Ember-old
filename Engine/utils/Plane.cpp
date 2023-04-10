@@ -20,11 +20,6 @@ Plane::Plane(int initResolution, float initSize)
 	SetupMesh();
 }
 
-Plane::~Plane()
-{
-
-}
-
 void Plane::GenerateVertexData()
 {
 	std::vector<VertexData>().swap(vertexData);

@@ -1,8 +1,11 @@
 #pragma once
-#include <vector>
-#include "../utils/Types.h"
 
-class Mesh
+#include "../utils/Types.h"
+#include "Component.h"
+
+#include <vector>
+
+class Mesh : public Component
 {
 protected:
 	std::vector<VertexData> vertexData;
@@ -17,7 +20,7 @@ protected:
 	void SetupMesh();
 
 public:
-	Mesh() {}
+	Mesh() = default;
 	Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices);
 	virtual ~Mesh();
 

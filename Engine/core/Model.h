@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "Component.h"
+
 #include <vector>
 #include <memory>
 
@@ -8,13 +10,13 @@ struct aiNode;
 struct aiScene;
 struct aiMesh;
 
-class Model
+class Model : public Component
 {
 private:
     std::vector<std::shared_ptr<Mesh>> meshes;
     
 public:
-    Model() = delete;
+    Model() = default;
     Model(const char* path);
     virtual ~Model() = default;
 
