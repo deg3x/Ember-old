@@ -1,12 +1,11 @@
 #pragma once
 #include "glm/glm.hpp"
 #include "Transform.h"
+#include "Object.h"
 
-class Camera
+class Camera : public Object
 {
 public:
-	Transform transform;
-
 	Camera();
 	virtual ~Camera() = default;
 

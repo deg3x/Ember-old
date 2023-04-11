@@ -1,12 +1,12 @@
 #pragma once
 #include "Transform.h"
 #include "Shader.h"
+#include "Object.h"
 #include "glm/glm.hpp"
 
-class Light
+class Light : public Object
 {
 public:
-	Transform transform;
 	glm::vec3 ambient;
 	glm::vec3 diffuse;
 	float intensity;

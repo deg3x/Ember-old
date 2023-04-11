@@ -58,13 +58,13 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 	DirectionalLight dLight;
 
-	dLight.transform.rotation.x = 30.0f;
-	dLight.transform.rotation.y = -30.0f;
+	dLight.transform->rotation.x = 30.0f;
+	dLight.transform->rotation.y = -30.0f;
 	dLight.SetShaderProperties(*sphereObject.GetComponent<Material>()->GetShader());
 
 	float theta = -glm::quarter_pi<float>();
 	float phi = -glm::half_pi<float>();
-	float radius = camera.transform.position.length();
+	float radius = camera.transform->position.length();
 
 	while (!glfwWindowShouldClose(appWindow->GetWindow()))
 	{
@@ -76,11 +76,11 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		phi += mouse.leftMouseYOffset * mouse.sensitivity;
 		radius -= (float)mouse.rightMouseYOffset * mouse.sensitivity;
 		
-		camera.transform.position.x = radius * glm::cos(theta) * glm::sin(phi);
-		camera.transform.position.z = radius * glm::sin(theta) * glm::sin(phi);
-		camera.transform.position.y = radius * glm::cos(phi);
+		camera.transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
+		camera.transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
+		camera.transform->position.y = radius * glm::cos(phi);
 
-		glm::mat4x4 viewMat = glm::lookAt(camera.transform.position, glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+		glm::mat4x4 viewMat = glm::lookAt(camera.transform->position, glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 		
 		appWindow->ResetMouseOffsetData();
 
@@ -92,7 +92,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 		glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
 
-		sphereObject.GetComponent<Material>()->GetShader()->SetVector3("cameraPosition", camera.transform.position);
+		sphereObject.GetComponent<Material>()->GetShader()->SetVector3("cameraPosition", camera.transform->position);
 		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("model", model);
 		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("view", view);
 		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("projection", proj);
