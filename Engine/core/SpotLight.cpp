@@ -10,11 +10,6 @@ SpotLight::SpotLight() : Light()
 	quadraticAttenuation = 0.0075f;
 }
 
-SpotLight::~SpotLight()
-{
-
-}
-
 void SpotLight::SetShaderProperties(const Shader& shaderProgram) const
 {
 	shaderProgram.SetVector3("spotLight.ambient", ambient);

@@ -13,7 +13,7 @@ public:
 
 protected:
 	Light();
-	virtual ~Light();
+	virtual ~Light() = default;
 
 public:
 	virtual void SetShaderProperties(const Shader& shaderProgram) const = 0;

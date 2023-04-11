@@ -10,7 +10,7 @@ public:
 	float quadraticAttenuation;
 
 	PointLight();
-	~PointLight();
+	virtual ~PointLight() override = default;
 
 	void SetShaderProperties(const Shader& shaderProgram) const override;
 };

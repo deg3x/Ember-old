@@ -5,7 +5,7 @@ class DirectionalLight : public Light
 {
 public:
 	DirectionalLight();
-	~DirectionalLight();
+	virtual ~DirectionalLight() override = default;
 
 	void SetShaderProperties(const Shader& shaderProgram) const override;
 };

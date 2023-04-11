@@ -11,7 +11,7 @@ public:
 	float quadraticAttenuation;
 
 	SpotLight();
-	~SpotLight();
+	virtual ~SpotLight() override = default;
 
 	void SetShaderProperties(const Shader& shaderProgram) const override;
 };

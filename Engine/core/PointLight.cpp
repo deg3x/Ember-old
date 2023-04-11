@@ -8,11 +8,6 @@ PointLight::PointLight() : Light()
 	quadraticAttenuation = 0.0075f;
 }
 
-PointLight::~PointLight()
-{
-
-}
-
 void PointLight::SetShaderProperties(const Shader& shaderProgram) const
 {
 	shaderProgram.SetVector3("pointLight.ambient", ambient);

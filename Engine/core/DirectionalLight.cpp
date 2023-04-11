@@ -5,11 +5,6 @@ DirectionalLight::DirectionalLight() : Light()
 
 }
 
-DirectionalLight::~DirectionalLight()
-{
-
-}
-
 void DirectionalLight::SetShaderProperties(const Shader& shaderProgram) const
 {
 	shaderProgram.SetVector3("directionalLight.ambient", ambient);
