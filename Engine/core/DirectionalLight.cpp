@@ -2,7 +2,8 @@
 
 DirectionalLight::DirectionalLight() : Light()
 {
-
+	transform->rotation.x = 30.0f;
+	transform->rotation.y = -30.0f;
 }
 
 void DirectionalLight::SetShaderProperties(const Shader& shaderProgram) const

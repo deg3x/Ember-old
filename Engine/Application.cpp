@@ -55,15 +55,12 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	bunnyObject.CreateComponent<Model>("../../Data/models/bunny.obj");
 #endif
 
-	DirectionalLight dLight;
-
 	// We need to use the shader ID before modifying variables
 	// Check OpenGL 4.1 function glProgramUniform() for a better way to solve this
 	// Fix this, since models use custom materials for each mesh for now
 	sphereMat->Use();
-
-	dLight.transform->rotation.x = 30.0f;
-	dLight.transform->rotation.y = -30.0f;
+	
+	DirectionalLight dLight;
 	dLight.SetShaderProperties(*sphereMat->GetShader());
 
 	float theta = -glm::quarter_pi<float>();
