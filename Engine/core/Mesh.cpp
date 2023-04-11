@@ -1,6 +1,9 @@
 #include "glad/glad.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "Object.h"
+#include "Transform.h"
+#include "Shader.h"
 
 #include <iostream>
 
@@ -69,6 +72,11 @@ void Mesh::Draw() const
 	}
 
 	material->Use();
+
+	const glm::mat4x4 model = parent->transform->GetModelMatrix();
+	const glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
+	material->GetShader()->SetMatrix4x4("model", model);
+	material->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
 	
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

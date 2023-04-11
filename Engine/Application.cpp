@@ -90,34 +90,19 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4x4 model = sphereObject.transform->GetModelMatrix();
 		glm::mat4x4 view = viewMat; //camera.GetViewMatrix();
 		glm::mat4x4 proj = glm::perspective(glm::radians(90.0f), 1024.0f / 768.0f, 0.1f, 1000.0f);
 
-		glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
-
 		sphereMat->GetShader()->SetVector3("cameraPosition", camera.transform->position);
-		sphereMat->GetShader()->SetMatrix4x4("model", model);
 		sphereMat->GetShader()->SetMatrix4x4("view", view);
 		sphereMat->GetShader()->SetMatrix4x4("projection", proj);
-		sphereMat->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
 		sphereMat->GetShader()->SetVector3("material.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		sphereMat->GetShader()->SetVector3("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
 		sphereMat->GetShader()->SetFloat("material.shininess", 64);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		sphereObject.Draw();
-
-		model = planeObject.transform->GetModelMatrix();
-		normalMatrix = glm::transpose(glm::inverse(model));
-		sphereMat->GetShader()->SetMatrix4x4("model", model);
-		sphereMat->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
 		planeObject.Draw();
-
-		model = bunnyObject.transform->GetModelMatrix();
-		normalMatrix = glm::transpose(glm::inverse(model));
-		sphereMat->GetShader()->SetMatrix4x4("model", model);
-		sphereMat->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
 		//bunnyObject.Draw();
 
 		glfwSwapBuffers(appWindow->GetWindow());

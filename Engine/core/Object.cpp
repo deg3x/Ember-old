@@ -8,8 +8,15 @@
 
 Object::Object()
 {
-    transform = Component::CreateDefaultComponent<Transform>();
-    AddComponent(std::dynamic_pointer_cast<Component>(transform));
+    transform = CreateComponent<Transform>();
+}
+
+Object::~Object()
+{
+    for (const std::shared_ptr<Component>& component : components)
+    {
+        component->parent = nullptr;
+    }
 }
 
 void Object::Draw() const

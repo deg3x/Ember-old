@@ -17,15 +17,15 @@ public:
     
 public:
     Object();
-    virtual ~Object() = default;
+    virtual ~Object();
 
     void Draw() const;
 
     template <class Type>
-    bool CreateComponent();
+    std::shared_ptr<Type> CreateComponent();
 
     template <class Type, typename... Args>
-    bool CreateComponent(Args... args);
+    std::shared_ptr<Type> CreateComponent(Args... args);
 
     template <class Type>
     bool HasComponent() const;
@@ -58,46 +58,49 @@ void Object::AddComponent(const std::shared_ptr<Type>& component)
     {
         return;
     }
-    
+
+    component->parent = this;
     components.push_back(component);
 }
 
 template <class Type>
-bool Object::CreateComponent()
+std::shared_ptr<Type> Object::CreateComponent()
 {
-    std::shared_ptr<Component> comp = std::dynamic_pointer_cast<Component>(GetComponent<Type>());
+    const std::shared_ptr<Component> comp = std::dynamic_pointer_cast<Component>(GetComponent<Type>());
     if (comp != nullptr && comp->IsUnique())
     {
-        return false;
+        return nullptr;
     }
     
     std::shared_ptr<Type> component = Component::CreateDefaultComponent<Type>();
     if (component == nullptr)
     {
-        return false;
+        return nullptr;
     }
 
     AddComponent(component);
-    return true;
+    
+    return component;
 }
 
 template <class Type, typename... Args>
-bool Object::CreateComponent(Args... args)
+std::shared_ptr<Type> Object::CreateComponent(Args... args)
 {
-    std::shared_ptr<Component> comp = std::dynamic_pointer_cast<Component>(GetComponent<Type>());
+    const std::shared_ptr<Component> comp = std::dynamic_pointer_cast<Component>(GetComponent<Type>());
     if (comp != nullptr && comp->IsUnique())
     {
-        return false;
+        return nullptr;
     }
     
     std::shared_ptr<Type> component = Component::CreateComponent<Type>(args...);
     if (component == nullptr)
     {
-        return false;
+        return nullptr;
     }
 
     AddComponent(component);
-    return true;
+    
+    return component;
 }
 
 template <class Type>
