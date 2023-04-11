@@ -14,9 +14,9 @@ Model::Model(const char* path)
 
 void Model::Draw() const
 {
-    for (std::shared_ptr<Mesh> mesh : meshes)
+    for (const std::shared_ptr<Mesh>& mesh : meshes)
     {
-        mesh->DrawMesh();
+        mesh->Draw();
     }
 }
 

@@ -1,9 +1,13 @@
 #include "Plane.h"
 
+#include "../core/Material.h"
+
 Plane::Plane()
 {
 	resolution = 10;
 	size = 1.0f;
+	
+	material = std::make_shared<Material>();
 
 	GenerateVertexData();
 	GenerateIndices();
@@ -14,6 +18,32 @@ Plane::Plane(int initResolution, float initSize)
 {
 	resolution = initResolution < 1 ? 1 : initResolution;
 	size = initSize < 1.0f ? 1.0f : initSize;
+	
+	material = std::make_shared<Material>();
+
+	GenerateVertexData();
+	GenerateIndices();
+	SetupMesh();
+}
+
+Plane::Plane(int initResolution, float initSize, const std::shared_ptr<Material>& initMaterial)
+{
+	resolution = initResolution < 1 ? 1 : initResolution;
+	size = initSize < 1.0f ? 1.0f : initSize;
+	
+	material = initMaterial;
+
+	GenerateVertexData();
+	GenerateIndices();
+	SetupMesh();
+}
+
+Plane::Plane(int initResolution, float initSize, const char* vertShader, const char* fragShader)
+{
+	resolution = initResolution < 1 ? 1 : initResolution;
+	size = initSize < 1.0f ? 1.0f : initSize;
+	
+	material = std::make_shared<Material>(vertShader, fragShader);
 
 	GenerateVertexData();
 	GenerateIndices();

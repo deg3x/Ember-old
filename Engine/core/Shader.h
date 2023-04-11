@@ -16,9 +16,9 @@ private:
 public:
 	Shader(const char* vertPath, const char* fragPath);
 
-	void Use();
+	void Use() const;
 
-	unsigned int GetShaderID();
+	unsigned int GetShaderID() const;
 	void SetBool(const std::string& name, bool value) const;
 	void SetInt(const std::string& name, int value) const;
 	void SetFloat(const std::string& name, float value) const;

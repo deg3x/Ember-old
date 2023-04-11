@@ -1,6 +1,4 @@
 #pragma once
-#include <vector>
-#include "Types.h"
 #include "../core/Mesh.h"
 
 class Sphere : public Mesh
@@ -13,18 +11,10 @@ private:
 public:
 	Sphere();
 	Sphere(int initSectors, int initStacks, float initRadius);
+	Sphere(int initSectors, int initStacks, float initRadius, const std::shared_ptr<Material>& initMaterial);
+	Sphere(int initSectors, int initStacks, float initRadius, const char* vertShader, const char* fragShader);
 	virtual ~Sphere() override = default;
 
 	void GenerateVertexData();
 	void GenerateIndices();
-
-	inline std::vector<VertexData> GetVertexData()
-	{
-		return this->vertexData;
-	}
-
-	inline std::vector<unsigned int> GetIndices()
-	{
-		return this->indices;
-	}
 };

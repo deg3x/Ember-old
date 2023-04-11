@@ -3,6 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "Sphere.h"
+#include "../core/Material.h"
 #include "Types.h"
 
 #include <vector>
@@ -13,6 +14,8 @@ Sphere::Sphere()
 	stacks = 10;
 	radius = 0.5f;
 
+	material = std::make_shared<Material>();
+	
 	GenerateVertexData();
 	GenerateIndices();
 	SetupMesh();
@@ -23,6 +26,34 @@ Sphere::Sphere(int initSectors, int initStacks, float initRadius)
 	sectors = initSectors < 4 ? 4 : initSectors;
 	stacks = initStacks < 3 ? 3 : initStacks;
 	radius = initRadius;
+
+	material = std::make_shared<Material>();
+
+	GenerateVertexData();
+	GenerateIndices();
+	SetupMesh();
+}
+
+Sphere::Sphere(int initSectors, int initStacks, float initRadius, const std::shared_ptr<Material>& initMaterial)
+{
+	sectors = initSectors < 4 ? 4 : initSectors;
+	stacks = initStacks < 3 ? 3 : initStacks;
+	radius = initRadius;
+
+	material = initMaterial;
+
+	GenerateVertexData();
+	GenerateIndices();
+	SetupMesh();
+}
+
+Sphere::Sphere(int initSectors, int initStacks, float initRadius, const char* vertShader, const char* fragShader)
+{
+	sectors = initSectors < 4 ? 4 : initSectors;
+	stacks = initStacks < 3 ? 3 : initStacks;
+	radius = initRadius;
+
+	material = std::make_shared<Material>(vertShader, fragShader);
 
 	GenerateVertexData();
 	GenerateIndices();

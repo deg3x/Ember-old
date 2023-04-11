@@ -37,17 +37,16 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 	Object sphereObject;
 	sphereObject.CreateComponent<Sphere>(32, 32, 1.0f);
-	sphereObject.CreateComponent<Material>();
+	
+	std::shared_ptr<Material> sphereMat = sphereObject.GetComponent<Mesh>()->material;
 
 	Object planeObject;
-	planeObject.CreateComponent<Plane>(10, 1.0f);
-	planeObject.AddComponent<Material>(sphereObject.GetComponent<Material>());
+	planeObject.CreateComponent<Plane>(10, 1.0f, sphereMat);
 	planeObject.transform->position = glm::vec3(0.0f, -1.0f, 0.0f);
 	planeObject.transform->rotation = glm::vec3(0.0f, 45.0f, 0.0f);
 	planeObject.transform->scale = glm::vec3(3.0f, 3.0f, 3.0f);
 
 	Object bunnyObject;
-	bunnyObject.AddComponent<Material>(sphereObject.GetComponent<Material>());
 	bunnyObject.transform->position = glm::vec3(0.0f, -0.8f, 0.0f);
 	bunnyObject.transform->scale =glm::vec3(0.6f, 0.6f, 0.6f);
 #if defined(_WIN32)
@@ -58,9 +57,14 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 	DirectionalLight dLight;
 
+	// We need to use the shader ID before modifying variables
+	// Check OpenGL 4.1 function glProgramUniform() for a better way to solve this
+	// Fix this, since models use custom materials for each mesh for now
+	sphereMat->Use();
+
 	dLight.transform->rotation.x = 30.0f;
 	dLight.transform->rotation.y = -30.0f;
-	dLight.SetShaderProperties(*sphereObject.GetComponent<Material>()->GetShader());
+	dLight.SetShaderProperties(*sphereMat->GetShader());
 
 	float theta = -glm::quarter_pi<float>();
 	float phi = -glm::half_pi<float>();
@@ -86,35 +90,35 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4x4 model = sphereObject.GetComponent<Transform>()->GetModelMatrix();
+		glm::mat4x4 model = sphereObject.transform->GetModelMatrix();
 		glm::mat4x4 view = viewMat; //camera.GetViewMatrix();
 		glm::mat4x4 proj = glm::perspective(glm::radians(90.0f), 1024.0f / 768.0f, 0.1f, 1000.0f);
 
 		glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
 
-		sphereObject.GetComponent<Material>()->GetShader()->SetVector3("cameraPosition", camera.transform->position);
-		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("model", model);
-		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("view", view);
-		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("projection", proj);
-		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
-		sphereObject.GetComponent<Material>()->GetShader()->SetVector3("material.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
-		sphereObject.GetComponent<Material>()->GetShader()->SetVector3("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-		sphereObject.GetComponent<Material>()->GetShader()->SetFloat("material.shininess", 64);
+		sphereMat->GetShader()->SetVector3("cameraPosition", camera.transform->position);
+		sphereMat->GetShader()->SetMatrix4x4("model", model);
+		sphereMat->GetShader()->SetMatrix4x4("view", view);
+		sphereMat->GetShader()->SetMatrix4x4("projection", proj);
+		sphereMat->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
+		sphereMat->GetShader()->SetVector3("material.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		sphereMat->GetShader()->SetVector3("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
+		sphereMat->GetShader()->SetFloat("material.shininess", 64);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		//sphereObject.Draw();
+		sphereObject.Draw();
 
-		model = planeObject.GetComponent<Transform>()->GetModelMatrix();
-		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("model", model);
+		model = planeObject.transform->GetModelMatrix();
 		normalMatrix = glm::transpose(glm::inverse(model));
-		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
+		sphereMat->GetShader()->SetMatrix4x4("model", model);
+		sphereMat->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
 		planeObject.Draw();
 
-		model = bunnyObject.GetComponent<Transform>()->GetModelMatrix();
-		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("model", model);
+		model = bunnyObject.transform->GetModelMatrix();
 		normalMatrix = glm::transpose(glm::inverse(model));
-		sphereObject.GetComponent<Material>()->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
-		bunnyObject.Draw();
+		sphereMat->GetShader()->SetMatrix4x4("model", model);
+		sphereMat->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
+		//bunnyObject.Draw();
 
 		glfwSwapBuffers(appWindow->GetWindow());
 		glfwPollEvents();

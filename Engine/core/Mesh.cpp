@@ -1,10 +1,32 @@
 #include "glad/glad.h"
 #include "Mesh.h"
+#include "Material.h"
+
+#include <iostream>
 
 Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices)
 {
 	vertexData = data;
 	indices = initIndices;
+	material = std::make_shared<Material>();
+
+	SetupMesh();
+}
+
+Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned> initIndices, const std::shared_ptr<Material>& initMaterial)
+{
+	vertexData = data;
+	indices = initIndices;
+	material = initMaterial;
+
+	SetupMesh();
+}
+
+Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned> initIndices, const char* vertShader, const char* fragShader)
+{
+	vertexData = data;
+	indices = initIndices;
+	material = std::make_shared<Material>(vertShader, fragShader);
 
 	SetupMesh();
 }
@@ -38,8 +60,16 @@ void Mesh::SetupMesh()
 	glEnableVertexAttribArray(2);
 }
 
-void Mesh::DrawMesh() const
+void Mesh::Draw() const
 {
+	if (material == nullptr)
+	{
+		std::cerr << "[!] Mesh has no material!" << std::endl;
+		return;
+	}
+
+	material->Use();
+	
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 }

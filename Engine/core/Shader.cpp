@@ -103,12 +103,12 @@ int Shader::CheckProgramLinked(GLuint shaderProgramID)
 	return success;
 }
 
-void Shader::Use()
+void Shader::Use() const
 {
 	glUseProgram(id);
 }
 
-unsigned int Shader::GetShaderID()
+unsigned int Shader::GetShaderID() const
 {
 	return id;
 }
