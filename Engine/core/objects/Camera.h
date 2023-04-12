@@ -1,6 +1,6 @@
 #pragma once
 #include "glm/glm.hpp"
-#include "Transform.h"
+#include "../components/Transform.h"
 #include "Object.h"
 
 class Camera : public Object

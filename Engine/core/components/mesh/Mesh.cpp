@@ -1,9 +1,9 @@
 #include "glad/glad.h"
+#include "../../objects/Object.h"
+#include "../../Material.h"
+#include "../../Shader.h"
+#include "../Transform.h"
 #include "Mesh.h"
-#include "Material.h"
-#include "Object.h"
-#include "Transform.h"
-#include "Shader.h"
 
 #include <iostream>
 

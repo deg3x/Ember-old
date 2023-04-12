@@ -1,6 +1,6 @@
 #include "Plane.h"
 
-#include "../core/Material.h"
+#include "../../Material.h"
 
 Plane::Plane()
 {

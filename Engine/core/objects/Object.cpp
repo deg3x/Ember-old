@@ -1,10 +1,9 @@
 ﻿#include "Object.h"
 
-#include "Transform.h"
-#include "Component.h"
-#include "Material.h"
-#include "Model.h"
-#include "Mesh.h"
+#include "../components/Component.h"
+#include "../components/Transform.h"
+#include "../components/mesh/Mesh.h"
+#include "../components/Model.h"
 
 Object::Object()
 {

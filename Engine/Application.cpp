@@ -1,20 +1,19 @@
 #include "glad/glad.h"
-#include <iostream>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include "core/objects/light/DirectionalLight.h"
+#include "core/objects/Object.h"
+#include "core/objects/Camera.h"
+#include "core/components/mesh/Sphere.h"
+#include "core/components/mesh/Plane.h"
+#include "core/components/Model.h"
 #include "core/ApplicationWindow.h"
-#include "core/Camera.h"
-#include "utils/Sphere.h"
 #include "core/Material.h"
 #include "core/Shader.h"
-#include "utils/Plane.h"
-#include "core/PointLight.h"
-#include "core/DirectionalLight.h"
-#include "core/SpotLight.h"
-#include "core/Model.h"
-#include "core/Object.h"
+
+#include <iostream>
 
 void MainWindowCallback(ApplicationWindow* appWindow);
 

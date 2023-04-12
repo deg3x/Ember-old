@@ -1,7 +1,7 @@
 #pragma once
-#include "Transform.h"
-#include "Shader.h"
-#include "Object.h"
+#include "../../components/Transform.h"
+#include "../../Shader.h"
+#include "../Object.h"
 #include "glm/glm.hpp"
 
 class Light : public Object

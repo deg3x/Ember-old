@@ -1,5 +1,5 @@
 #pragma once
-#include "../core/Mesh.h"
+#include "Mesh.h"
 
 class Sphere : public Mesh
 {

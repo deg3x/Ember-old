@@ -1,7 +1,7 @@
 ﻿#include "Model.h"
-#include "Mesh.h"
-#include "Texture.h"
-#include "../utils/PathBuilder.h"
+#include "mesh/Mesh.h"
+#include "../Texture.h"
+#include "../../utils/PathBuilder.h"
 
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"

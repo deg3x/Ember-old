@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../utils/Types.h"
-#include "Component.h"
+#include "../../../utils/Types.h"
+#include "../Component.h"
 
 #include <vector>
 #include <memory>
