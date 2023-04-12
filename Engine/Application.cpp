@@ -49,11 +49,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	Object bunnyObject;
 	bunnyObject.transform->position = glm::vec3(0.0f, -0.8f, 0.0f);
 	bunnyObject.transform->scale =glm::vec3(0.6f, 0.6f, 0.6f);
-#if defined(_WIN32)
 	bunnyObject.CreateComponent<Model>("./Data/models/bunny.obj");
-#elif __APPLE__
-	bunnyObject.CreateComponent<Model>("../../Data/models/bunny.obj");
-#endif
 
 	// We need to use the shader ID before modifying variables
 	// Check OpenGL 4.1 function glProgramUniform() for a better way to solve this

@@ -1,15 +1,11 @@
 ﻿#include "Material.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "../utils/PathBuilder.h"
 
 Material::Material()
 {
-    // Dirty way to fight with Premake being unable to change the product scheme working directory for xcode
-#if defined(_WIN32)
-    shader = new Shader("./Engine/shaders/vertexPhong.shader", "./Engine/shaders/fragmentPhong.shader");
-#elif __APPLE__
-    shader = new Shader("../../Engine/shaders/vertexPhong.shader", "../../Engine/shaders/fragmentPhong.shader");
-#endif
+    shader = new Shader(PathBuilder::GetPath("./Engine/shaders/vertexPhong.shader").c_str(), PathBuilder::GetPath("./Engine/shaders/fragmentPhong.shader").c_str());
     
     diffuseTexture = new Texture();
     SetupShaderVariables();

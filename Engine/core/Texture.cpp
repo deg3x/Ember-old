@@ -1,4 +1,5 @@
 ﻿#include "Texture.h"
+#include "../utils/PathBuilder.h"
 
 #include "glad/glad.h"
 #define STB_IMAGE_IMPLEMENTATION 
@@ -6,12 +7,7 @@
 
 Texture::Texture()
 {
-    // Dirty way to fight with Premake being unable to change the product scheme working directory for xcode
-#if defined(_WIN32)
-    InitializeTexture("./Data/images/container.jpg");
-#elif __APPLE__
-    InitializeTexture("../../Data/images/container.jpg");
-#endif
+    InitializeTexture(PathBuilder::GetPath("./Data/images/container.jpg").c_str());
     
     type = TextureType::diffuse;
 }

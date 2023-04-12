@@ -1,6 +1,8 @@
 ﻿#include "Model.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "../utils/PathBuilder.h"
+
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
@@ -9,7 +11,7 @@
 
 Model::Model(const char* path)
 {
-    Load(path);
+    Load(PathBuilder::GetPath(path).c_str());
 }
 
 void Model::Draw() const
