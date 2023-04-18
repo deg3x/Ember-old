@@ -10,10 +10,8 @@ private:
 	float radius;
 
 public:
-	Sphere();
-	Sphere(int initSectors, int initStacks, float initRadius);
+	Sphere(const std::shared_ptr<Material>& initMaterial);
 	Sphere(int initSectors, int initStacks, float initRadius, const std::shared_ptr<Material>& initMaterial);
-	Sphere(int initSectors, int initStacks, float initRadius, const char* vertShader, const char* fragShader);
 	virtual ~Sphere() override = default;
 
 	void GenerateVertexData();

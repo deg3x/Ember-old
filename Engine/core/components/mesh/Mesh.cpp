@@ -8,13 +8,9 @@
 
 #include <iostream>
 
-Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices)
+Mesh::Mesh(const std::shared_ptr<Material>& initMaterial)
 {
-	vertexData = data;
-	indices = initIndices;
-	material = std::make_shared<Material>();
-
-	SetupMesh();
+	material = initMaterial;
 }
 
 Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned> initIndices, const std::shared_ptr<Material>& initMaterial)
@@ -22,15 +18,6 @@ Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned> initIndices, cons
 	vertexData = data;
 	indices = initIndices;
 	material = initMaterial;
-
-	SetupMesh();
-}
-
-Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned> initIndices, const char* vertShader, const char* fragShader)
-{
-	vertexData = data;
-	indices = initIndices;
-	material = std::make_shared<Material>(vertShader, fragShader);
 
 	SetupMesh();
 }

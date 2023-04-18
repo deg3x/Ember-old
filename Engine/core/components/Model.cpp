@@ -2,6 +2,7 @@
 
 #include "mesh/Mesh.h"
 #include "../Texture.h"
+#include "../Material.h"
 #include "../../utils/PathBuilder.h"
 
 #include "assimp/Importer.hpp"
@@ -122,7 +123,7 @@ Mesh* Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
     //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-    return new Mesh(vertices, indices);
+    return new Mesh(vertices, indices, std::make_shared<Material>());
 }
 
 /*std::vector<Texture> Model::ProcessTextures()

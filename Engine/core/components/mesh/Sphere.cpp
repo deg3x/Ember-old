@@ -1,59 +1,27 @@
 #include "Sphere.h"
 
-#include "glad/glad.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 #include "../../../core/Material.h"
 
 #include <vector>
 
-Sphere::Sphere()
+Sphere::Sphere(const std::shared_ptr<Material>& initMaterial) : Mesh(initMaterial)
 {
 	sectors = 10;
 	stacks = 10;
 	radius = 0.5f;
-
-	material = std::make_shared<Material>();
 	
 	GenerateVertexData();
 	GenerateIndices();
 	SetupMesh();
 }
 
-Sphere::Sphere(int initSectors, int initStacks, float initRadius)
+Sphere::Sphere(int initSectors, int initStacks, float initRadius, const std::shared_ptr<Material>& initMaterial) : Mesh(initMaterial)
 {
 	sectors = initSectors < 4 ? 4 : initSectors;
 	stacks = initStacks < 3 ? 3 : initStacks;
 	radius = initRadius;
-
-	material = std::make_shared<Material>();
-
-	GenerateVertexData();
-	GenerateIndices();
-	SetupMesh();
-}
-
-Sphere::Sphere(int initSectors, int initStacks, float initRadius, const std::shared_ptr<Material>& initMaterial)
-{
-	sectors = initSectors < 4 ? 4 : initSectors;
-	stacks = initStacks < 3 ? 3 : initStacks;
-	radius = initRadius;
-
-	material = initMaterial;
-
-	GenerateVertexData();
-	GenerateIndices();
-	SetupMesh();
-}
-
-Sphere::Sphere(int initSectors, int initStacks, float initRadius, const char* vertShader, const char* fragShader)
-{
-	sectors = initSectors < 4 ? 4 : initSectors;
-	stacks = initStacks < 3 ? 3 : initStacks;
-	radius = initRadius;
-
-	material = std::make_shared<Material>(vertShader, fragShader);
 
 	GenerateVertexData();
 	GenerateIndices();
@@ -64,29 +32,25 @@ void Sphere::GenerateVertexData()
 {
 	std::vector<VertexData>().swap(vertexData);
 
-	float x;
-	float y;
-	float z;
-	float stackAngle;
-	float sectorRadius;
+	glm::vec3 vertPos;
 
-	float stackStep = glm::pi<float>() / (float)stacks;
-	float sectorStep = 2.0f * glm::pi<float>() / (float)sectors;
+	const float stackStep = glm::pi<float>() / (float)stacks;
+	const float sectorStep = 2.0f * glm::pi<float>() / (float)sectors;
 
 	for (int i = 0; i <= stacks; i++)
 	{
-		stackAngle = (glm::pi<float>() * 0.5f) - (i * stackStep);
-		sectorRadius = radius * glm::cos(stackAngle);
-		z = radius * glm::sin(stackAngle);
+		const float stackAngle = (glm::pi<float>() * 0.5f) - (i * stackStep);
+		const float sectorRadius = radius * glm::cos(stackAngle);
+		vertPos.z = radius * glm::sin(stackAngle);
 
 		for (int j = 0; j <= sectors; j++)
 		{
-			x = sectorRadius * glm::cos(j * sectorStep);
-			y = sectorRadius * glm::sin(j * sectorStep);
+			vertPos.x = sectorRadius * glm::cos(j * sectorStep);
+			vertPos.y = sectorRadius * glm::sin(j * sectorStep);
 
 			VertexData currentVertex;
 
-			currentVertex.position = glm::vec3(x, y, z);
+			currentVertex.position = glm::vec3(vertPos.x, vertPos.y, vertPos.z);
 			currentVertex.normal = glm::normalize(currentVertex.position);
 			currentVertex.uv = glm::vec2((float)j / (float)sectors, (float)i / (float)stacks);
 
@@ -99,13 +63,10 @@ void Sphere::GenerateIndices()
 {
 	std::vector<unsigned int>().swap(indices);
 
-	unsigned int sid;
-	unsigned int nsid;
-
 	for (int i = 0; i < stacks; i++)
 	{
-		sid = i * (sectors + 1);
-		nsid = (i + 1) * (sectors + 1);
+		unsigned int sid = i * (sectors + 1);
+		unsigned int nsid = (i + 1) * (sectors + 1);
 
 		for (int j = 0; j < sectors; j++)
 		{

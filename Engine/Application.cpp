@@ -8,6 +8,7 @@
 #include "core/objects/Camera.h"
 #include "core/components/mesh/Sphere.h"
 #include "core/components/mesh/Plane.h"
+#include "core/components/mesh/Cube.h"
 #include "core/components/Model.h"
 #include "core/ApplicationWindow.h"
 #include "core/Material.h"
@@ -29,21 +30,25 @@ int main()
 
 void MainWindowCallback(ApplicationWindow* appWindow)
 {
+	// Move these inside the window
 	glm::vec4 clearColor = glm::vec4(0.12f, 0.12f, 0.12f, 1.0f);
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 
 	Camera camera;
-
-	Object sphereObject;
-	sphereObject.CreateComponent<Sphere>(32, 32, 1.0f);
 	
-	std::shared_ptr<Material> sphereMat = sphereObject.GetComponent<Mesh>()->material;
+	std::shared_ptr<Material> sphereMat = std::make_shared<Material>();
+	
+	Object sphereObject;
+	sphereObject.CreateComponent<Sphere>(32, 32, 0.5f, sphereMat);
+	sphereObject.transform->position = glm::vec3(-0.5f, 0.0f, 0.0f);
 
 	Object planeObject;
-	planeObject.CreateComponent<Plane>(10, 1.0f, sphereMat);
-	planeObject.transform->position = glm::vec3(0.0f, -1.0f, 0.0f);
-	planeObject.transform->rotation = glm::vec3(0.0f, 45.0f, 0.0f);
-	planeObject.transform->scale = glm::vec3(3.0f, 3.0f, 3.0f);
+	planeObject.CreateComponent<Plane>(10, 2.0f, sphereMat);
+	planeObject.transform->position = glm::vec3(0.0f, -0.5f, 0.0f);
+
+	Object cubeObject;
+	cubeObject.CreateComponent<Cube>(sphereMat);
+	cubeObject.transform->position = glm::vec3(0.5f, 0.0f, 0.0f);
 
 	Object bunnyObject;
 	bunnyObject.transform->position = glm::vec3(0.0f, -0.8f, 0.0f);
@@ -95,6 +100,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		sphereObject.Draw();
 		planeObject.Draw();
+		cubeObject.Draw();
 		//bunnyObject.Draw();
 
 		appWindow->SwapBuffers();

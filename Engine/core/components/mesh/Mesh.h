@@ -26,10 +26,9 @@ protected:
 	void SetupMesh();
 
 public:
-	Mesh() = default;
-	Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices);
+	Mesh() = delete;
+	Mesh(const std::shared_ptr<Material>& initMaterial);
 	Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices, const std::shared_ptr<Material>& initMaterial);
-	Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices, const char* vertShader, const char* fragShader);
 	virtual ~Mesh();
 
 	void Draw() const;

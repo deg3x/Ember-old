@@ -2,48 +2,20 @@
 
 #include "../../Material.h"
 
-Plane::Plane()
+Plane::Plane(const std::shared_ptr<Material>& initMaterial) : Mesh(initMaterial)
 {
 	resolution = 10;
 	size = 1.0f;
-	
-	material = std::make_shared<Material>();
 
 	GenerateVertexData();
 	GenerateIndices();
 	SetupMesh();
 }
 
-Plane::Plane(int initResolution, float initSize)
+Plane::Plane(int initResolution, float initSize, const std::shared_ptr<Material>& initMaterial) : Mesh(initMaterial)
 {
 	resolution = initResolution < 1 ? 1 : initResolution;
 	size = initSize < 1.0f ? 1.0f : initSize;
-	
-	material = std::make_shared<Material>();
-
-	GenerateVertexData();
-	GenerateIndices();
-	SetupMesh();
-}
-
-Plane::Plane(int initResolution, float initSize, const std::shared_ptr<Material>& initMaterial)
-{
-	resolution = initResolution < 1 ? 1 : initResolution;
-	size = initSize < 1.0f ? 1.0f : initSize;
-	
-	material = initMaterial;
-
-	GenerateVertexData();
-	GenerateIndices();
-	SetupMesh();
-}
-
-Plane::Plane(int initResolution, float initSize, const char* vertShader, const char* fragShader)
-{
-	resolution = initResolution < 1 ? 1 : initResolution;
-	size = initSize < 1.0f ? 1.0f : initSize;
-	
-	material = std::make_shared<Material>(vertShader, fragShader);
 
 	GenerateVertexData();
 	GenerateIndices();
@@ -54,9 +26,10 @@ void Plane::GenerateVertexData()
 {
 	std::vector<VertexData>().swap(vertexData);
 
-	float stepSize = size / (float)resolution;
-	float initPosX = -size / 2.0f;
-	float initPosZ = -size / 2.0f;
+	const float stepSize = size / (float)resolution;
+	const float initPosX = -size / 2.0f;
+	const float initPosZ = -size / 2.0f;
+	
 	float currentPosX = initPosX;
 	float currentPosZ = initPosZ;
 
@@ -82,13 +55,10 @@ void Plane::GenerateIndices()
 {
 	std::vector<unsigned int>().swap(indices);
 
-	unsigned int vertId;
-	unsigned int nextRowVertId;
-
 	for (int i = 0; i < resolution; i++)
 	{
-		vertId = i * (resolution + 1);
-		nextRowVertId = (i+1) * (resolution + 1);
+		unsigned int vertId = i * (resolution + 1);
+		unsigned int nextRowVertId = (i+1) * (resolution + 1);
 		
 		for (int j = 0; j < resolution; j++)
 		{
