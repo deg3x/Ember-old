@@ -5,42 +5,25 @@
 
 Material::Material()
 {
-    shader = new Shader(PathBuilder::GetPath("./Engine/shaders/vertexPhong.shader").c_str(), PathBuilder::GetPath("./Engine/shaders/fragmentPhong.shader").c_str());
-    
-    diffuseTexture = new Texture();
+    shader = std::make_shared<Shader>(PathBuilder::GetPath("./Engine/shaders/vertexPhong.shader").c_str(), PathBuilder::GetPath("./Engine/shaders/fragmentPhong.shader").c_str());
+    diffuseTexture = std::make_shared<Texture>();
+
     SetupShaderVariables();
 }
 
 Material::Material(const char* vertShader, const char* fragShader)
 {
-    shader = new Shader(vertShader, fragShader);
-    diffuseTexture = new Texture();
+    shader = std::make_shared<Shader>(vertShader, fragShader);
+    diffuseTexture = std::make_shared<Texture>();
 
     SetupShaderVariables();
 }
 
-Material::~Material()
-{
-    if (shader == nullptr)
-    {
-        return;
-    }
-
-    delete shader;
-    shader = nullptr;
-
-    if (diffuseTexture == nullptr)
-    {
-        return;
-    }
-
-    delete diffuseTexture;
-    diffuseTexture = nullptr;
-}
-
 void Material::SetShader(const char* vertShader, const char* fragShader)
 {
-    shader = new Shader(vertShader, fragShader);
+    // Perhaps we should check if the shaders are the same before re-allocating?
+    shader.reset();
+    shader = std::make_shared<Shader>(vertShader, fragShader);
 }
 
 void Material::Use() const

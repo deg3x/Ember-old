@@ -1,27 +1,25 @@
 ﻿#pragma once
 
+#include <memory>
+
 class Shader;
 class Texture;
 
-//
-// Currently we do not allow creating multiple materials with the same shader instance
-// to prevent memory deref apocalypse. Improve in the future!
-// 
 class Material
 {
 protected:
-    Shader* shader;
-    Texture* diffuseTexture;
+    std::shared_ptr<Shader> shader;
+    std::shared_ptr<Texture> diffuseTexture;
 
 public:
     Material();
     Material(const char* vertShader, const char* fragShader);
-    virtual ~Material();
+    virtual ~Material() = default;
 
     void SetShader(const char* vertShader, const char* fragShader);
     void Use() const;
 
-    inline Shader* GetShader() const
+    inline std::shared_ptr<Shader> GetShader() const
     {
         return shader;
     }

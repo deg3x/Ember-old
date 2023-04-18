@@ -5,7 +5,9 @@
 class ApplicationWindow
 {
 private:
+	// Leave this as a raw pointer since we only manage it internally
 	GLFWwindow* window;
+
 	WindowData windowData;
 	MouseData mouseData;
 
