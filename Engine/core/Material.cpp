@@ -6,7 +6,7 @@
 
 Material::Material()
 {
-    shader = std::make_shared<Shader>(PathBuilder::GetPath("./Engine/shaders/vertexPhong.shader").c_str(), PathBuilder::GetPath("./Engine/shaders/fragmentPhong.shader").c_str());
+    shader = std::make_shared<Shader>(PathBuilder::GetPath("./Engine/shaders/vertexPhong.glsl").c_str(), PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl").c_str());
     diffuseTexture = std::make_shared<Texture>();
 
     SetupShaderVariables();
