@@ -11,8 +11,9 @@ ApplicationWindow::ApplicationWindow(const int windowW, const int windowH, const
 	windowData.windowH = windowH;
 	windowData.aspectRatio = (float)windowW / (float)windowH;
 
-	if (!(InitGLFW(windowName) + InitGLAD() + InitOpenGL()))
+	if (InitGLFW(windowName) + InitGLAD() + InitOpenGL() != 0)
 	{
+		// Initialization failed
 		return;
 	}
 }
@@ -70,6 +71,8 @@ int ApplicationWindow::InitOpenGL() const
     glViewport(0, 0, 2 * windowData.windowW, 2 * windowData.windowH);
 #endif
 	glEnable(GL_DEPTH_TEST);
+
+	EnableClearColor();
 
 	return 0;
 }
@@ -156,6 +159,11 @@ void ApplicationWindow::MousePositionCallback()
 	}
 }
 
+void ApplicationWindow::EnableClearColor() const
+{
+	glClearColor(windowData.clearColor.r, windowData.clearColor.g, windowData.clearColor.b, windowData.clearColor.a);
+}
+
 void ApplicationWindow::ProcessUserInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -190,11 +198,15 @@ void ApplicationWindow::SetClearColor(const float r, const float g, const float 
 	windowData.clearColor.g = g;
 	windowData.clearColor.b = b;
 	windowData.clearColor.a = a;
+
+	EnableClearColor();
 }
 
 void ApplicationWindow::SetClearColor(const Color c)
 {
 	windowData.clearColor = c;
+	
+	EnableClearColor();
 }
 
 void ApplicationWindow::SwapBuffers() const

@@ -68,4 +68,6 @@ private:
 	
 	void MouseButtonCallback();
 	void MousePositionCallback();
+
+	void EnableClearColor() const;
 };

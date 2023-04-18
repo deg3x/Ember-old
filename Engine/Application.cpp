@@ -30,10 +30,6 @@ int main()
 
 void MainWindowCallback(ApplicationWindow* appWindow)
 {
-	// Move these inside the window
-	glm::vec4 clearColor = glm::vec4(0.12f, 0.12f, 0.12f, 1.0f);
-	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
-
 	Camera camera;
 	
 	std::shared_ptr<Material> sphereMat = std::make_shared<Material>();
