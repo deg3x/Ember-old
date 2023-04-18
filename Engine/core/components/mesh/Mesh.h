@@ -27,7 +27,6 @@ protected:
 
 public:
 	Mesh() = delete;
-	Mesh(const std::shared_ptr<Material>& initMaterial);
 	Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices, const std::shared_ptr<Material>& initMaterial);
 	virtual ~Mesh();
 
@@ -42,4 +41,6 @@ public:
 	{
 		return indices;
 	}
+protected:
+	Mesh(const std::shared_ptr<Material>& initMaterial);
 };

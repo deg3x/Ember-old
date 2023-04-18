@@ -50,11 +50,6 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	bunnyObject.transform->position = glm::vec3(0.0f, -0.8f, 0.0f);
 	bunnyObject.transform->scale =glm::vec3(0.6f, 0.6f, 0.6f);
 	bunnyObject.CreateComponent<Model>("./Data/models/bunny.obj");
-
-	// We need to use the shader ID before modifying variables
-	// Check OpenGL 4.1 function glProgramUniform() for a better way to solve this
-	// Fix this, since models use custom materials for each mesh for now
-	sphereMat->Use();
 	
 	DirectionalLight dLight;
 	dLight.SetShaderProperties(*sphereMat->GetShader());

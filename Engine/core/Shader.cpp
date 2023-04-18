@@ -116,30 +116,30 @@ unsigned int Shader::GetShaderID() const
 
 void Shader::SetBool(const std::string& name, bool value) const
 {
-	glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
+	glProgramUniform1i(id, glGetUniformLocation(id, name.c_str()), (int)value);
 }
 
 void Shader::SetInt(const std::string& name, int value) const
 {
-	glUniform1i(glGetUniformLocation(id, name.c_str()), value);
+	glProgramUniform1i(id, glGetUniformLocation(id, name.c_str()), value);
 }
 
 void Shader::SetFloat(const std::string& name, float value) const
 {
-	glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+	glProgramUniform1f(id, glGetUniformLocation(id, name.c_str()), value);
 }
 
 void Shader::SetVector3(const std::string& name, const glm::vec3& value) const
 {
-	glUniform3fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
+	glProgramUniform3fv(id, glGetUniformLocation(id, name.c_str()), 1, &value[0]);
 }
 
 void Shader::SetVector4(const std::string& name, const glm::vec4& value) const
 {
-	glUniform4fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
+	glProgramUniform4fv(id, glGetUniformLocation(id, name.c_str()), 1, &value[0]);
 }
 
 void Shader::SetMatrix4x4(const std::string& name, const glm::mat4x4& value) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &value[0][0]);
+	glProgramUniformMatrix4fv(id, glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }

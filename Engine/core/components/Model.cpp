@@ -20,6 +20,12 @@ void Model::Draw() const
 {
     for (const std::shared_ptr<Mesh>& mesh : meshes)
     {
+        // Dirty hack to prevent crashes while drawing the mesh.
+        // This is due to the parent of the model not being set at the time the constructor
+        // is called, and hence not being able to pass it down to individual meshes.
+        // Find a nice solution in the future but this will do for now
+        mesh->parent = parent;
+
         mesh->Draw();
     }
 }
