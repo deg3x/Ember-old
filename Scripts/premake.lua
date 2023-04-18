@@ -43,7 +43,7 @@ project (ENGINE_PROJ_NAME)
         ENGINE_DIR .. "/**.cpp",
         ENGINE_DIR .. "/**.c",
         ENGINE_DIR .. "/**.h",
-        ENGINE_DIR .. "/**.shader"
+        ENGINE_DIR .. "/**.glsl"
     }
 
     includedirs (ENGINE_INCL_PATH)
