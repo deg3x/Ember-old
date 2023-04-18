@@ -1,5 +1,8 @@
 #include "DirectionalLight.h"
 
+#include "../../Shader.h"
+#include "../../components/Transform.h"
+
 DirectionalLight::DirectionalLight() : Light()
 {
 	transform->rotation.x = 30.0f;

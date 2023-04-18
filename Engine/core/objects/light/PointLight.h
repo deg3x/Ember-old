@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Light.h"
 
 class PointLight : public Light
@@ -9,6 +10,7 @@ public:
 	float linearAttenuation;
 	float quadraticAttenuation;
 
+public:
 	PointLight();
 	virtual ~PointLight() override = default;
 

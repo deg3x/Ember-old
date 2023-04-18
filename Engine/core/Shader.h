@@ -1,16 +1,16 @@
 #pragma once
 
-#include <string>
-#include "glad/glad.h"
 #include "glm/glm.hpp"
+
+#include <string>
 
 class Shader
 {
 private:
 	unsigned int id;
 
-	int CheckShaderCompiled(GLuint shaderID);
-	int CheckProgramLinked(GLuint shaderProgramID);
+	int CheckShaderCompiled(unsigned int shaderID);
+	int CheckProgramLinked(unsigned int shaderProgramID);
 	int ReadCodeFromPath(const char* path, std::string& code);
 
 public:

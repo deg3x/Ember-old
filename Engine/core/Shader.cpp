@@ -3,6 +3,7 @@
 #include "glad/glad.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -73,7 +74,7 @@ int Shader::ReadCodeFromPath(const char* path, std::string& code)
 	return 0;
 }
 
-int Shader::CheckShaderCompiled(GLuint shaderID)
+int Shader::CheckShaderCompiled(unsigned int shaderID)
 {
 	int success;
 	char info[512];
@@ -88,7 +89,7 @@ int Shader::CheckShaderCompiled(GLuint shaderID)
 	return success;
 }
 
-int Shader::CheckProgramLinked(GLuint shaderProgramID)
+int Shader::CheckProgramLinked(unsigned int shaderProgramID)
 {
 	int success;
 	char info[512];

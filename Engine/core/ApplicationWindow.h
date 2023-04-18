@@ -1,6 +1,8 @@
 #pragma once
-#include "glfw/glfw3.h"
+
 #include "../utils/Types.h"
+
+class GLFWwindow;
 
 class ApplicationWindow
 {
@@ -13,13 +15,6 @@ private:
 
 	void (*mainLoopCallback)(ApplicationWindow* appWindow) = nullptr;
 
-	int InitGLFW(const char* windowName);
-	int InitGLAD() const;
-	int InitOpenGL() const;
-	
-	void MouseButtonCallback();
-	void MousePositionCallback();
-
 public:
 	ApplicationWindow() = delete;
 	ApplicationWindow(const int windowW, const int windowH, const char* windowName);
@@ -31,8 +26,10 @@ public:
 	void SetMainLoopCallback(void (*callback)(ApplicationWindow* appWindow));
 	void SetClearColor(const float r, const float g, const float b, const float a);
 	void SetClearColor(const Color c);
+	void SwapBuffers() const;
 
 	void ResetMouseOffsetData();
+	bool ShouldClose() const;
 
 	inline WindowData GetWindowData() const
 	{
@@ -44,12 +41,12 @@ public:
 		return window;
 	}
 
-	inline GLsizei GetWindowWidth() const
+	inline int GetWindowWidth() const
 	{
 		return windowData.windowW;
 	}
 
-	inline GLsizei GetWindowHeight() const
+	inline int GetWindowHeight() const
 	{
 		return windowData.windowH;
 	}
@@ -63,4 +60,12 @@ public:
 	{ 
 		return mouseData; 
 	}
+
+private:
+	int InitGLFW(const char* windowName);
+	int InitGLAD() const;
+	int InitOpenGL() const;
+	
+	void MouseButtonCallback();
+	void MousePositionCallback();
 };

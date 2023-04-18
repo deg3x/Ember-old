@@ -17,7 +17,8 @@ public:
     // Handled by the AddComponent() function of Object
     // Do not modify manually
     Object* parent;
-    
+
+public:    
     template <class Type>
     static std::shared_ptr<Type> CreateDefaultComponent();
 

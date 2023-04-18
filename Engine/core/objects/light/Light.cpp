@@ -1,4 +1,5 @@
 #include "Light.h"
+
 #include "glm/glm.hpp"
 
 Light::Light() : Object()

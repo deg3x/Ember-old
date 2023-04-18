@@ -1,5 +1,8 @@
 #include "PointLight.h"
 
+#include "../../Shader.h"
+#include "../../components/Transform.h"
+
 PointLight::PointLight() : Light()
 {
 	// values for point light of range ~100

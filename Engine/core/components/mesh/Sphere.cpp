@@ -1,9 +1,10 @@
+#include "Sphere.h"
+
 #include "glad/glad.h"
 #include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 #include "../../../core/Material.h"
-#include "Sphere.h"
 
 #include <vector>
 

@@ -62,7 +62,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	float phi = -glm::half_pi<float>();
 	float radius = camera.transform->position.length();
 
-	while (!glfwWindowShouldClose(appWindow->GetWindow()))
+	while (!appWindow->ShouldClose())
 	{
 		appWindow->ProcessUserInput();
 
@@ -97,7 +97,6 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		planeObject.Draw();
 		//bunnyObject.Draw();
 
-		glfwSwapBuffers(appWindow->GetWindow());
-		glfwPollEvents();
+		appWindow->SwapBuffers();
 	}
 }

@@ -1,7 +1,9 @@
-#include "glad/glad.h"
-#include <iostream>
-
 #include "ApplicationWindow.h"
+
+#include "glad/glad.h"
+#include "glfw/glfw3.h"
+
+#include <iostream>
 
 ApplicationWindow::ApplicationWindow(const int windowW, const int windowH, const char* windowName)
 {
@@ -163,6 +165,8 @@ void ApplicationWindow::ProcessUserInput()
 
 	MouseButtonCallback();
 	MousePositionCallback();
+	
+	glfwPollEvents();
 }
 
 int ApplicationWindow::MainLoop()
@@ -193,8 +197,18 @@ void ApplicationWindow::SetClearColor(const Color c)
 	windowData.clearColor = c;
 }
 
+void ApplicationWindow::SwapBuffers() const
+{
+	glfwSwapBuffers(window);
+}
+
 void ApplicationWindow::ResetMouseOffsetData()
 {
 	mouseData.ResetLeftMouseOffsetData();
 	mouseData.ResetRightMouseOffsetData();
+}
+
+bool ApplicationWindow::ShouldClose() const
+{
+	return glfwWindowShouldClose(window);
 }

@@ -1,7 +1,8 @@
 #pragma once
+
+#include "Object.h"
 #include "glm/glm.hpp"
 #include "../components/Transform.h"
-#include "Object.h"
 
 class Camera : public Object
 {

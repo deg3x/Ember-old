@@ -1,5 +1,8 @@
 #include "SpotLight.h"
+
 #include "glm/glm.hpp"
+#include "../../Shader.h"
+#include "../../components/Transform.h"
 
 SpotLight::SpotLight() : Light()
 {

@@ -9,11 +9,11 @@ class Transform;
 
 class Object
 {
-private:
-    std::vector<std::shared_ptr<Component>> components;
-
 public:
     std::shared_ptr<Transform> transform;
+
+private:
+    std::vector<std::shared_ptr<Component>> components;
     
 public:
     Object();
