@@ -15,7 +15,7 @@ Only 64-bit targets are supported.
 ## Dependencies
 The following libraries are used (and are already included):
 * **GLFW** is used for managing the running windows.
-* **OpenGL** (3.3) is the main graphics API.
+* **OpenGL** (4.1) is the main graphics API.
 * **GLM** is used as the base mathematics library (will be replaced in the future).
 * The project uses the **Premake** (v5.0.0-beta2) build system.
 
