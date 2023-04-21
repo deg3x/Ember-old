@@ -18,10 +18,7 @@ public:
     // Do not modify manually
     Object* parent;
 
-public:    
-    template <class Type>
-    static std::shared_ptr<Type> CreateDefaultComponent();
-
+public:
     template <class Type, typename... Args>
     static std::shared_ptr<Type> CreateComponent(Args... args);
 
@@ -30,17 +27,6 @@ public:
         return true;
     }
 };
-
-template <class Type>
-std::shared_ptr<Type> Component::CreateDefaultComponent()
-{
-    if (!std::is_base_of<Component, Type>())
-    {
-        return nullptr;
-    }
-
-    return std::make_shared<Type>();
-}
 
 template <class Type, typename ... Args>
 std::shared_ptr<Type> Component::CreateComponent(Args... args)

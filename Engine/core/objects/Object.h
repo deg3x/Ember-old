@@ -21,9 +21,6 @@ public:
 
     void Draw() const;
 
-    template <class Type>
-    std::shared_ptr<Type> CreateComponent();
-
     template <class Type, typename... Args>
     std::shared_ptr<Type> CreateComponent(Args... args);
 
@@ -61,26 +58,6 @@ void Object::AddComponent(const std::shared_ptr<Type>& component)
 
     component->parent = this;
     components.push_back(component);
-}
-
-template <class Type>
-std::shared_ptr<Type> Object::CreateComponent()
-{
-    const std::shared_ptr<Component> comp = std::dynamic_pointer_cast<Component>(GetComponent<Type>());
-    if (comp != nullptr && comp->IsUnique())
-    {
-        return nullptr;
-    }
-    
-    std::shared_ptr<Type> component = Component::CreateDefaultComponent<Type>();
-    if (component == nullptr)
-    {
-        return nullptr;
-    }
-
-    AddComponent(component);
-    
-    return component;
 }
 
 template <class Type, typename... Args>
