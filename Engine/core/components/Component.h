@@ -13,7 +13,9 @@ class Object;
 
 class Component
 {
-public:
+    friend class Object;
+    
+private:
     // Handled by the AddComponent() function of Object
     // Do not modify manually
     Object* parent;
@@ -22,6 +24,11 @@ public:
     template <class Type, typename... Args>
     static std::shared_ptr<Type> CreateComponent(Args... args);
 
+    inline Object* GetParent() const
+    {
+        return parent;
+    }
+    
     virtual inline bool IsUnique()
     {
         return true;
