@@ -20,6 +20,7 @@ public:
     virtual ~Object();
 
     void Draw() const;
+    void LoadModel(const char* path);
 
     template <class Type, typename... Args>
     std::shared_ptr<Type> CreateComponent(Args... args);
@@ -50,7 +51,7 @@ void Object::AddComponent(const std::shared_ptr<Type>& component)
         return;
     }
     
-    std::shared_ptr<Component> comp = std::dynamic_pointer_cast<Component>(GetComponent<Type>());
+    const std::shared_ptr<Component> comp = std::dynamic_pointer_cast<Component>(GetComponent<Type>());
     if (comp != nullptr && comp->IsUnique())
     {
         return;

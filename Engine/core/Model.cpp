@@ -1,9 +1,9 @@
 ﻿#include "Model.h"
 
-#include "mesh/Mesh.h"
-#include "../Texture.h"
-#include "../Material.h"
-#include "../../utils/PathBuilder.h"
+#include "Texture.h"
+#include "Material.h"
+#include "components/mesh/Mesh.h"
+#include "../utils/PathBuilder.h"
 
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
@@ -11,41 +11,30 @@
 
 #include <iostream>
 
-Model::Model(const char* path)
+namespace
 {
-    Load(PathBuilder::GetPath(path).c_str());
+    std::vector<std::shared_ptr<Mesh>> meshes;
 }
 
-void Model::Draw() const
+std::vector<std::shared_ptr<Mesh>> Model::Load(const char* path)
 {
-    for (const std::shared_ptr<Mesh>& mesh : meshes)
-    {
-        // Dirty hack to prevent crashes while drawing the mesh.
-        // This is due to the parent of the model not being set at the time the constructor
-        // is called, and hence not being able to pass it down to individual meshes.
-        // Find a nice solution in the future but this will do for now
-        //mesh->parent = parent;
-
-        mesh->Draw();
-    }
-}
-
-void Model::Load(const char* path)
-{
+    std::vector<std::shared_ptr<Mesh>>().swap(meshes);
+    
     Assimp::Importer importer;
     constexpr unsigned int importFlags = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace;
-    const aiScene* scene = importer.ReadFile(path, importFlags);
+    const aiScene* scene = importer.ReadFile(PathBuilder::GetPath(path), importFlags);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         std::cerr << "[Assimp] Error: " << importer.GetErrorString() << std::endl;
-        return;
+        return meshes;
     }
 
     std::string directory = path;
     directory = directory.substr(0, directory.find_last_of('/'));
 
     ProcessNode(scene->mRootNode, scene);
+    return meshes;
 }
 
 void Model::ProcessNode(aiNode* node, const aiScene* scene)
@@ -132,7 +121,7 @@ Mesh* Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     return new Mesh(vertices, indices, std::make_shared<Material>());
 }
 
-/*std::vector<Texture> Model::ProcessTextures()
+/*static std::vector<Texture> Model::ProcessTextures()
 {
     
 }*/

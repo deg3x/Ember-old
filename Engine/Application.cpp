@@ -9,7 +9,6 @@
 #include "core/components/mesh/Sphere.h"
 #include "core/components/mesh/Plane.h"
 #include "core/components/mesh/Cube.h"
-#include "core/components/Model.h"
 #include "core/ApplicationWindow.h"
 #include "core/Material.h"
 #include "core/Shader.h"
@@ -49,7 +48,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	Object bunnyObject;
 	bunnyObject.transform->position = glm::vec3(0.0f, -0.8f, 0.0f);
 	bunnyObject.transform->scale =glm::vec3(0.6f, 0.6f, 0.6f);
-	bunnyObject.CreateComponent<Model>("./Data/models/bunny.obj");
+	bunnyObject.LoadModel("./Data/models/bunny.obj");
 	
 	DirectionalLight dLight;
 	dLight.SetShaderProperties(*sphereMat->GetShader());

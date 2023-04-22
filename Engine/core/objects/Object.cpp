@@ -1,9 +1,9 @@
 ﻿#include "Object.h"
 
+#include "../Model.h"
 #include "../components/Component.h"
 #include "../components/Transform.h"
 #include "../components/mesh/Mesh.h"
-#include "../components/Model.h"
 
 Object::Object()
 {
@@ -20,20 +20,25 @@ Object::~Object()
 
 void Object::Draw() const
 {
-    const std::shared_ptr<Model> model = GetComponent<Model>();
-    const std::shared_ptr<Mesh> mesh = GetComponent<Mesh>();
+    const std::vector<std::shared_ptr<Mesh>> meshes = GetComponents<Mesh>();
 
-    if (model == nullptr && mesh == nullptr)
+    for (const std::shared_ptr<Mesh>& mesh : meshes)
     {
-        return;
-    }
+        if (mesh == nullptr)
+        {
+            continue;
+        }
 
-    if (model != nullptr)
-    {
-        model->Draw();
-    }
-    if (mesh != nullptr)
-    {
         mesh->Draw();
+    }
+}
+
+void Object::LoadModel(const char* path)
+{
+    // May need to change this in the future in order to include whole scenes
+    const std::vector<std::shared_ptr<Mesh>> meshes = Model::Load(path);
+    for (const std::shared_ptr<Mesh>& mesh : meshes)
+    {
+        AddComponent(mesh);
     }
 }

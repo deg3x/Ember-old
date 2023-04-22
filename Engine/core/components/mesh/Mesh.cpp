@@ -61,7 +61,7 @@ void Mesh::Draw() const
 
 	material->Use();
 
-	const glm::mat4x4 model = parent->transform->GetModelMatrix();
+	const glm::mat4x4 model = GetParent()->transform->GetModelMatrix();
 	const glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(model));
 	material->GetShader()->SetMatrix4x4("model", model);
 	material->GetShader()->SetMatrix4x4("normalMatrix", normalMatrix);
