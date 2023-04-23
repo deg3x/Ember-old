@@ -10,4 +10,5 @@ public:
 	virtual ~Camera() = default;
 
 	glm::mat4x4 GetViewMatrix() const;
+	glm::mat4x4 GetProjectionMatrix() const;
 };
