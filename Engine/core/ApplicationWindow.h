@@ -2,7 +2,7 @@
 
 #include "../utils/Types.h"
 
-class GLFWwindow;
+struct GLFWwindow;
 
 class ApplicationWindow
 {

@@ -3,7 +3,7 @@
 #include "../Model.h"
 #include "../components/Component.h"
 #include "../components/Transform.h"
-#include "../components/mesh/Mesh.h"
+#include "../components/meshes/Mesh.h"
 
 Object::Object()
 {

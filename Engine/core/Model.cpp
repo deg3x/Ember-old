@@ -2,7 +2,7 @@
 
 #include "Texture.h"
 #include "Material.h"
-#include "components/mesh/Mesh.h"
+#include "components/meshes/Mesh.h"
 #include "../utils/PathBuilder.h"
 
 #include "assimp/Importer.hpp"
