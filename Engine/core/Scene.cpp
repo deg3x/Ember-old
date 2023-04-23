@@ -1,18 +1,23 @@
 ﻿#include "Scene.h"
 
-#include "Shader.h"
 #include "Material.h"
 #include "objects/Object.h"
-#include "components/Transform.h"
 #include "components/Camera.h"
-#include "components/mesh/Mesh.h"
 #include "components/light/Light.h"
 
-#include <unordered_set>
+Scene* Scene::Active = nullptr;
 
-namespace
+Scene::~Scene()
 {
-    std::unordered_set<std::shared_ptr<Material>> sceneMats;
+    if (Active == this)
+    {
+        Active = nullptr;
+    }
+}
+
+void Scene::Use()
+{
+    Active = this;
 }
 
 void Scene::Tick() const
@@ -20,60 +25,38 @@ void Scene::Tick() const
     for (const std::shared_ptr<Object>& object : objects)
     {
         object->Tick();
+        object->Draw(camera, lights);
     }
-    
-    Draw();
 }
 
 void Scene::AddObject(const std::shared_ptr<Object>& object)
 {
-    const std::shared_ptr<Camera> camComponent = object->GetComponent<Camera>();
-    if (camComponent != nullptr)
+    if (objects.contains(object))
     {
-        camera = object;
+        return;
+    }
+    
+    const std::shared_ptr<Camera> cameraComponent = object->GetComponent<Camera>();
+    if (cameraComponent != nullptr)
+    {
+        camera = cameraComponent;
     }
 
     const std::shared_ptr<Light> lightComponent = object->GetComponent<Light>();
     if (lightComponent != nullptr)
     {
-        lights.push_back(object);
+        lights.push_back(lightComponent);
     }
 
-    const std::vector<std::shared_ptr<Mesh>> objectMeshes = object->GetComponents<Mesh>();
-
-    for (const std::shared_ptr<Mesh>& mesh : objectMeshes)
-    {
-        sceneMats.insert(mesh->material);
-    }
-
-    objects.push_back(object);
+    objects.insert(object);
 }
 
-void Scene::Draw() const
+void Scene::RemoveObject(const std::shared_ptr<Object>& object)
 {
-    for (const std::shared_ptr<Material>& material : sceneMats)
+    if (!objects.contains(object))
     {
-        for (const std::shared_ptr<Object>& light : lights)
-        {
-            light->GetComponent<Light>()->SetShaderProperties(*material->GetShader());
-        }
-
-        const std::shared_ptr<Camera> cameraComponent = camera->GetComponent<Camera>();
-
-        //
-        // The following is tied to our Phong shader. Find a way to generalize.
-        //
-        
-        material->GetShader()->SetVector3("cameraPosition", camera->transform->position);
-        material->GetShader()->SetMatrix4x4("view", cameraComponent->GetViewMatrix());
-        material->GetShader()->SetMatrix4x4("projection", cameraComponent->GetProjectionMatrix());
-        material->GetShader()->SetVector3("material.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
-        material->GetShader()->SetVector3("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-        material->GetShader()->SetFloat("material.shininess", 64);
+        return;
     }
 
-    for (const std::shared_ptr<Object>& object : objects)
-    {
-        object->Draw();
-    }
+    objects.erase(object);
 }

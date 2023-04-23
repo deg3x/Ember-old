@@ -30,6 +30,7 @@ int main()
 void MainWindowCallback(ApplicationWindow* appWindow)
 {
 	Scene scene;
+	scene.Use();
 	
 	const std::shared_ptr<Object> cameraObject = std::make_shared<Object>();
 	cameraObject->CreateComponent<Camera>();

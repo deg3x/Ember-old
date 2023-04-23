@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 
+class Light;
+class Camera;
 class Transform;
 
 class Object
@@ -20,7 +22,7 @@ public:
     virtual ~Object();
 
     void Tick() const;
-    void Draw() const;
+    void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const;
     void LoadModel(const char* path);
 
     template <class Type, typename... Args>

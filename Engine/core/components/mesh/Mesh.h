@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 
+class Light;
+class Camera;
 class Material;
 
 class Mesh : public Component
@@ -30,7 +32,7 @@ public:
 	Mesh(std::vector<VertexData> data, std::vector<unsigned int> initIndices, const std::shared_ptr<Material>& initMaterial);
 	virtual ~Mesh();
 
-	void Draw() const;
+	void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const;
 
 	inline std::vector<VertexData> GetVertexData() const
 	{

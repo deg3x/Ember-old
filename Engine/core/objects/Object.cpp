@@ -26,7 +26,7 @@ void Object::Tick() const
     }
 }
 
-void Object::Draw() const
+void Object::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const
 {
     const std::vector<std::shared_ptr<Mesh>> meshes = GetComponents<Mesh>();
 
@@ -37,7 +37,7 @@ void Object::Draw() const
             continue;
         }
 
-        mesh->Draw();
+        mesh->Draw(camera, lights);
     }
 }
 
