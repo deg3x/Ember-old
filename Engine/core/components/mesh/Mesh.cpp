@@ -15,7 +15,7 @@ Mesh::Mesh(const std::shared_ptr<Material>& initMaterial)
 	material = initMaterial;
 }
 
-Mesh::Mesh(std::vector<VertexData> data, std::vector<unsigned> initIndices, const std::shared_ptr<Material>& initMaterial)
+Mesh::Mesh(const std::vector<VertexData>& data, const std::vector<unsigned>& initIndices, const std::shared_ptr<Material>& initMaterial)
 {
 	vertexData = data;
 	indices = initIndices;
