@@ -15,7 +15,7 @@ class Component
 {
     friend class Object;
     
-private:
+protected:
     // Handled by the AddComponent() function of Object
     // Do not modify manually
     Object* parent;

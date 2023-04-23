@@ -3,7 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "core/objects/light/DirectionalLight.h"
+#include "core/components/light/DirectionalLight.h"
 #include "core/objects/Object.h"
 #include "core/objects/Camera.h"
 #include "core/components/mesh/Sphere.h"
@@ -49,9 +49,13 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	bunnyObject.transform->position = glm::vec3(0.0f, -0.8f, 0.0f);
 	bunnyObject.transform->scale =glm::vec3(0.6f, 0.6f, 0.6f);
 	bunnyObject.LoadModel("./Data/models/bunny.obj");
-	
-	DirectionalLight dLight;
-	dLight.SetShaderProperties(*sphereMat->GetShader());
+
+	Object dirLightObject;
+	const std::shared_ptr<DirectionalLight> dirLightComponent = dirLightObject.CreateComponent<DirectionalLight>();
+	dirLightObject.transform->rotation.x = 30.0f;
+	dirLightObject.transform->rotation.y = -30.0f;
+
+	dirLightComponent->SetShaderProperties(*sphereMat->GetShader());
 
 	float theta = -glm::quarter_pi<float>();
 	float phi = -glm::half_pi<float>();

@@ -2,7 +2,7 @@
 
 #include "glm/glm.hpp"
 
-Light::Light() : Object()
+Light::Light()
 {
 	intensity = 1.0f;
 	diffuse = glm::vec3(1.0f, 0.97f, 0.92f);

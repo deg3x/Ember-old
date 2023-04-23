@@ -1,11 +1,11 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include "../Object.h"
+#include "../../components/Component.h"
 
 class Shader;
 
-class Light : public Object
+class Light : public Component
 {
 public:
 	glm::vec3 ambient;
@@ -14,7 +14,7 @@ public:
 
 public:
 	Light();
-	virtual ~Light() override = default;
+	virtual ~Light() = default;
 	
 	virtual void SetShaderProperties(const Shader& shaderProgram) const = 0;
 };

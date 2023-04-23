@@ -1,6 +1,7 @@
 #include "PointLight.h"
 
 #include "../../Shader.h"
+#include "../../objects/Object.h"
 #include "../../components/Transform.h"
 
 PointLight::PointLight() : Light()
@@ -15,7 +16,7 @@ void PointLight::SetShaderProperties(const Shader& shaderProgram) const
 {
 	shaderProgram.SetVector3("pointLight.ambient", ambient);
 	shaderProgram.SetVector3("pointLight.diffuse", diffuse);
-	shaderProgram.SetVector3("pointLight.position", transform->position);
+	shaderProgram.SetVector3("pointLight.position", parent->transform->position);
 	shaderProgram.SetFloat("pointLight.intensity", intensity);
 	shaderProgram.SetFloat("pointLight.constantAttenuation", constantAttenuation);
 	shaderProgram.SetFloat("pointLight.linearAttenuation", linearAttenuation);

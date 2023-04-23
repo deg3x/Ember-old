@@ -2,6 +2,7 @@
 
 #include "glm/glm.hpp"
 #include "../../Shader.h"
+#include "../../objects/Object.h"
 #include "../../components/Transform.h"
 
 SpotLight::SpotLight() : Light()
@@ -17,8 +18,8 @@ void SpotLight::SetShaderProperties(const Shader& shaderProgram) const
 {
 	shaderProgram.SetVector3("spotLight.ambient", ambient);
 	shaderProgram.SetVector3("spotLight.diffuse", diffuse);
-	shaderProgram.SetVector3("spotLight.position", transform->position);
-	shaderProgram.SetVector3("spotLight.direction", -transform->GetUpVector());
+	shaderProgram.SetVector3("spotLight.position", parent->transform->position);
+	shaderProgram.SetVector3("spotLight.direction", -parent->transform->GetUpVector());
 	shaderProgram.SetFloat("spotLight.intensity", intensity);
 	shaderProgram.SetFloat("spotLight.constantAttenuation", constantAttenuation);
 	shaderProgram.SetFloat("spotLight.linearAttenuation", linearAttenuation);
