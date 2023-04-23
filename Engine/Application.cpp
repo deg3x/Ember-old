@@ -41,19 +41,19 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	
 	const std::shared_ptr<Object> sphereObject = std::make_shared<Object>();
 	sphereObject->CreateComponent<Sphere>(32, 32, 0.5f, sphereMat);
-	sphereObject->transform->position = glm::vec3(-0.5f, 0.0f, 0.0f);
+	sphereObject->transform->position = glm::vec3(-0.8f, 0.0f, -0.8f);
 
 	const std::shared_ptr<Object> planeObject = std::make_shared<Object>();
-	planeObject->CreateComponent<Plane>(10, 2.0f, sphereMat);
+	planeObject->CreateComponent<Plane>(10, 3.0f, sphereMat);
 	planeObject->transform->position = glm::vec3(0.0f, -0.5f, 0.0f);
 
 	const std::shared_ptr<Object> cubeObject = std::make_shared<Object>();
 	cubeObject->CreateComponent<Cube>(sphereMat);
-	cubeObject->transform->position = glm::vec3(0.5f, 0.0f, 0.0f);
+	cubeObject->transform->position = glm::vec3(0.8f, 0.0f, -0.8f);
 
 	const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>();
-	bunnyObject->transform->position = glm::vec3(0.0f, -0.8f, 0.0f);
-	bunnyObject->transform->scale =glm::vec3(0.6f, 0.6f, 0.6f);
+	bunnyObject->transform->position = glm::vec3(0.4f, -0.33f, 0.5f);
+	bunnyObject->transform->scale =glm::vec3(0.5f, 0.5f, 0.5f);
 	bunnyObject->LoadModel("./Data/models/bunny.obj");
 
 	const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>();
