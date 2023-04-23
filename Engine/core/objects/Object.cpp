@@ -18,6 +18,14 @@ Object::~Object()
     }
 }
 
+void Object::Tick() const
+{
+    for (const std::shared_ptr<Component>& component : components)
+    {
+        component->Tick();
+    }
+}
+
 void Object::Draw() const
 {
     const std::vector<std::shared_ptr<Mesh>> meshes = GetComponents<Mesh>();

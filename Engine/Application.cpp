@@ -69,9 +69,9 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	scene.AddObject(bunnyObject);
 	scene.AddObject(dirLightObject);
 
-	float theta = -glm::quarter_pi<float>();
-	float phi = -glm::half_pi<float>();
-	float radius = cameraObject->transform->position.length();
+	float theta  = -glm::quarter_pi<float>();
+	float phi    = -glm::half_pi<float>();
+	float radius = (float)cameraObject->transform->position.length();
 
 	while (!appWindow->ShouldClose())
 	{
@@ -79,8 +79,8 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 		const MouseData mouse = appWindow->GetMouseData();
 
-		theta += mouse.leftMouseXOffset * mouse.sensitivity;
-		phi += mouse.leftMouseYOffset * mouse.sensitivity;
+		theta  += (float)mouse.leftMouseXOffset * mouse.sensitivity;
+		phi	   += (float)mouse.leftMouseYOffset * mouse.sensitivity;
 		radius -= (float)mouse.rightMouseYOffset * mouse.sensitivity;
 		
 		cameraObject->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);

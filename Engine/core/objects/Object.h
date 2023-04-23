@@ -19,6 +19,7 @@ public:
     Object();
     virtual ~Object();
 
+    void Tick() const;
     void Draw() const;
     void LoadModel(const char* path);
 

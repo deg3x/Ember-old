@@ -10,9 +10,18 @@
 
 #include <unordered_set>
 
+namespace
+{
+    std::unordered_set<std::shared_ptr<Material>> sceneMats;
+}
 
 void Scene::Tick() const
 {
+    for (const std::shared_ptr<Object>& object : objects)
+    {
+        object->Tick();
+    }
+    
     Draw();
 }
 
@@ -30,23 +39,18 @@ void Scene::AddObject(const std::shared_ptr<Object>& object)
         lights.push_back(object);
     }
 
+    const std::vector<std::shared_ptr<Mesh>> objectMeshes = object->GetComponents<Mesh>();
+
+    for (const std::shared_ptr<Mesh>& mesh : objectMeshes)
+    {
+        sceneMats.insert(mesh->material);
+    }
+
     objects.push_back(object);
 }
 
 void Scene::Draw() const
 {
-    std::unordered_set<std::shared_ptr<Material>> sceneMats;
-    
-    for (const std::shared_ptr<Object>& object : objects)
-    {
-        const std::vector<std::shared_ptr<Mesh>> objectMeshes = object->GetComponents<Mesh>();
-
-        for (const std::shared_ptr<Mesh>& mesh : objectMeshes)
-        {
-            sceneMats.insert(mesh->material);
-        }
-    }
-
     for (const std::shared_ptr<Material>& material : sceneMats)
     {
         for (const std::shared_ptr<Object>& light : lights)
