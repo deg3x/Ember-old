@@ -5,7 +5,7 @@
 
 #include "core/components/light/DirectionalLight.h"
 #include "core/objects/Object.h"
-#include "core/objects/Camera.h"
+#include "core/components/Camera.h"
 #include "core/components/mesh/Sphere.h"
 #include "core/components/mesh/Plane.h"
 #include "core/components/mesh/Cube.h"
@@ -14,6 +14,8 @@
 #include "core/Shader.h"
 
 #include <iostream>
+
+#include "core/components/Transform.h"
 
 void MainWindowCallback(ApplicationWindow* appWindow);
 
@@ -29,7 +31,10 @@ int main()
 
 void MainWindowCallback(ApplicationWindow* appWindow)
 {
-	Camera camera;
+	Object cameraObject;
+	cameraObject.CreateComponent<Camera>();
+	cameraObject.transform->position = glm::vec3(0.0f, 0.0f, 3.0f);
+	cameraObject.transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
 	
 	std::shared_ptr<Material> sphereMat = std::make_shared<Material>();
 	
@@ -59,7 +64,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 
 	float theta = -glm::quarter_pi<float>();
 	float phi = -glm::half_pi<float>();
-	float radius = camera.transform->position.length();
+	float radius = cameraObject.transform->position.length();
 
 	while (!appWindow->ShouldClose())
 	{
@@ -71,11 +76,11 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		phi += mouse.leftMouseYOffset * mouse.sensitivity;
 		radius -= (float)mouse.rightMouseYOffset * mouse.sensitivity;
 		
-		camera.transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
-		camera.transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
-		camera.transform->position.y = radius * glm::cos(phi);
+		cameraObject.transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
+		cameraObject.transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
+		cameraObject.transform->position.y = radius * glm::cos(phi);
 
-		glm::mat4x4 viewMat = glm::lookAt(camera.transform->position, glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+		glm::mat4x4 viewMat = glm::lookAt(cameraObject.transform->position, glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 		
 		appWindow->ResetMouseOffsetData();
 
@@ -84,7 +89,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		glm::mat4x4 view = viewMat; //camera.GetViewMatrix();
 		glm::mat4x4 proj = glm::perspective(glm::radians(90.0f), 1024.0f / 768.0f, 0.1f, 1000.0f);
 
-		sphereMat->GetShader()->SetVector3("cameraPosition", camera.transform->position);
+		sphereMat->GetShader()->SetVector3("cameraPosition", cameraObject.transform->position);
 		sphereMat->GetShader()->SetMatrix4x4("view", view);
 		sphereMat->GetShader()->SetMatrix4x4("projection", proj);
 		sphereMat->GetShader()->SetVector3("material.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));

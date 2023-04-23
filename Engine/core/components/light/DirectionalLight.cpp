@@ -4,11 +4,6 @@
 #include "../../objects/Object.h"
 #include "../../components/Transform.h"
 
-DirectionalLight::DirectionalLight() : Light()
-{
-	
-}
-
 void DirectionalLight::SetShaderProperties(const Shader& shaderProgram) const
 {
 	shaderProgram.SetVector3("directionalLight.ambient", ambient);

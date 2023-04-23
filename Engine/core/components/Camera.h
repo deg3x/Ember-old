@@ -1,13 +1,12 @@
 #pragma once
 
-#include "Object.h"
+#include "Component.h"
 #include "glm/glm.hpp"
-#include "../components/Transform.h"
 
-class Camera : public Object
+class Camera : public Component
 {
 public:
-	Camera();
+	Camera() = default;
 	virtual ~Camera() = default;
 
 	glm::mat4x4 GetViewMatrix() const;
