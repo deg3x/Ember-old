@@ -17,15 +17,25 @@ private:
 
 public:
 	ApplicationWindow() = delete;
-	ApplicationWindow(const int windowW, const int windowH, const char* windowName);
+	ApplicationWindow(int windowW, int windowH, const char* windowName);
 	virtual ~ApplicationWindow();
 
 	int MainLoop();
 	void ProcessUserInput();
+	void Clear() const;
 
 	void SetMainLoopCallback(void (*callback)(ApplicationWindow* appWindow));
-	void SetClearColor(const float r, const float g, const float b, const float a);
-	void SetClearColor(const Color c);
+	void SetClearColor(float r, float g, float b, float a);
+	void SetClearColor(const Color& c);
+	void SetDepthTestEnabled(bool state = true);
+	void SetStencilTestEnabled(bool state = true);
+
+	static void SetDepthTestMask(bool mask);
+	static void SetDepthTestFunc(unsigned int func);
+	static void SetStencilTestMask(unsigned int mask);
+	static void SetStencilTestFunc(unsigned int func, int reference, unsigned int mask);
+	static void SetStencilTestOp(unsigned int stencilFail, unsigned int depthFail, unsigned int depthPass);
+
 	void SwapBuffers() const;
 
 	void ResetMouseOffsetData();
@@ -51,7 +61,7 @@ public:
 		return windowData.windowH;
 	}
 
-	float GetAspectRatio() const
+	inline float GetAspectRatio() const
 	{
 		return windowData.aspectRatio;
 	}
@@ -64,10 +74,10 @@ public:
 private:
 	int InitGLFW(const char* windowName);
 	int InitGLAD() const;
-	int InitOpenGL() const;
+	int InitOpenGL();
 	
 	void MouseButtonCallback();
 	void MousePositionCallback();
 
-	void EnableClearColor() const;
+	void UpdateClearColor() const;
 };

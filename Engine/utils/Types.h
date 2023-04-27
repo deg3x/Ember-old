@@ -28,6 +28,7 @@ struct WindowData
 	int windowH;
 	float aspectRatio;
 	Color clearColor = { 0.12f, 0.12f, 0.12f, 1.0f };
+	unsigned int clearBits;
 };
 
 struct MouseData

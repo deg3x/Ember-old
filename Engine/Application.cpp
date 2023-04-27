@@ -74,6 +74,10 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	float phi    = -glm::half_pi<float>();
 	float radius = (float)cameraObject->transform->position.length();
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	ApplicationWindow::SetDepthTestFunc(GL_LESS);
+
 	while (!appWindow->ShouldClose())
 	{
 		appWindow->ProcessUserInput();
@@ -89,9 +93,7 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		cameraObject->transform->position.y = radius * glm::cos(phi);
 		
 		appWindow->ResetMouseOffsetData();
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		appWindow->Clear();
 
 		scene.Tick();
 

@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-ApplicationWindow::ApplicationWindow(const int windowW, const int windowH, const char* windowName)
+ApplicationWindow::ApplicationWindow(int windowW, int windowH, const char* windowName)
 {
 	windowData.windowW = windowW;
 	windowData.windowH = windowH;
@@ -62,7 +62,7 @@ int ApplicationWindow::InitGLAD() const
 	return 0;
 }
 
-int ApplicationWindow::InitOpenGL() const
+int ApplicationWindow::InitOpenGL()
 {
     // For some reason OSX requires double the window dimensions
 #if defined(_WIN32)
@@ -70,9 +70,12 @@ int ApplicationWindow::InitOpenGL() const
 #elif __APPLE__
     glViewport(0, 0, 2 * windowData.windowW, 2 * windowData.windowH);
 #endif
-	glEnable(GL_DEPTH_TEST);
 
-	EnableClearColor();
+	windowData.clearBits = GL_COLOR_BUFFER_BIT;
+	
+	SetDepthTestEnabled(true);
+	SetStencilTestEnabled(false);
+	UpdateClearColor();
 
 	return 0;
 }
@@ -159,7 +162,7 @@ void ApplicationWindow::MousePositionCallback()
 	}
 }
 
-void ApplicationWindow::EnableClearColor() const
+void ApplicationWindow::UpdateClearColor() const
 {
 	glClearColor(windowData.clearColor.r, windowData.clearColor.g, windowData.clearColor.b, windowData.clearColor.a);
 }
@@ -177,6 +180,11 @@ void ApplicationWindow::ProcessUserInput()
 	glfwPollEvents();
 }
 
+void ApplicationWindow::Clear() const
+{
+	glClear(windowData.clearBits);
+}
+
 int ApplicationWindow::MainLoop()
 {
 	if (mainLoopCallback != nullptr)
@@ -192,21 +200,74 @@ void ApplicationWindow::SetMainLoopCallback(void (*callback)(ApplicationWindow* 
 	mainLoopCallback = callback;
 }
 
-void ApplicationWindow::SetClearColor(const float r, const float g, const float b, const float a)
+void ApplicationWindow::SetClearColor(float r, float g, float b, float a)
 {
 	windowData.clearColor.r = r;
 	windowData.clearColor.g = g;
 	windowData.clearColor.b = b;
 	windowData.clearColor.a = a;
 
-	EnableClearColor();
+	UpdateClearColor();
 }
 
-void ApplicationWindow::SetClearColor(const Color c)
+void ApplicationWindow::SetClearColor(const Color& c)
 {
 	windowData.clearColor = c;
 	
-	EnableClearColor();
+	UpdateClearColor();
+}
+
+void ApplicationWindow::SetDepthTestEnabled(bool state)
+{
+	if (state)
+	{
+		glEnable(GL_DEPTH_TEST);
+		windowData.clearBits |= GL_DEPTH_BUFFER_BIT;
+	}
+	else
+	{
+		glDisable(GL_DEPTH_TEST);
+		windowData.clearBits &= (GL_DEPTH_BUFFER_BIT ^ 0xFFFFFFFF);
+	}
+}
+
+void ApplicationWindow::SetStencilTestEnabled(bool state)
+{
+	if (state)
+	{
+		glEnable(GL_STENCIL_TEST);
+		windowData.clearBits |= GL_STENCIL_BUFFER_BIT;
+	}
+	else
+	{
+		glDisable(GL_STENCIL_TEST);
+		windowData.clearBits &= (GL_STENCIL_BUFFER_BIT ^ 0xFFFFFFFF);
+	}
+}
+
+void ApplicationWindow::SetDepthTestMask(bool mask)
+{
+	glDepthMask(mask);
+}
+
+void ApplicationWindow::SetDepthTestFunc(unsigned int func)
+{
+	glDepthFunc(func);
+}
+
+void ApplicationWindow::SetStencilTestMask(unsigned int mask)
+{
+	glStencilMask(mask);
+}
+
+void ApplicationWindow::SetStencilTestFunc(unsigned int func, int reference, unsigned int mask)
+{
+	glStencilFunc(func, reference, mask);
+}
+
+void ApplicationWindow::SetStencilTestOp(unsigned int stencilFail, unsigned int depthFail, unsigned int depthPass)
+{
+	glStencilOp(stencilFail, depthFail, depthPass);
 }
 
 void ApplicationWindow::SwapBuffers() const
