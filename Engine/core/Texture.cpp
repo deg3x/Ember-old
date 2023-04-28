@@ -5,16 +5,20 @@
 #include "stb_image.h"
 #include "../utils/PathBuilder.h"
 
+#include <iostream>
+
 Texture::Texture()
 {
     InitializeTexture(PathBuilder::GetPath("./Data/images/container.jpg").c_str());
     
     type = TextureType::diffuse;
+    path = "./Data/images/container.jpg";
 }
 
 Texture::Texture(TextureType inType, const char* texturePath)
 {
     type = inType;
+    path = texturePath;
     InitializeTexture(texturePath);
 }
 
@@ -42,10 +46,27 @@ void Texture::InitializeTexture(const char* texturePath)
 
     if (!data)
     {
+        std::cerr << "[Texture] Error while trying to parse texture..." << std::endl;
         return;
     }
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    switch (nChannels)
+    {
+    case 1:
+        format = TextureFormat::R;
+        break;
+    case 3:
+        format = TextureFormat::RGB;
+        break;
+    case 4:
+        format = TextureFormat::RGBA;
+        break;
+    default:
+        std::cerr << "[Texture] Unknown number of channels while trying to parse texture..." << std::endl;
+        return;
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(format), width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
     
     stbi_image_free(data);

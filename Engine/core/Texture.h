@@ -1,16 +1,30 @@
 ﻿#pragma once
 
+#include <string>
+
 enum class TextureType
 {
     diffuse,
-    normal
+    normal,
+    specular,
+    height
+};
+
+enum class TextureFormat
+{
+    // Values taken by the equivalent GLAD "enums" for API compliance
+    R = 0x1903,
+    RGB = 0x1907,
+    RGBA = 0x1908
 };
 
 class Texture
 {
 private:
     TextureType type;
+    TextureFormat format;
     unsigned int textureID;
+    std::string path;
     
 public:
     Texture();
@@ -22,6 +36,11 @@ public:
     inline TextureType GetTextureType() const
     {
         return type;
+    }
+
+    inline std::string GetPath() const
+    {
+        return path;
     }
     
 private:

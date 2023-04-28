@@ -20,5 +20,4 @@ public:
 private:
     static void ProcessNode(aiNode* node, const aiScene* scene);
     static Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
-    //static std::vector<Texture> ProcessTextures();
 };

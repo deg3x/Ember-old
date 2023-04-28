@@ -33,7 +33,7 @@ If you want to avoid installing it, you can manually run premake and build the p
 - [x] Textures (diffuse, normals, etc.) [not fully implemented]
 - [ ] Shadows
 - [ ] Cubemaps
-- [x] Custom Model Loading [not fully implemented]
+- [x] Model Loading
 - [ ] Deferred Rendering
 - [ ] PBR
 - [ ] Text Rendering

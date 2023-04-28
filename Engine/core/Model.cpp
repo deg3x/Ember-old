@@ -14,7 +14,12 @@
 namespace
 {
     std::vector<std::shared_ptr<Mesh>> meshes;
+    std::vector<std::shared_ptr<Texture>> loadedTextures;
+
+    std::string directory;
 }
+
+std::vector<std::shared_ptr<Texture>> ProcessTextures(aiMaterial* mat, aiTextureType aiType, TextureType type);
 
 std::vector<std::shared_ptr<Mesh>> Model::Load(const char* path)
 {
@@ -30,7 +35,7 @@ std::vector<std::shared_ptr<Mesh>> Model::Load(const char* path)
         return meshes;
     }
 
-    std::string directory = path;
+    directory = path;
     directory = directory.substr(0, directory.find_last_of('/'));
 
     ProcessNode(scene->mRootNode, scene);
@@ -55,7 +60,6 @@ Mesh* Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<VertexData> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
 
     // Vertex Processing
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -116,12 +120,53 @@ Mesh* Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         }
     }
 
-    //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+    aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-    return new Mesh(vertices, indices, std::make_shared<Material>());
+    std::vector<std::shared_ptr<Texture>> diffuseMaps  = ProcessTextures(material, aiTextureType_DIFFUSE, TextureType::diffuse);
+    std::vector<std::shared_ptr<Texture>> normalMaps   = ProcessTextures(material, aiTextureType_NORMALS, TextureType::normal);
+    std::vector<std::shared_ptr<Texture>> specularMaps = ProcessTextures(material, aiTextureType_SPECULAR, TextureType::diffuse);
+    std::vector<std::shared_ptr<Texture>> heightMaps   = ProcessTextures(material, aiTextureType_HEIGHT, TextureType::diffuse);
+
+    std::vector<std::shared_ptr<Texture>> meshTextures;
+    meshTextures.insert(meshTextures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    meshTextures.insert(meshTextures.end(), normalMaps.begin(), normalMaps.end());
+    meshTextures.insert(meshTextures.end(), specularMaps.begin(), specularMaps.end());
+    meshTextures.insert(meshTextures.end(), heightMaps.begin(), heightMaps.end());
+    
+    std::shared_ptr<Material> meshMaterial = std::make_shared<Material>();
+    meshMaterial->SetTextures(meshTextures);
+    
+    return new Mesh(vertices, indices, meshMaterial);
 }
 
-/*static std::vector<Texture> Model::ProcessTextures()
+std::vector<std::shared_ptr<Texture>> ProcessTextures(aiMaterial* mat, aiTextureType aiType, TextureType type)
 {
-    
-}*/
+    std::vector<std::shared_ptr<Texture>> retTextures;
+
+    for (unsigned int i = 0; i < mat->GetTextureCount(aiType); i++)
+    {
+        aiString texturePath;
+        mat->GetTexture(aiType, i, &texturePath);
+        bool alreadyLoaded = false;
+
+        for (unsigned int j = 0; j < loadedTextures.size(); j++)
+        {
+            if (std::strcmp(loadedTextures[j]->GetPath().c_str(), texturePath.C_Str()) == 0)
+            {
+                retTextures.push_back(loadedTextures[j]);
+                alreadyLoaded = true;
+                break;
+            }
+        }
+
+        if (!alreadyLoaded)
+        {
+            std::string fullPath = directory + "/" + texturePath.C_Str();
+            std::shared_ptr<Texture> texture = std::make_shared<Texture>(type, fullPath.c_str());
+            loadedTextures.push_back(texture);
+            retTextures.push_back(texture);
+        }
+    }
+
+    return retTextures;
+}
