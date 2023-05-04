@@ -29,20 +29,23 @@ EDITOR_INCL_PATH_OSX = {}
 EDITOR_LIBS_PATH_WIN = { ENGINE_BIN_DIR .. "/Debug", ENGINE_BIN_DIR .. "/Release" }
 EDITOR_LIBS_PATH_OSX = {}
 
+CLEAN_DIRS_WIN = {".vs", ".idea", "bin", "obj"}
+CLEAN_FILES_WIN = { SOLUTION_NAME .. ".sln", "*.vcxproj*"}
+CLEAN_DIRS_OSX = {}
+CLEAN_FILES_OSX = {}
+
 -------------------------------------------------
 
 if (_ACTION == "clean") then
     if os.target() == "windows" then
-        os.execute("rmdir /s /q ..\\.vs")
-        os.execute("rmdir /s /q ..\\.idea")
-        os.execute("rmdir /s /q ..\\bin")
-        os.execute("rmdir /s /q ..\\obj")
-        os.execute("del ..\\" .. SOLUTION_NAME .. ".sln")
-        os.execute("del ..\\*.vcxproj")
-        os.execute("del ..\\*.vcxproj.user")
-        os.execute("del ..\\*.vcxproj.filters")
+        for index, dir in ipairs(CLEAN_DIRS_WIN) do
+            os.execute("if exist ..\\" .. dir .. " (rmdir /s /q ..\\" .. dir .. " && echo Deleted directory " .. dir .. ")")
+        end
+        for index, file in ipairs(CLEAN_FILES_WIN) do
+            os.execute("if exist ..\\" .. file .. " (del ..\\" .. file .. " && echo Deleted file " .. file .. ")")
+        end
     elseif os.target() == "macosx" then
-        
+        -- Delete files generated in OS X project
     end
     os.exit()
 end
