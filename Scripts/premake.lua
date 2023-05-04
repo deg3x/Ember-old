@@ -31,6 +31,22 @@ EDITOR_LIBS_PATH_OSX = {}
 
 -------------------------------------------------
 
+if (_ACTION == "clean") then
+    if os.target() == "windows" then
+        os.execute("rmdir /s /q ..\\.vs")
+        os.execute("rmdir /s /q ..\\.idea")
+        os.execute("rmdir /s /q ..\\bin")
+        os.execute("rmdir /s /q ..\\obj")
+        os.execute("del ..\\" .. SOLUTION_NAME .. ".sln")
+        os.execute("del ..\\*.vcxproj")
+        os.execute("del ..\\*.vcxproj.user")
+        os.execute("del ..\\*.vcxproj.filters")
+    elseif os.target() == "macosx" then
+        
+    end
+    os.exit()
+end
+
 workspace (SOLUTION_NAME)
     location (SOLUTION_PATH)
     configurations { "Debug", "Release" }

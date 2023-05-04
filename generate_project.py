@@ -2,10 +2,21 @@ import subprocess
 import sys
 import platform
 
-if platform.system() == "Windows":
-    subprocess.Popen('ThirdParty\premake\premake5.exe --file=Scripts/premake.lua vs2022', shell=True).communicate()
-elif platform.system() == "Darwin":
-    subprocess.Popen('./ThirdParty/premake/premake5 --file=Scripts/premake.lua xcode4', shell=True).communicate()
+def main():
+    
+    premake_action = ''
 
+    if len(sys.argv) >= 2 and sys.argv[1] == "clean":
+        premake_action = 'clean'
+    else:
+        if platform.system() == "Windows":
+            premake_action = 'vs2022'
+        elif platform.system() == "Darwin":
+            premake_action = 'xcode4'
 
-sys.exit(0)
+    subprocess.Popen('ThirdParty\premake\premake5.exe --file=Scripts/premake.lua ' + premake_action, shell=True).communicate()
+
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()
