@@ -10,7 +10,7 @@ class Light;
 class Camera;
 class Material;
 
-class Mesh : public Component
+class ENGINE_API Mesh : public Component
 {
 public:
 	std::shared_ptr<Material> material;

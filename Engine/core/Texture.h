@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "../Definitions.h"
+
 #include <string>
 
 enum class TextureType
@@ -18,7 +20,7 @@ enum class TextureFormat
     RGBA = 0x1908
 };
 
-class Texture
+class ENGINE_API Texture
 {
 private:
     TextureType type;

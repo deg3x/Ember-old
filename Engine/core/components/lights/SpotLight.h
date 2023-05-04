@@ -2,7 +2,7 @@
 
 #include "Light.h"
 
-class SpotLight : public Light
+class ENGINE_API SpotLight : public Light
 {
 public:
 	float cutOffAngle;

@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../Definitions.h"
 #include "glm/glm.hpp"
 
 #include <string>
 
-class Shader
+class ENGINE_API Shader
 {
 private:
 	unsigned int id;

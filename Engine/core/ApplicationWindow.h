@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../Definitions.h"
 #include "../utils/Types.h"
 
 struct GLFWwindow;
 
-class ApplicationWindow
+class ENGINE_API ApplicationWindow
 {
 private:
 	// Leave this as a raw pointer since we only manage it internally

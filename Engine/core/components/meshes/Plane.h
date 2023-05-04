@@ -2,7 +2,7 @@
 
 #include "Mesh.h"
 
-class Plane : public Mesh
+class ENGINE_API Plane : public Mesh
 {
 private:
 	int resolution;

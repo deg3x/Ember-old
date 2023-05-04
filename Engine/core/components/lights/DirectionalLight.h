@@ -2,7 +2,7 @@
 
 #include "Light.h"
 
-class DirectionalLight : public Light
+class ENGINE_API DirectionalLight : public Light
 {
 public:
 	DirectionalLight() = default;

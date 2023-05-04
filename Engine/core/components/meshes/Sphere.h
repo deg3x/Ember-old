@@ -2,7 +2,7 @@
 
 #include "Mesh.h"
 
-class Sphere : public Mesh
+class ENGINE_API Sphere : public Mesh
 {
 private:
 	int sectors;

@@ -1,3 +1,7 @@
+#include <iostream>
+
+#include "Definitions.h"
+
 #include "glad/glad.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -6,14 +10,13 @@
 #include "core/components/lights/DirectionalLight.h"
 #include "core/objects/Object.h"
 #include "core/components/Camera.h"
+#include "core/components/Transform.h"
 #include "core/components/meshes/Sphere.h"
 #include "core/components/meshes/Plane.h"
 #include "core/components/meshes/Cube.h"
 #include "core/ApplicationWindow.h"
 #include "core/Material.h"
 #include "core/Scene.h"
-
-#include "core/components/Transform.h"
 
 void MainWindowCallback(ApplicationWindow* appWindow);
 
@@ -31,14 +34,14 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 {
 	Scene scene;
 	scene.Use();
-	
+
 	const std::shared_ptr<Object> cameraObject = std::make_shared<Object>();
 	cameraObject->CreateComponent<Camera>();
 	cameraObject->transform->position = glm::vec3(0.0f, 0.0f, 3.0f);
 	cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
-	
+
 	const std::shared_ptr<Material> sphereMat = std::make_shared<Material>();
-	
+
 	const std::shared_ptr<Object> sphereObject = std::make_shared<Object>();
 	sphereObject->CreateComponent<Sphere>(32, 32, 0.5f, sphereMat);
 	sphereObject->transform->position = glm::vec3(-0.8f, 0.0f, -0.8f);
@@ -74,8 +77,6 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	float phi    = -glm::half_pi<float>();
 	float radius = (float)cameraObject->transform->position.length();
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
 	ApplicationWindow::SetDepthTestFunc(GL_LESS);
 
 	while (!appWindow->ShouldClose())
@@ -87,11 +88,11 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		theta  += (float)mouse.leftMouseXOffset * mouse.sensitivity;
 		phi	   += (float)mouse.leftMouseYOffset * mouse.sensitivity;
 		radius -= (float)mouse.rightMouseYOffset * mouse.sensitivity;
-		
+
 		cameraObject->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
 		cameraObject->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
 		cameraObject->transform->position.y = radius * glm::cos(phi);
-		
+
 		appWindow->ResetMouseOffsetData();
 		appWindow->Clear();
 

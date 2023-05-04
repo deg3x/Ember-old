@@ -2,7 +2,7 @@
 
 #include "Mesh.h"
 
-class Cube : public Mesh
+class ENGINE_API Cube : public Mesh
 {
 public:
     Cube(const std::shared_ptr<Material>& initMaterial);

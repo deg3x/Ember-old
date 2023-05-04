@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "../../Definitions.h"
+
 #include <type_traits>
 #include <memory>
 
@@ -11,7 +13,7 @@
 
 class Object;
 
-class Component
+class ENGINE_API Component
 {
     friend class Object;
     

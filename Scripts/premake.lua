@@ -8,6 +8,8 @@ OBJ_DIR = "../obj"
 
 ENGINE_PROJ_NAME = "Engine"
 ENGINE_DIR = "../Engine"
+ENGINE_BIN_DIR = BIN_DIR .. "/" .. ENGINE_PROJ_NAME
+ENGINE_DEFINES = { "ENGINE_SHARED_LIB" }
 ENGINE_LIBS_WIN = { "glfw3", "assimp-vc142-mt"}
 ENGINE_LIBS_OSX = { "glfw3", "assimp.5.2.4", "IOKit.framework", "Cocoa.framework" }
 ENGINE_INCL_PATH = { "../ThirdParty/includes/universal" }
@@ -15,8 +17,17 @@ ENGINE_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }
 ENGINE_INCL_PATH_OSX = { "../ThirdParty/includes/osx" }
 ENGINE_LIBS_PATH_WIN = { "../ThirdParty/libraries/windows" }
 ENGINE_LIBS_PATH_OSX = { "../ThirdParty/libraries/osx" }
--- ENGINE_FILES_EXCLUDE_WIN = { ENGINE_DIR .. "/core/glad_osx.c" }
--- ENGINE_FILES_EXCLUDE_OSX = { ENGINE_DIR .. "/core/glad.c" }
+
+EDITOR_PROJ_NAME = "Editor"
+EDITOR_DIR = "../Editor"
+EDITOR_BIN_DIR = BIN_DIR .. "/" .. EDITOR_PROJ_NAME
+EDITOR_LIBS_WIN = { "Engine" }
+EDITOR_LIBS_OSX = { "Engine" }
+EDITOR_INCL_PATH = { ENGINE_DIR, "../ThirdParty/includes/universal" }
+EDITOR_INCL_PATH_WIN = {}
+EDITOR_INCL_PATH_OSX = {}
+EDITOR_LIBS_PATH_WIN = { ENGINE_BIN_DIR .. "/Debug", ENGINE_BIN_DIR .. "/Release" }
+EDITOR_LIBS_PATH_OSX = {}
 
 -------------------------------------------------
 
@@ -33,8 +44,9 @@ workspace (SOLUTION_NAME)
         platforms { "osx-x64" }
     end
 
+---- ENGINE PROJECT ----
 project (ENGINE_PROJ_NAME)
-    kind "ConsoleApp"
+    kind "SharedLib"
     language "C++"
     cppdialect "C++20"
 
@@ -47,21 +59,65 @@ project (ENGINE_PROJ_NAME)
     }
 
     includedirs (ENGINE_INCL_PATH)
+    defines (ENGINE_DEFINES)
 
     if os.target() == "windows" then
         links (ENGINE_LIBS_WIN)
         libdirs (ENGINE_LIBS_PATH_WIN)
         includedirs (ENGINE_INCL_PATH_WIN)
-        
-        postbuildcommands
-        {
-            "{COPY} %{wks.location}/ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}" 
-        }
         -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
     elseif os.target() == "macosx" then
         links (ENGINE_LIBS_OSX)
         libdirs (ENGINE_LIBS_PATH_OSX)
         includedirs (ENGINE_INCL_PATH_OSX)
+        -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
+    end
+
+    flags { "MultiProcessorCompile" }
+
+    filter "configurations:Debug"
+        targetdir (ENGINE_BIN_DIR .. "/Debug")
+        defines { "DEBUG" }
+        optimize "Off"
+        symbols "On"
+
+    filter "configurations:Release"
+        targetdir (ENGINE_BIN_DIR .. "/Release")
+        defines { "RELEASE" }
+        optimize "Speed"
+        symbols "Off"
+
+---- EDITOR PROJECT ----
+project (EDITOR_PROJ_NAME)
+    kind "ConsoleApp"
+    dependson { ENGINE_PROJ_NAME }
+    language "C++"
+    cppdialect "C++20"
+
+    files 
+    {
+        EDITOR_DIR .. "/**.cpp",
+        EDITOR_DIR .. "/**.c",
+        EDITOR_DIR .. "/**.h",
+    }
+
+    includedirs (EDITOR_INCL_PATH)
+
+    if os.target() == "windows" then
+        links (EDITOR_LIBS_WIN)
+        libdirs (EDITOR_LIBS_PATH_WIN)
+        includedirs (EDITOR_INCL_PATH_WIN)
+
+        postbuildcommands
+        {
+            "{COPY} %{wks.location}/ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}" 
+        }
+
+        -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
+    elseif os.target() == "macosx" then
+        links (EDITOR_LIBS_OSX)
+        libdirs (EDITOR_LIBS_PATH_OSX)
+        includedirs (EDITOR_INCL_PATH_OSX)
 
         postbuildcommands
         {
@@ -69,19 +125,42 @@ project (ENGINE_PROJ_NAME)
             "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.dylib %{cfg.targetdir}",
             "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.dylib %{cfg.targetdir}" 
         }
+
         -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
     end
 
-    flags { "MultiProcessorCompile" }
-
     filter "configurations:Debug"
-        targetdir (BIN_DIR .. "/Debug")
+        targetdir (EDITOR_BIN_DIR .. "/Debug")
         defines { "DEBUG" }
         optimize "Off"
         symbols "On"
 
+        if os.target() == "windows" then
+            postbuildcommands
+            {
+                "{COPY} %{wks.location}/bin/" .. ENGINE_PROJ_NAME .. "/Debug/" .. ENGINE_PROJ_NAME .. ".dll %{cfg.targetdir}"
+            }
+        elseif os.target() == "macosx" then
+            postbuildcommands
+            {
+
+            }
+        end
+
     filter "configurations:Release"
-        targetdir (BIN_DIR .. "/Release")
+        targetdir (EDITOR_BIN_DIR .. "/Release")
         defines { "RELEASE" }
         optimize "Speed"
         symbols "Off"
+
+        if os.target() == "windows" then
+            postbuildcommands
+            {
+                "{COPY} %{wks.location}/bin/" .. ENGINE_PROJ_NAME .. "/Release/" .. ENGINE_PROJ_NAME .. ".dll %{cfg.targetdir}"
+            }
+        elseif os.target() == "macosx" then
+            postbuildcommands
+            {
+                
+            }
+        end

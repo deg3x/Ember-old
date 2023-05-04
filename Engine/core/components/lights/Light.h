@@ -5,7 +5,7 @@
 
 class Shader;
 
-class Light : public Component
+class ENGINE_API Light : public Component
 {
 public:
 	glm::vec3 ambient;

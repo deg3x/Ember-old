@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "../../Definitions.h"
 #include "../components/Component.h"
 
 #include <vector>
@@ -9,7 +10,7 @@ class Light;
 class Camera;
 class Transform;
 
-class Object
+class ENGINE_API Object
 {
 public:
     std::shared_ptr<Transform> transform;

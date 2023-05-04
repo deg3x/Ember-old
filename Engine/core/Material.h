@@ -1,12 +1,14 @@
 ﻿#pragma once
 
+#include "../Definitions.h"
+
 #include <memory>
 #include <vector>
 
 class Shader;
 class Texture;
 
-class Material
+class ENGINE_API Material
 {
 protected:
     std::shared_ptr<Shader> shader;

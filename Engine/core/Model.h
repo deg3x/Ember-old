@@ -1,11 +1,13 @@
 ﻿#pragma once
 
+#include "../Definitions.h"
+
 #include <vector>
 #include <memory>
 
 class Mesh;
 
-class Model
+class ENGINE_API Model
 {
 public:
     Model() = delete;

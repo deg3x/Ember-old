@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "glm/glm.hpp"
 
-class Camera : public Component
+class ENGINE_API Camera : public Component
 {
 public:
 	Camera() = default;

@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "../Definitions.h"
+
 #include <vector>
 #include <memory>
 #include <unordered_set>
@@ -8,7 +10,7 @@ class Object;
 class Light;
 class Camera;
 
-class Scene
+class ENGINE_API Scene
 {
 public:
     static Scene* Active;

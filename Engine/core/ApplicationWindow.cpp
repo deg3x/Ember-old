@@ -71,6 +71,8 @@ int ApplicationWindow::InitOpenGL()
     glViewport(0, 0, 2 * windowData.windowW, 2 * windowData.windowH);
 #endif
 
+	glPolygonMode(GL_FRONT, GL_FILL);
+
 	windowData.clearBits = GL_COLOR_BUFFER_BIT;
 	
 	SetDepthTestEnabled(true);

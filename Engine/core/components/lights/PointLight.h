@@ -2,7 +2,7 @@
 
 #include "Light.h"
 
-class PointLight : public Light
+class ENGINE_API PointLight : public Light
 {
 public:
 	// Make private later and create range to attenuation resolution

@@ -4,7 +4,7 @@
 #include "glm/gtc/quaternion.hpp"
 #include "Component.h"
 
-class Transform : public Component
+class ENGINE_API Transform : public Component
 {
 public:
 	MAKE_UNIQUE_COMPONENT()
