@@ -1,38 +1,43 @@
-#include <iostream>
-
-#include "Definitions.h"
+﻿#include "Editor.h"
 
 #include "glad/glad.h"
+
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
-#include "core/components/lights/DirectionalLight.h"
+#include "core/Window.h"
 #include "core/objects/Object.h"
+#include "core/components/meshes/Cube.h"
+#include "core/components/meshes/Plane.h"
+#include "core/components/meshes/Sphere.h"
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"
-#include "core/components/meshes/Sphere.h"
-#include "core/components/meshes/Plane.h"
-#include "core/components/meshes/Cube.h"
-#include "core/ApplicationWindow.h"
 #include "core/Material.h"
+#include "core/components/lights/DirectionalLight.h"
+#include "core/components/lights/Light.h"
 #include "core/Scene.h"
 
-void MainWindowCallback(ApplicationWindow* appWindow);
+#include <memory>
 
-int main()
+Editor::Editor()
 {
-	ApplicationWindow app(1024, 768, "Test Application");
-
-	app.SetMainLoopCallback(MainWindowCallback);
-	app.MainLoop();
-
-	return 0;
+    mainWindow = new Window(1024, 768, "Test Application");
 }
 
-void MainWindowCallback(ApplicationWindow* appWindow)
+Editor::~Editor()
 {
-	Scene scene;
+    if (mainWindow == nullptr)
+    {
+        return;
+    }
+
+    delete mainWindow;
+    mainWindow = nullptr;
+}
+
+void Editor::Tick()
+{
+    Scene scene;
 	scene.Use();
 
 	const std::shared_ptr<Object> cameraObject = std::make_shared<Object>();
@@ -77,13 +82,13 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 	float phi    = -glm::half_pi<float>();
 	float radius = (float)cameraObject->transform->position.length();
 
-	ApplicationWindow::SetDepthTestFunc(GL_LESS);
+	Window::SetDepthTestFunc(GL_LESS);
 
-	while (!appWindow->ShouldClose())
+	while (!mainWindow->ShouldClose())
 	{
-		appWindow->ProcessUserInput();
+		mainWindow->ProcessUserInput();
 
-		const MouseData mouse = appWindow->GetMouseData();
+		const MouseData mouse = mainWindow->GetMouseData();
 
 		theta  += (float)mouse.leftMouseXOffset * mouse.sensitivity;
 		phi	   += (float)mouse.leftMouseYOffset * mouse.sensitivity;
@@ -93,11 +98,11 @@ void MainWindowCallback(ApplicationWindow* appWindow)
 		cameraObject->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
 		cameraObject->transform->position.y = radius * glm::cos(phi);
 
-		appWindow->ResetMouseOffsetData();
-		appWindow->Clear();
+		mainWindow->ResetMouseOffsetData();
+		mainWindow->Clear();
 
 		scene.Tick();
 
-		appWindow->SwapBuffers();
+		mainWindow->SwapBuffers();
 	}
 }

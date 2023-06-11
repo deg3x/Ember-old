@@ -5,7 +5,7 @@
 
 struct GLFWwindow;
 
-class ENGINE_API ApplicationWindow
+class ENGINE_API Window
 {
 private:
 	// Leave this as a raw pointer since we only manage it internally
@@ -14,18 +14,14 @@ private:
 	WindowData windowData;
 	MouseData mouseData;
 
-	void (*mainLoopCallback)(ApplicationWindow* appWindow) = nullptr;
-
 public:
-	ApplicationWindow() = delete;
-	ApplicationWindow(int windowW, int windowH, const char* windowName);
-	virtual ~ApplicationWindow();
+	Window() = delete;
+	Window(int windowW, int windowH, const char* windowName);
+	virtual ~Window();
 
-	int MainLoop();
 	void ProcessUserInput();
 	void Clear() const;
 
-	void SetMainLoopCallback(void (*callback)(ApplicationWindow* appWindow));
 	void SetClearColor(float r, float g, float b, float a);
 	void SetClearColor(const Color& c);
 	void SetDepthTestEnabled(bool state = true);

@@ -1,11 +1,11 @@
-#include "ApplicationWindow.h"
+#include "Window.h"
 
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 
 #include <iostream>
 
-ApplicationWindow::ApplicationWindow(int windowW, int windowH, const char* windowName)
+Window::Window(int windowW, int windowH, const char* windowName)
 {
 	windowData.windowW = windowW;
 	windowData.windowH = windowH;
@@ -18,15 +18,14 @@ ApplicationWindow::ApplicationWindow(int windowW, int windowH, const char* windo
 	}
 }
 
-ApplicationWindow::~ApplicationWindow()
+Window::~Window()
 {
 	glfwTerminate();
 	
 	window = nullptr;
-	mainLoopCallback = nullptr;
 }
 
-int ApplicationWindow::InitGLFW(const char* windowName)
+int Window::InitGLFW(const char* windowName)
 {
 	glfwInit();
 
@@ -51,7 +50,7 @@ int ApplicationWindow::InitGLFW(const char* windowName)
 	return 0;
 }
 
-int ApplicationWindow::InitGLAD() const
+int Window::InitGLAD() const
 {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -62,7 +61,7 @@ int ApplicationWindow::InitGLAD() const
 	return 0;
 }
 
-int ApplicationWindow::InitOpenGL()
+int Window::InitOpenGL()
 {
     // For some reason OSX requires double the window dimensions
 #if defined(_WIN32)
@@ -82,7 +81,7 @@ int ApplicationWindow::InitOpenGL()
 	return 0;
 }
 
-void ApplicationWindow::MouseButtonCallback()
+void Window::MouseButtonCallback()
 {
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
@@ -127,7 +126,7 @@ void ApplicationWindow::MouseButtonCallback()
 	}
 }
 
-void ApplicationWindow::MousePositionCallback()
+void Window::MousePositionCallback()
 {
 	double mouseX;
 	double mouseY;
@@ -164,12 +163,12 @@ void ApplicationWindow::MousePositionCallback()
 	}
 }
 
-void ApplicationWindow::UpdateClearColor() const
+void Window::UpdateClearColor() const
 {
 	glClearColor(windowData.clearColor.r, windowData.clearColor.g, windowData.clearColor.b, windowData.clearColor.a);
 }
 
-void ApplicationWindow::ProcessUserInput()
+void Window::ProcessUserInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
@@ -182,27 +181,12 @@ void ApplicationWindow::ProcessUserInput()
 	glfwPollEvents();
 }
 
-void ApplicationWindow::Clear() const
+void Window::Clear() const
 {
 	glClear(windowData.clearBits);
 }
 
-int ApplicationWindow::MainLoop()
-{
-	if (mainLoopCallback != nullptr)
-	{
-		mainLoopCallback(this);
-	}
-
-	return 0;
-}
-
-void ApplicationWindow::SetMainLoopCallback(void (*callback)(ApplicationWindow* appWindow))
-{
-	mainLoopCallback = callback;
-}
-
-void ApplicationWindow::SetClearColor(float r, float g, float b, float a)
+void Window::SetClearColor(float r, float g, float b, float a)
 {
 	windowData.clearColor.r = r;
 	windowData.clearColor.g = g;
@@ -212,14 +196,14 @@ void ApplicationWindow::SetClearColor(float r, float g, float b, float a)
 	UpdateClearColor();
 }
 
-void ApplicationWindow::SetClearColor(const Color& c)
+void Window::SetClearColor(const Color& c)
 {
 	windowData.clearColor = c;
 	
 	UpdateClearColor();
 }
 
-void ApplicationWindow::SetDepthTestEnabled(bool state)
+void Window::SetDepthTestEnabled(bool state)
 {
 	if (state)
 	{
@@ -233,7 +217,7 @@ void ApplicationWindow::SetDepthTestEnabled(bool state)
 	}
 }
 
-void ApplicationWindow::SetStencilTestEnabled(bool state)
+void Window::SetStencilTestEnabled(bool state)
 {
 	if (state)
 	{
@@ -247,43 +231,43 @@ void ApplicationWindow::SetStencilTestEnabled(bool state)
 	}
 }
 
-void ApplicationWindow::SetDepthTestMask(bool mask)
+void Window::SetDepthTestMask(bool mask)
 {
 	glDepthMask(mask);
 }
 
-void ApplicationWindow::SetDepthTestFunc(unsigned int func)
+void Window::SetDepthTestFunc(unsigned int func)
 {
 	glDepthFunc(func);
 }
 
-void ApplicationWindow::SetStencilTestMask(unsigned int mask)
+void Window::SetStencilTestMask(unsigned int mask)
 {
 	glStencilMask(mask);
 }
 
-void ApplicationWindow::SetStencilTestFunc(unsigned int func, int reference, unsigned int mask)
+void Window::SetStencilTestFunc(unsigned int func, int reference, unsigned int mask)
 {
 	glStencilFunc(func, reference, mask);
 }
 
-void ApplicationWindow::SetStencilTestOp(unsigned int stencilFail, unsigned int depthFail, unsigned int depthPass)
+void Window::SetStencilTestOp(unsigned int stencilFail, unsigned int depthFail, unsigned int depthPass)
 {
 	glStencilOp(stencilFail, depthFail, depthPass);
 }
 
-void ApplicationWindow::SwapBuffers() const
+void Window::SwapBuffers() const
 {
 	glfwSwapBuffers(window);
 }
 
-void ApplicationWindow::ResetMouseOffsetData()
+void Window::ResetMouseOffsetData()
 {
 	mouseData.ResetLeftMouseOffsetData();
 	mouseData.ResetRightMouseOffsetData();
 }
 
-bool ApplicationWindow::ShouldClose() const
+bool Window::ShouldClose() const
 {
 	return glfwWindowShouldClose(window);
 }
