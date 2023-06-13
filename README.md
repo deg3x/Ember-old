@@ -8,7 +8,7 @@ The goal is to extend this into a feature-complete graphics engine, including an
 
 ## Platforms
 * Windows
-* OS X
+* OS X (broken, needs .dylib adaptation)
 
 Only 64-bit targets are supported.
 

@@ -10,7 +10,7 @@ ENGINE_PROJ_NAME = "Engine"
 ENGINE_DIR = "../Engine"
 ENGINE_BIN_DIR = BIN_DIR .. "/" .. ENGINE_PROJ_NAME
 ENGINE_DEFINES = { "ENGINE_SHARED_LIB" }
-ENGINE_LIBS_WIN = { "glfw3", "assimp-vc142-mt"}
+ENGINE_LIBS_WIN = { "glfw3dll", "assimp-vc142-mt"}
 ENGINE_LIBS_OSX = { "glfw3", "assimp.5.2.4", "IOKit.framework", "Cocoa.framework" }
 ENGINE_INCL_PATH = { "../ThirdParty/includes/universal" }
 ENGINE_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }
@@ -21,13 +21,13 @@ ENGINE_LIBS_PATH_OSX = { "../ThirdParty/libraries/osx" }
 EDITOR_PROJ_NAME = "Editor"
 EDITOR_DIR = "../Editor"
 EDITOR_BIN_DIR = BIN_DIR .. "/" .. EDITOR_PROJ_NAME
-EDITOR_LIBS_WIN = { "Engine" }
-EDITOR_LIBS_OSX = { "Engine" }
+EDITOR_LIBS_WIN = { "Engine", "glfw3dll" }
+EDITOR_LIBS_OSX = { "Engine", "glfw3" }
 EDITOR_INCL_PATH = { ENGINE_DIR, "../ThirdParty/includes/universal" }
-EDITOR_INCL_PATH_WIN = {}
-EDITOR_INCL_PATH_OSX = {}
-EDITOR_LIBS_PATH_WIN = { ENGINE_BIN_DIR .. "/Debug", ENGINE_BIN_DIR .. "/Release" }
-EDITOR_LIBS_PATH_OSX = {}
+EDITOR_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }
+EDITOR_INCL_PATH_OSX = { "../ThirdParty/includes/osx" }
+EDITOR_LIBS_PATH_WIN = { "../ThirdParty/libraries/windows", ENGINE_BIN_DIR .. "/Debug", ENGINE_BIN_DIR .. "/Release" }
+EDITOR_LIBS_PATH_OSX = { "../ThirdParty/libraries/osx" }
 
 CLEAN_DIRS_WIN = {".vs", ".idea", "bin", "obj"}
 CLEAN_FILES_WIN = { SOLUTION_NAME .. ".sln", "*.vcxproj*"}
@@ -85,11 +85,23 @@ project (ENGINE_PROJ_NAME)
         libdirs (ENGINE_LIBS_PATH_WIN)
         includedirs (ENGINE_INCL_PATH_WIN)
         -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
+
+        postbuildcommands
+        {
+            "{COPY} %{wks.location}/ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
+        }
+
     elseif os.target() == "macosx" then
         links (ENGINE_LIBS_OSX)
         libdirs (ENGINE_LIBS_PATH_OSX)
         includedirs (ENGINE_INCL_PATH_OSX)
         -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
+
+        postbuildcommands
+        {
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
+        }
+
     end
 
     flags { "MultiProcessorCompile" }
@@ -129,7 +141,8 @@ project (EDITOR_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}/ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}" 
+            "{COPY} %{wks.location}/ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}",
+            "{COPY} %{wks.location}/ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
         }
 
         -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
@@ -142,7 +155,8 @@ project (EDITOR_PROJ_NAME)
         {
             "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.2.4.dylib %{cfg.targetdir}",
             "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.dylib %{cfg.targetdir}",
-            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.dylib %{cfg.targetdir}" 
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
         }
 
         -- removefiles (ENGINE_FILES_EXCLUDE_OSX)

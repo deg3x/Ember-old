@@ -32,4 +32,9 @@ public:
     
     void AddObject(const std::shared_ptr<Object>& object);
     void RemoveObject(const std::shared_ptr<Object>& object);
+
+    inline std::shared_ptr<Camera> GetCamera() const
+    {
+        return camera;
+    }
 };

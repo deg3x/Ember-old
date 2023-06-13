@@ -14,6 +14,7 @@ Window::Window(int windowW, int windowH, const char* windowName)
 	if (InitGLFW(windowName) + InitGLAD() + InitOpenGL() != 0)
 	{
 		// Initialization failed
+		std::cerr << "Window Initialization failed!" << std::endl;
 		return;
 	}
 }
@@ -27,7 +28,12 @@ Window::~Window()
 
 int Window::InitGLFW(const char* windowName)
 {
-	glfwInit();
+	if (!glfwInit())
+	{
+		std::cerr << "Failed to initialize GLFW!" << std::endl;
+
+		return -1;
+	}
 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -39,7 +45,7 @@ int Window::InitGLFW(const char* windowName)
 	window = glfwCreateWindow(windowData.windowW, windowData.windowH, windowName, NULL, NULL);
 	if (window == NULL)
 	{
-		std::cerr << "Failed to create window!" << std::endl;
+		std::cerr << "Failed to create GLFW window!" << std::endl;
 		glfwTerminate();
 
 		return -1;

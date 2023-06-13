@@ -5,7 +5,7 @@ class Window;
 class Editor
 {
 private:
-    Window* mainWindow;
+    Window* engineWindow;
     
 public:
     Editor();
