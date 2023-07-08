@@ -79,7 +79,7 @@
 #endif
 
 // GLFW
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 
 #ifdef _WIN32
 #undef APIENTRY
@@ -88,7 +88,7 @@
 #endif
 #ifdef __APPLE__
 #define GLFW_EXPOSE_NATIVE_COCOA
-#include <GLFW/glfw3native.h>   // for glfwGetCocoaWindow()
+#include "GLFW/glfw3native.h"   // for glfwGetCocoaWindow()
 #endif
 
 #ifdef __EMSCRIPTEN__

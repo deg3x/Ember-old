@@ -12,5 +12,5 @@
         #error Only Microsoft C++ compiler is supported at the moment.
     #endif
 #elif __APPLE__
-// Add apple OS X definitions here
+    #define ENGINE_API __attribute__((visibility("default")))
 #endif

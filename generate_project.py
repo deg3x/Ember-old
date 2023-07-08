@@ -5,16 +5,20 @@ import platform
 def main():
     
     premake_action = ''
+    executable = ''
+
+    if platform.system() == "Windows":
+        premake_action = 'vs2022'
+        executable = 'ThirdParty\premake\premake5.exe'
+    elif platform.system() == "Darwin":
+        premake_action = 'xcode4'
+        executable = 'ThirdParty/premake/premake5'
 
     if len(sys.argv) >= 2 and sys.argv[1] == "clean":
         premake_action = 'clean'
-    else:
-        if platform.system() == "Windows":
-            premake_action = 'vs2022'
-        elif platform.system() == "Darwin":
-            premake_action = 'xcode4'
+        
 
-    subprocess.Popen('ThirdParty\premake\premake5.exe --file=Scripts/premake.lua ' + premake_action, shell=True).communicate()
+    subprocess.Popen(executable + ' --file=Scripts/premake.lua ' + premake_action, shell=True).communicate()
 
     sys.exit(0)
 

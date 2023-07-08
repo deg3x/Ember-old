@@ -11,7 +11,7 @@ ENGINE_DIR = "../Engine"
 ENGINE_BIN_DIR = BIN_DIR .. "/" .. ENGINE_PROJ_NAME
 ENGINE_DEFINES = { "ENGINE_SHARED_LIB" }
 ENGINE_LIBS_WIN = { "glfw3dll", "assimp-vc142-mt"}
-ENGINE_LIBS_OSX = { "glfw3", "assimp.5.2.4", "IOKit.framework", "Cocoa.framework" }
+ENGINE_LIBS_OSX = { "glfw.3", "assimp.5.2.4", "IOKit.framework", "Cocoa.framework" }
 ENGINE_INCL_PATH = { "../ThirdParty/includes/universal" }
 ENGINE_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }
 ENGINE_INCL_PATH_OSX = { "../ThirdParty/includes/osx" }
@@ -22,16 +22,16 @@ EDITOR_PROJ_NAME = "Editor"
 EDITOR_DIR = "../Editor"
 EDITOR_BIN_DIR = BIN_DIR .. "/" .. EDITOR_PROJ_NAME
 EDITOR_LIBS_WIN = { "Engine", "glfw3dll" }
-EDITOR_LIBS_OSX = { "Engine", "glfw3" }
+EDITOR_LIBS_OSX = { "Engine", "glfw.3" }
 EDITOR_INCL_PATH = { ENGINE_DIR, "../ThirdParty/includes/universal" }
 EDITOR_INCL_PATH_WIN = { "../ThirdParty/includes/windows" }
 EDITOR_INCL_PATH_OSX = { "../ThirdParty/includes/osx" }
 EDITOR_LIBS_PATH_WIN = { "../ThirdParty/libraries/windows", ENGINE_BIN_DIR .. "/Debug", ENGINE_BIN_DIR .. "/Release" }
 EDITOR_LIBS_PATH_OSX = { "../ThirdParty/libraries/osx" }
 
-CLEAN_DIRS_WIN = {".vs", ".idea", "bin", "obj"}
-CLEAN_FILES_WIN = { SOLUTION_NAME .. ".sln", "*.vcxproj*"}
-CLEAN_DIRS_OSX = {}
+CLEAN_DIRS_WIN = { ".vs", ".idea", "bin", "obj" }
+CLEAN_FILES_WIN = { SOLUTION_NAME .. ".sln", "*.vcxproj*" }
+CLEAN_DIRS_OSX = { ".vs", ".idea", "bin", "obj", SOLUTION_NAME .. ".xcworkspace", ENGINE_PROJ_NAME .. ".xcodeproj", EDITOR_PROJ_NAME .. ".xcodeproj" }
 CLEAN_FILES_OSX = {}
 
 -------------------------------------------------
@@ -45,7 +45,12 @@ if (_ACTION == "clean") then
             os.execute("if exist ..\\" .. file .. " (del ..\\" .. file .. " && echo Deleted file " .. file .. ")")
         end
     elseif os.target() == "macosx" then
-        -- Delete files generated in OS X project
+        for index, dir in ipairs(CLEAN_DIRS_OSX) do
+            os.execute("if test -d \"../" .. dir .. "\"; then (rm -r ../" .. dir .. " && echo Deleted directory " .. dir .. ") fi")
+        end
+        for index, file in ipairs(CLEAN_FILES_OSX) do
+            os.execute("if test -f \"../" .. file .. "\"; then (rm ../" .. file .. " && echo Deleted file " .. file .. ") fi")
+        end
     end
     os.exit()
 end
@@ -54,6 +59,7 @@ workspace (SOLUTION_NAME)
     location (SOLUTION_PATH)
     configurations { "Debug", "Release" }
     systemversion "latest"
+    startproject (EDITOR_PROJ_NAME)
 
     if os.target() == "windows" then
         architecture "x64"
@@ -174,10 +180,10 @@ project (EDITOR_PROJ_NAME)
                 "{COPY} %{wks.location}/bin/" .. ENGINE_PROJ_NAME .. "/Debug/" .. ENGINE_PROJ_NAME .. ".dll %{cfg.targetdir}"
             }
         elseif os.target() == "macosx" then
-            postbuildcommands
-            {
+            --postbuildcommands
+            --{
 
-            }
+            --}
         end
 
     filter "configurations:Release"
@@ -192,8 +198,8 @@ project (EDITOR_PROJ_NAME)
                 "{COPY} %{wks.location}/bin/" .. ENGINE_PROJ_NAME .. "/Release/" .. ENGINE_PROJ_NAME .. ".dll %{cfg.targetdir}"
             }
         elseif os.target() == "macosx" then
-            postbuildcommands
-            {
+            --postbuildcommands
+            --{
                 
-            }
+            --}
         end
