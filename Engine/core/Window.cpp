@@ -237,6 +237,18 @@ void Window::SetStencilTestEnabled(bool state)
 	}
 }
 
+void Window::SetBlendingEnabled(bool state)
+{
+	if(state)
+	{
+		glEnable(GL_BLEND);
+	}
+	else
+	{
+		glDisable(GL_BLEND);
+	}
+}
+
 void Window::SetDepthTestMask(bool mask)
 {
 	glDepthMask(mask);
@@ -260,6 +272,21 @@ void Window::SetStencilTestFunc(unsigned int func, int reference, unsigned int m
 void Window::SetStencilTestOp(unsigned int stencilFail, unsigned int depthFail, unsigned int depthPass)
 {
 	glStencilOp(stencilFail, depthFail, depthPass);
+}
+
+void Window::SetBlendingFunc(unsigned srcFactor, unsigned dstFactor)
+{
+	glBlendFunc(srcFactor, dstFactor);
+}
+
+void Window::SetBlendingFuncSeparate(unsigned srcRGB, unsigned dstRGB, unsigned srcAlpha, unsigned dstAlpha)
+{
+	glBlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
+}
+
+void Window::SetBlendingOp(unsigned operation)
+{
+	glBlendEquation(operation);
 }
 
 void Window::SwapBuffers() const

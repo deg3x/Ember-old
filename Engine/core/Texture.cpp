@@ -65,8 +65,8 @@ void Texture::InitializeTexture(const char* texturePath)
         std::cerr << "[Texture] Unknown number of channels while trying to parse texture..." << std::endl;
         return;
     }
-
-    glTexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(format), width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(format), width, height, 0, static_cast<GLint>(format), GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
     
     stbi_image_free(data);

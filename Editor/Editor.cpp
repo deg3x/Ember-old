@@ -21,8 +21,10 @@
 #include "core/components/lights/DirectionalLight.h"
 #include "core/components/lights/Light.h"
 #include "core/Scene.h"
+#include "core/Texture.h"
 
 #include <memory>
+
 
 namespace
 {
@@ -52,6 +54,14 @@ namespace
 		bunnyObject->transform->scale =glm::vec3(0.5f, 0.5f, 0.5f);
 		bunnyObject->LoadModel("./Data/models/bunny.obj");
 
+		MaterialPropertiesUnlit transparentProperties;
+		transparentProperties.diffuse.a = 0.6f;
+		const std::shared_ptr<Material> transpMat = std::make_shared<Material>("./Engine/shaders/vertexBasic.glsl", "./Engine/shaders/fragmentBasic.glsl", MaterialType::Unlit);
+		transpMat->SetProperties(&transparentProperties);
+		const std::shared_ptr<Object> transpSphere = std::make_shared<Object>();
+		transpSphere->CreateComponent<Sphere>(32, 32, 0.3f, transpMat);
+		transpSphere->transform->position = glm::vec3(-0.8f, 0.0f, 0.8f);
+
 		const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>();
 		dirLightObject->CreateComponent<DirectionalLight>();
 		dirLightObject->transform->rotation.x = 30.0f;
@@ -64,6 +74,7 @@ namespace
 		scene.AddObject(planeObject);
 		scene.AddObject(cubeObject);
 		scene.AddObject(bunnyObject);
+		scene.AddObject(transpSphere);
 		scene.AddObject(dirLightObject);
 	}
 }
@@ -123,6 +134,8 @@ void Editor::Tick()
 	float radius = (float)scene.GetCamera()->GetParent()->transform->position.length();
 
 	Window::SetDepthTestFunc(GL_LESS);
+	engineWindow->SetBlendingEnabled(true);
+	engineWindow->SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
 	ImGuiIO& io = ImGui::GetIO();
 	
@@ -179,9 +192,9 @@ void Editor::Tick()
 		phi	   += (float)mouse.leftMouseYOffset * mouse.sensitivity;
 		radius -= (float)mouse.rightMouseYOffset * mouse.sensitivity;
 
-		//scene.GetCamera()->GetParent()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
-		//scene.GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
-		//scene.GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
+		scene.GetCamera()->GetParent()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
+		scene.GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
+		scene.GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
 
 		engineWindow->ResetMouseOffsetData();
 		engineWindow->Clear();

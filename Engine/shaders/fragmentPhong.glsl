@@ -8,7 +8,7 @@ out vec4 FragmentColor;
 
 struct Material
 {
-	vec3 diffuse;
+	vec4 diffuse;
 	vec3 specular;
 	float shininess;
 };
@@ -68,7 +68,7 @@ void main()
 	//color += CalculatePointLight(pointLight, normal, viewDirection);
 	//color += CalculateSpotLight(spotLight, normal, viewDirection);
 
-	FragmentColor = texture(diffuseTexture, TexCoord) * vec4(color, 1.0f);
+	FragmentColor = texture(diffuseTexture, TexCoord) * vec4(color, material.diffuse.w);
 }
 
 vec3 CalculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection)
@@ -80,8 +80,8 @@ vec3 CalculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir
 	vec3 reflectVector = reflect(-lightVector, normal);
 	float spec = pow(max(dot(viewDirection, reflectVector), 0.0), material.shininess);
 
-	vec3 ambient = light.ambient * material.diffuse;
-	vec3 diffuse = light.diffuse * diff * material.diffuse;
+	vec3 ambient = light.ambient * material.diffuse.xyz;
+	vec3 diffuse = light.diffuse * diff * material.diffuse.xyz;
 	vec3 specular = light.diffuse * spec * material.specular;
 
 	return light.intensity * (ambient + diffuse + specular);
@@ -100,8 +100,8 @@ vec3 CalculatePointLight(PointLight light, vec3 normal, vec3 viewDirection)
 	float attenuation = 1.0 / (light.constantAttenuation + light.linearAttenuation * distance 
 		+ light.quadraticAttenuation * (distance * distance));
 
-	vec3 ambient = light.ambient * material.diffuse;
-	vec3 diffuse = light.diffuse * diff * material.diffuse;
+	vec3 ambient = light.ambient * material.diffuse.xyz;
+	vec3 diffuse = light.diffuse * diff * material.diffuse.xyz;
 	vec3 specular = light.diffuse * spec * material.specular;
 
 	return light.intensity * attenuation * (ambient + diffuse + specular);
@@ -124,8 +124,8 @@ vec3 CalculateSpotLight(SpotLight light, vec3 normal, vec3 viewDirection)
 	float epsilon = light.cutOffAngleCos - light.cutOffAngleOutCos;
 	float intensity = clamp((theta - light.cutOffAngleOutCos) / epsilon, 0.0, 1.0);
 
-	vec3 ambient = light.ambient * material.diffuse;
-	vec3 diffuse = light.diffuse * diff * material.diffuse, TexCoords;
+	vec3 ambient = light.ambient * material.diffuse.xyz;
+	vec3 diffuse = light.diffuse * diff * material.diffuse.xyz, TexCoords;
 	vec3 specular = light.diffuse * spec * material.specular;
 
 	return light.intensity * attenuation * intensity * (ambient + diffuse + specular);
