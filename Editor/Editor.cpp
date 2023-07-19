@@ -56,7 +56,7 @@ namespace
 
 		MaterialPropertiesUnlit transparentProperties;
 		transparentProperties.diffuse.a = 0.6f;
-		const std::shared_ptr<Material> transpMat = std::make_shared<Material>("./Engine/shaders/vertexBasic.glsl", "./Engine/shaders/fragmentBasic.glsl", MaterialType::Unlit);
+		const std::shared_ptr<Material> transpMat = std::make_shared<Material>("./Engine/shaders/vertexUnlit.glsl", "./Engine/shaders/fragmentUnlit.glsl", MaterialType::Unlit);
 		transpMat->SetProperties(&transparentProperties);
 		const std::shared_ptr<Object> transpSphere = std::make_shared<Object>();
 		transpSphere->CreateComponent<Sphere>(32, 32, 0.3f, transpMat);
@@ -140,7 +140,7 @@ void Editor::Tick()
 	ImGuiIO& io = ImGui::GetIO();
 	
 	bool show_another_window = false;
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	ImVec4 clear_color = ImVec4(0.16f, 0.15f, 0.18f, 1.00f);
 
 	while (!engineWindow->ShouldClose())
 	{
