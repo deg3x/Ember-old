@@ -249,6 +249,18 @@ void Window::SetBlendingEnabled(bool state)
 	}
 }
 
+void Window::SetFaceCullingEnabled(bool state)
+{
+	if (state)
+	{
+		glEnable(GL_CULL_FACE);
+	}
+	else
+	{
+		glDisable(GL_CULL_FACE);
+	}
+}
+
 void Window::SetDepthTestMask(bool mask)
 {
 	glDepthMask(mask);
@@ -274,19 +286,29 @@ void Window::SetStencilTestOp(unsigned int stencilFail, unsigned int depthFail, 
 	glStencilOp(stencilFail, depthFail, depthPass);
 }
 
-void Window::SetBlendingFunc(unsigned srcFactor, unsigned dstFactor)
+void Window::SetBlendingFunc(unsigned int srcFactor, unsigned int dstFactor)
 {
 	glBlendFunc(srcFactor, dstFactor);
 }
 
-void Window::SetBlendingFuncSeparate(unsigned srcRGB, unsigned dstRGB, unsigned srcAlpha, unsigned dstAlpha)
+void Window::SetBlendingFuncSeparate(unsigned int srcRGB, unsigned int dstRGB, unsigned int srcAlpha, unsigned int dstAlpha)
 {
 	glBlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
 }
 
-void Window::SetBlendingOp(unsigned operation)
+void Window::SetBlendingOp(unsigned int operation)
 {
 	glBlendEquation(operation);
+}
+
+void Window::SetFaceCullingMode(unsigned int mode)
+{
+	glCullFace(mode);
+}
+
+void Window::SetFaceFrontWindingOrder(unsigned int order)
+{
+	glFrontFace(order);
 }
 
 void Window::SwapBuffers() const

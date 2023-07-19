@@ -27,6 +27,7 @@ public:
 	void SetDepthTestEnabled(bool state = true);
 	void SetStencilTestEnabled(bool state = true);
 	void SetBlendingEnabled(bool state = false);
+	void SetFaceCullingEnabled(bool state = true);
 
 	static void SetDepthTestMask(bool mask);
 	static void SetDepthTestFunc(unsigned int func);
@@ -36,6 +37,8 @@ public:
 	static void SetBlendingFunc(unsigned int srcFactor, unsigned int dstFactor);
 	static void SetBlendingFuncSeparate(unsigned int srcRGB, unsigned int dstRGB, unsigned int srcAlpha, unsigned int dstAlpha);
 	static void SetBlendingOp(unsigned int operation);
+	static void SetFaceCullingMode(unsigned int mode);
+	static void SetFaceFrontWindingOrder(unsigned int order);
 
 	void SwapBuffers() const;
 
