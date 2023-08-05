@@ -2,14 +2,19 @@
 
 #include "../Definitions.h"
 
+struct WindowData;
+
 class ENGINE_API Framebuffer
 {
 private:
     unsigned int fbo;
     
 public:
-    Framebuffer();
+    Framebuffer() = delete;
+    Framebuffer(const WindowData& windowData);
     virtual ~Framebuffer();
     
-    void Use();
+    void Bind();
+    
+    static void Unbind();
 };
