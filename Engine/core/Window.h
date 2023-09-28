@@ -26,17 +26,18 @@ public:
 	void SetClearColor(const Color& c);
 	void SetDepthTestEnabled(bool state = true);
 	void SetStencilTestEnabled(bool state = true);
-	void SetBlendingEnabled(bool state = false);
-	void SetFaceCullingEnabled(bool state = true);
-
+	
+	static void SetGLViewport(int width, int height);
 	static void SetDepthTestMask(bool mask);
 	static void SetDepthTestFunc(unsigned int func);
 	static void SetStencilTestMask(unsigned int mask);
 	static void SetStencilTestFunc(unsigned int func, int reference, unsigned int mask);
 	static void SetStencilTestOp(unsigned int stencilFail, unsigned int depthFail, unsigned int depthPass);
+	static void SetBlendingEnabled(bool state = false);
 	static void SetBlendingFunc(unsigned int srcFactor, unsigned int dstFactor);
 	static void SetBlendingFuncSeparate(unsigned int srcRGB, unsigned int dstRGB, unsigned int srcAlpha, unsigned int dstAlpha);
 	static void SetBlendingOp(unsigned int operation);
+	static void SetFaceCullingEnabled(bool state = true);
 	static void SetFaceCullingMode(unsigned int mode);
 	static void SetFaceFrontWindingOrder(unsigned int order);
 

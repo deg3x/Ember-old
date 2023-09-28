@@ -10,6 +10,8 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+#include "core/Framebuffer.h"
+#include "tabs/EditorTab.h"
 #include "core/Window.h"
 #include "core/objects/Object.h"
 #include "core/components/meshes/Cube.h"
@@ -23,6 +25,8 @@
 #include "core/Scene.h"
 
 #include <memory>
+
+#include "tabs/Viewport.h"
 
 namespace
 {
@@ -79,7 +83,10 @@ namespace
 
 Editor::Editor()
 {
-    engineWindow = new Window(1024, 768, "Test Application");
+    engineWindow = std::make_shared<Window>(1024, 768, "Test Application");
+	viewportFB   = std::make_shared<Framebuffer>(1024, 768);
+
+	tabs.emplace_back(std::make_shared<Viewport>(this));
 
 	IMGUI_CHECKVERSION();
 	
@@ -90,6 +97,7 @@ Editor::Editor()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	io.IniFilename  = "editor.ini";
 
 	ImGui::StyleColorsDark();
 
@@ -112,12 +120,6 @@ Editor::~Editor()
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui::DestroyContext();
 	}
-	
-    if (engineWindow)
-    {
-    	delete engineWindow;
-    	engineWindow = nullptr;
-    }
 }
 
 void Editor::Tick()
@@ -137,8 +139,10 @@ void Editor::Tick()
 
 	ImGuiIO& io = ImGui::GetIO();
 	
-	bool show_another_window = false;
+	bool show_another_window = true;
 	ImVec4 clear_color = ImVec4(0.16f, 0.15f, 0.18f, 1.00f);
+
+	viewportFB->Bind();
 
 	while (!engineWindow->ShouldClose())
 	{
@@ -147,6 +151,11 @@ void Editor::Tick()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		for(int i = 0; i < tabs.size(); i++)
+		{
+			tabs[i]->Tick();
+		}
 
 		bool showDemo = true;
 		ImGui::ShowDemoWindow(&showDemo);
@@ -183,6 +192,7 @@ void Editor::Tick()
 				show_another_window = false;
 			ImGui::End();
 		}
+		ImGui::Render();
 
 		const MouseData mouse = engineWindow->GetMouseData();
 
@@ -198,8 +208,7 @@ void Editor::Tick()
 		engineWindow->Clear();
 
 		scene.Tick();
-
-		ImGui::Render();
+		
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
