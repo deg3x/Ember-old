@@ -24,15 +24,6 @@ void Viewport::Tick()
     ImGui::SetNextWindowSizeConstraints(ImVec2(100, 100), ImVec2(2000, 2000));
 
     ImGui::Begin(title.c_str());
-    
-    /*const ImVec2 size  = ImGui::GetWindowContentRegionMax();
-
-    width  = static_cast<int>(size.x);
-    height = static_cast<int>(size.y);
-
-    editor->GetViewportFramebuffer()->Resize(width, height);
-    editor->GetEngineWindow()->SetGLViewport(width, height);*/
-    
 
     ImVec2 pos = ImGui::GetCursorScreenPos();
 

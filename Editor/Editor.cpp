@@ -150,6 +150,8 @@ Editor::Editor()
 	{
 		style.WindowRounding = 0.0f;
 		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+
+		style.WindowPadding = ImVec2(0.0f, 0.0f);
 	}
 
 	ImGui_ImplGlfw_InitForOpenGL(engineWindow->GetWindow(), true);
