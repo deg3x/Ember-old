@@ -21,10 +21,8 @@
 #include "core/components/lights/DirectionalLight.h"
 #include "core/components/lights/Light.h"
 #include "core/Scene.h"
-#include "core/Texture.h"
 
 #include <memory>
-
 
 namespace
 {
