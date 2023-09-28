@@ -363,3 +363,5 @@ MigrationBackup/
 *.xcworkspace
 
 !Data/**/*.obj
+
+editor.ini
