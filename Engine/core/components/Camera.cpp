@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 #include "Transform.h"
+#include "../Renderer.h"
 #include "../objects/Object.h"
 
 glm::mat4x4 Camera::GetViewMatrix() const
@@ -11,5 +12,12 @@ glm::mat4x4 Camera::GetViewMatrix() const
 
 glm::mat4x4 Camera::GetProjectionMatrix() const
 {
-	return glm::perspective(glm::radians(90.0f), 1024.0f / 768.0f, 0.1f, 1000.0f);
+	int viewportWidth;
+	int viewportHeight;
+
+	Renderer::GetViewportResolution(viewportWidth, viewportHeight);
+
+	const float aspectRatio = static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight);
+	
+	return glm::perspective(glm::radians(90.0f), aspectRatio, 0.1f, 1000.0f);
 }
