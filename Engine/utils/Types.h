@@ -22,41 +22,6 @@ struct VertexData
 	Color color;
 };
 
-struct WindowData
-{
-	int windowW;
-	int windowH;
-	float aspectRatio;
-	Color clearColor = { 0.12f, 0.12f, 0.12f, 1.0f };
-	unsigned int clearBits;
-};
-
-struct MouseData
-{
-	float sensitivity = 0.01f;
-	bool leftButtonPressed;
-	bool rightButtonPressed;
-	bool middleButtonPressed;
-	double lastMouseX;
-	double lastMouseY;
-	double leftMouseXOffset;
-	double leftMouseYOffset;
-	double rightMouseXOffset;
-	double rightMouseYOffset;
-
-	void ResetLeftMouseOffsetData()
-	{
-		leftMouseXOffset = 0.0;
-		leftMouseYOffset = 0.0;
-	}
-
-	void ResetRightMouseOffsetData()
-	{
-		rightMouseXOffset = 0.0;
-		rightMouseYOffset = 0.0;
-	}
-};
-
 enum class MaterialType
 {
 	Unlit,

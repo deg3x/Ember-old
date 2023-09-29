@@ -2,7 +2,7 @@
 
 #include "../Editor.h"
 #include "core/Framebuffer.h"
-#include "core/Window.h"
+#include "core/Renderer.h"
 
 EditorTab::EditorTab(Editor* owner)
 {
@@ -26,7 +26,7 @@ void EditorTab::Tick()
     height = static_cast<int>(size.y);
 
     editor->GetViewportFramebuffer()->Resize(width, height);
-    editor->GetEngineWindow()->SetGLViewport(width, height);
+    Renderer::SetViewport(0, 0, width, height);
 
     ImGui::End();
 }

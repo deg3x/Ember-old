@@ -26,6 +26,7 @@
 
 #include <memory>
 
+#include "core/Renderer.h"
 #include "tabs/Viewport.h"
 
 namespace
@@ -127,9 +128,12 @@ namespace
 
 Editor::Editor()
 {
-    engineWindow = std::make_shared<Window>(1024, 768, "Test Application");
+	// Window needs to be initialized before the renderer
+	Window::Initialize();
+	Renderer::Initialize();
+	
 	viewportFB   = std::make_shared<Framebuffer>(1024, 768);
-
+	
 	tabs.emplace_back(std::make_shared<Viewport>(this));
 
 	IMGUI_CHECKVERSION();
@@ -137,7 +141,6 @@ Editor::Editor()
 	ImGui::CreateContext();
 
 	ImGuiIO& io = ImGui::GetIO();
-
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -154,7 +157,7 @@ Editor::Editor()
 		style.WindowPadding = ImVec2(0.0f, 0.0f);
 	}
 
-	ImGui_ImplGlfw_InitForOpenGL(engineWindow->GetWindow(), true);
+	ImGui_ImplGlfw_InitForOpenGL(Window::GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 410");
 }
 
@@ -179,9 +182,9 @@ void Editor::Tick()
 	float phi    = -glm::half_pi<float>();
 	float radius = (float)scene.GetCamera()->GetParent()->transform->position.length();
 
-	Window::SetDepthTestFunc(GL_LESS);
-	engineWindow->SetBlendingEnabled(true);
-	engineWindow->SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+	Renderer::SetDepthTestFunc(GL_LESS);
+	Renderer::SetBlendingEnabled(true);
+	Renderer::SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
 	ImGuiIO& io = ImGui::GetIO();
 	
@@ -189,9 +192,9 @@ void Editor::Tick()
 
 	viewportFB->Bind();
 
-	while (!engineWindow->ShouldClose())
+	while (!Window::ShouldClose())
 	{
-		engineWindow->ProcessUserInput();
+		Window::ProcessUserInput();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -206,7 +209,7 @@ void Editor::Tick()
 
 		ImGui::Render();
 
-		const MouseData mouse = engineWindow->GetMouseData();
+		const MouseData mouse = Window::GetMouseData();
 
 		theta  += (float)mouse.leftMouseXOffset * mouse.sensitivity;
 		phi	   += (float)mouse.leftMouseYOffset * mouse.sensitivity;
@@ -216,9 +219,9 @@ void Editor::Tick()
 		scene.GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
 		scene.GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
 
-		engineWindow->ResetMouseOffsetData();
-		engineWindow->SetClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-		engineWindow->Clear();
+		Window::ResetMouseOffsetData();
+		Renderer::SetClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+		Renderer::Clear();
 
 		scene.Tick();
 		
@@ -232,6 +235,6 @@ void Editor::Tick()
 			glfwMakeContextCurrent(backup_current_context);
 		}
 		
-		engineWindow->SwapBuffers();
+		Window::SwapBuffers();
 	}
 }
