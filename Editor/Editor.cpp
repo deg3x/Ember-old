@@ -27,6 +27,7 @@
 #include <memory>
 
 #include "core/Renderer.h"
+#include "core/objects/Skybox.h"
 #include "tabs/Viewport.h"
 
 namespace
@@ -57,6 +58,8 @@ namespace
 		bunnyObject->transform->scale =glm::vec3(0.5f, 0.5f, 0.5f);
 		bunnyObject->LoadModel("./Data/models/bunny.obj");
 
+		const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>();
+
 		MaterialPropertiesUnlit transparentProperties;
 		transparentProperties.diffuse.a = 0.6f;
 		const std::shared_ptr<Material> transpMat = std::make_shared<Material>("./Engine/shaders/vertexUnlit.glsl", "./Engine/shaders/fragmentUnlit.glsl", MaterialType::Unlit);
@@ -79,6 +82,8 @@ namespace
 		scene.AddObject(bunnyObject);
 		scene.AddObject(transpSphere);
 		scene.AddObject(dirLightObject);
+		// Add skybox last
+		scene.AddObject(skybox);
 	}
 
 	void DrawExamples(bool draw, const ImGuiIO& io)

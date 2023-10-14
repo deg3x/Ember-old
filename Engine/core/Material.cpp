@@ -77,6 +77,13 @@ void Material::SetShader(const char* vertShader, const char* fragShader)
     shader = std::make_shared<Shader>(vertShader, fragShader);
 }
 
+void Material::SetTexture(const std::shared_ptr<Texture>& texture)
+{
+    std::vector<std::shared_ptr<Texture>>().swap(textures);
+    
+    textures.push_back(texture);
+}
+
 void Material::SetTextures(const std::vector<std::shared_ptr<Texture>>& diffTextures)
 {
     if (textures.empty())
@@ -116,6 +123,10 @@ void Material::SetProperties(const MaterialProperties* matProperties)
 
             break;
         }
+    case MaterialType::Cubemap:
+        {
+            break;
+        }
     default:
         return;
     }
@@ -123,10 +134,10 @@ void Material::SetProperties(const MaterialProperties* matProperties)
 
 void Material::Use() const
 {
-    // Only use the first available diffuse texture for now... Improve in the future
+    // Only use the first available diffuse/cubemap texture for now... Improve in the future
     for (const std::shared_ptr<Texture>& tex : textures)
     {
-        if (tex->GetTextureType() != TextureType::diffuse)
+        if (tex->GetTextureType() != TextureType::diffuse || tex->GetTextureType() != TextureType::cubemap)
         {
             continue;
         }
@@ -145,7 +156,16 @@ void Material::SetupShaderVariables(const Transform& objectTransform, const Came
     const glm::mat4x4 model = objectTransform.GetModelMatrix();
 
     shader->SetMatrix4x4("model", model);
-    shader->SetMatrix4x4("view", camera.GetViewMatrix());
+    
+    if (type == MaterialType::Cubemap)
+    {
+        shader->SetMatrix4x4("view", glm::mat4(glm::mat3(camera.GetViewMatrix())));
+    }
+    else
+    {
+        shader->SetMatrix4x4("view", camera.GetViewMatrix());
+    }
+    
     shader->SetMatrix4x4("projection", camera.GetProjectionMatrix());
 
     switch(type)
@@ -169,6 +189,12 @@ void Material::SetupShaderVariables(const Transform& objectTransform, const Came
             shader->SetVector3("material.specular", propsPhong->specular);
             shader->SetFloat("material.shininess", propsPhong->shininessExponent);
 	    
+            break;
+        }
+    case MaterialType::Cubemap:
+        {
+            shader->SetInt("skybox", 0);
+            
             break;
         }
     default:

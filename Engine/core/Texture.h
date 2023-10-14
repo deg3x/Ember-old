@@ -9,7 +9,8 @@ enum class TextureType
     diffuse,
     normal,
     specular,
-    height
+    height,
+    cubemap
 };
 
 enum class TextureFormat
@@ -47,4 +48,7 @@ public:
     
 private:
     void InitializeTexture(const char* texturePath);
+
+    void InitializeCubemap(const char* texturePath);
+    void InitializeTexture2D(const char* texturePath);
 };
