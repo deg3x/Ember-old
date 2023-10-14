@@ -9,10 +9,10 @@
 
 Texture::Texture()
 {
-    InitializeTexture(PathBuilder::GetPath("./Data/images/container.jpg").c_str());
+    InitializeTexture(PathBuilder::GetPath("./Data/images/white.png").c_str());
     
     type = TextureType::diffuse;
-    path = "./Data/images/container.jpg";
+    path = "./Data/images/white.png";
 }
 
 Texture::Texture(TextureType inType, const char* texturePath)

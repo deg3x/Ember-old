@@ -19,14 +19,17 @@
 #include "core/components/meshes/Sphere.h"
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"
-#include "core/Material.h"
 #include "core/components/lights/DirectionalLight.h"
 #include "core/components/lights/Light.h"
+#include "core/materials/Material.h"
+#include "core/materials/MaterialUnlit.h"
+#include "core/materials/MaterialBlinnPhong.h"
 #include "core/Scene.h"
 
 #include <memory>
 
 #include "core/Renderer.h"
+#include "core/Texture.h"
 #include "core/objects/Skybox.h"
 #include "tabs/Viewport.h"
 
@@ -39,31 +42,33 @@ namespace
 		cameraObject->transform->position = glm::vec3(0.0f, 0.0f, 3.0f);
 		cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
 
-		const std::shared_ptr<Material> sphereMat = std::make_shared<Material>();
+		std::shared_ptr<Texture> containerTex = std::make_shared<Texture>(TextureType::diffuse, "./Data/images/container.jpg");
+		const std::shared_ptr<MaterialBlinnPhong> containerMat = std::make_shared<MaterialBlinnPhong>();
+		containerMat->SetDiffuseTexture(containerTex);
+
+		const std::shared_ptr<MaterialBlinnPhong> defaultMat = std::make_shared<MaterialBlinnPhong>();
 
 		const std::shared_ptr<Object> sphereObject = std::make_shared<Object>();
-		sphereObject->CreateComponent<Sphere>(32, 32, 0.5f, sphereMat);
+		sphereObject->CreateComponent<Sphere>(32, 32, 0.5f, defaultMat);
 		sphereObject->transform->position = glm::vec3(-0.8f, 0.0f, -0.8f);
 
 		const std::shared_ptr<Object> planeObject = std::make_shared<Object>();
-		planeObject->CreateComponent<Plane>(10, 3.0f, sphereMat);
+		planeObject->CreateComponent<Plane>(10, 3.0f, containerMat);
 		planeObject->transform->position = glm::vec3(0.0f, -0.5f, 0.0f);
 
 		const std::shared_ptr<Object> cubeObject = std::make_shared<Object>();
-		cubeObject->CreateComponent<Cube>(sphereMat);
+		cubeObject->CreateComponent<Cube>(containerMat);
 		cubeObject->transform->position = glm::vec3(0.8f, 0.0f, -0.8f);
 
 		const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>();
-		bunnyObject->transform->position = glm::vec3(0.4f, -0.33f, 0.5f);
+		bunnyObject->transform->position = glm::vec3(0.8f, -0.33f, 0.8f);
 		bunnyObject->transform->scale =glm::vec3(0.5f, 0.5f, 0.5f);
 		bunnyObject->LoadModel("./Data/models/bunny.obj");
 
 		const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>();
 
-		MaterialPropertiesUnlit transparentProperties;
-		transparentProperties.diffuse.a = 0.6f;
-		const std::shared_ptr<Material> transpMat = std::make_shared<Material>("./Engine/shaders/vertexUnlit.glsl", "./Engine/shaders/fragmentUnlit.glsl", MaterialType::Unlit);
-		transpMat->SetProperties(&transparentProperties);
+		const std::shared_ptr<MaterialBlinnPhong> transpMat = std::make_shared<MaterialBlinnPhong>();
+		transpMat->diffuseColor.a = 0.6f;
 		const std::shared_ptr<Object> transpSphere = std::make_shared<Object>();
 		transpSphere->CreateComponent<Sphere>(32, 32, 0.3f, transpMat);
 		transpSphere->transform->position = glm::vec3(-0.8f, 0.0f, 0.8f);
@@ -73,7 +78,7 @@ namespace
 		dirLightObject->transform->rotation.x = 30.0f;
 		dirLightObject->transform->rotation.y = -30.0f;
 
-		dirLightObject->GetComponent<Light>()->SetShaderProperties(*sphereMat->GetShader());
+		dirLightObject->GetComponent<Light>()->SetShaderProperties(*containerMat->GetShader());
 
 		scene.AddObject(cameraObject);
 		scene.AddObject(sphereObject);

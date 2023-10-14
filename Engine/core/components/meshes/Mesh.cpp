@@ -2,10 +2,8 @@
 
 #include "glad/glad.h"
 #include "../Camera.h"
-#include "../Transform.h"
 #include "../lights/Light.h"
-#include "../../Shader.h"
-#include "../../Material.h"
+#include "../../materials/Material.h"
 #include "../../objects/Object.h"
 
 #include <iostream>

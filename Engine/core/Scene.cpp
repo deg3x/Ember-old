@@ -1,6 +1,5 @@
 ﻿#include "Scene.h"
 
-#include "Material.h"
 #include "objects/Object.h"
 #include "components/Camera.h"
 #include "components/lights/Light.h"

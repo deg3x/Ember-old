@@ -1,8 +1,8 @@
 ﻿#include "Model.h"
 
 #include "Texture.h"
-#include "Material.h"
 #include "components/meshes/Mesh.h"
+#include "materials/MaterialBlinnPhong.h"
 #include "../utils/PathBuilder.h"
 
 #include "assimp/Importer.hpp"
@@ -10,6 +10,8 @@
 #include "assimp/postprocess.h"
 
 #include <iostream>
+
+
 
 namespace
 {
@@ -126,9 +128,12 @@ namespace
         meshTextures.insert(meshTextures.end(), normalMaps.begin(), normalMaps.end());
         meshTextures.insert(meshTextures.end(), specularMaps.begin(), specularMaps.end());
         meshTextures.insert(meshTextures.end(), heightMaps.begin(), heightMaps.end());
-        
-        std::shared_ptr<Material> meshMaterial = std::make_shared<Material>();
-        meshMaterial->SetTextures(meshTextures);
+
+        // Only use the first available diffuse texture for now
+        // FIX IN THE FUTURE
+        std::shared_ptr<MaterialBlinnPhong> meshMaterial = std::make_shared<MaterialBlinnPhong>();
+        if (!diffuseMaps.empty())
+            meshMaterial->SetDiffuseTexture(diffuseMaps[0]);
         
         return new Mesh(vertices, indices, meshMaterial);
     }

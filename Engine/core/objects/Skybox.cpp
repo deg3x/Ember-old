@@ -3,16 +3,17 @@
 #include <glad/glad.h>
 
 #include "../Texture.h"
-#include "../Material.h"
+#include "../materials/Material.h"
 #include "../Renderer.h"
 #include "../components/meshes/Cube.h"
+#include "../materials/MaterialSkybox.h"
 
 Skybox::Skybox()
 {
-    const std::shared_ptr<Texture> texture = std::make_shared<Texture>(TextureType::cubemap, "./Data/images/skybox/cubemap_clouds_");
-    const std::shared_ptr<Material> matSky = std::make_shared<Material>("./Engine/shaders/vertexSkybox.glsl", "./Engine/shaders/fragmentSkybox.glsl", MaterialType::Cubemap);
+    const std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+    const std::shared_ptr<MaterialSkybox> matSky = std::make_shared<MaterialSkybox>();
 
-    matSky->SetTexture(texture);
+    matSky->SetCubemap(texture);
 
     CreateComponent<Cube>(matSky);
 }

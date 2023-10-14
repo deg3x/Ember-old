@@ -2,7 +2,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "../../../core/Material.h"
+#include "../../../core/materials/Material.h"
 
 #include <vector>
 

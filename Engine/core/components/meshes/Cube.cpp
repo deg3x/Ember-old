@@ -1,6 +1,6 @@
 ﻿#include "Cube.h"
 
-#include "../../Material.h"
+#include "../../materials/Material.h"
 
 Cube::Cube(const std::shared_ptr<Material>& initMaterial) : Mesh(initMaterial)
 {
