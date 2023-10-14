@@ -3,7 +3,7 @@
 #include "Material.h"
 #include "glm/glm.hpp"
 
-class Texture;
+class TextureDiffuse;
 
 class ENGINE_API MaterialBlinnPhong : public Material
 {
@@ -13,16 +13,16 @@ public:
     float shininessExponent = 64.0f;
     
 private:
-    std::shared_ptr<Texture> diffuseTexture;
+    std::shared_ptr<TextureDiffuse> diffuseTexture;
     
 public:
     MaterialBlinnPhong();
-    MaterialBlinnPhong(const std::shared_ptr<Texture>& texture);
+    MaterialBlinnPhong(const std::shared_ptr<TextureDiffuse>& texture);
     
     void Use() const override;
     void SetupShaderVariables(const Transform& objectTransform, const Camera& camera) const override;
 
-    void SetDiffuseTexture(const std::shared_ptr<Texture>& texture)
+    void SetDiffuseTexture(const std::shared_ptr<TextureDiffuse>& texture)
     {
         diffuseTexture = texture;
     }

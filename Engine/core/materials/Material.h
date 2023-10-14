@@ -14,6 +14,7 @@ protected:
 
 public:
     Material() {}
+    virtual ~Material() {}
 
     virtual void Use() const = 0;
     virtual void SetupShaderVariables(const Transform& objectTransform, const Camera& camera) const = 0;

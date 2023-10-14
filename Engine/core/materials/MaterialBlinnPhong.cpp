@@ -1,7 +1,7 @@
 ﻿#include "MaterialBlinnPhong.h"
 
 #include "../Shader.h"
-#include "../Texture.h"
+#include "../textures/TextureDiffuse.h"
 #include "../objects/Object.h"
 #include "../components/Camera.h"
 #include "../components/Transform.h"
@@ -14,10 +14,10 @@ MaterialBlinnPhong::MaterialBlinnPhong()
         PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl").c_str()
         );
 
-    diffuseTexture = std::make_shared<Texture>();
+    diffuseTexture = std::make_shared<TextureDiffuse>();
 }
 
-MaterialBlinnPhong::MaterialBlinnPhong(const std::shared_ptr<Texture>& texture) : MaterialBlinnPhong()
+MaterialBlinnPhong::MaterialBlinnPhong(const std::shared_ptr<TextureDiffuse>& texture) : MaterialBlinnPhong()
 {
     diffuseTexture = texture;
 }

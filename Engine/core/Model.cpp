@@ -1,6 +1,6 @@
 ﻿#include "Model.h"
 
-#include "Texture.h"
+#include "textures/TextureDiffuse.h"
 #include "components/meshes/Mesh.h"
 #include "materials/MaterialBlinnPhong.h"
 #include "../utils/PathBuilder.h"
@@ -11,18 +11,16 @@
 
 #include <iostream>
 
-
-
 namespace
 {
     std::vector<std::shared_ptr<Mesh>> loadedMeshes;
-    std::vector<std::shared_ptr<Texture>> loadedTextures;
+    std::vector<std::shared_ptr<TextureDiffuse>> loadedTextures;
 
     std::string directory;
 
-    std::vector<std::shared_ptr<Texture>> ProcessTextures(const aiMaterial* mat, const aiTextureType& aiType, const TextureType& type)
+    std::vector<std::shared_ptr<TextureDiffuse>> ProcessTextures(const aiMaterial* mat, const aiTextureType& aiType)
     {
-        std::vector<std::shared_ptr<Texture>> retTextures;
+        std::vector<std::shared_ptr<TextureDiffuse>> retTextures;
 
         for (unsigned int i = 0; i < mat->GetTextureCount(aiType); i++)
         {
@@ -43,7 +41,7 @@ namespace
             if (!alreadyLoaded)
             {
                 std::string fullPath = directory + "/" + texturePath.C_Str();
-                std::shared_ptr<Texture> texture = std::make_shared<Texture>(type, fullPath.c_str());
+                std::shared_ptr<TextureDiffuse> texture = std::make_shared<TextureDiffuse>(fullPath.c_str());
                 loadedTextures.push_back(texture);
                 retTextures.push_back(texture);
             }
@@ -118,12 +116,12 @@ namespace
 
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        std::vector<std::shared_ptr<Texture>> diffuseMaps  = ProcessTextures(material, aiTextureType_DIFFUSE, TextureType::diffuse);
-        std::vector<std::shared_ptr<Texture>> normalMaps   = ProcessTextures(material, aiTextureType_NORMALS, TextureType::normal);
-        std::vector<std::shared_ptr<Texture>> specularMaps = ProcessTextures(material, aiTextureType_SPECULAR, TextureType::diffuse);
-        std::vector<std::shared_ptr<Texture>> heightMaps   = ProcessTextures(material, aiTextureType_HEIGHT, TextureType::diffuse);
+        std::vector<std::shared_ptr<TextureDiffuse>> diffuseMaps  = ProcessTextures(material, aiTextureType_DIFFUSE);
+        std::vector<std::shared_ptr<TextureDiffuse>> normalMaps   = ProcessTextures(material, aiTextureType_NORMALS);
+        std::vector<std::shared_ptr<TextureDiffuse>> specularMaps = ProcessTextures(material, aiTextureType_SPECULAR);
+        std::vector<std::shared_ptr<TextureDiffuse>> heightMaps   = ProcessTextures(material, aiTextureType_HEIGHT);
 
-        std::vector<std::shared_ptr<Texture>> meshTextures;
+        std::vector<std::shared_ptr<TextureDiffuse>> meshTextures;
         meshTextures.insert(meshTextures.end(), diffuseMaps.begin(), diffuseMaps.end());
         meshTextures.insert(meshTextures.end(), normalMaps.begin(), normalMaps.end());
         meshTextures.insert(meshTextures.end(), specularMaps.begin(), specularMaps.end());

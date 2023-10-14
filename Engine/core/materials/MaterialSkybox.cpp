@@ -1,7 +1,7 @@
 ﻿#include "MaterialSkybox.h"
 
 #include "../Shader.h"
-#include "../Texture.h"
+#include "../textures/TextureCubemap.h"
 #include "../components/Camera.h"
 #include "../components/Transform.h"
 #include "../../utils/PathBuilder.h"
@@ -13,10 +13,10 @@ MaterialSkybox::MaterialSkybox()
         PathBuilder::GetPath("./Engine/shaders/fragmentSkybox.glsl").c_str()
         );
 
-    cubemap = std::make_shared<Texture>(TextureType::cubemap, "./Data/images/skybox/cubemap_clouds_");
+    cubemap = std::make_shared<TextureCubemap>();
 }
 
-MaterialSkybox::MaterialSkybox(const std::shared_ptr<Texture> texture)
+MaterialSkybox::MaterialSkybox(const std::shared_ptr<TextureCubemap> texture)
 {
     cubemap = texture;
 }

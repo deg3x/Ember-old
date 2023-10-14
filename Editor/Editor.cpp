@@ -29,7 +29,7 @@
 #include <memory>
 
 #include "core/Renderer.h"
-#include "core/Texture.h"
+#include "core/textures/TextureDiffuse.h"
 #include "core/objects/Skybox.h"
 #include "tabs/Viewport.h"
 
@@ -42,7 +42,7 @@ namespace
 		cameraObject->transform->position = glm::vec3(0.0f, 0.0f, 3.0f);
 		cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
 
-		std::shared_ptr<Texture> containerTex = std::make_shared<Texture>(TextureType::diffuse, "./Data/images/container.jpg");
+		std::shared_ptr<TextureDiffuse> containerTex = std::make_shared<TextureDiffuse>("./Data/images/container.jpg");
 		const std::shared_ptr<MaterialBlinnPhong> containerMat = std::make_shared<MaterialBlinnPhong>();
 		containerMat->SetDiffuseTexture(containerTex);
 
@@ -98,7 +98,6 @@ namespace
 			return;
 		}
 
-		
 		bool show_another_window = true;
 		bool showDemo = true;
 		ImGui::ShowDemoWindow(&showDemo);
