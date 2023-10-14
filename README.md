@@ -32,7 +32,7 @@ If you want to avoid installing it, you can manually run premake and build the p
 ## Incoming Features
 - [x] Textures (diffuse, normals, etc.) [not fully implemented]
 - [ ] Shadows
-- [ ] Cubemaps
+- [x] Cubemaps
 - [x] Model Loading
 - [ ] Deferred Rendering
 - [ ] PBR
