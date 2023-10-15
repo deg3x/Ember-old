@@ -31,9 +31,10 @@ void MaterialSkybox::SetupShaderVariables(const Transform& objectTransform, cons
     shader->Use();
     
     const glm::mat4x4 modelMatrix = objectTransform.GetModelMatrix();
+    const glm::mat4x4 viewMatrix  = glm::mat4(glm::mat3(camera.GetViewMatrix())); // Camera position independence
 
     shader->SetMatrix4x4("model", modelMatrix);
-    shader->SetMatrix4x4("view", glm::mat4(glm::mat3(camera.GetViewMatrix())));
+    shader->SetMatrix4x4("view", viewMatrix);
     shader->SetMatrix4x4("projection", camera.GetProjectionMatrix());
 
     shader->SetInt("skybox", 0);

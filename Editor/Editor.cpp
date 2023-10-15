@@ -22,13 +22,15 @@
 #include "core/components/lights/DirectionalLight.h"
 #include "core/components/lights/Light.h"
 #include "core/materials/Material.h"
-#include "core/materials/MaterialUnlit.h"
 #include "core/materials/MaterialBlinnPhong.h"
 #include "core/Scene.h"
 
 #include <memory>
 
 #include "core/Renderer.h"
+#include "core/materials/MaterialEditorGrid.h"
+#include "core/materials/MaterialUnlit.h"
+#include "core/objects/EditorGrid.h"
 #include "core/textures/TextureDiffuse.h"
 #include "core/objects/Skybox.h"
 #include "tabs/Viewport.h"
@@ -65,13 +67,16 @@ namespace
 		bunnyObject->transform->scale =glm::vec3(0.5f, 0.5f, 0.5f);
 		bunnyObject->LoadModel("./Data/models/bunny.obj");
 
-		const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>();
-
 		const std::shared_ptr<MaterialBlinnPhong> transpMat = std::make_shared<MaterialBlinnPhong>();
 		transpMat->diffuseColor.a = 0.6f;
 		const std::shared_ptr<Object> transpSphere = std::make_shared<Object>();
 		transpSphere->CreateComponent<Sphere>(32, 32, 0.3f, transpMat);
 		transpSphere->transform->position = glm::vec3(-0.8f, 0.0f, 0.8f);
+
+		const std::shared_ptr<EditorGrid> grid = std::make_shared<EditorGrid>();
+		grid->transform->position = glm::vec3(0.0f, -0.5f, 0.0f);
+		grid->transform->scale = glm::vec3(100.0f, 1.0f, 100.0f);
+		const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>();
 
 		const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>();
 		dirLightObject->CreateComponent<DirectionalLight>();
@@ -81,14 +86,19 @@ namespace
 		dirLightObject->GetComponent<Light>()->SetShaderProperties(*containerMat->GetShader());
 
 		scene.AddObject(cameraObject);
-		scene.AddObject(sphereObject);
-		scene.AddObject(planeObject);
-		scene.AddObject(cubeObject);
+		//scene.AddObject(sphereObject);
+		//scene.AddObject(planeObject);
+		//scene.AddObject(cubeObject);
 		scene.AddObject(bunnyObject);
-		scene.AddObject(transpSphere);
 		scene.AddObject(dirLightObject);
 		// Add skybox last
 		scene.AddObject(skybox);
+
+		// Transparent Objects last
+		scene.AddObject(transpSphere);
+		scene.AddObject(grid);
+		
+		//Renderer::SetPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
 	void DrawExamples(bool draw, const ImGuiIO& io)

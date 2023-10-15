@@ -17,8 +17,13 @@ MaterialBlinnPhong::MaterialBlinnPhong()
     diffuseTexture = std::make_shared<TextureDiffuse>();
 }
 
-MaterialBlinnPhong::MaterialBlinnPhong(const std::shared_ptr<TextureDiffuse>& texture) : MaterialBlinnPhong()
+MaterialBlinnPhong::MaterialBlinnPhong(const std::shared_ptr<TextureDiffuse>& texture)
 {
+    shader = std::make_shared<Shader>(
+        PathBuilder::GetPath("./Engine/shaders/vertexPhong.glsl").c_str(),
+        PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl").c_str()
+        );
+    
     diffuseTexture = texture;
 }
 
