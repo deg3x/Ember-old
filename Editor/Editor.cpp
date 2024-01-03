@@ -28,8 +28,6 @@
 #include <memory>
 
 #include "core/Renderer.h"
-#include "core/materials/MaterialEditorGrid.h"
-#include "core/materials/MaterialUnlit.h"
 #include "core/objects/EditorGrid.h"
 #include "core/textures/TextureDiffuse.h"
 #include "core/objects/Skybox.h"
@@ -44,7 +42,7 @@ namespace
 		cameraObject->transform->position = glm::vec3(0.0f, 0.0f, 3.0f);
 		cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
 
-		std::shared_ptr<TextureDiffuse> containerTex = std::make_shared<TextureDiffuse>("./Data/images/container.jpg");
+		const std::shared_ptr<TextureDiffuse> containerTex = std::make_shared<TextureDiffuse>("./Data/images/container.jpg");
 		const std::shared_ptr<MaterialBlinnPhong> containerMat = std::make_shared<MaterialBlinnPhong>();
 		containerMat->SetDiffuseTexture(containerTex);
 
@@ -56,7 +54,7 @@ namespace
 
 		const std::shared_ptr<Object> planeObject = std::make_shared<Object>();
 		planeObject->CreateComponent<Plane>(10, 3.0f, containerMat);
-		planeObject->transform->position = glm::vec3(0.0f, -0.5f, 0.0f);
+		planeObject->transform->position = glm::vec3(0.0f, -0.505f, 0.0f);
 
 		const std::shared_ptr<Object> cubeObject = std::make_shared<Object>();
 		cubeObject->CreateComponent<Cube>(containerMat);
@@ -74,7 +72,7 @@ namespace
 		transpSphere->transform->position = glm::vec3(-0.8f, 0.0f, 0.8f);
 
 		const std::shared_ptr<EditorGrid> grid = std::make_shared<EditorGrid>();
-		grid->transform->position = glm::vec3(0.0f, -0.5f, 0.0f);
+		grid->transform->position = glm::vec3(0.0f, -0.51f, 0.0f);
 		grid->transform->scale = glm::vec3(100.0f, 1.0f, 100.0f);
 		const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>();
 
@@ -85,20 +83,17 @@ namespace
 
 		dirLightObject->GetComponent<Light>()->SetShaderProperties(*containerMat->GetShader());
 
-		scene.AddObject(cameraObject);
-		//scene.AddObject(sphereObject);
-		//scene.AddObject(planeObject);
-		//scene.AddObject(cubeObject);
-		scene.AddObject(bunnyObject);
-		scene.AddObject(dirLightObject);
-		// Add skybox last
-		scene.AddObject(skybox);
+		scene.AddObject(cameraObject, ObjectType::OPAQUE);
+		scene.AddObject(sphereObject, ObjectType::OPAQUE);
+		scene.AddObject(planeObject, ObjectType::OPAQUE);
+		scene.AddObject(cubeObject, ObjectType::OPAQUE);
+		scene.AddObject(bunnyObject, ObjectType::OPAQUE);
+		scene.AddObject(dirLightObject, ObjectType::OPAQUE);
+		scene.AddObject(skybox, ObjectType::OPAQUE);
 
 		// Transparent Objects last
-		scene.AddObject(transpSphere);
-		scene.AddObject(grid);
-		
-		//Renderer::SetPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		scene.AddObject(transpSphere, ObjectType::TRANSPARENT);
+		scene.AddObject(grid, ObjectType::TRANSPARENT);
 	}
 
 	void DrawExamples(bool draw, const ImGuiIO& io)
@@ -151,7 +146,7 @@ Editor::Editor()
 	Window::Initialize();
 	Renderer::Initialize();
 	
-	viewportFB   = std::make_shared<Framebuffer>(1024, 768);
+	viewportFB = std::make_shared<Framebuffer>(1024, 768);
 	
 	tabs.emplace_back(std::make_shared<Viewport>(this));
 
@@ -201,15 +196,19 @@ void Editor::Tick()
 	float phi    = -glm::half_pi<float>();
 	float radius = (float)scene.GetCamera()->GetParent()->transform->position.length();
 
-	Renderer::SetDepthTestFunc(GL_LESS);
-	Renderer::SetBlendingEnabled(true);
-	Renderer::SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-
 	ImGuiIO& io = ImGui::GetIO();
 	
 	ImVec4 clear_color = ImVec4(0.16f, 0.15f, 0.18f, 1.00f);
 
 	viewportFB->Bind();
+
+	Renderer::SetDepthTestEnabled(true);
+	Renderer::SetDepthTestFunc(GL_LESS);
+	Renderer::SetBlendingEnabled(true);
+	Renderer::SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+	Renderer::SetBlendingOp(GL_FUNC_ADD);
+	
+	Renderer::SetClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
 	while (!Window::ShouldClose())
 	{
@@ -219,7 +218,7 @@ void Editor::Tick()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		for(int i = 0; i < tabs.size(); i++)
+		for (int i = 0; i < tabs.size(); i++)
 		{
 			tabs[i]->Tick();
 		}
@@ -239,7 +238,7 @@ void Editor::Tick()
 		scene.GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
 
 		Window::ResetMouseOffsetData();
-		Renderer::SetClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+
 		Renderer::Clear();
 
 		scene.Tick();

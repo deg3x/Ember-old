@@ -10,6 +10,12 @@ class Object;
 class Light;
 class Camera;
 
+enum class ObjectType
+{
+    OPAQUE,
+    TRANSPARENT
+};
+
 class ENGINE_API Scene
 {
 public:
@@ -17,7 +23,8 @@ public:
     
 private:
     // Change the data structure in the future to better represent a hierarchy?
-    std::unordered_set<std::shared_ptr<Object>> objects;
+    std::unordered_set<std::shared_ptr<Object>> obj_queue_opaque;
+    std::unordered_set<std::shared_ptr<Object>> obj_queue_transparent;
     std::vector<std::shared_ptr<Light>> lights;
 
     // Only a single scene camera is supported for now
@@ -30,7 +37,7 @@ public:
     void Use();
     void Tick() const;
     
-    void AddObject(const std::shared_ptr<Object>& object);
+    void AddObject(const std::shared_ptr<Object>& object, ObjectType type);
     void RemoveObject(const std::shared_ptr<Object>& object);
 
     inline std::shared_ptr<Camera> GetCamera() const

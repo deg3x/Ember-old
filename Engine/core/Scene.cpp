@@ -21,16 +21,24 @@ void Scene::Use()
 
 void Scene::Tick() const
 {
-    for (const std::shared_ptr<Object>& object : objects)
+    // Opaque object tick and rendering
+    for (const std::shared_ptr<Object>& object : obj_queue_opaque)
+    {
+        object->Tick();
+        object->Draw(camera, lights);
+    }
+    
+    // Transparent object tick and rendering
+    for (const std::shared_ptr<Object>& object : obj_queue_transparent)
     {
         object->Tick();
         object->Draw(camera, lights);
     }
 }
 
-void Scene::AddObject(const std::shared_ptr<Object>& object)
+void Scene::AddObject(const std::shared_ptr<Object>& object, ObjectType type)
 {
-    if (objects.contains(object))
+    if (obj_queue_opaque.contains(object) || obj_queue_transparent.contains(object))
     {
         return;
     }
@@ -47,15 +55,30 @@ void Scene::AddObject(const std::shared_ptr<Object>& object)
         lights.push_back(lightComponent);
     }
 
-    objects.insert(object);
+    switch (type)
+    {
+    case ObjectType::OPAQUE:
+        obj_queue_opaque.insert(object);
+        break;
+    case ObjectType::TRANSPARENT:
+        obj_queue_transparent.insert(object);
+        break;
+    }
 }
 
 void Scene::RemoveObject(const std::shared_ptr<Object>& object)
 {
-    if (!objects.contains(object))
+    if (obj_queue_opaque.contains(object))
     {
+        obj_queue_opaque.erase(object);
+        
         return;
     }
 
-    objects.erase(object);
+    if (obj_queue_transparent.contains(object))
+    {
+        obj_queue_transparent.erase(object);
+        
+        return;
+    }
 }
