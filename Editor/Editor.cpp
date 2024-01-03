@@ -91,7 +91,6 @@ namespace
 		scene.AddObject(dirLightObject, ObjectType::OPAQUE);
 		scene.AddObject(skybox, ObjectType::OPAQUE);
 
-		// Transparent Objects last
 		scene.AddObject(transpSphere, ObjectType::TRANSPARENT);
 		scene.AddObject(grid, ObjectType::TRANSPARENT);
 	}

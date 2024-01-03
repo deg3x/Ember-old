@@ -1,4 +1,5 @@
-﻿#include "Scene.h"
+﻿#include "glad/glad.h"
+#include "Scene.h"
 
 #include "Renderer.h"
 #include "objects/Object.h"
@@ -23,6 +24,7 @@ void Scene::Use()
 void Scene::Tick() const
 {
     Renderer::SetDepthTestMask(true);
+    Renderer::SetFaceCullingEnabled(false);
     
     // Opaque object tick and rendering
     for (const std::shared_ptr<Object>& object : obj_queue_opaque)
@@ -32,6 +34,8 @@ void Scene::Tick() const
     }
 
     Renderer::SetDepthTestMask(false);
+    Renderer::SetFaceCullingEnabled(true);
+    Renderer::SetFaceCullingMode(GL_BACK);
     
     // Transparent object tick and rendering
     for (const std::shared_ptr<Object>& object : obj_queue_transparent)
