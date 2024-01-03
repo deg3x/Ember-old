@@ -205,11 +205,11 @@ void Editor::Tick()
 	Renderer::SetDepthTestEnabled(true);
 	Renderer::SetDepthTestFunc(GL_LESS);
 	Renderer::SetBlendingEnabled(true);
-	Renderer::SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+	Renderer::SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
 	Renderer::SetBlendingOp(GL_FUNC_ADD);
 	
 	Renderer::SetClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-
+	
 	while (!Window::ShouldClose())
 	{
 		Window::ProcessUserInput();
@@ -240,7 +240,7 @@ void Editor::Tick()
 		Window::ResetMouseOffsetData();
 
 		Renderer::Clear();
-
+		
 		scene.Tick();
 		
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

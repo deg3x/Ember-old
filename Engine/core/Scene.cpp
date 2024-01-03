@@ -1,5 +1,6 @@
 ﻿#include "Scene.h"
 
+#include "Renderer.h"
 #include "objects/Object.h"
 #include "components/Camera.h"
 #include "components/lights/Light.h"
@@ -21,12 +22,16 @@ void Scene::Use()
 
 void Scene::Tick() const
 {
+    Renderer::SetDepthTestMask(true);
+    
     // Opaque object tick and rendering
     for (const std::shared_ptr<Object>& object : obj_queue_opaque)
     {
         object->Tick();
         object->Draw(camera, lights);
     }
+
+    Renderer::SetDepthTestMask(false);
     
     // Transparent object tick and rendering
     for (const std::shared_ptr<Object>& object : obj_queue_transparent)
@@ -34,6 +39,8 @@ void Scene::Tick() const
         object->Tick();
         object->Draw(camera, lights);
     }
+
+    Renderer::SetDepthTestMask(true);
 }
 
 void Scene::AddObject(const std::shared_ptr<Object>& object, ObjectType type)
