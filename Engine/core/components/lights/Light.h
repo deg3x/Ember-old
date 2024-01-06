@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include "../../components/Component.h"
+#include "core/components/Component.h"
 
 class Shader;
 

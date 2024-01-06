@@ -1,8 +1,7 @@
 ﻿#include "Viewport.h"
 
-#include "../Editor.h"
+#include "Editor.h"
 #include "core/Framebuffer.h"
-#include "core/Window.h"
 
 Viewport::Viewport(Editor* owner) : EditorTab(owner)
 {

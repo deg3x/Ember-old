@@ -1,15 +1,14 @@
 ﻿#include "Model.h"
 
-#include "textures/TextureDiffuse.h"
-#include "components/meshes/Mesh.h"
-#include "materials/MaterialBlinnPhong.h"
-#include "../utils/PathBuilder.h"
+#include "core/components/meshes/Mesh.h"
+#include "core/textures/TextureDiffuse.h"
+#include "core/materials/MaterialBlinnPhong.h"
+#include "utils/PathBuilder.h"
+#include "logger/Logger.h"
 
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
-
-#include <iostream>
 
 namespace
 {
@@ -161,7 +160,7 @@ std::vector<std::shared_ptr<Mesh>> Model::Load(const char* path)
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
-        std::cerr << "[Assimp] Error: " << importer.GetErrorString() << std::endl;
+        Logger::LogError(importer.GetErrorString(), "Model::Load");
         return loadedMeshes;
     }
 

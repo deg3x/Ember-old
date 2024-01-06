@@ -1,8 +1,8 @@
 #include "DirectionalLight.h"
 
-#include "../../Shader.h"
-#include "../../objects/Object.h"
-#include "../../components/Transform.h"
+#include "core/Shader.h"
+#include "core/objects/Object.h"
+#include "core/components/Transform.h"
 
 void DirectionalLight::SetShaderProperties(const Shader& shaderProgram) const
 {

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Material.h"
+#include "core/materials/Material.h"
 #include "glm/glm.hpp"
 
 class TextureDiffuse;

@@ -1,12 +1,12 @@
 #include "Mesh.h"
 
 #include "glad/glad.h"
-#include "../Camera.h"
-#include "../lights/Light.h"
-#include "../../materials/Material.h"
-#include "../../objects/Object.h"
 
-#include <iostream>
+#include "core/components/Camera.h"
+#include "core/components/lights/Light.h"
+#include "core/materials/Material.h"
+#include "core/objects/Object.h"
+#include "logger/Logger.h"
 
 Mesh::Mesh(const std::shared_ptr<Material>& initMaterial)
 {
@@ -55,7 +55,7 @@ void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::sh
 {
 	if (material == nullptr)
 	{
-		std::cerr << "[!] Mesh has no material!" << std::endl;
+		Logger::LogError("Mesh has no material", "Mesh::Draw");
 		return;
 	}
 	

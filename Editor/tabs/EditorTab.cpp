@@ -1,6 +1,6 @@
 ﻿#include "EditorTab.h"
 
-#include "../Editor.h"
+#include "Editor.h"
 #include "core/Framebuffer.h"
 #include "core/Renderer.h"
 

@@ -2,7 +2,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
-#include "Component.h"
+#include "core/components/Component.h"
 
 class ENGINE_API Transform : public Component
 {

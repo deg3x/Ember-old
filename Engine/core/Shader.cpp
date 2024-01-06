@@ -3,9 +3,9 @@
 #include "glad/glad.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "logger/Logger.h"
 
 #include <string>
-#include <iostream>
 #include <fstream>
 #include <sstream>
 
@@ -67,7 +67,7 @@ int Shader::ReadCodeFromPath(const char* path, std::string& code)
 	}
 	catch (std::ifstream::failure e)
 	{
-		std::cerr << "ERROR::SHADER::FILE_COULD_NOT_BE_READ::" << path << std::endl;
+		Logger::LogError(path, "Shader::ReadCodeFromPath");
 		return -1;
 	}
 
@@ -83,7 +83,7 @@ int Shader::CheckShaderCompiled(unsigned int shaderID)
 	if (!success)
 	{
 		glGetShaderInfoLog(shaderID, 512, NULL, info);
-		std::cerr << "ERROR :: SHADER :: VERTEX :: COMPILATION_FAILED\n" << info << std::endl;
+		Logger::LogError(info, "Shader::CheckShaderCompiled");
 	}
 
 	return success;
@@ -98,7 +98,7 @@ int Shader::CheckProgramLinked(unsigned int shaderProgramID)
 	if (!success)
 	{
 		glGetProgramInfoLog(shaderProgramID, 512, NULL, info);
-		std::cerr << "ERROR :: SHADER :: PROGRAM :: LINKING_FAILED\n" << info << std::endl;
+		Logger::LogError(info, "Shader::CheckProgramLinked");
 	}
 
 	return success;

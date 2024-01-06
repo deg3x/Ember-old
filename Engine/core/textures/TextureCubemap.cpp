@@ -2,9 +2,9 @@
 
 #include "glad/glad.h"
 #include "stb_image.h"
-#include "../../utils/PathBuilder.h"
 
-#include <iostream>
+#include "utils/PathBuilder.h"
+#include "logger/Logger.h"
 
 TextureCubemap::TextureCubemap()
 {
@@ -55,7 +55,7 @@ void TextureCubemap::InitializeTexture(const char* texturePath)
         }
         else
         {
-            std::cout << "Cubemap tex failed to load at path: " << fullPath << std::endl;
+            Logger::LogError(("Cubemap tex failed to load at path: " + fullPath).c_str(), "TextureCubemap::InitializeTexture");
         }
         
         stbi_image_free(data);

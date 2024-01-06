@@ -11,27 +11,29 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "core/Framebuffer.h"
-#include "tabs/EditorTab.h"
-#include "core/Window.h"
-#include "core/objects/Object.h"
-#include "core/components/meshes/Cube.h"
-#include "core/components/meshes/Plane.h"
-#include "core/components/meshes/Sphere.h"
-#include "core/components/Camera.h"
-#include "core/components/Transform.h"
-#include "core/components/lights/DirectionalLight.h"
-#include "core/components/lights/Light.h"
-#include "core/materials/Material.h"
-#include "core/materials/MaterialBlinnPhong.h"
 #include "core/Scene.h"
 
-#include <memory>
-
+#include "core/Window.h"
 #include "core/Renderer.h"
+#include "core/objects/Object.h"
+#include "core/components/Camera.h"
+#include "core/materials/Material.h"
+#include "core/components/Transform.h"
+#include "core/components/meshes/Cube.h"
+#include "core/components/meshes/Plane.h"
+#include "core/components/lights/Light.h"
+#include "core/components/meshes/Sphere.h"
+#include "core/components/lights/DirectionalLight.h"
+#include "core/materials/MaterialBlinnPhong.h"
+
 #include "core/objects/EditorGrid.h"
 #include "core/textures/TextureDiffuse.h"
 #include "core/objects/Skybox.h"
+
+#include "tabs/EditorTab.h"
 #include "tabs/Viewport.h"
+
+#include <memory>
 
 namespace
 {

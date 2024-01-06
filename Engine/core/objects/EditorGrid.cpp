@@ -2,9 +2,9 @@
 
 #include <glad/glad.h>
 
-#include "../Renderer.h"
-#include "../components/meshes/Plane.h"
-#include "../materials/MaterialEditorGrid.h"
+#include "core/Renderer.h"
+#include "core/components/meshes/Plane.h"
+#include "core/materials/MaterialEditorGrid.h"
 
 #include <memory>
 

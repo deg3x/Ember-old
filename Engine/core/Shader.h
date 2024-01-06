@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Definitions.h"
+#include "Definitions.h"
 #include "glm/glm.hpp"
 
 #include <string>

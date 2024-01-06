@@ -1,11 +1,8 @@
 #include "Camera.h"
 
-#include <iostream>
-
-#include "Transform.h"
-#include "../Renderer.h"
-#include "../objects/Object.h"
-#include "../objects/Skybox.h"
+#include "core/Renderer.h"
+#include "core/objects/Object.h"
+#include "core/components/Transform.h"
 
 glm::mat4x4 Camera::GetViewMatrix() const
 {

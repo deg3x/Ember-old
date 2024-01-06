@@ -1,6 +1,6 @@
 #include "Plane.h"
 
-#include "../../materials/Material.h"
+#include "core/materials/Material.h"
 
 Plane::Plane(const std::shared_ptr<Material>& initMaterial) : Mesh(initMaterial)
 {

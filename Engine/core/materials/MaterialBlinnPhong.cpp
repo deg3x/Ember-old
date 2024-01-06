@@ -1,11 +1,11 @@
 ﻿#include "MaterialBlinnPhong.h"
 
-#include "../Shader.h"
-#include "../textures/TextureDiffuse.h"
-#include "../objects/Object.h"
-#include "../components/Camera.h"
-#include "../components/Transform.h"
-#include "../../utils/PathBuilder.h"
+#include "core/Shader.h"
+#include "core/objects/Object.h"
+#include "core/components/Camera.h"
+#include "core/components/Transform.h"
+#include "core/textures/TextureDiffuse.h"
+#include "utils/PathBuilder.h"
 
 MaterialBlinnPhong::MaterialBlinnPhong()
 {

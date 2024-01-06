@@ -1,10 +1,10 @@
 ﻿#include "MaterialUnlit.h"
 
-#include "../Shader.h"
-#include "../components/Camera.h"
-#include "../components/Transform.h"
-#include "../textures/TextureDiffuse.h"
-#include "../../utils/PathBuilder.h"
+#include "core/Shader.h"
+#include "core/components/Camera.h"
+#include "core/components/Transform.h"
+#include "core/textures/TextureDiffuse.h"
+#include "utils/PathBuilder.h"
 
 MaterialUnlit::MaterialUnlit()
 {

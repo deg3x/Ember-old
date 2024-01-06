@@ -2,11 +2,11 @@
 
 #include <glad/glad.h>
 
-#include "../textures/TextureCubemap.h"
-#include "../materials/Material.h"
-#include "../Renderer.h"
-#include "../components/meshes/Cube.h"
-#include "../materials/MaterialSkybox.h"
+#include "core/Renderer.h"
+#include "core/materials/Material.h"
+#include "core/components/meshes/Cube.h"
+#include "core/textures/TextureCubemap.h"
+#include "core/materials/MaterialSkybox.h"
 
 Skybox::Skybox()
 {

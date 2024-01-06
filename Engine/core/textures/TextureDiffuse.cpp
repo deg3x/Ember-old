@@ -2,9 +2,9 @@
 
 #include "glad/glad.h"
 #include "stb_image.h"
-#include "../../utils/PathBuilder.h"
 
-#include <iostream>
+#include "utils/PathBuilder.h"
+#include "logger/Logger.h"
 
 TextureDiffuse::TextureDiffuse()
 {
@@ -42,7 +42,7 @@ void TextureDiffuse::InitializeTexture(const char* texturePath)
     unsigned char *data = stbi_load(texturePath, &width, &height, &nChannels, 0);
     if (!data)
     {
-        std::cerr << "[Texture] Error while trying to parse texture..." << std::endl;
+        Logger::LogError("Unable to parse texture", "TextureDiffuse::InitializeTexture");
         return;
     }
 
@@ -58,7 +58,7 @@ void TextureDiffuse::InitializeTexture(const char* texturePath)
         format = TextureFormat::RGBA;
         break;
     default:
-        std::cerr << "[Texture] Unknown number of channels while trying to parse texture..." << std::endl;
+        Logger::LogError("Unknown number of channels while trying to parse texture", "TextureDiffuse::InitializeTexture");
         return;
     }
 

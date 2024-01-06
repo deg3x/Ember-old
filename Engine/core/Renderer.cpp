@@ -3,11 +3,9 @@
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 
-#include "../utils/Types.h"
-#include "Window.h"
-
-#include <iostream>
-
+#include "core/Window.h"
+#include "utils/Types.h"
+#include "logger/Logger.h"
 
 unsigned int Renderer::clearBits;
 
@@ -15,7 +13,7 @@ void Renderer::Initialize()
 {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        Logger::LogError("Failed to initialize GLAD", "Renderer::Initialize");
     }
 
     int width  = Window::GetWindowWidth();

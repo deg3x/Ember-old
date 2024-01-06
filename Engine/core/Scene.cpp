@@ -1,10 +1,10 @@
 ﻿#include "glad/glad.h"
 #include "Scene.h"
 
-#include "Renderer.h"
-#include "objects/Object.h"
-#include "components/Camera.h"
-#include "components/lights/Light.h"
+#include "core/Renderer.h"
+#include "core/objects/Object.h"
+#include "core/components/Camera.h"
+#include "core/components/lights/Light.h"
 
 Scene* Scene::Active = nullptr;
 

@@ -3,9 +3,9 @@
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 #include "glm/glm.hpp"
-#include <glm/gtc/epsilon.hpp>
+#include "glm/gtc/epsilon.hpp"
 
-#include <iostream>
+#include "logger/Logger.h"
 
 GLFWwindow* Window::window;
 WindowData Window::windowData;
@@ -22,7 +22,7 @@ void Window::Initialize()
 
 	if (!glfwInit())
 	{
-		std::cerr << "Failed to initialize GLFW!" << std::endl;
+		Logger::LogError("Failed to initialize GLFW", "Window::Initialize");
 	}
 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -35,7 +35,7 @@ void Window::Initialize()
 	window = glfwCreateWindow(windowData.windowW, windowData.windowH, windowData.title, NULL, NULL);
 	if (window == NULL)
 	{
-		std::cerr << "Failed to create GLFW window!" << std::endl;
+		Logger::LogError("Failed to create GLFW window", "Window::Initialize");
 		glfwTerminate();
 	}
 

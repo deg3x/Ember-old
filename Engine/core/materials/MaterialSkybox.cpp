@@ -1,10 +1,10 @@
 ﻿#include "MaterialSkybox.h"
 
-#include "../Shader.h"
-#include "../textures/TextureCubemap.h"
-#include "../components/Camera.h"
-#include "../components/Transform.h"
-#include "../../utils/PathBuilder.h"
+#include "core/Shader.h"
+#include "core/textures/TextureCubemap.h"
+#include "core/components/Camera.h"
+#include "core/components/Transform.h"
+#include "utils/PathBuilder.h"
 
 MaterialSkybox::MaterialSkybox()
 {
