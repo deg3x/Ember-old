@@ -22,5 +22,5 @@ public:
     EditorTab(Editor* owner);
     virtual ~EditorTab();
 
-    virtual void Tick();
+    virtual void Tick() {}
 };

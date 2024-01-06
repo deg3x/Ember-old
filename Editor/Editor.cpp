@@ -147,21 +147,20 @@ Editor::Editor()
 	Window::Initialize();
 	Renderer::Initialize();
 	
-	viewportFB = std::make_shared<Framebuffer>(1024, 768);
-	
 	tabs.emplace_back(std::make_shared<Viewport>(this));
 
 	IMGUI_CHECKVERSION();
 	
 	ImGui::CreateContext();
+	ImGui::StyleColorsDark();
 
 	ImGuiIO& io = ImGui::GetIO();
+	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	io.IniFilename  = "editor.ini";
-
-	ImGui::StyleColorsDark();
 
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -200,8 +199,6 @@ void Editor::Tick()
 	ImGuiIO& io = ImGui::GetIO();
 	
 	ImVec4 clear_color = ImVec4(0.16f, 0.15f, 0.18f, 1.00f);
-
-	viewportFB->Bind();
 
 	Renderer::SetDepthTestEnabled(true);
 	Renderer::SetDepthTestFunc(GL_LESS);
