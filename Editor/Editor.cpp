@@ -10,93 +10,26 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#include "core/Framebuffer.h"
 #include "core/Scene.h"
-
 #include "core/Window.h"
 #include "core/Renderer.h"
 #include "core/objects/Object.h"
 #include "core/components/Camera.h"
-#include "core/materials/Material.h"
 #include "core/components/Transform.h"
-#include "core/components/meshes/Cube.h"
-#include "core/components/meshes/Plane.h"
-#include "core/components/lights/Light.h"
-#include "core/components/meshes/Sphere.h"
-#include "core/components/lights/DirectionalLight.h"
-#include "core/materials/MaterialBlinnPhong.h"
-
-#include "core/objects/EditorGrid.h"
-#include "core/textures/TextureDiffuse.h"
-#include "core/objects/Skybox.h"
 
 #include "tabs/EditorTab.h"
 #include "tabs/Viewport.h"
+#include "tabs/MainMenuBar.h"
 
 #include <memory>
 
+#include "imgui/imgui_internal.h"
+#include "tabs/Console.h"
+#include "tabs/Hierarchy.h"
+#include "tabs/Inspector.h"
+
 namespace
 {
-	void SetupStartupScene(Scene& scene)
-	{
-		const std::shared_ptr<Object> cameraObject = std::make_shared<Object>();
-		cameraObject->CreateComponent<Camera>();
-		cameraObject->transform->position = glm::vec3(0.0f, 0.0f, 3.0f);
-		cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
-
-		const std::shared_ptr<TextureDiffuse> containerTex = std::make_shared<TextureDiffuse>("./Data/images/container.jpg");
-		const std::shared_ptr<MaterialBlinnPhong> containerMat = std::make_shared<MaterialBlinnPhong>();
-		containerMat->SetDiffuseTexture(containerTex);
-
-		const std::shared_ptr<MaterialBlinnPhong> defaultMat = std::make_shared<MaterialBlinnPhong>();
-
-		const std::shared_ptr<Object> sphereObject = std::make_shared<Object>();
-		sphereObject->CreateComponent<Sphere>(32, 32, 0.5f, defaultMat);
-		sphereObject->transform->position = glm::vec3(-0.8f, 0.0f, -0.8f);
-
-		const std::shared_ptr<Object> planeObject = std::make_shared<Object>();
-		planeObject->CreateComponent<Plane>(10, 3.0f, containerMat);
-		planeObject->transform->position = glm::vec3(0.0f, -0.505f, 0.0f);
-
-		const std::shared_ptr<Object> cubeObject = std::make_shared<Object>();
-		cubeObject->CreateComponent<Cube>(containerMat);
-		cubeObject->transform->position = glm::vec3(0.8f, 0.0f, -0.8f);
-
-		const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>();
-		bunnyObject->transform->position = glm::vec3(0.8f, -0.33f, 0.8f);
-		bunnyObject->transform->scale =glm::vec3(0.5f, 0.5f, 0.5f);
-		bunnyObject->LoadModel("./Data/models/bunny.obj");
-
-		const std::shared_ptr<MaterialBlinnPhong> transpMat = std::make_shared<MaterialBlinnPhong>();
-		transpMat->diffuseColor.a = 0.6f;
-		const std::shared_ptr<Object> transpSphere = std::make_shared<Object>();
-		transpSphere->CreateComponent<Sphere>(32, 32, 0.3f, transpMat);
-		transpSphere->transform->position = glm::vec3(-0.8f, 0.0f, 0.8f);
-
-		const std::shared_ptr<EditorGrid> grid = std::make_shared<EditorGrid>();
-		grid->transform->position = glm::vec3(0.0f, -0.51f, 0.0f);
-		grid->transform->scale = glm::vec3(100.0f, 1.0f, 100.0f);
-		const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>();
-
-		const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>();
-		dirLightObject->CreateComponent<DirectionalLight>();
-		dirLightObject->transform->rotation.x = 30.0f;
-		dirLightObject->transform->rotation.y = -30.0f;
-
-		dirLightObject->GetComponent<Light>()->SetShaderProperties(*containerMat->GetShader());
-
-		scene.AddObject(cameraObject, ObjectType::OPAQUE);
-		scene.AddObject(sphereObject, ObjectType::OPAQUE);
-		scene.AddObject(planeObject, ObjectType::OPAQUE);
-		scene.AddObject(cubeObject, ObjectType::OPAQUE);
-		scene.AddObject(bunnyObject, ObjectType::OPAQUE);
-		scene.AddObject(dirLightObject, ObjectType::OPAQUE);
-		scene.AddObject(skybox, ObjectType::OPAQUE);
-
-		scene.AddObject(transpSphere, ObjectType::TRANSPARENT);
-		scene.AddObject(grid, ObjectType::TRANSPARENT);
-	}
-
 	void DrawExamples(bool draw, const ImGuiIO& io)
 	{
 		if(!draw)
@@ -147,7 +80,11 @@ Editor::Editor()
 	Window::Initialize();
 	Renderer::Initialize();
 	
+	tabs.emplace_back(std::make_shared<MainMenuBar>(this));
 	tabs.emplace_back(std::make_shared<Viewport>(this));
+	tabs.emplace_back(std::make_shared<Inspector>(this));
+	tabs.emplace_back(std::make_shared<Console>(this));
+	tabs.emplace_back(std::make_shared<Hierarchy>(this));
 
 	IMGUI_CHECKVERSION();
 	
@@ -158,7 +95,20 @@ Editor::Editor()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+	io.ConfigWindowsResizeFromEdges  = true;
+	io.ConfigViewportsNoTaskBarIcon  = true;
+	io.ConfigViewportsNoDecoration   = true;
 	io.IniFilename  = "editor.ini";
+
+	windowFlags  = 0x0;
+	windowFlags |= ImGuiWindowFlags_NoDocking;
+	windowFlags |= ImGuiWindowFlags_NoTitleBar;
+	windowFlags |= ImGuiWindowFlags_NoCollapse;
+	windowFlags |= ImGuiWindowFlags_NoResize;
+	windowFlags |= ImGuiWindowFlags_NoMove;
+	windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+	windowFlags |= ImGuiWindowFlags_NoNavFocus;
 
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -188,13 +138,9 @@ void Editor::Tick()
     Scene scene;
 	scene.Use();
 
-	SetupStartupScene(scene);
-
 	float theta  = -glm::quarter_pi<float>();
 	float phi    = -glm::half_pi<float>();
 	float radius = (float)scene.GetCamera()->GetParent()->transform->position.length();
-
-	ImGuiIO& io = ImGui::GetIO();
 	
 	ImVec4 clear_color = ImVec4(0.16f, 0.15f, 0.18f, 1.00f);
 
@@ -210,18 +156,7 @@ void Editor::Tick()
 	{
 		Window::ProcessUserInput();
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-		for (int i = 0; i < tabs.size(); i++)
-		{
-			tabs[i]->Tick();
-		}
-
-		DrawExamples(false, io);
-
-		ImGui::Render();
+		EditorRenderBegin();
 
 		const MouseData mouse = Window::GetMouseData();
 
@@ -239,16 +174,62 @@ void Editor::Tick()
 		
 		scene.Tick();
 		
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-		}
+		EditorRenderEnd();
 		
 		Window::SwapBuffers();
+	}
+}
+
+void Editor::EditorRenderBegin()
+{
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+
+	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(viewport->WorkPos);
+	ImGui::SetNextWindowSize(viewport->WorkSize);
+	ImGui::SetNextWindowViewport(viewport->ID);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	// begin window
+	std::string name = "Editor";
+	bool open = true;
+	    
+	ImGui::Begin(name.c_str(), &open, windowFlags);
+	ImGui::PopStyleVar(2);
+
+	// Create dock space parent window
+	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
+	{
+		const auto window_id = ImGui::GetID(name.c_str());
+		ImGui::DockSpace(window_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
+	}
+
+	for (const std::shared_ptr<EditorTab>& tab : tabs)
+	{
+		tab->Tick();
+	}
+
+	ImGui::End();
+	
+	DrawExamples(false, ImGui::GetIO());
+
+	ImGui::Render();
+}
+
+void Editor::EditorRenderEnd()
+{
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	const ImGuiIO& io = ImGui::GetIO();
+	
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		GLFWwindow* backup_current_context = glfwGetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		glfwMakeContextCurrent(backup_current_context);
 	}
 }

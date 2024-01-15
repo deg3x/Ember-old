@@ -31,7 +31,7 @@ private:
     std::shared_ptr<Camera> camera;
     
 public:
-    Scene() = default;
+    Scene();
     virtual ~Scene();
 
     void Use();

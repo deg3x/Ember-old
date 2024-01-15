@@ -14,8 +14,8 @@ protected:
     std::string title = "Unnamed Tab";
     int flags         = ImGuiWindowFlags_NoCollapse;
 
-    int width;
-    int height;
+    float width;
+    float height;
     
 public:
     EditorTab() = delete;
