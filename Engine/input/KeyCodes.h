@@ -1,3 +1,5 @@
+#pragma once
+
 // We use the GLFW keycode mappings for 2 reasons:
 //     - Ease of API translation
 //     - They are ASCII compliant and can be easily converted to text
