@@ -10,11 +10,7 @@ void Input::Initialize()
 
 void Input::PollInput()
 {
-    if (glfwGetKey(Window::GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(Window::GetWindow(), true);
-    }
-	
+    // We should move this call to our own Event queue Poll function
     glfwPollEvents();
 }
 
