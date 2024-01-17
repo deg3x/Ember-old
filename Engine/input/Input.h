@@ -4,10 +4,13 @@
 
 #include "Definitions.h"
 #include "KeyCodes.h"
-#include "MouseCodes.h"
+#include "Mouse.h"
 
 class ENGINE_API Input
 {
+public:
+    static MouseData Mouse;
+    
 public:
     Input() = delete;
 
@@ -17,5 +20,10 @@ public:
     static bool GetKey(int keycode);
     
     static bool GetMouse(int mouseBtn);
-    static glm::vec2<double> GetMousePos();
+    static glm::dvec2 GetMousePos();
+    
+    static void ResetMouseOffsetData();
+    
+protected:
+    static void UpdateMouseData();
 };

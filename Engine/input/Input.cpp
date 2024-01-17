@@ -1,15 +1,24 @@
 ﻿#include "Input.h"
+
 #include "core/Window.h"
+
 #include "glfw/glfw3.h"
+#include "glm/gtc/epsilon.hpp"
+
+MouseData Input::Mouse;
 
 void Input::Initialize()
 {
     glfwSetInputMode(Window::GetWindow(), GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetInputMode(Window::GetWindow(), GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
+
+    Mouse.sensitivity = 0.01f;
 }
 
 void Input::PollInput()
 {
+    UpdateMouseData();
+    
     // We should move this call to our own Event queue Poll function
     glfwPollEvents();
 }
@@ -30,11 +39,44 @@ bool Input::GetMouse(int mouseBtn)
     return state == GLFW_PRESS;
 }
 
-glm::vec2<double> Input::GetMousePos()
+glm::dvec2 Input::GetMousePos()
 {
-    glm::vec2<double> mousePos;
+    glm::dvec2 mousePos;
 
     glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
 
     return mousePos;
+}
+
+void Input::ResetMouseOffsetData()
+{
+    Mouse.leftMouseXOffset = 0.0;
+    Mouse.leftMouseYOffset = 0.0;
+    Mouse.rightMouseXOffset = 0.0;
+    Mouse.rightMouseYOffset = 0.0;
+}
+
+void Input::UpdateMouseData()
+{
+    Mouse.leftButtonPressed   = GetMouse(MOUSE_BTN_LEFT);
+    Mouse.rightButtonPressed  = GetMouse(MOUSE_BTN_RIGHT);
+    Mouse.middleButtonPressed = GetMouse(MOUSE_BTN_MIDDLE);
+
+    glm::dvec2 mousePos;
+
+    glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
+	
+    if (glm::epsilonEqual(mousePos.x, Mouse.lastMouseX, DBL_EPSILON) && glm::epsilonEqual(mousePos.y, Mouse.lastMouseY, DBL_EPSILON))
+    {
+        return;
+    }
+
+    Mouse.leftMouseXOffset = Mouse.leftButtonPressed ? mousePos.x - Mouse.lastMouseX : 0.0;
+    Mouse.leftMouseYOffset = Mouse.leftButtonPressed ? mousePos.y - Mouse.lastMouseY : 0.0;
+
+    Mouse.rightMouseXOffset = Mouse.rightButtonPressed ? mousePos.x - Mouse.lastMouseX : 0.0;
+    Mouse.rightMouseYOffset = Mouse.rightButtonPressed ? mousePos.y - Mouse.lastMouseY : 0.0;
+    
+    Mouse.lastMouseX = mousePos.x;
+    Mouse.lastMouseY = mousePos.y;
 }

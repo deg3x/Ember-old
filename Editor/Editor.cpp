@@ -16,17 +16,16 @@
 #include "core/objects/Object.h"
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"
+#include "input/Input.h"
 
 #include "tabs/EditorTab.h"
 #include "tabs/Viewport.h"
 #include "tabs/MainMenuBar.h"
-
-#include <memory>
-
-#include "imgui/imgui_internal.h"
 #include "tabs/Console.h"
 #include "tabs/Hierarchy.h"
 #include "tabs/Inspector.h"
+
+#include <memory>
 
 namespace
 {
@@ -78,6 +77,7 @@ Editor::Editor()
 {
 	// Window needs to be initialized before the renderer
 	Window::Initialize();
+	Input::Initialize();
 	Renderer::Initialize();
 	
 	tabs.emplace_back(std::make_shared<MainMenuBar>(this));
@@ -154,11 +154,11 @@ void Editor::Tick()
 	
 	while (!Window::ShouldClose())
 	{
-		Window::ProcessUserInput();
-
+		Input::PollInput();
+		
 		EditorRenderBegin();
 
-		const MouseData mouse = Window::GetMouseData();
+		const MouseData mouse = Input::Mouse;
 
 		theta  += (float)mouse.leftMouseXOffset * mouse.sensitivity;
 		phi	   += (float)mouse.leftMouseYOffset * mouse.sensitivity;
@@ -168,7 +168,7 @@ void Editor::Tick()
 		scene.GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
 		scene.GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
 
-		Window::ResetMouseOffsetData();
+		Input::ResetMouseOffsetData();
 
 		Renderer::Clear();
 		

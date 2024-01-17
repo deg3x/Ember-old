@@ -12,3 +12,17 @@
 #define MOUSE_BTN_LEFT      MOUSE_BTN_1
 #define MOUSE_BTN_RIGHT     MOUSE_BTN_2
 #define MOUSE_BTN_MIDDLE    MOUSE_BTN_3
+
+struct MouseData
+{
+    float sensitivity;
+    bool leftButtonPressed;
+    bool rightButtonPressed;
+    bool middleButtonPressed;
+    double lastMouseX;
+    double lastMouseY;
+    double leftMouseXOffset;
+    double leftMouseYOffset;
+    double rightMouseXOffset;
+    double rightMouseYOffset;
+};
