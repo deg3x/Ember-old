@@ -135,42 +135,10 @@ Editor::~Editor()
 
 void Editor::Tick()
 {
-    Scene scene;
-	scene.Use();
-
-	float theta  = -glm::quarter_pi<float>();
-	float phi    = -glm::half_pi<float>();
-	float radius = (float)scene.GetCamera()->GetParent()->transform->position.length();
-	
-	ImVec4 clear_color = ImVec4(0.16f, 0.15f, 0.18f, 1.00f);
-
-	Renderer::SetDepthTestEnabled(true);
-	Renderer::SetDepthTestFunc(GL_LESS);
-	Renderer::SetBlendingEnabled(true);
-	Renderer::SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
-	Renderer::SetBlendingOp(GL_FUNC_ADD);
-	
-	Renderer::SetClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-	
 	while (!Window::ShouldClose())
 	{
-		Input::PollInput();
-		
 		EditorRenderBegin();
-
-		const MouseData mouse = Input::Mouse;
-
-		theta  += (float)mouse.leftMouseDragDeltaX * mouse.sensitivity;
-		phi	   += (float)mouse.leftMouseDragDeltaY * mouse.sensitivity;
-		radius -= (float)mouse.rightMouseDragDeltaY * mouse.sensitivity;
-
-		scene.GetCamera()->GetParent()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
-		scene.GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
-		scene.GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
-
-		Renderer::Clear();
 		
-		scene.Tick();
 		
 		EditorRenderEnd();
 		
