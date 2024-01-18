@@ -19,10 +19,10 @@ struct MouseData
     bool leftButtonPressed;
     bool rightButtonPressed;
     bool middleButtonPressed;
-    double lastMouseX;
-    double lastMouseY;
-    double leftMouseXOffset;
-    double leftMouseYOffset;
-    double rightMouseXOffset;
-    double rightMouseYOffset;
+    double posX;
+    double posY;
+    double leftMouseDragDeltaX;
+    double leftMouseDragDeltaY;
+    double rightMouseDragDeltaX;
+    double rightMouseDragDeltaY;
 };

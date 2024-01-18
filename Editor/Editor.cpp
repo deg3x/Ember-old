@@ -160,15 +160,13 @@ void Editor::Tick()
 
 		const MouseData mouse = Input::Mouse;
 
-		theta  += (float)mouse.leftMouseXOffset * mouse.sensitivity;
-		phi	   += (float)mouse.leftMouseYOffset * mouse.sensitivity;
-		radius -= (float)mouse.rightMouseYOffset * mouse.sensitivity;
+		theta  += (float)mouse.leftMouseDragDeltaX * mouse.sensitivity;
+		phi	   += (float)mouse.leftMouseDragDeltaY * mouse.sensitivity;
+		radius -= (float)mouse.rightMouseDragDeltaY * mouse.sensitivity;
 
 		scene.GetCamera()->GetParent()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
 		scene.GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
 		scene.GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
-
-		Input::ResetMouseOffsetData();
 
 		Renderer::Clear();
 		

@@ -48,14 +48,6 @@ glm::dvec2 Input::GetMousePos()
     return mousePos;
 }
 
-void Input::ResetMouseOffsetData()
-{
-    Mouse.leftMouseXOffset = 0.0;
-    Mouse.leftMouseYOffset = 0.0;
-    Mouse.rightMouseXOffset = 0.0;
-    Mouse.rightMouseYOffset = 0.0;
-}
-
 void Input::UpdateMouseData()
 {
     Mouse.leftButtonPressed   = GetMouse(MOUSE_BTN_LEFT);
@@ -66,17 +58,17 @@ void Input::UpdateMouseData()
 
     glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
 	
-    if (glm::epsilonEqual(mousePos.x, Mouse.lastMouseX, DOUBLE_SMALL) && glm::epsilonEqual(mousePos.y, Mouse.lastMouseY, DOUBLE_SMALL))
+    if (glm::epsilonEqual(mousePos.x, Mouse.posX, DOUBLE_SMALL) && glm::epsilonEqual(mousePos.y, Mouse.posY, DOUBLE_SMALL))
     {
         return;
     }
 
-    Mouse.leftMouseXOffset = Mouse.leftButtonPressed ? mousePos.x - Mouse.lastMouseX : 0.0;
-    Mouse.leftMouseYOffset = Mouse.leftButtonPressed ? mousePos.y - Mouse.lastMouseY : 0.0;
+    Mouse.leftMouseDragDeltaX = Mouse.leftButtonPressed ? mousePos.x - Mouse.posX : 0.0;
+    Mouse.leftMouseDragDeltaY = Mouse.leftButtonPressed ? mousePos.y - Mouse.posY : 0.0;
 
-    Mouse.rightMouseXOffset = Mouse.rightButtonPressed ? mousePos.x - Mouse.lastMouseX : 0.0;
-    Mouse.rightMouseYOffset = Mouse.rightButtonPressed ? mousePos.y - Mouse.lastMouseY : 0.0;
+    Mouse.rightMouseDragDeltaX = Mouse.rightButtonPressed ? mousePos.x - Mouse.posX : 0.0;
+    Mouse.rightMouseDragDeltaY = Mouse.rightButtonPressed ? mousePos.y - Mouse.posY : 0.0;
     
-    Mouse.lastMouseX = mousePos.x;
-    Mouse.lastMouseY = mousePos.y;
+    Mouse.posX = mousePos.x;
+    Mouse.posY = mousePos.y;
 }
