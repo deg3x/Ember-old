@@ -66,7 +66,7 @@ void Input::UpdateMouseData()
 
     glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
 	
-    if (glm::epsilonEqual(mousePos.x, Mouse.lastMouseX, DBL_EPSILON) && glm::epsilonEqual(mousePos.y, Mouse.lastMouseY, DBL_EPSILON))
+    if (glm::epsilonEqual(mousePos.x, Mouse.lastMouseX, DOUBLE_SMALL) && glm::epsilonEqual(mousePos.y, Mouse.lastMouseY, DOUBLE_SMALL))
     {
         return;
     }

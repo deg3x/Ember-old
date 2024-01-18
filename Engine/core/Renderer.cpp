@@ -23,7 +23,7 @@ void Renderer::Initialize()
 #if defined(_WIN32)
     SetViewport(0, 0, width, height);
 #elif __APPLE__
-    SetGLViewport(0, 0, 2 * width, 2 * height);
+    SetViewport(0, 0, 2 * width, 2 * height);
 #endif
     
     clearBits = 0x0;

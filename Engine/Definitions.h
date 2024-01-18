@@ -14,3 +14,11 @@
 #elif __APPLE__
     #define ENGINE_API __attribute__((visibility("default")))
 #endif
+
+#if defined(_WIN32)
+    #define DOUBLE_SMALL DBL_EPSILON
+    #define FLOAT_SMALL  FTL_EPSILON
+#elif __APPLE__
+    #define DOUBLE_SMALL __DBL_EPSILON__
+    #define FLOAT_SMALL  __FLT_EPSILON__
+#endif

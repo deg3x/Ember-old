@@ -1,6 +1,6 @@
 ﻿#include "EditorGrid.h"
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 #include "core/Renderer.h"
 #include "core/components/meshes/Plane.h"

@@ -1,6 +1,6 @@
 ﻿#include "Skybox.h"
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 #include "core/Renderer.h"
 #include "core/materials/Material.h"
