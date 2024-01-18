@@ -1,22 +1,14 @@
 ﻿#include "Editor.h"
 
-#include "glad/glad.h"
 #include "glfw/glfw3.h"
-
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#include "core/Scene.h"
+#include "Engine.h"
 #include "core/Window.h"
-#include "core/Renderer.h"
-#include "core/objects/Object.h"
-#include "core/components/Camera.h"
-#include "core/components/Transform.h"
-#include "input/Input.h"
+#include "utils/PathBuilder.h"
 
 #include "tabs/EditorTab.h"
 #include "tabs/Viewport.h"
@@ -25,7 +17,7 @@
 #include "tabs/Hierarchy.h"
 #include "tabs/Inspector.h"
 
-#include <memory>
+#include "themes/EditorTheme.h"
 
 namespace
 {
@@ -75,10 +67,7 @@ namespace
 
 Editor::Editor()
 {
-	// Window needs to be initialized before the renderer
-	Window::Initialize();
-	Input::Initialize();
-	Renderer::Initialize();
+	Engine::Initialize();
 	
 	tabs.emplace_back(std::make_shared<MainMenuBar>(this));
 	tabs.emplace_back(std::make_shared<Viewport>(this));
@@ -121,6 +110,8 @@ Editor::Editor()
 
 	ImGui_ImplGlfw_InitForOpenGL(Window::GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 410");
+	
+	EditorTheme::ApplyTheme();
 }
 
 Editor::~Editor()
