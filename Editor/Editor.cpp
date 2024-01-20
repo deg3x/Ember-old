@@ -8,6 +8,7 @@
 
 #include "Engine.h"
 #include "core/Window.h"
+#include "imgui/imgui_internal.h"
 #include "utils/PathBuilder.h"
 
 #include "tabs/EditorTab.h"
@@ -160,8 +161,29 @@ void Editor::EditorRenderBegin()
 	// Create dock space parent window
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
 	{
-		const auto window_id = ImGui::GetID(name.c_str());
-		ImGui::DockSpace(window_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
+		const ImGuiID windowID = ImGui::GetID(name.c_str());
+
+		if (ImGui::DockBuilderGetNode(windowID) == nullptr)
+		{
+			ImGui::DockBuilderRemoveNode(windowID);
+
+			ImGui::DockBuilderAddNode(windowID, ImGuiDockNodeFlags_DockSpace);
+			ImGui::DockBuilderSetNodeSize(windowID, ImGui::GetWindowSize());
+
+			ImGuiID viewportID  = windowID;
+			ImGuiID hierarchyID = ImGui::DockBuilderSplitNode(viewportID, ImGuiDir_Right, 0.35f, nullptr, &viewportID);
+			ImGuiID inspectorID = ImGui::DockBuilderSplitNode(hierarchyID, ImGuiDir_Right, 0.6f, nullptr, &hierarchyID);
+			ImGuiID consoleID   = ImGui::DockBuilderSplitNode(viewportID, ImGuiDir_Down, 0.3f, nullptr, &viewportID);
+
+			ImGui::DockBuilderDockWindow("Viewport", viewportID);
+			ImGui::DockBuilderDockWindow("Hierarchy", hierarchyID);
+			ImGui::DockBuilderDockWindow("Inspector", inspectorID);
+			ImGui::DockBuilderDockWindow("Console", consoleID);
+
+			ImGui::DockBuilderFinish(windowID);
+		}
+		
+		ImGui::DockSpace(windowID, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
 	}
 
 	for (const std::shared_ptr<EditorTab>& tab : tabs)
