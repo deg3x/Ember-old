@@ -40,6 +40,17 @@ void Logger::Log(const LogEntry& entry, LogOutput output)
     }
 }
 
+void Logger::Log(const std::string& message, LogOutput output)
+{
+    LogEntry newEntry;
+
+    newEntry.category = LogCategory::INFO;
+    newEntry.context  = "NO CONTEXT";
+    newEntry.message  = message;
+
+    Log(newEntry);
+}
+
 void Logger::Log(LogCategory category, const std::string& message, const std::string& context, LogOutput output)
 {
     LogEntry newEntry;
