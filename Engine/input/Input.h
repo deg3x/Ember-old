@@ -21,6 +21,8 @@ public:
     
     static bool GetMouse(int mouseBtn);
     static glm::dvec2 GetMousePos();
+
+    static void ResetMouseOffsetData();
     
 protected:
     static void UpdateMouseData();

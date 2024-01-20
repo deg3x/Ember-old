@@ -90,6 +90,9 @@ void Viewport::Tick()
 
     viewportFB->Unbind();
 
+    // We may need to move this in a pipeline stage (PostTick or something)
+    Input::ResetMouseOffsetData();
+
     ImGui::Image(reinterpret_cast<ImTextureID>(viewportFB->GetTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
 
     ImGui::End();

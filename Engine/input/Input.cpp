@@ -48,6 +48,14 @@ glm::dvec2 Input::GetMousePos()
     return mousePos;
 }
 
+void Input::ResetMouseOffsetData()
+{
+    Mouse.leftMouseDragDeltaX  = 0.0;
+    Mouse.leftMouseDragDeltaY  = 0.0;
+    Mouse.rightMouseDragDeltaX = 0.0;
+    Mouse.rightMouseDragDeltaY = 0.0;
+}
+
 void Input::UpdateMouseData()
 {
     Mouse.leftButtonPressed   = GetMouse(MOUSE_BTN_LEFT);
