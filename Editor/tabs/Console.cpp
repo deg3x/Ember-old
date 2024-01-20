@@ -1,6 +1,5 @@
 ﻿#include "Console.h"
 
-#include "imgui/imgui_internal.h"
 #include "logger/Logger.h"
 
 Console::Console(Editor* owner) : EditorTab(owner)
@@ -93,7 +92,7 @@ void Console::DrawCategoryButtons()
     }
 }
 
-void Console::DrawConsoleContent()
+void Console::DrawConsoleContent() const
 {
     constexpr ImGuiTableFlags tableFlags     = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY;
     constexpr ImGuiTableColumnFlags colFlags = ImGuiTableColumnFlags_None;

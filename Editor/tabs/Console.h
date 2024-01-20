@@ -24,5 +24,5 @@ public:
 
 private:
     void DrawCategoryButtons();
-    void DrawConsoleContent();
+    void DrawConsoleContent() const;
 };
