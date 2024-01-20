@@ -40,7 +40,7 @@ void Logger::Log(const LogEntry& entry, LogOutput output)
     }
 }
 
-void Logger::Log(LogCategory category, const std::string& context, const std::string& message, LogOutput output)
+void Logger::Log(LogCategory category, const std::string& message, const std::string& context, LogOutput output)
 {
     LogEntry newEntry;
 
