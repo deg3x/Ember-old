@@ -41,7 +41,7 @@ Framebuffer::Framebuffer(int initWidth, int initHeight)
     
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-        Logger::LogError("Framebuffer is not complete", "Framebuffer::Framebuffer");
+        Logger::Log(LogCategory::ERROR, "Framebuffer is not complete", "Framebuffer::Framebuffer");
     }
     
     Unbind();

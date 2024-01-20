@@ -55,7 +55,7 @@ void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::sh
 {
 	if (material == nullptr)
 	{
-		Logger::LogError("Mesh has no material", "Mesh::Draw");
+		Logger::Log(LogCategory::ERROR, "Mesh has no material", "Mesh::Draw");
 		return;
 	}
 	

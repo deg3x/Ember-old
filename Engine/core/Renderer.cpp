@@ -13,7 +13,7 @@ void Renderer::Initialize()
 {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        Logger::LogError("Failed to initialize GLAD", "Renderer::Initialize");
+        Logger::Log(LogCategory::ERROR, "Failed to initialize GLAD", "Renderer::Initialize");
     }
 
     int width  = Window::GetWindowWidth();

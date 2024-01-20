@@ -2,22 +2,61 @@
 
 #include <iostream>
 
-void Logger::LogInfo(const char* message, const char* context)
+std::vector<LogEntry> Logger::consoleLog;
+
+void Logger::Log(const LogEntry& entry, LogOutput output)
 {
-    std::cout << "[INFO][" << context << "] " << std::endl << "\t" << message << std::endl;
+    if (output & LogOutput::STDOUT)
+    {
+        std::string categoryMsg;
+
+        switch (entry.category)
+        {
+        case LogCategory::INFO:
+            categoryMsg = "[i]";
+            break;
+        case LogCategory::WARNING:
+            categoryMsg = "[?]";
+            break;
+        case LogCategory::ERROR:
+            categoryMsg = "[!]";
+            break;
+        default:
+            categoryMsg = "[UNKNOWN]";
+            break;
+        }
+        
+        std::cout << categoryMsg << "[" << entry.context << "]\n\t" << entry.message;
+    }
+
+    if (output & LogOutput::CONSOLE)
+    {
+        consoleLog.emplace_back(entry);
+    }
+
+    if (output & LogOutput::LOGFILE)
+    {
+        // Write to file
+    }
 }
 
-void Logger::LogWarning(const char* message, const char* context)
+void Logger::Log(LogCategory category, const std::string& context, const std::string& message, LogOutput output)
 {
-    std::cout << "[WARNING][" << context << "] " << std::endl << "\t" << message << std::endl;
+    LogEntry newEntry;
+
+    newEntry.category = category;
+    newEntry.context  = context;
+    newEntry.message  = message;
+
+    Log(newEntry);
 }
 
-void Logger::LogError(const char* message, const char* context)
+void Logger::ClearConsoleLog()
 {
-    std::cout << "[ERROR][" << context << "] " << std::endl << "\t" << message << std::endl;
+    consoleLog.clear();
 }
 
-void Test()
+std::vector<LogEntry> Logger::GetConsoleLog()
 {
-    
+    return consoleLog;
 }

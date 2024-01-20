@@ -14,7 +14,7 @@ void Window::Initialize()
 {
 	if (!glfwInit())
 	{
-		Logger::LogError("Failed to initialize GLFW", "Window::Initialize");
+		Logger::Log(LogCategory::ERROR, "Failed to initialize GLFW", "Window::Initialize");
 	}
 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -34,7 +34,7 @@ void Window::Initialize()
 	window = glfwCreateWindow(windowData.windowW, windowData.windowH, windowData.title, NULL, NULL);
 	if (window == NULL)
 	{
-		Logger::LogError("Failed to create GLFW window", "Window::Initialize");
+		Logger::Log(LogCategory::ERROR, "Failed to create GLFW window", "Window::Initialize");
 		glfwTerminate();
 	}
 

@@ -55,7 +55,7 @@ void TextureCubemap::InitializeTexture(const char* texturePath)
         }
         else
         {
-            Logger::LogError(("Cubemap tex failed to load at path: " + fullPath).c_str(), "TextureCubemap::InitializeTexture");
+            Logger::Log(LogCategory::ERROR, "Cubemap tex failed to load at path: " + fullPath, "TextureCubemap::InitializeTexture");
         }
         
         stbi_image_free(data);

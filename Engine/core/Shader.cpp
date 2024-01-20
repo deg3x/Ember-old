@@ -67,7 +67,7 @@ int Shader::ReadCodeFromPath(const char* path, std::string& code)
 	}
 	catch (std::ifstream::failure e)
 	{
-		Logger::LogError(path, "Shader::ReadCodeFromPath");
+		Logger::Log(LogCategory::ERROR, path, "Shader::ReadCodeFromPath");
 		return -1;
 	}
 
@@ -83,7 +83,7 @@ int Shader::CheckShaderCompiled(unsigned int shaderID)
 	if (!success)
 	{
 		glGetShaderInfoLog(shaderID, 512, NULL, info);
-		Logger::LogError(info, "Shader::CheckShaderCompiled");
+		Logger::Log(LogCategory::ERROR, info, "Shader::CheckShaderCompiled");
 	}
 
 	return success;
@@ -98,7 +98,7 @@ int Shader::CheckProgramLinked(unsigned int shaderProgramID)
 	if (!success)
 	{
 		glGetProgramInfoLog(shaderProgramID, 512, NULL, info);
-		Logger::LogError(info, "Shader::CheckProgramLinked");
+		Logger::Log(LogCategory::ERROR, info, "Shader::CheckProgramLinked");
 	}
 
 	return success;

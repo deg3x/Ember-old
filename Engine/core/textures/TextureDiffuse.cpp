@@ -42,7 +42,7 @@ void TextureDiffuse::InitializeTexture(const char* texturePath)
     unsigned char *data = stbi_load(texturePath, &width, &height, &nChannels, 0);
     if (!data)
     {
-        Logger::LogError("Unable to parse texture", "TextureDiffuse::InitializeTexture");
+        Logger::Log(LogCategory::ERROR, "Unable to parse texture", "TextureDiffuse::InitializeTexture");
         return;
     }
 
@@ -58,7 +58,7 @@ void TextureDiffuse::InitializeTexture(const char* texturePath)
         format = TextureFormat::RGBA;
         break;
     default:
-        Logger::LogError("Unknown number of channels while trying to parse texture", "TextureDiffuse::InitializeTexture");
+        Logger::Log(LogCategory::ERROR, "Unknown number of channels while trying to parse texture", "TextureDiffuse::InitializeTexture");
         return;
     }
 

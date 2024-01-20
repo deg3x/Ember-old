@@ -15,7 +15,7 @@ VideoMode Screen::GetCurrentVideoMode()
     const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     if (mode == nullptr)
     {
-        Logger::LogError("Current video mode is null", "Screen::GetCurrentVideoMode");
+        Logger::Log(LogCategory::ERROR, "Current video mode is null", "Screen::GetCurrentVideoMode");
     }
 
     VideoMode ret = {};

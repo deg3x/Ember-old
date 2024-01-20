@@ -160,7 +160,7 @@ std::vector<std::shared_ptr<Mesh>> Model::Load(const char* path)
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
-        Logger::LogError(importer.GetErrorString(), "Model::Load");
+        Logger::Log(LogCategory::ERROR, importer.GetErrorString(), "Model::Load");
         return loadedMeshes;
     }
 
