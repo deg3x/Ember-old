@@ -8,6 +8,19 @@ std::string Screen::GetScreenName()
     return glfwGetMonitorName(glfwGetPrimaryMonitor());
 }
 
+VideoMode Screen::GetCurrentVideoMode()
+{
+    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+    VideoMode ret = {};
+
+    ret.width     = mode->width;
+    ret.height    = mode->height;
+    ret.framerate = mode->refreshRate;
+
+    return ret;
+}
+
 std::vector<VideoMode> Screen::GetAvailableVideoModes()
 {
     int count;
