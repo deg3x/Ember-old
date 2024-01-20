@@ -26,7 +26,7 @@ void Logger::Log(const LogEntry& entry, LogOutput output)
             break;
         }
         
-        std::cout << categoryMsg << "[" << entry.context << "]\n\t" << entry.message;
+        std::cout << categoryMsg << "[" << entry.context << "]\n\t" << entry.message << std::endl;
     }
 
     if (output & LogOutput::CONSOLE)
