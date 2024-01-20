@@ -5,7 +5,8 @@
 
 Console::Console(Editor* owner) : EditorTab(owner)
 {
-    title = "Console";
+    title  = "Console";
+    flags |= ImGuiWindowFlags_NoScrollbar;
 
     textColorInfo            = {0.9f, 0.9f, 0.9f, 1.0f};
     textColorWarning         = {0.8f, 0.8f, 0.3f, 1.0f};
@@ -23,7 +24,7 @@ void Console::Tick()
 {
     EditorTab::Tick();
 
-    if (ImGui::Begin(title.c_str()))
+    if (ImGui::Begin(title.c_str(), nullptr, flags))
     {
         DrawCategoryButtons();
 
@@ -94,13 +95,14 @@ void Console::DrawCategoryButtons()
 
 void Console::DrawConsoleContent()
 {
-    constexpr ImGuiTableFlags tableFlags     = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingStretchProp;
+    constexpr ImGuiTableFlags tableFlags     = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY;
     constexpr ImGuiTableColumnFlags colFlags = ImGuiTableColumnFlags_None;
     
     if (ImGui::BeginTable("Console Log", 2, tableFlags))
     {
-        ImGui::TableSetupColumn("Context", colFlags, 0.1f);
-        ImGui::TableSetupColumn("Message", colFlags, 0.9f);
+        ImGui::TableSetupScrollFreeze(0, 1);
+        ImGui::TableSetupColumn("Context", colFlags, 0.12f);
+        ImGui::TableSetupColumn("Message", colFlags, 0.88f);
         ImGui::TableHeadersRow();
         
         for (const LogEntry& entry : Logger::GetConsoleLog())

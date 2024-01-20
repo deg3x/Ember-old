@@ -67,14 +67,14 @@ void EditorTheme::ApplyTheme()
     colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(1.00f, 0.00f, 0.00f, 0.35f);
 
     ImGuiStyle& style = ImGui::GetStyle();
-    style.WindowPadding                     = ImVec2(8.00f, 8.00f);
+    style.WindowPadding                     = ImVec2(6.00f, 6.00f);
     style.FramePadding                      = ImVec2(5.00f, 2.00f);
     style.CellPadding                       = ImVec2(6.00f, 6.00f);
     style.ItemSpacing                       = ImVec2(6.00f, 6.00f);
     style.ItemInnerSpacing                  = ImVec2(6.00f, 6.00f);
     style.TouchExtraPadding                 = ImVec2(0.00f, 0.00f);
     style.IndentSpacing                     = 25;
-    style.ScrollbarSize                     = 15;
+    style.ScrollbarSize                     = 12;
     style.GrabMinSize                       = 10;
     style.WindowBorderSize                  = 1;
     style.ChildBorderSize                   = 1;
@@ -82,7 +82,7 @@ void EditorTheme::ApplyTheme()
     style.FrameBorderSize                   = 1;
     style.TabBorderSize                     = 1;
     style.WindowRounding                    = 7;
-    style.ChildRounding                     = 4;
+    style.ChildRounding                     = 0;
     style.FrameRounding                     = 3;
     style.PopupRounding                     = 4;
     style.ScrollbarRounding                 = 9;
