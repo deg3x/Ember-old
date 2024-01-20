@@ -3,6 +3,8 @@
 #include <string>
 #include <glfw/glfw3.h>
 
+#include "logger/Logger.h"
+
 std::string Screen::GetScreenName()
 {
     return glfwGetMonitorName(glfwGetPrimaryMonitor());
@@ -11,6 +13,10 @@ std::string Screen::GetScreenName()
 VideoMode Screen::GetCurrentVideoMode()
 {
     const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    if (mode == nullptr)
+    {
+        Logger::LogError("Current video mode is null", "Screen::GetCurrentVideoMode");
+    }
 
     VideoMode ret = {};
 

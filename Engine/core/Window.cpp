@@ -5,17 +5,13 @@
 #include "glm/gtc/epsilon.hpp"
 
 #include "logger/Logger.h"
+#include "screen/Screen.h"
 
 GLFWwindow* Window::window;
 WindowData Window::windowData;
 
 void Window::Initialize()
 {
-	windowData.title       = "Graphics Engine";
-	windowData.windowW     = 1024;
-	windowData.windowH     = 768;
-	windowData.aspectRatio = 1024.0f / 768.0f;
-
 	if (!glfwInit())
 	{
 		Logger::LogError("Failed to initialize GLFW", "Window::Initialize");
@@ -28,6 +24,13 @@ void Window::Initialize()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
+	VideoMode mode = Screen::GetCurrentVideoMode();
+	
+	windowData.title       = "Graphics Engine";
+	windowData.windowW     = 1366;
+	windowData.windowH     = 768;
+	windowData.aspectRatio = 1366.0f / 768.0f;
+
 	window = glfwCreateWindow(windowData.windowW, windowData.windowH, windowData.title, NULL, NULL);
 	if (window == NULL)
 	{
@@ -35,6 +38,7 @@ void Window::Initialize()
 		glfwTerminate();
 	}
 
+	glfwMaximizeWindow(window);
 	glfwMakeContextCurrent(window);
 }
 
