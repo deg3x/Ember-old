@@ -1,14 +1,9 @@
 ﻿#pragma once
 #include "Definitions.h"
+#include "ScreenTypes.h"
+
 #include <string>
 #include <vector>
-
-struct VideoMode
-{
-    int width;
-    int height;
-    int framerate;
-};
 
 class ENGINE_API Screen
 {
