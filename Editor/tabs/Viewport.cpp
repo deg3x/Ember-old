@@ -27,6 +27,7 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
 {
     title  = "Viewport";
     flags |= ImGuiWindowFlags_NoScrollbar;
+    flags |= ImGuiWindowFlags_NoMove;
 
     // Initialization of viewport scene
     viewportScene.Use();
@@ -47,7 +48,7 @@ void Viewport::Tick()
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::SetNextWindowSizeConstraints(ImVec2(100, 100), ImVec2(2000, 2000));
 
-    if (!ImGui::Begin(title.c_str()))
+    if (!ImGui::Begin(title.c_str(), nullptr, flags))
     {
         return;
     }
