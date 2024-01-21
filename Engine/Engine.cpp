@@ -1,6 +1,6 @@
 #include "Engine.h"
 
-#include "core/Window.h"
+#include "window/Window.h"
 #include "core/Renderer.h"
 #include "input/Input.h"
 

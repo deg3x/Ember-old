@@ -7,9 +7,8 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "Engine.h"
-#include "core/Window.h"
+#include "window/Window.h"
 #include "imgui/imgui_internal.h"
-#include "utils/PathBuilder.h"
 
 #include "tabs/EditorTab.h"
 #include "tabs/Viewport.h"

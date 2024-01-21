@@ -1,6 +1,6 @@
 ﻿#include "Input.h"
 
-#include "core/Window.h"
+#include "window/Window.h"
 
 #include "glfw/glfw3.h"
 #include "glm/gtc/epsilon.hpp"

@@ -3,7 +3,7 @@
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 
-#include "core/Window.h"
+#include "window/Window.h"
 #include "utils/Types.h"
 #include "logger/Logger.h"
 
