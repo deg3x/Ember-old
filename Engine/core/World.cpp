@@ -1,5 +1,5 @@
 ﻿#include "glad/glad.h"
-#include "Scene.h"
+#include "World.h"
 
 #include "core/Renderer.h"
 #include "core/objects/Object.h"
@@ -12,9 +12,12 @@
 #include "core/components/lights/DirectionalLight.h"
 #include "core/materials/MaterialBlinnPhong.h"
 
-Scene* Scene::Active = nullptr;
+std::unordered_set<std::shared_ptr<Object>> World::objQueueOpaque;
+std::unordered_set<std::shared_ptr<Object>> World::objQueueTransparent;
+std::vector<std::shared_ptr<Light>> World::lights;
+std::shared_ptr<Camera> World::camera;
 
-Scene::Scene()
+void World::Initialize()
 {
     const std::shared_ptr<Object> cameraObject = std::make_shared<Object>();
     cameraObject->CreateComponent<Camera>();
@@ -48,26 +51,13 @@ Scene::Scene()
     AddObject(grid, ObjectType::TRANSPARENT);
 }
 
-Scene::~Scene()
-{
-    if (Active == this)
-    {
-        Active = nullptr;
-    }
-}
-
-void Scene::Use()
-{
-    Active = this;
-}
-
-void Scene::Tick() const
+void World::Tick()
 {
     Renderer::SetDepthTestMask(true);
     Renderer::SetFaceCullingEnabled(false);
     
     // Opaque object tick and rendering
-    for (const std::shared_ptr<Object>& object : obj_queue_opaque)
+    for (const std::shared_ptr<Object>& object : objQueueOpaque)
     {
         object->Tick();
         object->Draw(camera, lights);
@@ -78,7 +68,7 @@ void Scene::Tick() const
     Renderer::SetFaceCullingMode(GL_BACK);
     
     // Transparent object tick and rendering
-    for (const std::shared_ptr<Object>& object : obj_queue_transparent)
+    for (const std::shared_ptr<Object>& object : objQueueTransparent)
     {
         object->Tick();
         object->Draw(camera, lights);
@@ -87,9 +77,9 @@ void Scene::Tick() const
     Renderer::SetDepthTestMask(true);
 }
 
-void Scene::AddObject(const std::shared_ptr<Object>& object, ObjectType type)
+void World::AddObject(const std::shared_ptr<Object>& object, ObjectType type)
 {
-    if (obj_queue_opaque.contains(object) || obj_queue_transparent.contains(object))
+    if (objQueueOpaque.contains(object) || objQueueTransparent.contains(object))
     {
         return;
     }
@@ -109,26 +99,26 @@ void Scene::AddObject(const std::shared_ptr<Object>& object, ObjectType type)
     switch (type)
     {
     case ObjectType::OPAQUE:
-        obj_queue_opaque.insert(object);
+        objQueueOpaque.insert(object);
         break;
     case ObjectType::TRANSPARENT:
-        obj_queue_transparent.insert(object);
+        objQueueTransparent.insert(object);
         break;
     }
 }
 
-void Scene::RemoveObject(const std::shared_ptr<Object>& object)
+void World::RemoveObject(const std::shared_ptr<Object>& object)
 {
-    if (obj_queue_opaque.contains(object))
+    if (objQueueOpaque.contains(object))
     {
-        obj_queue_opaque.erase(object);
+        objQueueOpaque.erase(object);
         
         return;
     }
 
-    if (obj_queue_transparent.contains(object))
+    if (objQueueTransparent.contains(object))
     {
-        obj_queue_transparent.erase(object);
+        objQueueTransparent.erase(object);
         
         return;
     }

@@ -5,6 +5,8 @@
 
 #include "Editor.h"
 
+#include "Engine.h"
+#include "core/World.h"
 #include "core/Renderer.h"
 #include "core/Framebuffer.h"
 #include "core/objects/Object.h"
@@ -30,8 +32,7 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     flags |= ImGuiWindowFlags_NoMove;
 
     // Initialization of viewport scene
-    viewportScene.Use();
-    radius = (float)viewportScene.GetCamera()->GetParent()->transform->position.length();
+    radius = (float)World::GetCamera()->GetParent()->transform->position.length();
     
     Renderer::SetDepthTestEnabled(true);
     Renderer::SetDepthTestFunc(GL_LESS);
@@ -79,15 +80,16 @@ void Viewport::Tick()
         phi	   += (float)mouse.leftMouseDragDeltaY * mouse.sensitivity;
         radius -= (float)mouse.rightMouseDragDeltaY * mouse.sensitivity;
 
-        viewportScene.GetCamera()->GetParent()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
-        viewportScene.GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
-        viewportScene.GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
+        World::GetCamera()->GetParent()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
+        World::GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
+        World::GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
     }
     
     viewportFB->Bind();
 
     Renderer::Clear();
-    viewportScene.Tick();
+    
+    Engine::Tick();
 
     viewportFB->Unbind();
 

@@ -18,7 +18,7 @@ Object::~Object()
     }
 }
 
-void Object::Tick() const
+void Object::Tick()
 {
     for (const std::shared_ptr<Component>& component : components)
     {

@@ -7,5 +7,6 @@ class ENGINE_API Engine
 public:
     Engine() = delete;
 
-    static inline void Initialize();
+    static void Initialize();
+    static void Tick();
 };

@@ -22,7 +22,7 @@ public:
     Object();
     virtual ~Object();
 
-    void Tick() const;
+    void Tick();
     virtual void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const;
     void LoadModel(const char* path);
 

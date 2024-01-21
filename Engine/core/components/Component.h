@@ -26,7 +26,7 @@ public:
     template <class Type, typename... Args>
     static std::shared_ptr<Type> CreateComponent(Args... args);
 
-    virtual void Tick() const {}
+    virtual void Tick() {}
 
     inline Object* GetParent() const
     {
