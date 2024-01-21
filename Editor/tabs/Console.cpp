@@ -91,7 +91,7 @@ void Console::DrawCategoryButtons()
 
 void Console::DrawConsoleContent() const
 {
-    constexpr ImGuiTableFlags tableFlags     = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY;
+    constexpr ImGuiTableFlags tableFlags     = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg;
     constexpr ImGuiTableColumnFlags colFlags = ImGuiTableColumnFlags_None;
     
     if (ImGui::BeginTable("Console Log", 3, tableFlags))
