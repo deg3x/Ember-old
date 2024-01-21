@@ -58,14 +58,7 @@ bool Window::ShouldClose()
 
 void Window::SetVSync(bool state)
 {
-	if (state)
-	{
-		glfwSwapInterval(1);
-	}
-	else
-	{
-		glfwSwapInterval(0);
-	}
+	glfwSwapInterval(state ? 1 : 0);
 
 	windowData.vsync = state;
 }
