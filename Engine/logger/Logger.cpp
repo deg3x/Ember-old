@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "core/Time.h"
+
 std::vector<LogEntry> Logger::consoleLog;
 
 void Logger::Log(const LogEntry& entry, LogOutput output)
@@ -26,7 +28,7 @@ void Logger::Log(const LogEntry& entry, LogOutput output)
             break;
         }
         
-        std::cout << categoryMsg << "[" << entry.context << "]\n\t" << entry.message << std::endl;
+        std::cout << "[" << Time::TimeSinceStartup << "]" << categoryMsg << "[" << entry.context << "]\n\t" << entry.message << std::endl;
     }
 
     if (output & LogOutput::CONSOLE)
@@ -44,9 +46,10 @@ void Logger::Log(const std::string& message, LogOutput output)
 {
     LogEntry newEntry;
 
-    newEntry.category = LogCategory::INFO;
-    newEntry.context  = "NO CONTEXT";
-    newEntry.message  = message;
+    newEntry.category  = LogCategory::INFO;
+    newEntry.context   = "NO CONTEXT";
+    newEntry.message   = message;
+    newEntry.timestamp = Time::TimeSinceStartup;
 
     Log(newEntry);
 }
@@ -58,6 +61,7 @@ void Logger::Log(LogCategory category, const std::string& message, const std::st
     newEntry.category = category;
     newEntry.context  = context;
     newEntry.message  = message;
+    newEntry.timestamp = Time::TimeSinceStartup;
 
     Log(newEntry);
 }

@@ -3,18 +3,18 @@
 #include <glfw/glfw3.h>
 
 float Time::DeltaTime;
-float Time::TimeSinceStartup;
+double Time::TimeSinceStartup;
 
 void Time::Initialize()
 {
-    DeltaTime          = 0.0f;
-    TimeSinceStartup   = 0.0f;
+    DeltaTime        = 0.0f;
+    TimeSinceStartup = 0.0;
 }
 
 void Time::Tick()
 {
-    const float currentTime = static_cast<float>(glfwGetTime());
+    const double currentTime = glfwGetTime();
     
-    DeltaTime        = currentTime - TimeSinceStartup;
+    DeltaTime        = static_cast<float>(currentTime - TimeSinceStartup);
     TimeSinceStartup = currentTime;
 }

@@ -1,5 +1,6 @@
 ﻿#include "Console.h"
 
+#include "core/Time.h"
 #include "logger/Logger.h"
 
 Console::Console(Editor* owner) : EditorTab(owner)
@@ -93,11 +94,12 @@ void Console::DrawConsoleContent() const
     constexpr ImGuiTableFlags tableFlags     = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY;
     constexpr ImGuiTableColumnFlags colFlags = ImGuiTableColumnFlags_None;
     
-    if (ImGui::BeginTable("Console Log", 2, tableFlags))
+    if (ImGui::BeginTable("Console Log", 3, tableFlags))
     {
         ImGui::TableSetupScrollFreeze(0, 1);
-        ImGui::TableSetupColumn("Context", colFlags, 0.12f);
-        ImGui::TableSetupColumn("Message", colFlags, 0.88f);
+        ImGui::TableSetupColumn("Timestamp", colFlags, 0.06f);
+        ImGui::TableSetupColumn("Context", colFlags, 0.10f);
+        ImGui::TableSetupColumn("Message", colFlags, 0.84f);
         ImGui::TableHeadersRow();
         
         for (const LogEntry& entry : Logger::GetConsoleLog())
@@ -130,9 +132,14 @@ void Console::DrawConsoleContent() const
                 ImGui::PushStyleColor(ImGuiCol_Text, textColorError);
             }
             
+            std::string timestamp  = "[" + std::to_string(entry.timestamp) + "]";
             std::string currentCtx = "[" + entry.context + "]";
             
             ImGui::TableNextRow();
+
+            ImGui::TableNextColumn();
+            ImGui::Text(timestamp.c_str());
+            
             ImGui::TableNextColumn();
             ImGui::Text(currentCtx.c_str());
 

@@ -23,5 +23,6 @@ struct LogEntry
 {
     std::string message;
     std::string context;
+    double timestamp;
     LogCategory category;
 };

@@ -7,7 +7,7 @@
 
 class ENGINE_API Logger
 {
-public:
+private:
     // Add a timestamp to the log entry, to print in the console
     static std::vector<LogEntry> consoleLog;
     
