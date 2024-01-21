@@ -23,6 +23,8 @@ void Window::Initialize()
 	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GL_TRUE);
+    glfwWindowHint(GLFW_COCOA_GRAPHICS_SWITCHING, GLFW_FALSE);
 #endif
 
 	VideoMode mode = Screen::GetCurrentVideoMode();
