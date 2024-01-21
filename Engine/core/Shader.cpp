@@ -11,6 +11,12 @@
 
 Shader::Shader(const char* vertPath, const char* fragPath)
 {
+    std::string vertexFile   = vertPath;
+    std::string fragmentFile = fragPath;
+    
+    vertexFile   = vertexFile.substr(vertexFile.find_last_of("/\\") + 1);
+    fragmentFile = fragmentFile.substr(fragmentFile.find_last_of("/\\") + 1);
+    
 	std::string vCode;
 	std::string fCode;
 
@@ -27,20 +33,20 @@ Shader::Shader(const char* vertPath, const char* fragPath)
 	glShaderSource(vertID, 1, &vertCode, NULL);
 	glCompileShader(vertID);
 
-	CheckShaderCompiled(vertID);
+	CheckShaderCompiled(vertID, vertexFile);
 
 	fragID = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragID, 1, &fragCode, NULL);
 	glCompileShader(fragID);
 
-	CheckShaderCompiled(fragID);
+	CheckShaderCompiled(fragID, fragmentFile);
 
 	id = glCreateProgram();
 	glAttachShader(id, vertID);
 	glAttachShader(id, fragID);
 	glLinkProgram(id);
 
-	CheckProgramLinked(id);
+	CheckProgramLinked(id, vertexFile + ", " + fragmentFile);
 
 	glDeleteShader(vertID);
 	glDeleteShader(fragID);
@@ -74,7 +80,7 @@ int Shader::ReadCodeFromPath(const char* path, std::string& code)
 	return 0;
 }
 
-int Shader::CheckShaderCompiled(unsigned int shaderID)
+int Shader::CheckShaderCompiled(unsigned int shaderID, const std::string& name)
 {
 	int success;
 	char info[512];
@@ -83,13 +89,15 @@ int Shader::CheckShaderCompiled(unsigned int shaderID)
 	if (!success)
 	{
 		glGetShaderInfoLog(shaderID, 512, NULL, info);
-		Logger::Log(LogCategory::ERROR, info, "Shader::CheckShaderCompiled");
+        
+        const std::string errorMsg = "Shader failed to compile: " + name + "\n" + info;
+		Logger::Log(LogCategory::ERROR, errorMsg, "Shader::CheckShaderCompiled");
 	}
 
 	return success;
 }
 
-int Shader::CheckProgramLinked(unsigned int shaderProgramID)
+int Shader::CheckProgramLinked(unsigned int shaderProgramID, const std::string& name)
 {
 	int success;
 	char info[512];
@@ -98,7 +106,9 @@ int Shader::CheckProgramLinked(unsigned int shaderProgramID)
 	if (!success)
 	{
 		glGetProgramInfoLog(shaderProgramID, 512, NULL, info);
-		Logger::Log(LogCategory::ERROR, info, "Shader::CheckProgramLinked");
+        
+        const std::string errorMsg = "Shader failed to link: " + name + "\n" + info;
+		Logger::Log(LogCategory::ERROR, errorMsg, "Shader::CheckProgramLinked");
 	}
 
 	return success;
