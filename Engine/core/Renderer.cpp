@@ -32,6 +32,8 @@ void Renderer::Initialize()
     AppendClearBits(GL_COLOR_BUFFER_BIT);
     SetDepthTestEnabled(true);
     SetStencilTestEnabled(false);
+
+    Logger::Log(LogCategory::INFO, "Renderer initialization completed successfully", "Renderer::Initialize");
 }
 
 void Renderer::Clear()

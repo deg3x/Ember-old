@@ -1,6 +1,7 @@
 ﻿#include "Input.h"
 
 #include "window/Window.h"
+#include "logger/Logger.h"
 
 #include "glfw/glfw3.h"
 #include "glm/gtc/epsilon.hpp"
@@ -13,6 +14,8 @@ void Input::Initialize()
     glfwSetInputMode(Window::GetWindow(), GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
 
     Mouse.sensitivity = 0.01f;
+
+    Logger::Log(LogCategory::INFO, "Input system initialization completed successfully", "Input::Initialize");
 }
 
 void Input::PollInput()

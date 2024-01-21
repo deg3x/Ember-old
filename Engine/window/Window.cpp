@@ -40,6 +40,8 @@ void Window::Initialize()
 
 	glfwMaximizeWindow(window);
 	glfwMakeContextCurrent(window);
+
+	Logger::Log(LogCategory::INFO, "Window initialization completed successfully", "Window::Initialize");
 }
 
 void Window::SwapBuffers()
