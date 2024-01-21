@@ -1,7 +1,7 @@
-﻿#include "Viewport.h"
+#include "Viewport.h"
 
-#include <glad/glad.h>
-#include <glm/gtc/constants.hpp>
+#include "glad/glad.h"
+#include "glm/gtc/constants.hpp"
 
 #include "Editor.h"
 

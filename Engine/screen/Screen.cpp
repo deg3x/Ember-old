@@ -1,7 +1,7 @@
-﻿#include "Screen.h"
+#include "Screen.h"
 
 #include <string>
-#include <glfw/glfw3.h>
+#include "glfw/glfw3.h"
 
 #include "logger/Logger.h"
 

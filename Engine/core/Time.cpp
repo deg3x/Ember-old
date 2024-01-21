@@ -1,6 +1,6 @@
-﻿#include "Time.h"
+#include "Time.h"
 
-#include <glfw/glfw3.h>
+#include "glfw/glfw3.h"
 
 float Time::DeltaTime;
 double Time::TimeSinceStartup;
