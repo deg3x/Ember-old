@@ -69,7 +69,7 @@ void EditorTheme::ApplyTheme()
 
     ImGuiStyle& style = ImGui::GetStyle();
     style.WindowPadding                     = ImVec2(6.00f, 6.00f);
-    style.FramePadding                      = ImVec2(5.00f, 2.00f);
+    style.FramePadding                      = ImVec2(6.00f, 3.00f);
     style.CellPadding                       = ImVec2(6.00f, 6.00f);
     style.ItemSpacing                       = ImVec2(6.00f, 6.00f);
     style.ItemInnerSpacing                  = ImVec2(6.00f, 6.00f);

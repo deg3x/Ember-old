@@ -12,8 +12,8 @@ Console::Console(Editor* owner) : EditorTab(owner)
     textColorWarning         = {0.8f, 0.8f, 0.3f, 1.0f};
     textColorError           = {0.9f, 0.3f, 0.1f, 1.0f};
 
-    buttonColorCategory      = {0.1f, 0.35f, 0.6f, 1.0f};
-    buttonColorHoverCategory = {0.2f, 0.5f, 0.75f, 1.0f};
+    buttonColorCategory      = {0.1f, 0.5f, 0.7f, 1.0f};
+    buttonColorHoverCategory = {0.2f, 0.6f, 0.8f, 0.9f};
 }
 
 void Console::Tick()
@@ -98,8 +98,8 @@ void Console::DrawConsoleContent() const
     {
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableSetupColumn("Timestamp", colFlags, 0.06f);
-        ImGui::TableSetupColumn("Context", colFlags, 0.10f);
-        ImGui::TableSetupColumn("Message", colFlags, 0.84f);
+        ImGui::TableSetupColumn("Context", colFlags, 0.08f);
+        ImGui::TableSetupColumn("Message", colFlags, 0.86f);
         ImGui::TableHeadersRow();
         
         for (const LogEntry& entry : Logger::GetConsoleLog())
