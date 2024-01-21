@@ -13,10 +13,6 @@ Console::Console(Editor* owner) : EditorTab(owner)
 
     buttonColorCategory      = {0.1f, 0.35f, 0.6f, 1.0f};
     buttonColorHoverCategory = {0.2f, 0.5f, 0.75f, 1.0f};
-
-    Logger::Log(LogCategory::INFO, "This is an info message", "INFO::CONTEXT");
-    Logger::Log(LogCategory::WARNING, "This is an warning message", "WARNING::CONTEXT");
-    Logger::Log(LogCategory::ERROR, "This is an error message", "ERROR::CONTEXT");
 }
 
 void Console::Tick()
