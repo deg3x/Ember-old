@@ -41,6 +41,8 @@ void Window::Initialize()
 	glfwMaximizeWindow(window);
 	glfwMakeContextCurrent(window);
 
+	SetVSync(false);
+
 	Logger::Log(LogCategory::INFO, "Window initialization completed successfully", "Window::Initialize");
 }
 
@@ -52,4 +54,18 @@ void Window::SwapBuffers()
 bool Window::ShouldClose()
 {
 	return glfwWindowShouldClose(window);
+}
+
+void Window::SetVSync(bool state)
+{
+	if (state)
+	{
+		glfwSwapInterval(1);
+	}
+	else
+	{
+		glfwSwapInterval(0);
+	}
+
+	windowData.vsync = state;
 }

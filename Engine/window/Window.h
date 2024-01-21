@@ -8,6 +8,7 @@ struct WindowData
 	int windowW;
 	int windowH;
 	float aspectRatio;
+	bool vsync;
 };
 
 struct GLFWwindow;
@@ -25,6 +26,12 @@ public:
 	static void Initialize();
 	static void SwapBuffers();
 	static bool ShouldClose();
+	static void SetVSync(bool state);
+
+	inline static bool GetVSync()
+	{
+		return windowData.vsync;
+	}
 
 	inline static WindowData GetWindowData()
 	{
