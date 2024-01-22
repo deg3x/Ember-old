@@ -1,5 +1,6 @@
 #include "Engine.h"
 
+#include "core/Framebuffer.h"
 #include "window/Window.h"
 #include "core/World.h"
 #include "core/Renderer.h"
@@ -17,7 +18,12 @@ void Engine::Initialize()
 
 void Engine::Tick()
 {
+    Renderer::WorldFrameBuffer->Bind();
+    Renderer::Clear();
+    
     Time::Tick();
     Input::Tick();
     World::Tick();
+    
+    Renderer::WorldFrameBuffer->Unbind();
 }

@@ -72,9 +72,9 @@ void Editor::Tick()
 {
 	while (!Window::ShouldClose())
 	{
+		Engine::Tick();
+		
 		EditorRenderBegin();
-		
-		
 		EditorRenderEnd();
 		
 		Window::SwapBuffers();

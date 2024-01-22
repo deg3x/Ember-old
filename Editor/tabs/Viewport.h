@@ -10,9 +10,6 @@ class Framebuffer;
 
 class Viewport : public EditorTab
 {
-private:
-    std::unique_ptr<Framebuffer> viewportFB = nullptr;
-    
 public:
     Viewport() = delete;
     Viewport(Editor* owner);

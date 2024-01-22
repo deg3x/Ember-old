@@ -2,10 +2,16 @@
 
 #include "Definitions.h"
 
+#include <memory>
+
+class Framebuffer;
 struct Color;
 
 class ENGINE_API Renderer
 {
+public:
+    static std::unique_ptr<Framebuffer> WorldFrameBuffer;
+    
 private:
     static unsigned int clearBits;
     

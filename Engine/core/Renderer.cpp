@@ -1,5 +1,6 @@
 ﻿#include "Renderer.h"
 
+#include "Framebuffer.h"
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 
@@ -8,6 +9,7 @@
 #include "logger/Logger.h"
 
 unsigned int Renderer::clearBits;
+std::unique_ptr<Framebuffer> Renderer::WorldFrameBuffer;
 
 void Renderer::Initialize()
 {
@@ -18,6 +20,8 @@ void Renderer::Initialize()
 
     int width  = Window::GetWindowWidth();
     int height = Window::GetWindowHeight();
+    
+    WorldFrameBuffer = std::make_unique<Framebuffer>(width, height);
 
     // For some reason OSX requires double the window dimensions
 #if defined(_WIN32)
@@ -59,6 +63,8 @@ void Renderer::SetClearColor(float r, float g, float b, float a)
 void Renderer::SetViewport(int bottomLeftX, int bottomLeftY, int width, int height)
 {
     glViewport(bottomLeftX, bottomLeftY, width, height);
+
+    WorldFrameBuffer->Resize(width, height);
 }
 
 void Renderer::SetDepthTestEnabled(bool state)

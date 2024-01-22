@@ -58,15 +58,6 @@ void Viewport::Tick()
 
     width  = viewportSize.x;
     height = viewportSize.y;
-
-    if (viewportFB == nullptr)
-    {
-        viewportFB = std::make_unique<Framebuffer>(static_cast<int>(width), static_cast<int>(height));
-    }
-    else
-    {
-        viewportFB->Resize(static_cast<int>(width), static_cast<int>(height));
-    }
     
     Renderer::SetViewport(0, 0, static_cast<int>(width), static_cast<int>(height));
 
@@ -88,16 +79,7 @@ void Viewport::Tick()
         World::GetCamera()->GetOwner()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
         World::GetCamera()->GetOwner()->transform->position.y = radius * glm::cos(phi);
     }
-    
-    viewportFB->Bind();
 
-    Renderer::Clear();
-    
-    Engine::Tick();
-
-    viewportFB->Unbind();
-
-    ImGui::Image(reinterpret_cast<ImTextureID>(viewportFB->GetTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
-
+    ImGui::Image(reinterpret_cast<ImTextureID>(Renderer::WorldFrameBuffer->GetTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
     ImGui::End();
 }
