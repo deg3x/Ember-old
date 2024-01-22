@@ -18,5 +18,6 @@ void Engine::Initialize()
 void Engine::Tick()
 {
     Time::Tick();
+    Input::Tick();
     World::Tick();
 }

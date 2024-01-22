@@ -8,7 +8,7 @@
 
 #include <memory>
 
-EditorGrid::EditorGrid()
+EditorGrid::EditorGrid(const char* objName) : Object(objName)
 {
     const std::shared_ptr<MaterialEditorGrid> material = std::make_shared<MaterialEditorGrid>();
 

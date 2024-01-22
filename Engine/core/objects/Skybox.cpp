@@ -8,7 +8,7 @@
 #include "core/textures/TextureCubemap.h"
 #include "core/materials/MaterialSkybox.h"
 
-Skybox::Skybox()
+Skybox::Skybox(const char* objName) : Object(objName)
 {
     const std::shared_ptr<TextureCubemap> texture = std::make_shared<TextureCubemap>();
     const std::shared_ptr<MaterialSkybox> matSky = std::make_shared<MaterialSkybox>();

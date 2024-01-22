@@ -19,25 +19,25 @@ std::shared_ptr<Camera> World::camera;
 
 void World::Initialize()
 {
-    const std::shared_ptr<Object> cameraObject = std::make_shared<Object>();
+    const std::shared_ptr<Object> cameraObject = std::make_shared<Object>("Camera");
     cameraObject->CreateComponent<Camera>();
     cameraObject->transform->position = glm::vec3(0.0f, 0.0f, 3.0f);
     cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
 
     const std::shared_ptr<MaterialBlinnPhong> defaultMat = std::make_shared<MaterialBlinnPhong>();
 
-    const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>();
+    const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>("Stanford Bunny");
     bunnyObject->transform->position = glm::vec3(0.0f, -0.33f, 0.0f);
     bunnyObject->transform->scale =glm::vec3(0.5f, 0.5f, 0.5f);
     bunnyObject->LoadModel("./Data/models/bunny.obj");
 
-    const std::shared_ptr<EditorGrid> grid = std::make_shared<EditorGrid>();
+    const std::shared_ptr<EditorGrid> grid = std::make_shared<EditorGrid>("Editor Grid");
     grid->transform->position = glm::vec3(0.0f, -0.51f, 0.0f);
     grid->transform->scale = glm::vec3(100.0f, 1.0f, 100.0f);
 
-    const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>();
+    const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>("Skybox");
 
-    const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>();
+    const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>("Directional Light");
     dirLightObject->CreateComponent<DirectionalLight>();
     dirLightObject->transform->rotation.x = 30.0f;
     dirLightObject->transform->rotation.y = -30.0f;

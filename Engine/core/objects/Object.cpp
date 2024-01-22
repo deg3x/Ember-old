@@ -5,16 +5,17 @@
 #include "core/components/Transform.h"
 #include "core/components/meshes/Mesh.h"
 
-Object::Object()
+Object::Object(const char* objName)
 {
     transform = CreateComponent<Transform>();
+    this->name = objName;
 }
 
 Object::~Object()
 {
     for (const std::shared_ptr<Component>& component : components)
     {
-        component->parent = nullptr;
+        component->owner = nullptr;
     }
 }
 

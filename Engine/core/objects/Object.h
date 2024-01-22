@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 class Light;
 class Camera;
@@ -13,13 +14,15 @@ class Transform;
 class ENGINE_API Object
 {
 public:
+    std::string name;
     std::shared_ptr<Transform> transform;
 
 private:
     std::vector<std::shared_ptr<Component>> components;
     
 public:
-    Object();
+    Object() = delete;
+    Object(const char* objName);
     virtual ~Object();
 
     void Tick();
@@ -61,7 +64,7 @@ void Object::AddComponent(const std::shared_ptr<Type>& component)
         return;
     }
 
-    component->parent = this;
+    component->owner = this;
     components.push_back(component);
 }
 

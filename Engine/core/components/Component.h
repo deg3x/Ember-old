@@ -20,7 +20,7 @@ class ENGINE_API Component
 protected:
     // Handled by the AddComponent() function of Object
     // Do not modify manually
-    Object* parent;
+    Object* owner;
 
 public:
     template <class Type, typename... Args>
@@ -28,9 +28,9 @@ public:
 
     virtual void Tick() {}
 
-    inline Object* GetParent() const
+    inline Object* GetOwner() const
     {
-        return parent;
+        return owner;
     }
     
     virtual inline bool IsUnique()

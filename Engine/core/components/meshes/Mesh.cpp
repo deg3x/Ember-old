@@ -66,7 +66,7 @@ void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::sh
 		light->SetShaderProperties(*material->GetShader());
 	}
 	
-	material->SetupShaderVariables(*GetParent()->transform, *camera);
+	material->SetupShaderVariables(*GetOwner()->transform, *camera);
 	
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

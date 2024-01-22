@@ -5,7 +5,7 @@
 class ENGINE_API EditorGrid : public Object
 {
 public:
-    EditorGrid();
+    EditorGrid(const char* objName);
     virtual ~EditorGrid() {}
     
     void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const override;

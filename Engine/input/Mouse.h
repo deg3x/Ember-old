@@ -15,14 +15,17 @@
 
 struct MouseData
 {
-    float sensitivity;
-    bool leftButtonPressed;
-    bool rightButtonPressed;
-    bool middleButtonPressed;
     double posX;
     double posY;
     double leftMouseDragDeltaX;
     double leftMouseDragDeltaY;
     double rightMouseDragDeltaX;
     double rightMouseDragDeltaY;
+    float sensitivity;
+    bool leftButtonPressed;
+    bool leftButtonPressedLastFrame;
+    bool rightButtonPressed;
+    bool rightButtonPressedLastFrame;
+    bool middleButtonPressed;
+    bool middleButtonPressedLastFrame;
 };

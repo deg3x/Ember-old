@@ -15,14 +15,13 @@ public:
     Input() = delete;
 
     static void Initialize();
-    static void PollInput();
+    static void Tick();
     
     static bool GetKey(int keycode);
     
     static bool GetMouse(int mouseBtn);
+    static bool GetMouseIsDrag(int mouseBtn);
     static glm::dvec2 GetMousePos();
-
-    static void ResetMouseOffsetData();
     
 protected:
     static void UpdateMouseData();

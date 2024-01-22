@@ -18,7 +18,7 @@ void Input::Initialize()
     Logger::Log(LogCategory::INFO, "Input system initialization completed successfully", "Input::Initialize");
 }
 
-void Input::PollInput()
+void Input::Tick()
 {
     UpdateMouseData();
     
@@ -42,6 +42,20 @@ bool Input::GetMouse(int mouseBtn)
     return state == GLFW_PRESS;
 }
 
+bool Input::GetMouseIsDrag(int mouseBtn)
+{
+    switch (mouseBtn)
+    {
+    case MOUSE_BTN_LEFT:
+        return Mouse.leftButtonPressed && Mouse.leftButtonPressedLastFrame;
+    case MOUSE_BTN_RIGHT:
+        return Mouse.rightButtonPressed && Mouse.rightButtonPressedLastFrame;
+    default:
+        Logger::Log(LogCategory::WARNING, "Mouse drag queried for unsupported button...", "Input::GetMouseDrag");
+        return false;
+    }
+}
+
 glm::dvec2 Input::GetMousePos()
 {
     glm::dvec2 mousePos;
@@ -51,34 +65,23 @@ glm::dvec2 Input::GetMousePos()
     return mousePos;
 }
 
-void Input::ResetMouseOffsetData()
-{
-    Mouse.leftMouseDragDeltaX  = 0.0;
-    Mouse.leftMouseDragDeltaY  = 0.0;
-    Mouse.rightMouseDragDeltaX = 0.0;
-    Mouse.rightMouseDragDeltaY = 0.0;
-}
-
 void Input::UpdateMouseData()
 {
+    Mouse.leftButtonPressedLastFrame   = Mouse.leftButtonPressed;
+    Mouse.rightButtonPressedLastFrame  = Mouse.rightButtonPressed;
+    Mouse.middleButtonPressedLastFrame = Mouse.middleButtonPressed;
+        
     Mouse.leftButtonPressed   = GetMouse(MOUSE_BTN_LEFT);
     Mouse.rightButtonPressed  = GetMouse(MOUSE_BTN_RIGHT);
     Mouse.middleButtonPressed = GetMouse(MOUSE_BTN_MIDDLE);
 
     glm::dvec2 mousePos;
-
     glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
-	
-    if (glm::epsilonEqual(mousePos.x, Mouse.posX, DOUBLE_SMALL) && glm::epsilonEqual(mousePos.y, Mouse.posY, DOUBLE_SMALL))
-    {
-        return;
-    }
 
-    Mouse.leftMouseDragDeltaX = Mouse.leftButtonPressed ? mousePos.x - Mouse.posX : 0.0;
-    Mouse.leftMouseDragDeltaY = Mouse.leftButtonPressed ? mousePos.y - Mouse.posY : 0.0;
-
-    Mouse.rightMouseDragDeltaX = Mouse.rightButtonPressed ? mousePos.x - Mouse.posX : 0.0;
-    Mouse.rightMouseDragDeltaY = Mouse.rightButtonPressed ? mousePos.y - Mouse.posY : 0.0;
+    Mouse.leftMouseDragDeltaX  = mousePos.x - Mouse.posX;
+    Mouse.leftMouseDragDeltaY  = mousePos.y - Mouse.posY;
+    Mouse.rightMouseDragDeltaX = mousePos.x - Mouse.posX;
+    Mouse.rightMouseDragDeltaY = mousePos.y - Mouse.posY;
     
     Mouse.posX = mousePos.x;
     Mouse.posY = mousePos.y;

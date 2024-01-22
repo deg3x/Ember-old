@@ -32,7 +32,7 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     flags |= ImGuiWindowFlags_NoMove;
 
     // Initialization of viewport scene
-    radius = (float)World::GetCamera()->GetParent()->transform->position.length();
+    radius = (float)World::GetCamera()->GetOwner()->transform->position.length();
     
     Renderer::SetDepthTestEnabled(true);
     Renderer::SetDepthTestFunc(GL_LESS);
@@ -70,19 +70,23 @@ void Viewport::Tick()
     
     Renderer::SetViewport(0, 0, static_cast<int>(width), static_cast<int>(height));
 
-    Input::PollInput();
-
     if (ImGui::IsWindowHovered())
     {
         const MouseData mouse = Input::Mouse;
 
-        theta  += (float)mouse.leftMouseDragDeltaX * mouse.sensitivity;
-        phi	   += (float)mouse.leftMouseDragDeltaY * mouse.sensitivity;
-        radius -= (float)mouse.rightMouseDragDeltaY * mouse.sensitivity;
+        if (Input::GetMouseIsDrag(MOUSE_BTN_LEFT))
+        {
+            theta  += (float)mouse.leftMouseDragDeltaX * mouse.sensitivity;
+            phi	   += (float)mouse.leftMouseDragDeltaY * mouse.sensitivity;
+        }
+        if (Input::GetMouseIsDrag(MOUSE_BTN_RIGHT))
+        {
+            radius -= (float)mouse.rightMouseDragDeltaY * mouse.sensitivity;
+        }
 
-        World::GetCamera()->GetParent()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
-        World::GetCamera()->GetParent()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
-        World::GetCamera()->GetParent()->transform->position.y = radius * glm::cos(phi);
+        World::GetCamera()->GetOwner()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
+        World::GetCamera()->GetOwner()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
+        World::GetCamera()->GetOwner()->transform->position.y = radius * glm::cos(phi);
     }
     
     viewportFB->Bind();
@@ -92,9 +96,6 @@ void Viewport::Tick()
     Engine::Tick();
 
     viewportFB->Unbind();
-
-    // We may need to move this in a pipeline stage (PostTick or something)
-    Input::ResetMouseOffsetData();
 
     ImGui::Image(reinterpret_cast<ImTextureID>(viewportFB->GetTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
 

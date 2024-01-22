@@ -44,7 +44,7 @@ void MaterialBlinnPhong::SetupShaderVariables(const Transform& objectTransform, 
     shader->SetMatrix4x4("projection", camera.GetProjectionMatrix());
         
     shader->SetMatrix4x4("normalMatrix", normalMatrix);
-    shader->SetVector3("cameraPosition", camera.GetParent()->transform->position);
+    shader->SetVector3("cameraPosition", camera.GetOwner()->transform->position);
     shader->SetVector4("material.diffuse", diffuseColor);
     shader->SetVector3("material.specular", specular);
     shader->SetFloat("material.shininess", shininessExponent);
