@@ -2,25 +2,20 @@
 
 #include "core/World.h"
 #include "core/objects/Object.h"
-#include "imgui/imgui_internal.h"
 #include "input/Input.h"
-#include "logger/Logger.h"
 
 Hierarchy::Hierarchy(Editor* owner) : EditorTab(owner)
 {
     title = "Hierarchy";
 
-    selectedObject.reset();
+    SelectedObject.reset();
+    hoveredObject.reset();
+    clickedObject.reset();
 }
 
 void Hierarchy::Tick()
 {
     EditorTab::Tick();
-
-    std::string entityStr = selectedObject.expired() ? "nullptr" : selectedObject.lock()->name;
-
-    if (!selectedObject.expired())
-        Logger::Log("Selected entity: " + entityStr);
 
     std::vector<std::shared_ptr<Object>> objects;
     objects.reserve(World::objQueueOpaque.size() + World::objQueueTransparent.size());
@@ -32,15 +27,15 @@ void Hierarchy::Tick()
         ImGuiTreeNodeFlags treeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth;
         if (ImGui::TreeNodeEx("World", treeFlags))
         {
-            treeFlags = ImGuiTreeNodeFlags_Leaf;
+            treeFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_SpanFullWidth;
             
             bool anyHovered = false;
             
             for (const std::shared_ptr<Object>& object : objects)
             {
-                if (!hoveredObject.expired())
+                if (!SelectedObject.expired())
                 {
-                    if (hoveredObject.lock() == object)
+                    if (SelectedObject.lock() == object)
                     {
                         treeFlags |= ImGuiTreeNodeFlags_Selected;
                     }
@@ -69,36 +64,39 @@ void Hierarchy::Tick()
             ImGui::TreePop();
         }
         
+        HandleMouseBehavior();
+        
         ImGui::End();
     }
+}
 
+void Hierarchy::HandleMouseBehavior()
+{
     if (!ImGui::IsWindowHovered())
     {
         return;
     }
 
-    if (Input::GetMouse(0))
-    {
-        Logger::Log("MOUSE PRESSED LAST FRAME!!!");
-    }
-
     if (Input::Mouse.leftButtonPressed)
     {
-        selectedObject = hoveredObject;
+        clickedObject = hoveredObject;
     }
     else if (Input::Mouse.leftButtonPressedLastFrame)
     {
         if (hoveredObject.expired())    // Clicked in empty space
         {
-            selectedObject.reset();
+            SelectedObject.reset();
+            clickedObject.reset();
         }
-        else if (selectedObject.lock() == hoveredObject.lock())
+        else if (clickedObject.lock() == hoveredObject.lock())
         {
+            SelectedObject = clickedObject;
             // Submit to inspector
         }
-        else    // This is a drag case. We do not handle it for now
+        else    // This is a mouse drag case. We do not handle it for now
         {
-            selectedObject.reset();
+            SelectedObject.reset();
+            clickedObject.reset();
         }
     }
 }

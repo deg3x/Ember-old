@@ -20,7 +20,8 @@ public:
     static bool GetKey(int keycode);
     
     static bool GetMouse(int mouseBtn);
-    static bool GetMouseIsDrag(int mouseBtn);
+    static bool GetMouseClick(int mouseBtn);
+    static bool GetMouseDrag(int mouseBtn);
     static glm::dvec2 GetMousePos();
     
 protected:

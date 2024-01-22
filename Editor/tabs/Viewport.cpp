@@ -65,12 +65,12 @@ void Viewport::Tick()
     {
         const MouseData mouse = Input::Mouse;
 
-        if (Input::GetMouseIsDrag(MOUSE_BTN_LEFT))
+        if (Input::GetMouseDrag(MOUSE_BTN_LEFT))
         {
             theta  += (float)mouse.leftMouseDragDeltaX * mouse.sensitivity;
             phi	   += (float)mouse.leftMouseDragDeltaY * mouse.sensitivity;
         }
-        if (Input::GetMouseIsDrag(MOUSE_BTN_RIGHT))
+        if (Input::GetMouseDrag(MOUSE_BTN_RIGHT))
         {
             radius -= (float)mouse.rightMouseDragDeltaY * mouse.sensitivity;
         }

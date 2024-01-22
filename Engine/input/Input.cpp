@@ -42,7 +42,21 @@ bool Input::GetMouse(int mouseBtn)
     return state == GLFW_PRESS;
 }
 
-bool Input::GetMouseIsDrag(int mouseBtn)
+bool Input::GetMouseClick(int mouseBtn)
+{
+    switch (mouseBtn)
+    {
+    case MOUSE_BTN_LEFT:
+        return !Mouse.leftButtonPressed && Mouse.leftButtonPressedLastFrame;
+    case MOUSE_BTN_RIGHT:
+        return !Mouse.rightButtonPressed && Mouse.rightButtonPressedLastFrame;
+    default:
+        Logger::Log(LogCategory::WARNING, "Mouse click queried for unsupported button...", "Input::GetMouseClick");
+        return false;
+    }
+}
+
+bool Input::GetMouseDrag(int mouseBtn)
 {
     switch (mouseBtn)
     {

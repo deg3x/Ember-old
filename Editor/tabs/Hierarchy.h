@@ -7,9 +7,12 @@ class Object;
 
 class Hierarchy : public EditorTab
 {
+public:
+    std::weak_ptr<Object> SelectedObject;
+    
 private:
-    std::weak_ptr<Object> selectedObject;
     std::weak_ptr<Object> hoveredObject;
+    std::weak_ptr<Object> clickedObject;
 
 public:
     Hierarchy() = delete;
@@ -17,4 +20,7 @@ public:
     virtual ~Hierarchy() override = default;
 
     void Tick() override;
+
+private:
+    void HandleMouseBehavior();
 };
