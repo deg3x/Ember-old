@@ -138,13 +138,13 @@ void Console::DrawConsoleContent() const
             ImGui::TableNextRow();
 
             ImGui::TableNextColumn();
-            ImGui::Text(timestamp.c_str());
+            ImGui::TextUnformatted(timestamp.c_str());
             
             ImGui::TableNextColumn();
-            ImGui::Text(currentCtx.c_str());
+            ImGui::TextUnformatted(currentCtx.c_str());
 
             ImGui::TableNextColumn();
-            ImGui::Text(entry.message.c_str());
+            ImGui::TextUnformatted(entry.message.c_str());
             
             ImGui::PopStyleColor(1);
         }

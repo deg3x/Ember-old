@@ -10,7 +10,6 @@
 #include "window/Window.h"
 #include "imgui/imgui_internal.h"
 
-#include "tabs/EditorTab.h"
 #include "tabs/Viewport.h"
 #include "tabs/MainMenuBar.h"
 #include "tabs/Console.h"
@@ -74,14 +73,26 @@ void Editor::Tick()
 	{
 		Engine::Tick();
 		
-		EditorRenderBegin();
-		EditorRenderEnd();
+		RenderEditor();
 		
 		Window::SwapBuffers();
 	}
 }
 
-void Editor::EditorRenderBegin()
+std::shared_ptr<EditorTab> Editor::FindTabByType(TabType type) const
+{
+	for (const std::shared_ptr<EditorTab>& tab : tabs)
+	{
+		if (tab->GetType() == type)
+		{
+			return tab;
+		}
+	}
+
+	return nullptr;
+}
+
+void Editor::RenderEditor() const
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -136,14 +147,10 @@ void Editor::EditorRenderBegin()
 
 	ImGui::End();
 	ImGui::Render();
-}
 
-void Editor::EditorRenderEnd()
-{
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	const ImGuiIO& io = ImGui::GetIO();
-	
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
 		GLFWwindow* backup_current_context = glfwGetCurrentContext();

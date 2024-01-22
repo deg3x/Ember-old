@@ -21,6 +21,11 @@ public:
 
     void Tick() override;
 
+    TabType GetType() const override
+    {
+        return TabType::HIERARCHY;
+    }
+
 private:
     void HandleMouseBehavior();
 };

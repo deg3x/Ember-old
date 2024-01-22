@@ -3,9 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include "tabs/EditorTab.h"
 #include "imgui/imgui.h"
-
-class EditorTab;
 
 class Editor
 {
@@ -19,7 +18,8 @@ public:
 
     void Tick();
 
+    std::shared_ptr<EditorTab> FindTabByType(TabType type) const;
+
 private:
-    void EditorRenderBegin();
-    void EditorRenderEnd();
+    void RenderEditor() const;
 };

@@ -22,6 +22,11 @@ public:
 
     void Tick() override;
 
+    TabType GetType() const override
+    {
+        return TabType::CONSOLE;
+    }
+
 private:
     void DrawCategoryButtons();
     void DrawConsoleContent() const;

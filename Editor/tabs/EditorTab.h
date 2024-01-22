@@ -4,6 +4,16 @@
 
 #include "../imgui/imgui.h"
 
+enum class TabType
+{
+    VIEWPORT,
+    HIERARCHY,
+    INSPECTOR,
+    CONSOLE,
+    MAIN_MENU_BAR,
+    NONE
+};
+
 class Editor;
 
 class EditorTab
@@ -23,4 +33,9 @@ public:
     virtual ~EditorTab();
 
     virtual void Tick() {}
+
+    virtual TabType GetType() const
+    {
+        return TabType::NONE;
+    }
 };
