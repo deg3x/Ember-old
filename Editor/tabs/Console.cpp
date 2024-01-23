@@ -2,18 +2,12 @@
 
 #include "core/Time.h"
 #include "logger/Logger.h"
+#include "themes/EditorTheme.h"
 
 Console::Console(Editor* owner) : EditorTab(owner)
 {
     title  = "Console";
     flags |= ImGuiWindowFlags_NoScrollbar;
-
-    textColorInfo            = {0.9f, 0.9f, 0.9f, 1.0f};
-    textColorWarning         = {0.8f, 0.8f, 0.3f, 1.0f};
-    textColorError           = {0.9f, 0.3f, 0.1f, 1.0f};
-
-    buttonColorCategory      = {0.1f, 0.5f, 0.7f, 1.0f};
-    buttonColorHoverCategory = {0.2f, 0.6f, 0.8f, 0.9f};
 }
 
 void Console::Tick()
@@ -38,8 +32,9 @@ void Console::DrawCategoryButtons()
     
     if (showInfo)
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, buttonColorCategory);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonColorHoverCategory);
+        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ThemeColorBlue);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ThemeColorBlueHovered);
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ThemeColorBlueActive);
         popColor = true;
     }
     if(ImGui::Button("Info"))
@@ -48,7 +43,7 @@ void Console::DrawCategoryButtons()
     }
     if (popColor)
     {
-        ImGui::PopStyleColor(2);
+        ImGui::PopStyleColor(3);
         popColor = false;
     }
         
@@ -56,8 +51,9 @@ void Console::DrawCategoryButtons()
 
     if (showWarning)
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, buttonColorCategory);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonColorHoverCategory);
+        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ThemeColorBlue);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ThemeColorBlueHovered);
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ThemeColorBlueActive);
         popColor = true;
     }
     if(ImGui::Button("Warning"))
@@ -66,7 +62,7 @@ void Console::DrawCategoryButtons()
     }
     if (popColor)
     {
-        ImGui::PopStyleColor(2);
+        ImGui::PopStyleColor(3);
         popColor = false;
     }
         
@@ -74,8 +70,9 @@ void Console::DrawCategoryButtons()
 
     if (showError)
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, buttonColorCategory);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonColorHoverCategory);
+        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ThemeColorBlue);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ThemeColorBlueHovered);
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ThemeColorBlueActive);
         popColor = true;
     }
     if(ImGui::Button("Error"))
@@ -84,7 +81,7 @@ void Console::DrawCategoryButtons()
     }
     if (popColor)
     {
-        ImGui::PopStyleColor(2);
+        ImGui::PopStyleColor(3);
         popColor = false;
     }
 }
@@ -111,7 +108,7 @@ void Console::DrawConsoleContent() const
                     continue;
                 }
 
-                ImGui::PushStyleColor(ImGuiCol_Text, textColorInfo);
+                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ThemeColorTextInfo);
             }
             else if (entry.category == LogCategory::WARNING)
             {
@@ -120,7 +117,7 @@ void Console::DrawConsoleContent() const
                     continue;
                 }
 
-                ImGui::PushStyleColor(ImGuiCol_Text, textColorWarning);
+                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ThemeColorTextWarning);
             }
             else if (entry.category == LogCategory::ERROR)
             {
@@ -129,7 +126,7 @@ void Console::DrawConsoleContent() const
                     continue;
                 }
 
-                ImGui::PushStyleColor(ImGuiCol_Text, textColorError);
+                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ThemeColorTextError);
             }
             
             std::string timestamp  = "[" + std::to_string(entry.timestamp) + "]";

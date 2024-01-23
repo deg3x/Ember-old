@@ -7,13 +7,6 @@ private:
     bool showInfo = true;
     bool showWarning = true;
     bool showError = true;
-
-    ImVec4 textColorInfo;
-    ImVec4 textColorWarning;
-    ImVec4 textColorError;
-
-    ImVec4 buttonColorCategory;
-    ImVec4 buttonColorHoverCategory;
     
 public:
     Console() = delete;

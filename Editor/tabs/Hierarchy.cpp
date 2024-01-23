@@ -3,6 +3,7 @@
 #include "core/World.h"
 #include "core/objects/Object.h"
 #include "input/Input.h"
+#include "themes/EditorTheme.h"
 
 Hierarchy::Hierarchy(Editor* owner) : EditorTab(owner)
 {
@@ -28,9 +29,9 @@ void Hierarchy::Tick()
 
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0.0f, 0.0f});
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {6.0f, 5.0f});
-        ImGui::PushStyleColor(ImGuiCol_Header, itemColor);
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, itemColorHovered);
-        ImGui::PushStyleColor(ImGuiCol_HeaderActive, itemColorActive);
+        ImGui::PushStyleColor(ImGuiCol_Header, EditorTheme::ThemeColorGreen);
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, EditorTheme::ThemeColorGreenHovered);
+        ImGui::PushStyleColor(ImGuiCol_HeaderActive, EditorTheme::ThemeColorGreenActive);
         if (ImGui::TreeNodeEx("World", treeFlags))
         {
             treeFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_FramePadding;
