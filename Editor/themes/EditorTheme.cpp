@@ -1,14 +1,16 @@
 ﻿#include "EditorTheme.h"
 
 #include "imgui/imgui.h"
-#include "imgui/imgui_internal.h"
 
 #include "utils/PathBuilder.h"
 
 void EditorTheme::ApplyTheme()
 {
     const ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF(PathBuilder::GetPath("./Data/fonts/Roboto/Roboto-Regular.ttf").c_str(), 16);
+    FontRegular = io.Fonts->AddFontFromFileTTF(PathBuilder::GetPath("./Data/fonts/Roboto/Roboto-Regular.ttf").c_str(), 16);
+    FontMedium  = io.Fonts->AddFontFromFileTTF(PathBuilder::GetPath("./Data/fonts/Roboto/Roboto-Medium.ttf").c_str(), 16);
+    FontLight   = io.Fonts->AddFontFromFileTTF(PathBuilder::GetPath("./Data/fonts/Roboto/Roboto-Light.ttf").c_str(), 16);
+    FontBold    = io.Fonts->AddFontFromFileTTF(PathBuilder::GetPath("./Data/fonts/Roboto/Roboto-Bold.ttf").c_str(), 16);
     
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text]                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -45,8 +47,8 @@ void EditorTheme::ApplyTheme()
     colors[ImGuiCol_ResizeGripHovered]      = ImVec4(0.44f, 0.44f, 0.44f, 0.29f);
     colors[ImGuiCol_ResizeGripActive]       = ImVec4(0.40f, 0.44f, 0.47f, 1.00f);
     colors[ImGuiCol_Tab]                    = ImVec4(0.00f, 0.00f, 0.00f, 0.55f);
-    colors[ImGuiCol_TabHovered]             = ThemeColorGreenHovered;
-    colors[ImGuiCol_TabActive]              = ThemeColorGreen;
+    colors[ImGuiCol_TabHovered]             = ColorGreenHovered;
+    colors[ImGuiCol_TabActive]              = ColorGreen;
     colors[ImGuiCol_TabUnfocused]           = ImVec4(0.00f, 0.00f, 0.00f, 0.55f);
     colors[ImGuiCol_TabUnfocusedActive]     = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
     colors[ImGuiCol_DockingPreview]         = ImVec4(0.33f, 0.67f, 0.86f, 1.00f);

@@ -29,9 +29,9 @@ void Hierarchy::Tick()
 
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0.0f, 0.0f});
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {6.0f, 5.0f});
-        ImGui::PushStyleColor(ImGuiCol_Header, EditorTheme::ThemeColorGreen);
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, EditorTheme::ThemeColorGreenHovered);
-        ImGui::PushStyleColor(ImGuiCol_HeaderActive, EditorTheme::ThemeColorGreenActive);
+        ImGui::PushStyleColor(ImGuiCol_Header, EditorTheme::ColorGreen);
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, EditorTheme::ColorGreenHovered);
+        ImGui::PushStyleColor(ImGuiCol_HeaderActive, EditorTheme::ColorGreenActive);
         if (ImGui::TreeNodeEx("World", treeFlags))
         {
             treeFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_FramePadding;

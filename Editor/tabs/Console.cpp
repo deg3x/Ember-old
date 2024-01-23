@@ -32,9 +32,9 @@ void Console::DrawCategoryButtons()
     
     if (showInfo)
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ThemeColorBlue);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ThemeColorBlueHovered);
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ThemeColorBlueActive);
+        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ColorBlue);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ColorBlueHovered);
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ColorBlueActive);
         popColor = true;
     }
     if(ImGui::Button("Info"))
@@ -51,9 +51,9 @@ void Console::DrawCategoryButtons()
 
     if (showWarning)
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ThemeColorBlue);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ThemeColorBlueHovered);
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ThemeColorBlueActive);
+        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ColorBlue);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ColorBlueHovered);
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ColorBlueActive);
         popColor = true;
     }
     if(ImGui::Button("Warning"))
@@ -70,9 +70,9 @@ void Console::DrawCategoryButtons()
 
     if (showError)
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ThemeColorBlue);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ThemeColorBlueHovered);
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ThemeColorBlueActive);
+        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ColorBlue);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ColorBlueHovered);
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ColorBlueActive);
         popColor = true;
     }
     if(ImGui::Button("Error"))
@@ -108,7 +108,7 @@ void Console::DrawConsoleContent() const
                     continue;
                 }
 
-                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ThemeColorTextInfo);
+                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ColorTextInfo);
             }
             else if (entry.category == LogCategory::WARNING)
             {
@@ -117,7 +117,7 @@ void Console::DrawConsoleContent() const
                     continue;
                 }
 
-                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ThemeColorTextWarning);
+                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ColorTextWarning);
             }
             else if (entry.category == LogCategory::ERROR)
             {
@@ -126,7 +126,7 @@ void Console::DrawConsoleContent() const
                     continue;
                 }
 
-                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ThemeColorTextError);
+                ImGui::PushStyleColor(ImGuiCol_Text, EditorTheme::ColorTextError);
             }
             
             std::string timestamp  = "[" + std::to_string(entry.timestamp) + "]";

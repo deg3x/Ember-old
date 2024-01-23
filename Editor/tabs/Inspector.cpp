@@ -8,6 +8,7 @@
 #include "imgui/imgui_internal.h"
 #include "logger/Logger.h"
 #include "tabs/Hierarchy.h"
+#include "themes/EditorTheme.h"
 
 Inspector::Inspector(Editor* owner) : EditorTab(owner)
 {
@@ -58,7 +59,9 @@ void Inspector::DrawTransform()
     constexpr ImGuiTreeNodeFlags transformFlags = ImGuiTreeNodeFlags_DefaultOpen;
     
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 10.0f});
+    ImGui::PushFont(EditorTheme::FontMedium);
     const bool isHeaderOpen = ImGui::CollapsingHeader("Transform", transformFlags);
+    ImGui::PopFont();
     ImGui::PopStyleVar();
 
     if (isHeaderOpen)
@@ -102,7 +105,9 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::PushStyleColor(ImGuiCol_Button, labelColorX);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorX);
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorX);
+    ImGui::PushFont(EditorTheme::FontBold);
     ImGui::Button("X", {buttonSize, buttonSize});
+    ImGui::PopFont();
     ImGui::PopStyleColor(3);
     
     ImGui::SameLine();
@@ -115,7 +120,9 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::PushStyleColor(ImGuiCol_Button, labelColorY);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorY);
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorY);
+    ImGui::PushFont(EditorTheme::FontBold);
     ImGui::Button("Y");
+    ImGui::PopFont();
     ImGui::PopStyleColor(3);
     
     ImGui::SameLine();
@@ -128,7 +135,9 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::PushStyleColor(ImGuiCol_Button, labelColorZ);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorZ);
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorZ);
+    ImGui::PushFont(EditorTheme::FontBold);
     ImGui::Button("Z");
+    ImGui::PopFont();
     ImGui::PopStyleColor(3);
     
     ImGui::SameLine();
