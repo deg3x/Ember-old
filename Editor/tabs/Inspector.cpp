@@ -123,15 +123,3 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 
     ImGui::PopStyleVar(3);
 }
-
-void Inspector::DrawDragFloatLabel(const std::string& label)
-{
-    const float lastItemSizeY = ImGui::GetItemRectSize().y;
-    const ImVec2 lastItemRectMin = ImGui::GetItemRectMin();
-    const ImRect axisRect = ImRect(
-        {lastItemRectMin.x - lastItemSizeY, lastItemRectMin.y},
-        {lastItemRectMin.x, lastItemRectMin.y + lastItemSizeY}
-        );
-    
-    ImGui::GetWindowDrawList()->AddRectFilled(axisRect.Min, axisRect.Max, IM_COL32(220, 50, 10, 255), 3, ImDrawFlags_RoundCornersLeft);
-}

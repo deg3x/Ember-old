@@ -31,5 +31,4 @@ public:
 private:
     void DrawTransform();
     void DrawTransformVector(const std::string& label, glm::vec3* vector);
-    void DrawDragFloatLabel(const std::string& label);
 };
