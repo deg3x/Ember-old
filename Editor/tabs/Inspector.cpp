@@ -25,9 +25,20 @@ void Inspector::Tick()
 
     if (ImGui::Begin(title.c_str(), nullptr, flags))
     {
-        if (hierarchyTab != nullptr)
+        if (hierarchyTab != nullptr && !hierarchyTab->SelectedObject.expired())
         {
             DrawTransform();
+
+            // Add component button
+            const ImVec2 buttonSize = {ImGui::GetContentRegionAvail().x * 0.4f, 30.0f};
+            const float buttonPosX  = (ImGui::GetContentRegionAvail().x - buttonSize.x) * 0.5f;
+
+            ImGui::SetCursorPosX(buttonPosX);
+            
+            if (ImGui::Button("Add Component", buttonSize))
+            {
+                // Add component logic...
+            }
         }
         else
         {
@@ -40,11 +51,6 @@ void Inspector::Tick()
 
 void Inspector::DrawTransform()
 {
-    if (hierarchyTab->SelectedObject.expired())
-    {
-        return;
-    }
-    
     constexpr ImGuiTreeNodeFlags transformFlags = ImGuiTreeNodeFlags_DefaultOpen;
     
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 10.0f});
