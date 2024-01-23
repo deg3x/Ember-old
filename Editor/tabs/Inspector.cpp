@@ -5,6 +5,7 @@
 #include "Editor.h"
 #include "core/components/Transform.h"
 #include "core/objects/Object.h"
+#include "imgui/imgui_internal.h"
 #include "logger/Logger.h"
 #include "tabs/Hierarchy.h"
 
@@ -69,16 +70,68 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::TableNextRow();
     
     ImGui::TableNextColumn();
+    
+    const float labelStartX = ImGui::GetContentRegionAvail().x * 0.3f;
+    ImGui::SetCursorPosX(labelStartX);
+    ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted(label.c_str());
 
     ImGui::TableNextColumn();
-    const float sizeX = (ImGui::GetContentRegionAvail().x - 2 * ImGui::GetStyle().ItemSpacing.x) * 0.33f;
-    ImGui::SetNextItemWidth(sizeX);
-    ImGui::DragFloat(("##" + label + "1").c_str(), &vector->x, 0.1f);
+    
+    const float buttonSize  = ImGui::CalcTextSize(label.c_str()).y + 2.0f * ImGui::GetStyle().FramePadding.y; // Dirty way to calculate button size but works
+    const float sizeInputX  = ((ImGui::GetContentRegionAvail().x - 2 * ImGui::GetStyle().ItemSpacing.x) * 0.33f) - buttonSize;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0);
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
+    ImGui::PushStyleColor(ImGuiCol_Button, labelColorX);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorX);
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorX);
+    ImGui::Button("X", {buttonSize, buttonSize});
+    ImGui::PopStyleColor(3);
+    
     ImGui::SameLine();
-    ImGui::SetNextItemWidth(sizeX);
-    ImGui::DragFloat(("##" + label + "2").c_str(), &vector->y, 0.1f);
+    ImGui::SetNextItemWidth(sizeInputX);
+    ImGui::DragFloat(("##" + label + "1").c_str(), &vector->x, 0.1f, 0, 0, "%.2f");
+    ImGui::PopStyleVar();
+    
     ImGui::SameLine();
-    ImGui::SetNextItemWidth(sizeX);
-    ImGui::DragFloat(("##" + label + "3").c_str(), &vector->z, 0.1f);
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
+    ImGui::PushStyleColor(ImGuiCol_Button, labelColorY);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorY);
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorY);
+    ImGui::Button("Y");
+    ImGui::PopStyleColor(3);
+    
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(sizeInputX);
+    ImGui::DragFloat(("##" + label + "2").c_str(), &vector->y, 0.1f, 0, 0, "%.2f");
+    ImGui::PopStyleVar();
+    
+    ImGui::SameLine();
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
+    ImGui::PushStyleColor(ImGuiCol_Button, labelColorZ);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorZ);
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorZ);
+    ImGui::Button("Z");
+    ImGui::PopStyleColor(3);
+    
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(sizeInputX);
+    ImGui::DragFloat(("##" + label + "3").c_str(), &vector->z, 0.1f, 0, 0, "%.2f");
+
+    ImGui::PopStyleVar(3);
+}
+
+void Inspector::DrawDragFloatLabel(const std::string& label)
+{
+    const float lastItemSizeY = ImGui::GetItemRectSize().y;
+    const ImVec2 lastItemRectMin = ImGui::GetItemRectMin();
+    const ImRect axisRect = ImRect(
+        {lastItemRectMin.x - lastItemSizeY, lastItemRectMin.y},
+        {lastItemRectMin.x, lastItemRectMin.y + lastItemSizeY}
+        );
+    
+    ImGui::GetWindowDrawList()->AddRectFilled(axisRect.Min, axisRect.Max, IM_COL32(220, 50, 10, 255), 3, ImDrawFlags_RoundCornersLeft);
 }

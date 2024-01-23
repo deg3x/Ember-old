@@ -125,8 +125,8 @@ void Editor::RenderEditor() const
 			ImGui::DockBuilderSetNodeSize(windowID, ImGui::GetWindowSize());
 
 			ImGuiID viewportID  = windowID;
-			ImGuiID hierarchyID = ImGui::DockBuilderSplitNode(viewportID, ImGuiDir_Right, 0.25f, nullptr, &viewportID);
-			ImGuiID inspectorID = ImGui::DockBuilderSplitNode(hierarchyID, ImGuiDir_Right, 0.55f, nullptr, &hierarchyID);
+			ImGuiID hierarchyID = ImGui::DockBuilderSplitNode(viewportID, ImGuiDir_Right, 0.30f, nullptr, &viewportID);
+			ImGuiID inspectorID = ImGui::DockBuilderSplitNode(hierarchyID, ImGuiDir_Right, 0.60f, nullptr, &hierarchyID);
 			ImGuiID consoleID   = ImGui::DockBuilderSplitNode(viewportID, ImGuiDir_Down, 0.2f, nullptr, &viewportID);
 
 			ImGui::DockBuilderDockWindow("Viewport", viewportID);
