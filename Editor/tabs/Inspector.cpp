@@ -1,6 +1,6 @@
-﻿#include "Inspector.h"
+#include "Inspector.h"
 
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 
 #include "Editor.h"
 #include "core/components/Transform.h"
