@@ -44,7 +44,7 @@ void Inspector::Tick()
                 // Add component logic...
             }
         }
-        else
+        else if (hierarchyTab == nullptr)
         {
             Logger::Log(LogCategory::WARNING, "The hierarchy tab is not set inside the inspector class...", "Inspector::Tick");
         }
