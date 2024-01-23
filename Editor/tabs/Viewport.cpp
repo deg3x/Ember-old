@@ -5,7 +5,6 @@
 
 #include "Editor.h"
 
-#include "Engine.h"
 #include "core/World.h"
 #include "core/Renderer.h"
 #include "core/Framebuffer.h"
@@ -14,11 +13,10 @@
 #include "core/components/Transform.h"
 
 #include "input/Input.h"
-#include "logger/Logger.h"
 
 namespace
 {
-    float theta  = -glm::quarter_pi<float>();
+    float theta  = -glm::half_pi<float>();
     float phi    = -glm::half_pi<float>();
     float radius;
 	
