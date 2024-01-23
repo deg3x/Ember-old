@@ -21,13 +21,19 @@ void Hierarchy::Tick()
     objects.reserve(World::objQueueOpaque.size() + World::objQueueTransparent.size());
     objects.insert(objects.end(), World::objQueueOpaque.begin(), World::objQueueOpaque.end());
     objects.insert(objects.end(), World::objQueueTransparent.begin(), World::objQueueTransparent.end());
-
+    
     if (ImGui::Begin(title.c_str(), nullptr, flags))
     {
-        ImGuiTreeNodeFlags treeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth;
+        ImGuiTreeNodeFlags treeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_FramePadding;
+
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0.0f, 0.0f});
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {6.0f, 5.0f});
+        ImGui::PushStyleColor(ImGuiCol_Header, itemColor);
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, itemColorHovered);
+        ImGui::PushStyleColor(ImGuiCol_HeaderActive, itemColorActive);
         if (ImGui::TreeNodeEx("World", treeFlags))
         {
-            treeFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_SpanFullWidth;
+            treeFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_FramePadding;
             
             bool anyHovered = false;
             
@@ -63,6 +69,9 @@ void Hierarchy::Tick()
             
             ImGui::TreePop();
         }
+
+        ImGui::PopStyleColor(3);
+        ImGui::PopStyleVar(2);
         
         HandleMouseBehavior();
         
