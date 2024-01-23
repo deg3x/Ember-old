@@ -46,7 +46,13 @@ void Inspector::DrawTransform()
     }
     
     constexpr ImGuiTreeNodeFlags transformFlags = ImGuiTreeNodeFlags_DefaultOpen;
-    if (ImGui::CollapsingHeader("Transform", transformFlags))
+    
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 10.0f});
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0);
+    const bool isHeaderOpen = ImGui::CollapsingHeader("Transform", transformFlags);
+    ImGui::PopStyleVar(2);
+
+    if (isHeaderOpen)
     {
         const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
 
