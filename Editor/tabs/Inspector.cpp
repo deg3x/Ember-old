@@ -29,6 +29,10 @@ void Inspector::Tick()
         {
             DrawTransform();
 
+            ImGui::Spacing();
+            ImGui::Separator();
+            ImGui::Spacing();
+
             // Add component button
             const ImVec2 buttonSize = {ImGui::GetContentRegionAvail().x * 0.4f, 30.0f};
             const float buttonPosX  = (ImGui::GetContentRegionAvail().x - buttonSize.x) * 0.5f;
