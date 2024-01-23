@@ -80,7 +80,7 @@ void EditorTheme::ApplyTheme()
     style.WindowBorderSize                  = 1;
     style.ChildBorderSize                   = 1;
     style.PopupBorderSize                   = 1;
-    style.FrameBorderSize                   = 1;
+    style.FrameBorderSize                   = 0;
     style.TabBorderSize                     = 1;
     style.WindowRounding                    = 7;
     style.ChildRounding                     = 0;

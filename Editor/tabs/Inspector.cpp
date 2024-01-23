@@ -54,9 +54,8 @@ void Inspector::DrawTransform()
     constexpr ImGuiTreeNodeFlags transformFlags = ImGuiTreeNodeFlags_DefaultOpen;
     
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 10.0f});
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0);
     const bool isHeaderOpen = ImGui::CollapsingHeader("Transform", transformFlags);
-    ImGui::PopStyleVar(2);
+    ImGui::PopStyleVar();
 
     if (isHeaderOpen)
     {
@@ -94,7 +93,6 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     const float sizeInputX  = ((ImGui::GetContentRegionAvail().x - 2 * ImGui::GetStyle().ItemSpacing.x) * 0.33f) - buttonSize;
 
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0);
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0);
 
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
     ImGui::PushStyleColor(ImGuiCol_Button, labelColorX);
@@ -133,5 +131,5 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::SetNextItemWidth(sizeInputX);
     ImGui::DragFloat(("##" + label + "3").c_str(), &vector->z, 0.1f, 0, 0, "%.2f");
 
-    ImGui::PopStyleVar(3);
+    ImGui::PopStyleVar(2);
 }
