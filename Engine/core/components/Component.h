@@ -5,17 +5,36 @@
 #include <type_traits>
 #include <memory>
 
+enum class ComponentType
+{
+    TRANSFORM,
+    CAMERA,
+    MESH,
+    LIGHT,
+    COUNT
+};
+
 #define MAKE_UNIQUE_COMPONENT()             \
+public:                                     \
     virtual inline bool IsUnique() override \
     {                                       \
         return true;                        \
     }                                       \
+
+#define MAKE_COMPONENT_TYPE(type)           \
+public:                                     \
+    virtual inline ComponentType GetType()  \
+    {                                       \
+        return ComponentType::type;         \
+    }
 
 class Object;
 
 class ENGINE_API Component
 {
     friend class Object;
+    
+    MAKE_COMPONENT_TYPE(COUNT)
     
 protected:
     // Handled by the AddComponent() function of Object

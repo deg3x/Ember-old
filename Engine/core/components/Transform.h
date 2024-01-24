@@ -6,9 +6,10 @@
 
 class ENGINE_API Transform : public Component
 {
-public:
 	MAKE_UNIQUE_COMPONENT()
+	MAKE_COMPONENT_TYPE(TRANSFORM)
 	
+public:
 	glm::vec3 position;
 	glm::vec3 rotation; // Switch to quaternions later
 	glm::vec3 scale;

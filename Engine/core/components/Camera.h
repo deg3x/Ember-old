@@ -5,6 +5,8 @@
 
 class ENGINE_API Camera : public Component
 {
+	MAKE_COMPONENT_TYPE(CAMERA)
+	
 public:
 	Camera() = default;
 	virtual ~Camera() = default;

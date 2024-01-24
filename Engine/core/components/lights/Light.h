@@ -7,6 +7,8 @@ class Shader;
 
 class ENGINE_API Light : public Component
 {
+	MAKE_COMPONENT_TYPE(LIGHT)
+	
 public:
 	glm::vec3 ambient;
 	glm::vec3 diffuse;

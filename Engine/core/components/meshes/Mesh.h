@@ -12,7 +12,10 @@ class Material;
 
 class ENGINE_API Mesh : public Component
 {
+	MAKE_COMPONENT_TYPE(MESH)
+	
 public:
+	
 	std::shared_ptr<Material> material;
 	
 protected:

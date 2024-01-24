@@ -28,7 +28,7 @@ void Inspector::Tick()
     {
         if (hierarchyTab != nullptr && !hierarchyTab->SelectedObject.expired())
         {
-            DrawTransform();
+            DrawComponents();
 
             ImGui::Spacing();
             ImGui::Separator();
@@ -36,10 +36,10 @@ void Inspector::Tick()
 
             // Add component button
             const ImVec2 buttonSize = {ImGui::GetContentRegionAvail().x * 0.4f, 30.0f};
-            const float buttonPosX  = (ImGui::GetContentRegionAvail().x - buttonSize.x) * 0.5f;
+            const float buttonPosX = (ImGui::GetContentRegionAvail().x - buttonSize.x) * 0.5f;
 
             ImGui::SetCursorPosX(buttonPosX);
-            
+
             if (ImGui::Button("Add Component", buttonSize))
             {
                 // Add component logic...
@@ -49,15 +49,42 @@ void Inspector::Tick()
         {
             Logger::Log(LogCategory::WARNING, "The hierarchy tab is not set inside the inspector class...", "Inspector::Tick");
         }
-        
+
         ImGui::End();
+    }
+}
+
+void Inspector::DrawComponents()
+{
+    DrawTransform();
+
+    const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
+    for (std::shared_ptr<Component> component : selection->GetComponents())
+    {
+        switch (component->GetType())
+        {
+        case ComponentType::TRANSFORM:
+            break;
+        case ComponentType::CAMERA:
+            DrawCamera();
+            break;
+        case ComponentType::LIGHT:
+            DrawLight();
+            break;
+        case ComponentType::MESH:
+            DrawMesh();
+            break;
+        default:
+            Logger::Log(LogCategory::WARNING, "Unrecognized component type found", "Inspector::DrawComponents");
+            break;
+        }
     }
 }
 
 void Inspector::DrawTransform()
 {
     constexpr ImGuiTreeNodeFlags transformFlags = ImGuiTreeNodeFlags_DefaultOpen;
-    
+
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 10.0f});
     ImGui::PushFont(EditorTheme::FontMedium);
     const bool isHeaderOpen = ImGui::CollapsingHeader("Transform", transformFlags);
@@ -73,11 +100,11 @@ void Inspector::DrawTransform()
         {
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, 0.2f);
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, 0.8f);
-            
+
             DrawTransformVector("Position", &selection->transform->position);
             DrawTransformVector("Rotation", &selection->transform->rotation);
             DrawTransformVector("Scale", &selection->transform->scale);
-            
+
             ImGui::EndTable();
         }
     }
@@ -86,18 +113,20 @@ void Inspector::DrawTransform()
 void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 {
     ImGui::TableNextRow();
-    
+
     ImGui::TableNextColumn();
-    
+
     const float labelStartX = ImGui::GetContentRegionAvail().x * 0.3f;
     ImGui::SetCursorPosX(labelStartX);
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted(label.c_str());
 
     ImGui::TableNextColumn();
-    
-    const float buttonSize  = ImGui::CalcTextSize(label.c_str()).y + 2.0f * ImGui::GetStyle().FramePadding.y; // Dirty way to calculate button size but works
-    const float sizeInputX  = ((ImGui::GetContentRegionAvail().x - 2 * ImGui::GetStyle().ItemSpacing.x) * 0.33f) - buttonSize;
+
+    const float buttonSize = ImGui::CalcTextSize(label.c_str()).y + 2.0f * ImGui::GetStyle().FramePadding.y;
+    // Dirty way to calculate button size but works
+    const float sizeInputX = ((ImGui::GetContentRegionAvail().x - 2 * ImGui::GetStyle().ItemSpacing.x) * 0.33f) -
+        buttonSize;
 
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0);
 
@@ -109,12 +138,12 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::Button("X", {buttonSize, buttonSize});
     ImGui::PopFont();
     ImGui::PopStyleColor(3);
-    
+
     ImGui::SameLine();
     ImGui::SetNextItemWidth(sizeInputX);
     ImGui::DragFloat(("##" + label + "1").c_str(), &vector->x, 0.1f, 0, 0, "%.2f");
     ImGui::PopStyleVar();
-    
+
     ImGui::SameLine();
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
     ImGui::PushStyleColor(ImGuiCol_Button, labelColorY);
@@ -124,12 +153,12 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::Button("Y");
     ImGui::PopFont();
     ImGui::PopStyleColor(3);
-    
+
     ImGui::SameLine();
     ImGui::SetNextItemWidth(sizeInputX);
     ImGui::DragFloat(("##" + label + "2").c_str(), &vector->y, 0.1f, 0, 0, "%.2f");
     ImGui::PopStyleVar();
-    
+
     ImGui::SameLine();
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
     ImGui::PushStyleColor(ImGuiCol_Button, labelColorZ);
@@ -139,10 +168,22 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::Button("Z");
     ImGui::PopFont();
     ImGui::PopStyleColor(3);
-    
+
     ImGui::SameLine();
     ImGui::SetNextItemWidth(sizeInputX);
     ImGui::DragFloat(("##" + label + "3").c_str(), &vector->z, 0.1f, 0, 0, "%.2f");
 
     ImGui::PopStyleVar(2);
+}
+
+void Inspector::DrawCamera()
+{
+}
+
+void Inspector::DrawLight()
+{
+}
+
+void Inspector::DrawMesh()
+{
 }
