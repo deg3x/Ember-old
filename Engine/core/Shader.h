@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Definitions.h"
-#include "glm/glm.hpp"
 
 class ENGINE_API Shader
 {

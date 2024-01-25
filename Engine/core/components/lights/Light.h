@@ -1,6 +1,5 @@
 #pragma once
 
-#include "glm/glm.hpp"
 #include "core/components/Component.h"
 
 class Shader;

@@ -1,8 +1,6 @@
 #include "editor_pch.h"
 #include "Inspector.h"
 
-#include "glm/glm.hpp"
-
 #include "Editor.h"
 #include "core/components/Transform.h"
 #include "core/objects/Object.h"
@@ -18,7 +16,7 @@ Inspector::Inspector(Editor* owner) : EditorTab(owner)
 void Inspector::Tick()
 {
     EditorTab::Tick();
-
+    
     if (hierarchyTab == nullptr)
     {
         hierarchyTab = std::dynamic_pointer_cast<Hierarchy>(editor->FindTabByType(TabType::HIERARCHY));

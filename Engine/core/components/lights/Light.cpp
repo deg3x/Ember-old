@@ -1,8 +1,6 @@
 #include "engine_pch.h"
 #include "Light.h"
 
-#include "glm/glm.hpp"
-
 Light::Light()
 {
 	intensity = 1.0f;

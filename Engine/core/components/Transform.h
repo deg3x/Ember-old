@@ -1,7 +1,5 @@
 #pragma once
 
-#include "glm/glm.hpp"
-#include "glm/gtc/quaternion.hpp"
 #include "core/components/Component.h"
 
 class ENGINE_API Transform : public Component

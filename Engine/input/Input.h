@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "glm/vec2.hpp"
-
 #include "Definitions.h"
 #include "KeyCodes.h"
 #include "Mouse.h"

@@ -5,7 +5,6 @@
 #include "logger/Logger.h"
 
 #include "glfw/glfw3.h"
-#include "glm/gtc/epsilon.hpp"
 
 MouseData Input::Mouse;
 
