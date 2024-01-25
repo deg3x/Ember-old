@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "Definitions.h"
-#include <memory>
 
 class Shader;
 class Camera;

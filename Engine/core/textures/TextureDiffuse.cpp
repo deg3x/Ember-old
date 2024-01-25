@@ -1,4 +1,5 @@
-﻿#include "TextureDiffuse.h"
+﻿#include "engine_pch.h"
+#include "TextureDiffuse.h"
 
 #include "glad/glad.h"
 #include "stb_image.h"

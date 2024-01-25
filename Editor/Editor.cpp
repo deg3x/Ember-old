@@ -1,4 +1,5 @@
-﻿#include "Editor.h"
+﻿#include "editor_pch.h"
+#include "Editor.h"
 
 #include "glfw/glfw3.h"
 

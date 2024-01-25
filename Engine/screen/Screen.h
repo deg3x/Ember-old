@@ -1,9 +1,7 @@
 ﻿#pragma once
+
 #include "Definitions.h"
 #include "ScreenTypes.h"
-
-#include <string>
-#include <vector>
 
 class ENGINE_API Screen
 {

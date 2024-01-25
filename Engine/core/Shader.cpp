@@ -1,13 +1,10 @@
+#include "engine_pch.h"
 #include "Shader.h"
 
 #include "glad/glad.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "logger/Logger.h"
-
-#include <string>
-#include <fstream>
-#include <sstream>
 
 Shader::Shader(const char* vertPath, const char* fragPath)
 {

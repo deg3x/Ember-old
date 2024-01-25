@@ -1,8 +1,6 @@
 ﻿#pragma once
 
-#include <string>
-
-#include "../imgui/imgui.h"
+#include "imgui/imgui.h"
 
 enum class TabType
 {

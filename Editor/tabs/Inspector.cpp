@@ -1,3 +1,4 @@
+#include "editor_pch.h"
 #include "Inspector.h"
 
 #include "glm/glm.hpp"
@@ -5,7 +6,6 @@
 #include "Editor.h"
 #include "core/components/Transform.h"
 #include "core/objects/Object.h"
-#include "imgui/imgui_internal.h"
 #include "logger/Logger.h"
 #include "tabs/Hierarchy.h"
 #include "themes/EditorTheme.h"

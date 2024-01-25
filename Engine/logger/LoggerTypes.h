@@ -1,10 +1,5 @@
 ﻿#pragma once
 
-#include "Definitions.h"
-
-#include <cstdint>
-#include <string>
-
 enum class LogCategory : uint8_t
 {
     INFO,

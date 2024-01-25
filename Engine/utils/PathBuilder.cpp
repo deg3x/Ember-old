@@ -1,3 +1,4 @@
+#include "engine_pch.h"
 #include "PathBuilder.h"
 
 std::string PathBuilder::GetPath(const std::string& path)

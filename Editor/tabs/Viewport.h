@@ -1,10 +1,5 @@
 ﻿#pragma once
-
 #include "EditorTab.h"
-#include "core/World.h"
-#include "core/Framebuffer.h"
-
-#include <memory>
 
 class Framebuffer;
 

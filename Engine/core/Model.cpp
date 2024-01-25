@@ -1,4 +1,5 @@
-﻿#include "Model.h"
+﻿#include "engine_pch.h"
+#include "Model.h"
 
 #include "core/components/meshes/Mesh.h"
 #include "core/textures/TextureDiffuse.h"

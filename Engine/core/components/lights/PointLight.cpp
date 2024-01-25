@@ -1,3 +1,4 @@
+#include "engine_pch.h"
 #include "PointLight.h"
 
 #include "core/Shader.h"

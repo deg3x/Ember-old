@@ -2,9 +2,6 @@
 
 #include "Definitions.h"
 
-#include <vector>
-#include <memory>
-
 class Mesh;
 
 class ENGINE_API Model

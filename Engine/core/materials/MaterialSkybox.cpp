@@ -1,4 +1,5 @@
-﻿#include "MaterialSkybox.h"
+﻿#include "engine_pch.h"
+#include "MaterialSkybox.h"
 
 #include "core/Shader.h"
 #include "core/textures/TextureCubemap.h"

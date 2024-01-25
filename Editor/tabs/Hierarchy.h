@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include "EditorTab.h"
 
-#include <memory>
-
 class Object;
 
 class Hierarchy : public EditorTab

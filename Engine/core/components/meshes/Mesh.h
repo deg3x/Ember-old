@@ -3,9 +3,6 @@
 #include "utils/Types.h"
 #include "core/components/Component.h"
 
-#include <vector>
-#include <memory>
-
 class Light;
 class Camera;
 class Material;

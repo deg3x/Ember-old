@@ -1,9 +1,9 @@
-﻿#include "Skybox.h"
+﻿#include "engine_pch.h"
+#include "Skybox.h"
 
 #include "glad/glad.h"
 
 #include "core/Renderer.h"
-#include "core/materials/Material.h"
 #include "core/components/meshes/Cube.h"
 #include "core/textures/TextureCubemap.h"
 #include "core/materials/MaterialSkybox.h"

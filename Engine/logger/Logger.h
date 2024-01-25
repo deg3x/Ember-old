@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <vector>
-
 #include "Definitions.h"
 #include "LoggerTypes.h"
 

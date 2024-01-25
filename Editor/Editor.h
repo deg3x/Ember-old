@@ -1,8 +1,5 @@
 ﻿#pragma once
 
-#include <memory>
-#include <vector>
-
 #include "tabs/EditorTab.h"
 #include "imgui/imgui.h"
 

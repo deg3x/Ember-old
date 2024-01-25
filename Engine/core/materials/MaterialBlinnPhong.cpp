@@ -1,4 +1,5 @@
-﻿#include "MaterialBlinnPhong.h"
+﻿#include "engine_pch.h"
+#include "MaterialBlinnPhong.h"
 
 #include "core/Shader.h"
 #include "core/objects/Object.h"

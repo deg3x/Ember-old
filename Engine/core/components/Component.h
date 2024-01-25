@@ -2,9 +2,6 @@
 
 #include "Definitions.h"
 
-#include <type_traits>
-#include <memory>
-
 enum class ComponentType
 {
     TRANSFORM,

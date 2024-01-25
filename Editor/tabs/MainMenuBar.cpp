@@ -1,4 +1,5 @@
-﻿#include "MainMenuBar.h"
+﻿#include "editor_pch.h"
+#include "MainMenuBar.h"
 
 MainMenuBar::MainMenuBar(Editor* owner) : EditorTab(owner)
 {

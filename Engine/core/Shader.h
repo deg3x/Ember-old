@@ -3,8 +3,6 @@
 #include "Definitions.h"
 #include "glm/glm.hpp"
 
-#include <string>
-
 class ENGINE_API Shader
 {
 private:

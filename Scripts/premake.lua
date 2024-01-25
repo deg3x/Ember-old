@@ -75,6 +75,9 @@ project (ENGINE_PROJ_NAME)
     language "C++"
     cppdialect "C++20"
 
+    pchheader "engine_pch.h"
+    pchsource (ENGINE_DIR .. "/engine_pch.cpp")
+
     files 
     {
         ENGINE_DIR .. "/**.cpp",
@@ -124,12 +127,18 @@ project (ENGINE_PROJ_NAME)
         optimize "Speed"
         symbols "Off"
 
+    filter "files:**.c"
+        flags { "NoPCH" }
+
 ---- EDITOR PROJECT ----
 project (EDITOR_PROJ_NAME)
     kind "ConsoleApp"
     dependson { ENGINE_PROJ_NAME }
     language "C++"
     cppdialect "C++20"
+
+    pchheader "editor_pch.h"
+    pchsource (EDITOR_DIR .. "/editor_pch.cpp")
 
     files 
     {
@@ -203,3 +212,6 @@ project (EDITOR_PROJ_NAME)
                 
             --}
         end
+    
+    filter ("files:" .. EDITOR_DIR .. "/imgui/*.cpp")
+        flags { "NoPCH" }

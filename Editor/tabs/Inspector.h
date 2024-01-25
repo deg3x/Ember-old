@@ -1,6 +1,4 @@
 #pragma once
-
-#include <memory>
 #include "glm/vec3.hpp"
 
 #include "EditorTab.h"

@@ -2,8 +2,6 @@
 
 #include "Definitions.h"
 
-#include <string>
-
 class ENGINE_API PathBuilder
 {
 public:

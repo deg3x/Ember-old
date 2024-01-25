@@ -2,10 +2,6 @@
 
 #include "Definitions.h"
 
-#include <vector>
-#include <memory>
-#include <unordered_set>
-
 class Object;
 class Light;
 class Camera;

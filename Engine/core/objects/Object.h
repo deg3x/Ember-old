@@ -3,10 +3,6 @@
 #include "Definitions.h"
 #include "core/components/Component.h"
 
-#include <vector>
-#include <memory>
-#include <string>
-
 class Light;
 class Camera;
 class Transform;

@@ -1,3 +1,4 @@
+#include "engine_pch.h"
 #include "Quad.h"
 
 Quad::Quad(const std::shared_ptr<Material> &initMaterial) : Mesh(initMaterial)

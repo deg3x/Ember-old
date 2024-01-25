@@ -1,12 +1,11 @@
-﻿#include "EditorGrid.h"
+﻿#include "engine_pch.h"
+#include "EditorGrid.h"
 
 #include "glad/glad.h"
 
 #include "core/Renderer.h"
 #include "core/components/meshes/Plane.h"
 #include "core/materials/MaterialEditorGrid.h"
-
-#include <memory>
 
 EditorGrid::EditorGrid(const char* objName) : Object(objName)
 {

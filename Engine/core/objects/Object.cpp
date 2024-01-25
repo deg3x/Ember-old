@@ -1,4 +1,5 @@
-﻿#include "Object.h"
+﻿#include "engine_pch.h"
+#include "Object.h"
 
 #include "core/Model.h"
 #include "core/components/Component.h"

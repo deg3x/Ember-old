@@ -1,4 +1,5 @@
-﻿#include "Hierarchy.h"
+﻿#include "editor_pch.h"
+#include "Hierarchy.h"
 
 #include "core/World.h"
 #include "core/objects/Object.h"

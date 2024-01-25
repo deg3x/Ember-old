@@ -1,4 +1,5 @@
-﻿#include "EditorTab.h"
+﻿#include "editor_pch.h"
+#include "EditorTab.h"
 
 #include "Editor.h"
 

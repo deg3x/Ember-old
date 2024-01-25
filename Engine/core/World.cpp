@@ -1,4 +1,5 @@
-﻿#include "glad/glad.h"
+﻿#include "engine_pch.h"
+#include "glad/glad.h"
 #include "World.h"
 
 #include "core/Renderer.h"
@@ -8,7 +9,6 @@
 #include "core/components/Camera.h"
 #include "core/components/lights/Light.h"
 #include "core/components/Transform.h"
-#include "core/components/meshes/Plane.h"
 #include "core/components/lights/DirectionalLight.h"
 #include "core/materials/MaterialBlinnPhong.h"
 

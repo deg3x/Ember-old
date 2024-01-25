@@ -2,8 +2,6 @@
 
 #include "Definitions.h"
 
-#include <memory>
-
 class Framebuffer;
 struct Color;
 

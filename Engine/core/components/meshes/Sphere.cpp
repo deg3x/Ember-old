@@ -1,10 +1,9 @@
+#include "engine_pch.h"
 #include "Sphere.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "core/materials/Material.h"
-
-#include <vector>
 
 Sphere::Sphere(const std::shared_ptr<Material>& initMaterial) : Mesh(initMaterial)
 {

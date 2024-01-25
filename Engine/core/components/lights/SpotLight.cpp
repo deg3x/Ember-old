@@ -1,6 +1,6 @@
+#include "engine_pch.h"
 #include "SpotLight.h"
 
-#include "glm/glm.hpp"
 #include "core/Shader.h"
 #include "core/objects/Object.h"
 #include "core/components/Transform.h"

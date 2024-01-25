@@ -1,8 +1,7 @@
+#include "engine_pch.h"
 #include "Screen.h"
 
-#include <string>
 #include "glfw/glfw3.h"
-
 #include "logger/Logger.h"
 
 std::string Screen::GetScreenName()

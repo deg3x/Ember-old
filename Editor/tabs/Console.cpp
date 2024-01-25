@@ -1,6 +1,6 @@
-﻿#include "Console.h"
+﻿#include "editor_pch.h"
+#include "Console.h"
 
-#include "core/Time.h"
 #include "logger/Logger.h"
 #include "themes/EditorTheme.h"
 
