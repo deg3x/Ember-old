@@ -3,6 +3,7 @@
 
 #include "Editor.h"
 #include "core/components/Transform.h"
+#include "core/components/Camera.h"
 #include "core/objects/Object.h"
 #include "logger/Logger.h"
 #include "tabs/Hierarchy.h"
@@ -57,14 +58,14 @@ void Inspector::DrawComponents()
     DrawTransform();
 
     const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
-    for (std::shared_ptr<Component> component : selection->GetComponents())
+    for (const std::shared_ptr<Component>& component : selection->GetComponents())
     {
         switch (component->GetType())
         {
         case ComponentType::TRANSFORM:
             break;
         case ComponentType::CAMERA:
-            DrawCamera();
+            DrawCamera(std::dynamic_pointer_cast<Camera>(component));
             break;
         case ComponentType::LIGHT:
             DrawLight();
@@ -96,8 +97,8 @@ void Inspector::DrawTransform()
         constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingStretchProp;
         if (ImGui::BeginTable("Transform Data", 2, tableFlags))
         {
-            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, 0.2f);
-            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, 0.8f);
+            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, componentColFirstWidth);
+            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, componentColSecondWidth);
 
             DrawTransformVector("Position", &selection->transform->position);
             DrawTransformVector("Rotation", &selection->transform->rotation);
@@ -114,8 +115,7 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 
     ImGui::TableNextColumn();
 
-    const float labelStartX = ImGui::GetContentRegionAvail().x * 0.3f;
-    ImGui::SetCursorPosX(labelStartX);
+    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * componentLabelIndent);
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted(label.c_str());
 
@@ -123,8 +123,7 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 
     const float buttonSize = ImGui::CalcTextSize(label.c_str()).y + 2.0f * ImGui::GetStyle().FramePadding.y;
     // Dirty way to calculate button size but works
-    const float sizeInputX = ((ImGui::GetContentRegionAvail().x - 2 * ImGui::GetStyle().ItemSpacing.x) * 0.33f) -
-        buttonSize;
+    const float sizeInputX = ((ImGui::GetContentRegionAvail().x - 2 * ImGui::GetStyle().ItemSpacing.x) * 0.33f) - buttonSize;
 
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0);
 
@@ -139,7 +138,7 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(sizeInputX);
-    ImGui::DragFloat(("##" + label + "1").c_str(), &vector->x, 0.1f, 0, 0, "%.2f");
+    ImGui::DragFloat(("##" + label + "1").c_str(), &vector->x, componentDragFloatSpeed, 0, 0, "%.2f");
     ImGui::PopStyleVar();
 
     ImGui::SameLine();
@@ -154,7 +153,7 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(sizeInputX);
-    ImGui::DragFloat(("##" + label + "2").c_str(), &vector->y, 0.1f, 0, 0, "%.2f");
+    ImGui::DragFloat(("##" + label + "2").c_str(), &vector->y, componentDragFloatSpeed, 0, 0, "%.2f");
     ImGui::PopStyleVar();
 
     ImGui::SameLine();
@@ -169,13 +168,110 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(sizeInputX);
-    ImGui::DragFloat(("##" + label + "3").c_str(), &vector->z, 0.1f, 0, 0, "%.2f");
+    ImGui::DragFloat(("##" + label + "3").c_str(), &vector->z, componentDragFloatSpeed, 0, 0, "%.2f");
 
     ImGui::PopStyleVar(2);
 }
 
-void Inspector::DrawCamera()
+void Inspector::DrawCamera(const std::shared_ptr<Camera>& cameraComponent)
 {
+    constexpr ImGuiTreeNodeFlags cameraFlags = ImGuiTreeNodeFlags_DefaultOpen;
+    
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 10.0f});
+    ImGui::PushFont(EditorTheme::FontMedium);
+    const bool isHeaderOpen = ImGui::CollapsingHeader("Camera", cameraFlags);
+    ImGui::PopFont();
+    ImGui::PopStyleVar();
+
+    if (isHeaderOpen)
+    {
+        const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
+
+        constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingStretchProp;
+        if (ImGui::BeginTable("Camera Data", 2, tableFlags))
+        {
+            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, componentColFirstWidth);
+            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, componentColSecondWidth);
+
+            DrawCameraElements(cameraComponent);
+
+            ImGui::EndTable();
+        }
+    }
+}
+
+void Inspector::DrawCameraElements(const std::shared_ptr<Camera>& cameraComponent)
+{
+    const char* projectionModes[] = {"Perspective", "Orthographic"};
+    const char* selectedItem      = projectionModes[static_cast<int>(cameraComponent->GetProjectionType())];
+    float fieldOfView             = cameraComponent->GetPerspectiveFOV();
+    float orthoSize               = cameraComponent->GetOrthographicSize();
+    float nearZClipping           = cameraComponent->GetNearClipping();
+    float farZClipping            = cameraComponent->GetFarClipping();
+    
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * componentLabelIndent);
+    ImGui::AlignTextToFramePadding();
+    ImGui::TextUnformatted("Projection");
+    ImGui::TableNextColumn();
+    if (ImGui::BeginCombo("##no_label", selectedItem))
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            const bool isSelected = (selectedItem == projectionModes[i]);
+            if (ImGui::Selectable(projectionModes[i], isSelected))
+            {
+                cameraComponent->SetProjectionType(static_cast<CameraProjection>(i));
+            }
+        }
+        
+        ImGui::EndCombo();
+    }
+
+    if (cameraComponent->GetProjectionType() == CameraProjection::PERSPECTIVE)
+    {
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * componentLabelIndent);
+        ImGui::AlignTextToFramePadding();
+        ImGui::TextUnformatted("Field Of View");
+        ImGui::TableNextColumn();
+        ImGui::DragFloat("##perspectiveFOV", &fieldOfView, componentDragFloatSpeed, 0, 0, "%.2f");
+
+        cameraComponent->SetPerspectiveFOV(fieldOfView);
+    }
+    else if (cameraComponent->GetProjectionType() == CameraProjection::ORTHOGRAPHIC)
+    {
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * componentLabelIndent);
+        ImGui::AlignTextToFramePadding();
+        ImGui::TextUnformatted("View Size");
+        ImGui::TableNextColumn();
+        ImGui::DragFloat("##orthoSize", &orthoSize, componentDragFloatSpeed, 0, 0, "%.2f");
+
+        cameraComponent->SetOrthographicSize(orthoSize);
+    }
+
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * componentLabelIndent);
+    ImGui::AlignTextToFramePadding();
+    ImGui::TextUnformatted("Near Z");
+    ImGui::TableNextColumn();
+    ImGui::DragFloat("##nearZPlane", &nearZClipping, componentDragFloatSpeed, 0, 0, "%.2f");
+
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * componentLabelIndent);
+    ImGui::AlignTextToFramePadding();
+    ImGui::TextUnformatted("Far Z");
+    ImGui::TableNextColumn();
+    ImGui::DragFloat("##farZPlane", &farZClipping, componentDragFloatSpeed, 0, 0, "%.2f");
+    
+    cameraComponent->SetNearClipping(nearZClipping);
+    cameraComponent->SetFarClipping(farZClipping);
 }
 
 void Inspector::DrawLight()

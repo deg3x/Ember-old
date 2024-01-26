@@ -4,6 +4,16 @@
 #include "core/Renderer.h"
 #include "core/objects/Object.h"
 #include "core/components/Transform.h"
+#include "logger/Logger.h"
+
+Camera::Camera()
+{
+	perspectiveFOV   = 60.0f;
+	orthographicSize = 3.0f;
+	nearClipping     = 0.01f;
+	farClipping      = 1000.0f;
+	projectionType   = CameraProjection::PERSPECTIVE;
+}
 
 glm::mat4x4 Camera::GetViewMatrix() const
 {
@@ -20,6 +30,15 @@ glm::mat4x4 Camera::GetProjectionMatrix() const
 	Renderer::GetViewportResolution(viewportWidth, viewportHeight);
 
 	const float aspectRatio = static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight);
-	
-	return glm::perspective(glm::radians(90.0f), aspectRatio, 0.1f, 1000.0f);
+
+	switch(projectionType)
+	{
+	case CameraProjection::PERSPECTIVE:
+		return glm::perspective(glm::radians(perspectiveFOV), aspectRatio, nearClipping, farClipping);
+	case CameraProjection::ORTHOGRAPHIC:
+		return glm::ortho(-aspectRatio * orthographicSize, aspectRatio * orthographicSize, -orthographicSize, orthographicSize, nearClipping, farClipping);
+	default:
+		Logger::Log(LogCategory::ERROR, "Unknown camera projection type", "Camera::GetProjectionMatrix");
+		return glm::identity<glm::mat4x4>();
+	}
 }

@@ -2,6 +2,7 @@
 
 #include "EditorTab.h"
 
+class Camera;
 class Hierarchy;
 
 class Inspector : public EditorTab
@@ -12,6 +13,11 @@ private:
     static constexpr ImVec4 labelColorX = {0.75f, 0.20f, 0.20f, 0.80f};
     static constexpr ImVec4 labelColorY = {0.20f, 0.75f, 0.20f, 0.80f};
     static constexpr ImVec4 labelColorZ = {0.20f, 0.20f, 0.75f, 0.80f};
+
+    static constexpr float componentColFirstWidth  = 0.25f;
+    static constexpr float componentColSecondWidth = 0.75f;
+    static constexpr float componentLabelIndent    = 0.2f;
+    static constexpr float componentDragFloatSpeed = 0.1f;
 
 public:
     Inspector() = delete;
@@ -29,7 +35,8 @@ private:
     void DrawComponents();
     void DrawTransform();
     void DrawTransformVector(const std::string& label, glm::vec3* vector);
-    void DrawCamera();
+    void DrawCamera(const std::shared_ptr<Camera>& cameraComponent);
+    void DrawCameraElements(const std::shared_ptr<Camera>& cameraComponent);
     void DrawLight();
     void DrawMesh();
 };
