@@ -19,6 +19,7 @@ struct DirectionalLight
 	vec3 diffuse;
 	vec3 direction;
 	float intensity;
+	bool isUsed;
 };
 
 struct PointLight
@@ -30,6 +31,7 @@ struct PointLight
 	float constantAttenuation;
 	float linearAttenuation;
 	float quadraticAttenuation;
+	bool isUsed;
 };
 
 struct SpotLight
@@ -44,6 +46,7 @@ struct SpotLight
 	float quadraticAttenuation;
 	float cutOffAngleCos;
 	float cutOffAngleOutCos;
+	bool isUsed;
 };
 
 uniform Material material;
@@ -62,11 +65,16 @@ void main()
 	vec3 normal = normalize(Normal);
 	vec3 viewDirection = normalize(cameraPosition - WorldPosition);
 
-	//vec3 color = CalculateSpotLight(spotLight, normal, viewDirection);
-	vec3 color = CalculateDirectionalLight(directionalLight, normal, viewDirection);
-	//color += CalculateDirectionalLight(directionalLight, normal, viewDirection);
-	//color += CalculatePointLight(pointLight, normal, viewDirection);
-	//color += CalculateSpotLight(spotLight, normal, viewDirection);
+	vec3 color = vec3(0.0, 0.0, 0.0);
+	
+	if (directionalLight.isUsed)
+	    color += CalculateDirectionalLight(directionalLight, normal, viewDirection);
+	
+	if (pointLight.isUsed)
+	    color += CalculatePointLight(pointLight, normal, viewDirection);
+	
+	if (spotLight.isUsed)
+	    color += CalculateSpotLight(spotLight, normal, viewDirection);
 
 	FragmentColor = texture(diffuseTexture, TexCoord) * vec4(color, material.diffuse.w);
 }

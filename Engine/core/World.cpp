@@ -7,9 +7,8 @@
 #include "core/objects/EditorGrid.h"
 #include "core/objects/Skybox.h"
 #include "core/components/Camera.h"
-#include "core/components/lights/Light.h"
+#include "core/components/Light.h"
 #include "core/components/Transform.h"
-#include "core/components/lights/DirectionalLight.h"
 #include "core/materials/MaterialBlinnPhong.h"
 
 std::unordered_set<std::shared_ptr<Object>> World::objQueueOpaque;
@@ -38,7 +37,7 @@ void World::Initialize()
     const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>("Skybox");
 
     const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>("Directional Light");
-    dirLightObject->CreateComponent<DirectionalLight>();
+    dirLightObject->CreateComponent<Light>();
     dirLightObject->transform->rotation.x = 30.0f;
     dirLightObject->transform->rotation.y = -30.0f;
 

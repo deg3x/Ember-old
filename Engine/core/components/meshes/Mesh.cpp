@@ -4,7 +4,7 @@
 #include "glad/glad.h"
 
 #include "core/components/Camera.h"
-#include "core/components/lights/Light.h"
+#include "core/components/Light.h"
 #include "core/materials/Material.h"
 #include "core/objects/Object.h"
 #include "logger/Logger.h"

@@ -2,6 +2,7 @@
 
 #include "EditorTab.h"
 
+class Light;
 class Camera;
 class Hierarchy;
 
@@ -14,10 +15,12 @@ private:
     static constexpr ImVec4 labelColorY = {0.20f, 0.75f, 0.20f, 0.80f};
     static constexpr ImVec4 labelColorZ = {0.20f, 0.20f, 0.75f, 0.80f};
 
-    static constexpr float componentColFirstWidth  = 0.25f;
-    static constexpr float componentColSecondWidth = 0.75f;
-    static constexpr float componentLabelIndent    = 0.2f;
-    static constexpr float componentDragFloatSpeed = 0.1f;
+    static constexpr float compColWidthFirstTransf  = 0.2f;
+    static constexpr float compColWidthSecondTransf = 0.8f;
+    static constexpr float compColWidthFirst        = 0.35f;
+    static constexpr float compColWidthSecond       = 0.65f;
+    static constexpr float compLabelIndent          = 0.25f;
+    static constexpr float compDragFloatSpeed       = 0.1f;
 
 public:
     Inspector() = delete;
@@ -37,6 +40,10 @@ private:
     void DrawTransformVector(const std::string& label, glm::vec3* vector);
     void DrawCamera(const std::shared_ptr<Camera>& cameraComponent);
     void DrawCameraElements(const std::shared_ptr<Camera>& cameraComponent);
-    void DrawLight();
+    void DrawLight(const std::shared_ptr<Light>& lightComponent);
+    void DrawLightComponents(const std::shared_ptr<Light>& lightComponent);
     void DrawMesh();
+
+    void DrawRowLabelDragFloat(const std::string& label, float& target);
+    void DrawRowLabelColor3(const std::string& label, float target[3]);
 };
