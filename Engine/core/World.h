@@ -6,12 +6,6 @@ class Object;
 class Light;
 class Camera;
 
-enum class ObjectType
-{
-    OPAQUE,
-    TRANSPARENT
-};
-
 class ENGINE_API World
 {
     friend class Hierarchy; // This is a dirty quick way to access the world elements from the editor hierarchy. CHANGE IN THE FUTURE
@@ -30,7 +24,7 @@ public:
     static void Initialize();
     static void Tick();
     
-    static void AddObject(const std::shared_ptr<Object>& object, ObjectType type);
+    static void AddObject(const std::shared_ptr<Object>& object);
     static void RemoveObject(const std::shared_ptr<Object>& object);
 
     static inline std::shared_ptr<Camera> GetCamera()

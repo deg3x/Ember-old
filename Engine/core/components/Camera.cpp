@@ -2,7 +2,7 @@
 #include "Camera.h"
 
 #include "core/Renderer.h"
-#include "core/objects/Object.h"
+#include "core/Object.h"
 #include "core/components/Transform.h"
 #include "logger/Logger.h"
 

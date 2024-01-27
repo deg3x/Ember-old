@@ -2,7 +2,7 @@
 #include "MaterialBlinnPhong.h"
 
 #include "core/Shader.h"
-#include "core/objects/Object.h"
+#include "core/Object.h"
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"
 #include "core/textures/TextureDiffuse.h"

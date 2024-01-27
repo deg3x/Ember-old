@@ -2,7 +2,7 @@
 #include "Hierarchy.h"
 
 #include "core/World.h"
-#include "core/objects/Object.h"
+#include "core/Object.h"
 #include "input/Input.h"
 #include "themes/EditorTheme.h"
 

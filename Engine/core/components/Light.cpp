@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "Light.h"
 #include "core/Shader.h"
-#include "core/objects/Object.h"
+#include "core/Object.h"
 #include "core/components/Transform.h"
 
 #include "logger/Logger.h"

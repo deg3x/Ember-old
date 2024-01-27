@@ -2,14 +2,15 @@
 #include "glad/glad.h"
 #include "World.h"
 
+#include "components/Mesh.h"
 #include "core/Renderer.h"
-#include "core/objects/Object.h"
-#include "core/objects/EditorGrid.h"
-#include "core/objects/Skybox.h"
+#include "core/Object.h"
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
 #include "core/components/Transform.h"
 #include "core/materials/MaterialBlinnPhong.h"
+#include "utils/primitives/EditorGrid.h"
+#include "utils/primitives/Skybox.h"
 
 std::unordered_set<std::shared_ptr<Object>> World::objQueueOpaque;
 std::unordered_set<std::shared_ptr<Object>> World::objQueueTransparent;
@@ -20,21 +21,15 @@ void World::Initialize()
 {
     const std::shared_ptr<Object> cameraObject = std::make_shared<Object>("Camera");
     cameraObject->CreateComponent<Camera>();
-    cameraObject->transform->position = glm::vec3(0.0f, 0.0f, 3.0f);
+    cameraObject->transform->position = glm::vec3(0.0f, 3.0f, 3.0f);
     cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
 
     const std::shared_ptr<MaterialBlinnPhong> defaultMat = std::make_shared<MaterialBlinnPhong>();
 
     const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>("Stanford Bunny");
-    bunnyObject->transform->position = glm::vec3(0.0f, -0.33f, 0.0f);
-    bunnyObject->transform->scale =glm::vec3(0.5f, 0.5f, 0.5f);
+    bunnyObject->transform->position = glm::vec3(0.0f, 0.2f, 0.0f);
+    bunnyObject->transform->scale = glm::vec3(0.5f, 0.5f, 0.5f);
     bunnyObject->LoadModel("./Data/models/bunny.obj");
-
-    const std::shared_ptr<EditorGrid> grid = std::make_shared<EditorGrid>("Editor Grid");
-    grid->transform->position = glm::vec3(0.0f, -0.51f, 0.0f);
-    grid->transform->scale = glm::vec3(100.0f, 1.0f, 100.0f);
-
-    const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>("Skybox");
 
     const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>("Directional Light");
     dirLightObject->CreateComponent<Light>();
@@ -43,11 +38,12 @@ void World::Initialize()
 
     dirLightObject->GetComponent<Light>()->SetShaderProperties(*defaultMat->GetShader());
 
-    AddObject(cameraObject, ObjectType::OPAQUE);
-    AddObject(bunnyObject, ObjectType::OPAQUE);
-    AddObject(dirLightObject, ObjectType::OPAQUE);
-    AddObject(skybox, ObjectType::OPAQUE);
-    AddObject(grid, ObjectType::TRANSPARENT);
+    AddObject(cameraObject);
+    AddObject(bunnyObject);
+    AddObject(dirLightObject);
+
+    Skybox::Instantiate();
+    EditorGrid::Instantiate();
 }
 
 void World::Tick()
@@ -76,7 +72,7 @@ void World::Tick()
     Renderer::SetDepthTestMask(true);
 }
 
-void World::AddObject(const std::shared_ptr<Object>& object, ObjectType type)
+void World::AddObject(const std::shared_ptr<Object>& object)
 {
     if (objQueueOpaque.contains(object) || objQueueTransparent.contains(object))
     {
@@ -95,14 +91,14 @@ void World::AddObject(const std::shared_ptr<Object>& object, ObjectType type)
         lights.push_back(lightComponent);
     }
 
-    switch (type)
+    const std::shared_ptr<Mesh> meshComponent = object->GetComponent<Mesh>();
+    if (meshComponent != nullptr && meshComponent->meshType == MeshType::TRANSPARENT)
     {
-    case ObjectType::OPAQUE:
-        objQueueOpaque.insert(object);
-        break;
-    case ObjectType::TRANSPARENT:
         objQueueTransparent.insert(object);
-        break;
+    }
+    else
+    {
+        objQueueOpaque.insert(object);
     }
 }
 

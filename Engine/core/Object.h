@@ -22,7 +22,7 @@ public:
     virtual ~Object();
 
     void Tick();
-    virtual void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const;
+    void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const;
     void LoadModel(const char* path);
 
     template <class Type, typename... Args>

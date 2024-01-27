@@ -1,6 +1,7 @@
 ﻿#include "engine_pch.h"
 #include "Object.h"
 
+#include "World.h"
 #include "core/Model.h"
 #include "core/components/Component.h"
 #include "core/components/Transform.h"

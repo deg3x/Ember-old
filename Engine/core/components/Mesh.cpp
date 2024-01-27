@@ -6,7 +6,9 @@
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
 #include "core/materials/Material.h"
-#include "core/objects/Object.h"
+#include "core/Object.h"
+#include "core/Renderer.h"
+#include "core/materials/MaterialSkybox.h"
 #include "logger/Logger.h"
 
 Mesh::Mesh(const std::vector<VertexData>& data, const std::vector<unsigned int>& initIndices, const std::shared_ptr<Material>& initMaterial)
@@ -57,9 +59,21 @@ void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::sh
 	}
 	
 	material->SetupShaderVariables(*GetOwner()->transform, *camera);
+
+	const bool isSkybox = std::dynamic_pointer_cast<MaterialSkybox>(material) != nullptr;
+
+	if (isSkybox)
+	{
+		Renderer::SetDepthTestFunc(GL_LEQUAL);
+	}
 	
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
+	
+	if (isSkybox)
+	{
+		Renderer::SetDepthTestFunc(GL_LESS);
+	}
 }
 
 void Mesh::SetupMesh()

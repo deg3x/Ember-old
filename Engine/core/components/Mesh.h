@@ -15,12 +15,19 @@ struct VertexData
 	glm::vec4 color;
 };
 
+enum class MeshType
+{
+	OPAQUE,
+	TRANSPARENT
+};
+
 class ENGINE_API Mesh : public Component
 {
 	MAKE_COMPONENT_TYPE(MESH)
 	
 public:
 	std::shared_ptr<Material> material;
+	MeshType meshType = MeshType::OPAQUE;
 	
 protected:
 	std::vector<VertexData> vertexData;
