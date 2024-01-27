@@ -41,8 +41,9 @@ private:
     void DrawCamera(const std::shared_ptr<Camera>& cameraComponent);
     void DrawCameraElements(const std::shared_ptr<Camera>& cameraComponent);
     void DrawLight(const std::shared_ptr<Light>& lightComponent);
-    void DrawLightComponents(const std::shared_ptr<Light>& lightComponent);
+    void DrawLightElements(const std::shared_ptr<Light>& lightComponent);
     void DrawMesh();
+    void DrawAddComponentButton();
 
     void DrawRowLabelDragFloat(const std::string& label, float& target);
     void DrawRowLabelColor3(const std::string& label, float target[3]);

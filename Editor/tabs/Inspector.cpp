@@ -5,6 +5,7 @@
 #include "core/components/Transform.h"
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
+#include "core/components/meshes/Mesh.h"
 #include "core/objects/Object.h"
 #include "logger/Logger.h"
 #include "tabs/Hierarchy.h"
@@ -34,16 +35,7 @@ void Inspector::Tick()
             ImGui::Separator();
             ImGui::Spacing();
 
-            // Add component button
-            const ImVec2 buttonSize = {ImGui::GetContentRegionAvail().x * 0.4f, 30.0f};
-            const float buttonPosX = (ImGui::GetContentRegionAvail().x - buttonSize.x) * 0.5f;
-
-            ImGui::SetCursorPosX(buttonPosX);
-
-            if (ImGui::Button("Add Component", buttonSize))
-            {
-                // Add component logic...
-            }
+            DrawAddComponentButton();
         }
         else if (hierarchyTab == nullptr)
         {
@@ -259,14 +251,14 @@ void Inspector::DrawLight(const std::shared_ptr<Light>& lightComponent)
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthFirst);
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthSecond);
 
-            DrawLightComponents(lightComponent);
+            DrawLightElements(lightComponent);
 
             ImGui::EndTable();
         }
     }
 }
 
-void Inspector::DrawLightComponents(const std::shared_ptr<Light>& lightComponent)
+void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
 {
     const char* lightTypes[] = {"Directional Light", "Point Light", "Spotlight"};
     const char* selectedItem = lightTypes[static_cast<int>(lightComponent->lightType)];
@@ -329,6 +321,54 @@ void Inspector::DrawMesh()
     const bool isHeaderOpen = ImGui::CollapsingHeader("Mesh", meshFlags);
     ImGui::PopFont();
     ImGui::PopStyleVar();
+}
+
+void Inspector::DrawAddComponentButton()
+{
+    const ImVec2 buttonSize = {ImGui::GetContentRegionAvail().x * 0.5f, 30.0f};
+    const float buttonPosX = (ImGui::GetContentRegionAvail().x - buttonSize.x) * 0.5f;
+
+    ImGui::SetCursorPosX(buttonPosX);
+
+    if (ImGui::Button("Add Component", buttonSize))
+    {
+        ImGui::OpenPopup("AddComponentPopup", ImGuiPopupFlags_None);
+    }
+
+    const ImVec2 buttonRectMin = ImGui::GetItemRectMin();
+    const ImVec2 buttonRectMax = ImGui::GetItemRectMax();
+    ImGui::SetNextWindowSize({buttonSize.x, 0.0f});
+    ImGui::SetNextWindowPos({buttonRectMin.x, buttonRectMax.y});
+    constexpr ImGuiWindowFlags popupFlags = ImGuiWindowFlags_None;
+    if (ImGui::BeginPopup("AddComponentPopup", popupFlags))
+    {
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0.0f, 3.0f});
+        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ColorGreen);
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ColorGreenActive);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ColorGreenHovered);
+
+        const ImVec2 entriesSize = {ImGui::GetContentRegionAvail().x, 0.0f};
+
+        if (ImGui::Button("Camera", entriesSize))
+        {
+            hierarchyTab->SelectedObject.lock()->CreateComponent<Camera>();
+        }
+        if (ImGui::Button("Light", entriesSize))
+        {
+            hierarchyTab->SelectedObject.lock()->CreateComponent<Light>();
+        }
+        if (ImGui::Button("Mesh", entriesSize))
+        {
+            // Not working, fix
+            // hierarchyTab->SelectedObject.lock()->CreateComponent<Mesh>();
+        }
+
+        ImGui::PopStyleColor(3);
+        ImGui::PopStyleVar(2);
+        
+        ImGui::EndPopup();
+    }
 }
 
 void Inspector::DrawRowLabelDragFloat(const std::string& label, float& target)
