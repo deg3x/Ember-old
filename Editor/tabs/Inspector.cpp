@@ -5,7 +5,7 @@
 #include "core/components/Transform.h"
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
-#include "core/components/meshes/Mesh.h"
+#include "core/components/Mesh.h"
 #include "core/objects/Object.h"
 #include "logger/Logger.h"
 #include "tabs/Hierarchy.h"

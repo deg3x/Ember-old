@@ -1,17 +1,14 @@
-﻿#include "engine_pch.h"
+#include "engine_pch.h"
 #include "Cube.h"
 
-#include "core/materials/Material.h"
+#include "core/components/Mesh.h"
 
-Cube::Cube(const std::shared_ptr<Material>& initMaterial) : Mesh(initMaterial)
+void Cube::GenerateCube(std::shared_ptr<Mesh> targetMesh)
 {
-    GenerateVertexData();
-    GenerateIndices();
-    SetupMesh();
-}
+    std::vector<VertexData> vertexData;
+    std::vector<unsigned int> indices;
 
-void Cube::GenerateVertexData()
-{
+    //////// Generate vertex data
     VertexData data;
 
     // Front
@@ -163,10 +160,9 @@ void Cube::GenerateVertexData()
     data.uv = glm::vec2(0.75f, 0.33f);
 
     vertexData.push_back(data);
-}
+    ////////
 
-void Cube::GenerateIndices()
-{
+    // Generate indices
     for (int i = 0; i < 6; i++)
     {
         indices.push_back(0 + i * 4);
@@ -176,4 +172,6 @@ void Cube::GenerateIndices()
         indices.push_back(1 + i * 4);
         indices.push_back(2 + i * 4);
     }
+
+    targetMesh->SetMeshData(vertexData, indices);
 }

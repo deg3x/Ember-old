@@ -1,7 +1,7 @@
 ﻿#include "engine_pch.h"
 #include "Model.h"
 
-#include "core/components/meshes/Mesh.h"
+#include "core/components/Mesh.h"
 #include "core/textures/TextureDiffuse.h"
 #include "core/materials/MaterialBlinnPhong.h"
 #include "utils/PathBuilder.h"
@@ -80,11 +80,6 @@ namespace
                 vector.y = mesh->mTangents[i].y;
                 vector.z = mesh->mTangents[i].z;
                 vertex.tangent = vector;
-                
-                vector.x = mesh->mBitangents[i].x;
-                vector.y = mesh->mBitangents[i].y;
-                vector.z = mesh->mBitangents[i].z;
-                vertex.bitangent = vector;
             }
 
             if (mesh->mTextureCoords[0])

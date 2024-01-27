@@ -1,18 +1,25 @@
 #pragma once
 
-#include "utils/Types.h"
 #include "core/components/Component.h"
 
 class Light;
 class Camera;
 class Material;
 
+struct VertexData
+{
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec2 uv;
+	glm::vec3 tangent;
+	glm::vec4 color;
+};
+
 class ENGINE_API Mesh : public Component
 {
 	MAKE_COMPONENT_TYPE(MESH)
 	
 public:
-	
 	std::shared_ptr<Material> material;
 	
 protected:
@@ -24,15 +31,13 @@ private:
 	unsigned int VBO;
 	unsigned int EBO;
 
-protected:
-	void SetupMesh();
-
 public:
-	Mesh() = delete;
+	Mesh() = default;
 	Mesh(const std::vector<VertexData>& data, const std::vector<unsigned int>& initIndices, const std::shared_ptr<Material>& initMaterial);
 	virtual ~Mesh();
 
 	void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const;
+	void SetMeshData(const std::vector<VertexData>& newData, const std::vector<unsigned int>& newIndices, const std::shared_ptr<Material>& newMaterial = nullptr);
 
 	inline std::vector<VertexData> GetVertexData() const
 	{
@@ -43,6 +48,8 @@ public:
 	{
 		return indices;
 	}
+	
 protected:
-	Mesh(const std::shared_ptr<Material>& initMaterial);
+	void SetupMesh();
+	void CleanupMesh();
 };
