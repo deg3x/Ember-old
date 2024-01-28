@@ -1,14 +1,14 @@
 ﻿#include "engine_pch.h"
-#include "glad/glad.h"
 #include "World.h"
 
 #include "components/Mesh.h"
-#include "core/Renderer.h"
 #include "core/Object.h"
+#include "core/Renderer.h"
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
 #include "core/components/Transform.h"
 #include "core/materials/MaterialBlinnPhong.h"
+#include "utils/Types.h"
 #include "utils/primitives/EditorGrid.h"
 #include "utils/primitives/Skybox.h"
 
@@ -44,23 +44,25 @@ void World::Initialize()
 
     Skybox::Instantiate();
     EditorGrid::Instantiate();
+
+    // Startup renderer state
+    constexpr Color clear_color = {0.16f, 0.15f, 0.18f, 1.00f};
+    Renderer::SetDepthTestEnabled(true);
+    Renderer::SetDepthTestFunc(GL_LESS);
+    Renderer::SetBlendingEnabled(true);
+    Renderer::SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
+    Renderer::SetBlendingOp(GL_FUNC_ADD);
+    Renderer::SetClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
 }
 
 void World::Tick()
 {
-    Renderer::SetDepthTestMask(true);
-    Renderer::SetFaceCullingEnabled(false);
-    
     // Opaque object tick and rendering
     for (const std::shared_ptr<Object>& object : objQueueOpaque)
     {
         object->Tick();
         object->Draw(camera, lights);
     }
-
-    Renderer::SetDepthTestMask(false);
-    Renderer::SetFaceCullingEnabled(true);
-    Renderer::SetFaceCullingMode(GL_BACK);
     
     // Transparent object tick and rendering
     for (const std::shared_ptr<Object>& object : objQueueTransparent)
@@ -68,8 +70,6 @@ void World::Tick()
         object->Tick();
         object->Draw(camera, lights);
     }
-
-    Renderer::SetDepthTestMask(true);
 }
 
 void World::AddObject(const std::shared_ptr<Object>& object)

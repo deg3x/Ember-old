@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glad/glad.h>
+
 #include "core/components/Component.h"
 
 class Light;
@@ -15,10 +17,36 @@ struct VertexData
 	glm::vec4 color;
 };
 
-enum class MeshType
+enum class MeshType : uint8_t
 {
 	OPAQUE,
 	TRANSPARENT
+};
+
+enum class PolygonMode : uint8_t
+{
+	FILL,
+	LINE
+};
+
+enum class CullingMode : uint8_t
+{
+	FRONT,
+	BACK,
+	NONE
+};
+
+enum class DepthTestMode : uint8_t
+{
+	LESS,
+	LEQUAL,
+	EQUAL,
+	GEQUAL,
+	GREATER,
+	NOT_EQUAL,
+	ALWAYS,
+	NEVER,
+	NONE
 };
 
 class ENGINE_API Mesh : public Component
@@ -28,6 +56,10 @@ class ENGINE_API Mesh : public Component
 public:
 	std::shared_ptr<Material> material;
 	MeshType meshType = MeshType::OPAQUE;
+	PolygonMode polygonMode = PolygonMode::FILL;
+	CullingMode cullingMode = CullingMode::BACK;
+	DepthTestMode depthTest = DepthTestMode::LESS;
+	bool writeToDepthBuffer = true;
 	
 protected:
 	std::vector<VertexData> vertexData;
@@ -59,4 +91,8 @@ public:
 protected:
 	void SetupMesh();
 	void CleanupMesh();
+	void SetupDepthTestMode() const;
+	void SetupPolygonMode() const;
+	void SetupCullingMode() const;
+	void ResetRendererState() const;
 };

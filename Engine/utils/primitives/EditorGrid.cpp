@@ -14,8 +14,11 @@ std::shared_ptr<Object> EditorGrid::Instantiate()
     const std::shared_ptr<Mesh> gridMesh = editorGrid->CreateComponent<Mesh>();
     
     Plane::GeneratePlane(10, 100.0f, gridMesh);
-    gridMesh->material = gridMaterial;
-    gridMesh->meshType = MeshType::TRANSPARENT;
+    
+    gridMesh->material           = gridMaterial;
+    gridMesh->meshType           = MeshType::TRANSPARENT;
+    gridMesh->cullingMode        = CullingMode::NONE;
+    gridMesh->writeToDepthBuffer = false;
 
     World::AddObject(editorGrid);
 

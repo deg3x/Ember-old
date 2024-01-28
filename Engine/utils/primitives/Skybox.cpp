@@ -18,7 +18,10 @@ std::shared_ptr<Object> Skybox::Instantiate()
 
     const std::shared_ptr<Mesh> skyboxMesh = skybox->CreateComponent<Mesh>();
     Cube::GenerateCube(skyboxMesh);
-    skyboxMesh->material = matSky;
+    
+    skyboxMesh->material    = matSky;
+    skyboxMesh->cullingMode = CullingMode::FRONT;
+    skyboxMesh->depthTest   = DepthTestMode::LEQUAL;
 
     World::AddObject(skybox);
 

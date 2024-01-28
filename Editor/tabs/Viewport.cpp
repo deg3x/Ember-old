@@ -1,8 +1,6 @@
 #include "editor_pch.h"
 #include "Viewport.h"
 
-#include "glad/glad.h"
-
 #include "Editor.h"
 
 #include "core/World.h"
@@ -11,7 +9,6 @@
 #include "core/Object.h"
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"
-
 #include "input/Input.h"
 
 namespace
@@ -19,8 +16,6 @@ namespace
     float theta  = -glm::half_pi<float>();
     float phi    = -glm::half_pi<float>();
     float radius;
-	
-    ImVec4 clear_color = ImVec4(0.16f, 0.15f, 0.18f, 1.00f);
 }
 
 Viewport::Viewport(Editor* owner) : EditorTab(owner)
@@ -29,15 +24,7 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     flags |= ImGuiWindowFlags_NoScrollbar;
     flags |= ImGuiWindowFlags_NoMove;
 
-    // Initialization of viewport scene
     radius = (float)World::GetCamera()->GetOwner()->transform->position.length();
-    
-    Renderer::SetDepthTestEnabled(true);
-    Renderer::SetDepthTestFunc(GL_LESS);
-    Renderer::SetBlendingEnabled(true);
-    Renderer::SetBlendingFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
-    Renderer::SetBlendingOp(GL_FUNC_ADD);
-    Renderer::SetClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 }
 
 void Viewport::Tick()

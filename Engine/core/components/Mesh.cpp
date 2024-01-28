@@ -60,20 +60,14 @@ void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::sh
 	
 	material->SetupShaderVariables(*GetOwner()->transform, *camera);
 
-	const bool isSkybox = std::dynamic_pointer_cast<MaterialSkybox>(material) != nullptr;
-
-	if (isSkybox)
-	{
-		Renderer::SetDepthTestFunc(GL_LEQUAL);
-	}
+	SetupDepthTestMode();
+	SetupCullingMode();
+	SetupPolygonMode();
 	
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
-	
-	if (isSkybox)
-	{
-		Renderer::SetDepthTestFunc(GL_LESS);
-	}
+
+	ResetRendererState();
 }
 
 void Mesh::SetupMesh()
@@ -112,4 +106,88 @@ void Mesh::CleanupMesh()
 	{
 		glDeleteBuffers(1, &EBO);
 	}
+}
+
+void Mesh::SetupDepthTestMode() const
+{
+	Renderer::SetDepthTestMask(writeToDepthBuffer);
+	
+	switch(depthTest)
+	{
+	case DepthTestMode::LESS:
+		Renderer::SetDepthTestEnabled(true);
+		Renderer::SetDepthTestFunc(GL_LESS);
+		break;
+	case DepthTestMode::LEQUAL:
+		Renderer::SetDepthTestEnabled(true);
+		Renderer::SetDepthTestFunc(GL_LEQUAL);
+		break;
+	case DepthTestMode::EQUAL:
+		Renderer::SetDepthTestEnabled(true);
+		Renderer::SetDepthTestFunc(GL_EQUAL);
+		break;
+	case DepthTestMode::GEQUAL:
+		Renderer::SetDepthTestEnabled(true);
+		Renderer::SetDepthTestFunc(GL_GEQUAL);
+		break;
+	case DepthTestMode::GREATER:
+		Renderer::SetDepthTestEnabled(true);
+		Renderer::SetDepthTestFunc(GL_GREATER);
+		break;
+	case DepthTestMode::NOT_EQUAL:
+		Renderer::SetDepthTestEnabled(true);
+		Renderer::SetDepthTestFunc(GL_NOTEQUAL);
+		break;
+	case DepthTestMode::ALWAYS:
+		Renderer::SetDepthTestEnabled(true);
+		Renderer::SetDepthTestFunc(GL_ALWAYS);
+		break;
+	case DepthTestMode::NEVER:
+		Renderer::SetDepthTestEnabled(true);
+		Renderer::SetDepthTestFunc(GL_NEVER);
+		break;
+	case DepthTestMode::NONE:
+		Renderer::SetDepthTestEnabled(false);
+		break;
+	}
+}
+
+void Mesh::SetupPolygonMode() const
+{
+	switch(polygonMode)
+	{
+	case PolygonMode::FILL:
+		Renderer::SetPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		break;
+	case PolygonMode::LINE:
+		Renderer::SetPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		break;
+	}
+}
+
+void Mesh::SetupCullingMode() const
+{
+	switch(cullingMode)
+	{
+	case CullingMode::BACK:
+		Renderer::SetFaceCullingEnabled(true);
+		Renderer::SetFaceCullingMode(GL_BACK);
+		break;
+	case CullingMode::FRONT:
+		Renderer::SetFaceCullingEnabled(true);
+		Renderer::SetFaceCullingMode(GL_FRONT);
+		break;
+	case CullingMode::NONE:
+		Renderer::SetFaceCullingEnabled(false);
+		break;
+	}
+}
+
+void Mesh::ResetRendererState() const
+{
+	Renderer::SetDepthTestMask(true);
+	Renderer::SetDepthTestEnabled(true);
+	Renderer::SetDepthTestFunc(GL_LESS);
+	Renderer::SetPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	Renderer::SetFaceCullingEnabled(false);
 }
