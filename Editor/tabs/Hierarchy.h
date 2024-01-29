@@ -26,4 +26,5 @@ public:
 
 private:
     void HandleMouseBehavior();
+    void DrawPopupAddObject();
 };

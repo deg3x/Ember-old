@@ -3,8 +3,13 @@
 
 #include "core/World.h"
 #include "core/Object.h"
+#include "core/components/Mesh.h"
+#include "core/materials/MaterialBlinnPhong.h"
 #include "input/Input.h"
 #include "themes/EditorTheme.h"
+#include "utils/procedural/Cube.h"
+#include "utils/procedural/Plane.h"
+#include "utils/procedural/Sphere.h"
 
 Hierarchy::Hierarchy(Editor* owner) : EditorTab(owner)
 {
@@ -74,6 +79,8 @@ void Hierarchy::Tick()
 
         ImGui::PopStyleColor(3);
         ImGui::PopStyleVar(2);
+
+        DrawPopupAddObject();
         
         HandleMouseBehavior();
         
@@ -102,7 +109,6 @@ void Hierarchy::HandleMouseBehavior()
         else if (clickedObject.lock() == hoveredObject.lock())
         {
             SelectedObject = clickedObject;
-            // Submit to inspector
         }
         else    // This is a mouse drag case. We do not handle it for now
         {
@@ -110,4 +116,61 @@ void Hierarchy::HandleMouseBehavior()
             clickedObject.reset();
         }
     }
+
+    const bool isRightClick = Input::Mouse.rightButtonPressedLastFrame && !Input::Mouse.rightButtonPressed;
+    if (isRightClick)
+    {
+        ImGui::OpenPopup("AddObjectPopup", ImGuiPopupFlags_None);
+    }
+}
+
+void Hierarchy::DrawPopupAddObject()
+{
+    ImGui::PushStyleVar(ImGuiStyleVar_PopupRounding, 1.0f);
+    
+    constexpr ImGuiWindowFlags popupFlags = ImGuiWindowFlags_None;
+    if (ImGui::BeginPopup("AddObjectPopup", popupFlags))
+    {
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0.0f, 3.0f});
+
+        ImGui::TextUnformatted("Create New Object...");
+
+        ImGui::Separator();
+
+        const ImVec2 entriesSize = {ImGui::GetContentRegionAvail().x, 0.0f};
+        if (ImGui::Button("Cube", entriesSize))
+        {
+            const std::shared_ptr<Object> cubeObject = std::make_shared<Object>("Cube");
+            const std::shared_ptr<Mesh> cubeMesh = cubeObject->CreateComponent<Mesh>();
+            const std::shared_ptr<MaterialBlinnPhong> mat = std::make_shared<MaterialBlinnPhong>();
+            cubeMesh->material = mat;
+            Cube::GenerateCube(cubeMesh);
+            World::AddObject(cubeObject);
+        }
+        if (ImGui::Button("Sphere", entriesSize))
+        {
+            const std::shared_ptr<Object> sphereObject = std::make_shared<Object>("Sphere");
+            const std::shared_ptr<Mesh> sphereMesh = sphereObject->CreateComponent<Mesh>();
+            const std::shared_ptr<MaterialBlinnPhong> mat = std::make_shared<MaterialBlinnPhong>();
+            sphereMesh->material = mat;
+            Sphere::GenerateSphere(32, 32, 0.5f, sphereMesh);
+            World::AddObject(sphereObject);
+        }
+        if (ImGui::Button("Plane", entriesSize))
+        {
+            const std::shared_ptr<Object> planeObject = std::make_shared<Object>("Plane");
+            const std::shared_ptr<Mesh> planeMesh = planeObject->CreateComponent<Mesh>();
+            const std::shared_ptr<MaterialBlinnPhong> mat = std::make_shared<MaterialBlinnPhong>();
+            planeMesh->material = mat;
+            Plane::GeneratePlane(10, 10.0f, planeMesh);
+            World::AddObject(planeObject);
+        }
+
+        ImGui::PopStyleVar(2);
+        
+        ImGui::EndPopup();
+    }
+    
+    ImGui::PopStyleVar(1);
 }
