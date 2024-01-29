@@ -344,9 +344,6 @@ void Inspector::DrawAddComponentButton()
     {
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0.0f, 3.0f});
-        ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::ColorGreen);
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::ColorGreenActive);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::ColorGreenHovered);
 
         const ImVec2 entriesSize = {ImGui::GetContentRegionAvail().x, 0.0f};
 
@@ -364,7 +361,6 @@ void Inspector::DrawAddComponentButton()
             // hierarchyTab->SelectedObject.lock()->CreateComponent<Mesh>();
         }
 
-        ImGui::PopStyleColor(3);
         ImGui::PopStyleVar(2);
         
         ImGui::EndPopup();
