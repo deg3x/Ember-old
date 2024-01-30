@@ -355,11 +355,11 @@ void Inspector::DrawAddComponentButton()
         {
             hierarchyTab->SelectedObject.lock()->CreateComponent<Light>();
         }
-        if (ImGui::Button("Mesh", entriesSize))
+        /*if (ImGui::Button("Mesh", entriesSize))
         {
             // Not working, fix
-            // hierarchyTab->SelectedObject.lock()->CreateComponent<Mesh>();
-        }
+            hierarchyTab->SelectedObject.lock()->CreateComponent<Mesh>();
+        }*/
 
         ImGui::PopStyleVar(2);
         
