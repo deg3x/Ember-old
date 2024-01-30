@@ -8,6 +8,12 @@ Shader::Shader(const char* vertPath, const char* fragPath)
 {
     std::string vertexFile   = vertPath;
     std::string fragmentFile = fragPath;
+
+	const std::string vertexDir   = vertexFile.substr(0, vertexFile.find_last_of("/\\") + 1);
+	const std::string fragmentDir = fragmentFile.substr(0, fragmentFile.find_last_of("/\\") + 1);
+
+	shaderIncludeDirs.insert(vertexDir);
+	shaderIncludeDirs.insert(fragmentDir);
     
     vertexFile   = vertexFile.substr(vertexFile.find_last_of("/\\") + 1);
     fragmentFile = fragmentFile.substr(fragmentFile.find_last_of("/\\") + 1);
@@ -17,6 +23,9 @@ Shader::Shader(const char* vertPath, const char* fragPath)
 
 	ReadCodeFromPath(vertPath, vCode);
 	ReadCodeFromPath(fragPath, fCode);
+
+	vCode = Preprocess(vCode);
+	fCode = Preprocess(fCode);
 
 	const char* vertCode = vCode.c_str();
 	const char* fragCode = fCode.c_str();
@@ -30,6 +39,94 @@ Shader::Shader(const char* vertPath, const char* fragPath)
 void Shader::Use() const
 {
 	glUseProgram(programID);
+}
+
+
+std::string Shader::Preprocess(const std::string& shaderCode)
+{
+	std::istringstream codeStreamInput(shaderCode);
+	std::ostringstream codeStreamOutput;
+
+	std::string line;
+	while(std::getline(codeStreamInput, line))
+	{
+		if (!line.starts_with("#"))
+		{
+			codeStreamOutput << line << "\n";
+			continue;
+		}
+
+		std::istringstream lineStream(line);
+		std::string currentDirective;
+		lineStream >> currentDirective;
+		
+		if (customDirectives.contains(currentDirective))
+		{
+			codeStreamOutput << ProcessDirective(currentDirective, line);
+		}
+		else
+		{
+			if (!reservedDirectives.contains(currentDirective))
+			{
+				const std::string warnMsg = "Unknown shader preprocessor directive: " + line + ". Continuing without modification...";
+				Logger::Log(LogCategory::WARNING, warnMsg, "Shader::Preprocess");
+			}
+			
+			codeStreamOutput << line << "\n";
+		}
+	}
+
+	return codeStreamOutput.str();
+}
+
+std::string Shader::ProcessDirective(const std::string& directive, const std::string& line)
+{
+	std::istringstream lineStream(line);
+	std::vector<std::string> args;
+
+	std::string arg;
+	lineStream >> arg; // Ignore the directive
+	while (lineStream >> arg)
+	{
+		args.push_back(arg);
+	}
+
+	std::string ret;
+
+	if (directive == "#include")
+	{
+		if (args.size() != 1)
+		{
+			Logger::Log(LogCategory::ERROR, "Incorrect number of arguments in #include directive: " + line, "Shader::ProcessDirective");
+
+			return line;
+		}
+
+		bool fileFound = false;
+		for (const std::string& includeDir : shaderIncludeDirs)
+		{
+			// Remove single/double quotes from the filename
+			std::erase(args[0], '\"');
+			std::erase(args[0], '\'');
+			
+			std::string path = includeDir + args[0];
+			if (ReadCodeFromPath(path.c_str(), ret, false) == 0)
+			{
+				ret = Preprocess(ret);
+				fileFound = true;
+				break;
+			}
+		}
+
+		if (!fileFound)
+		{
+			Logger::Log(LogCategory::ERROR, "Unable to locate include file: " + line, "Shader::ProcessDirective");
+
+			return line;
+		}
+	}
+
+	return ret;
 }
 
 unsigned int Shader::CompileShader(const char* shaderCode, unsigned int type)
@@ -71,7 +168,7 @@ void Shader::CreateShaderProgram(int idCount, ...)
 	va_end(shaderIDs);
 }
 
-int Shader::ReadCodeFromPath(const char* path, std::string& code)
+int Shader::ReadCodeFromPath(const char* path, std::string& code, bool verbose)
 {
 	std::ifstream file;
 
@@ -90,11 +187,15 @@ int Shader::ReadCodeFromPath(const char* path, std::string& code)
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		std::string errorMsg = path;
-		errorMsg += "\n";
-		errorMsg += err.what();
+		if (verbose)
+		{
+			std::string errorMsg = path;
+			errorMsg += "\n";
+			errorMsg += err.what();
 		
-		Logger::Log(LogCategory::ERROR, errorMsg, "Shader::ReadCodeFromPath");
+			Logger::Log(LogCategory::ERROR, errorMsg, "Shader::ReadCodeFromPath");
+		}
+		
 		return -1;
 	}
 
