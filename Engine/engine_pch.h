@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <fstream>
 #include <sstream>
+#include <cstdarg>
 #include <type_traits>
 #include <unordered_set>
 

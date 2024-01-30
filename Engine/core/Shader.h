@@ -5,10 +5,11 @@
 class ENGINE_API Shader
 {
 private:
-	unsigned int id;
+	unsigned int programID;
 
 public:
     Shader() = delete;
+	Shader(const char* path);
 	Shader(const char* vertPath, const char* fragPath);
 
 	void Use() const;
@@ -22,6 +23,8 @@ public:
 	void SetMatrix4x4(const std::string& name, const glm::mat4x4& matrix) const;
     
 private:
+	unsigned int CompileShader(const char* shaderCode, unsigned int type);
+	void CreateShaderProgram(int idCount, ...);
     int CheckShaderCompiled(unsigned int shaderID, const std::string& name);
     int CheckProgramLinked(unsigned int shaderProgramID, const std::string& name);
     int ReadCodeFromPath(const char* path, std::string& code);
