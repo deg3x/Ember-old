@@ -5,6 +5,7 @@
 #include "core/materials/MaterialEditorGrid.h"
 #include "core/Object.h"
 #include "core/World.h"
+#include "core/components/Transform.h"
 #include "utils/procedural/Plane.h"
 
 std::shared_ptr<Object> EditorGrid::Instantiate()
@@ -19,6 +20,9 @@ std::shared_ptr<Object> EditorGrid::Instantiate()
     gridMesh->meshType           = MeshType::TRANSPARENT;
     gridMesh->cullingMode        = CullingMode::NONE;
     gridMesh->writeToDepthBuffer = false;
+
+    // We push the grid lower to avoid Z-fighting
+    editorGrid->transform->position = {0.0f, -0.001f, 0.0f};
 
     World::AddObject(editorGrid);
 

@@ -34,17 +34,8 @@ void MaterialUnlit::Use() const
 
 void MaterialUnlit::SetupShaderVariables(const Transform& objectTransform, const Camera& camera) const
 {
-    shader->Use();
-
-    shader->Use();
-
-    const glm::mat4x4 modelMatrix  = objectTransform.GetModelMatrix();
-
-    shader->SetMatrix4x4("model", modelMatrix);
-    shader->SetMatrix4x4("view", camera.GetViewMatrix());
-    shader->SetMatrix4x4("projection", camera.GetProjectionMatrix());
+    Material::SetupShaderVariables(objectTransform, camera);
     
-    GetShader()->SetVector4("color", diffuseColor);
-
+    shader->SetVector4("color", diffuseColor);
     shader->SetInt("diffuseTexture", 0);
 }

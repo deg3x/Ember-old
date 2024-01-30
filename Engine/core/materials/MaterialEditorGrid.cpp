@@ -21,11 +21,5 @@ void MaterialEditorGrid::Use() const
 
 void MaterialEditorGrid::SetupShaderVariables(const Transform& objectTransform, const Camera& camera) const
 {
-    shader->Use();
-
-    const glm::mat4x4 modelMatrix = objectTransform.GetModelMatrix();
-
-    shader->SetMatrix4x4("model", modelMatrix);
-    shader->SetMatrix4x4("view", camera.GetViewMatrix());
-    shader->SetMatrix4x4("projection", camera.GetProjectionMatrix());
+    Material::SetupShaderVariables(objectTransform, camera);
 }
