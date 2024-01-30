@@ -64,7 +64,7 @@ void Inspector::DrawComponents()
             DrawLight(std::dynamic_pointer_cast<Light>(component));
             break;
         case ComponentType::MESH:
-            DrawMesh();
+            DrawMesh(std::dynamic_pointer_cast<Mesh>(component));
             break;
         default:
             Logger::Log(LogCategory::WARNING, "Unrecognized component type found", "Inspector::DrawComponents");
@@ -312,7 +312,7 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
     }
 }
 
-void Inspector::DrawMesh()
+void Inspector::DrawMesh(const std::shared_ptr<Mesh>& meshComponent)
 {
     constexpr ImGuiTreeNodeFlags meshFlags = ImGuiTreeNodeFlags_DefaultOpen;
     
@@ -321,6 +321,40 @@ void Inspector::DrawMesh()
     const bool isHeaderOpen = ImGui::CollapsingHeader("Mesh", meshFlags);
     ImGui::PopFont();
     ImGui::PopStyleVar();
+
+    if (isHeaderOpen)
+    {
+        const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
+
+        constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingStretchProp;
+        if (ImGui::BeginTable("Light Data", 2, tableFlags))
+        {
+            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthFirst);
+            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthSecond);
+
+            DrawMeshElements(meshComponent);
+
+            ImGui::EndTable();
+        }
+    }
+}
+
+void Inspector::DrawMeshElements(const std::shared_ptr<Mesh>& meshComponent)
+{
+    std::string renderQueue;
+    switch (meshComponent->meshType)
+    {
+    case MeshType::OPAQUE:
+        renderQueue = "Opaque";
+        break;
+    case MeshType::TRANSPARENT:
+        renderQueue = "Transparent";
+        break;
+    }
+
+    DrawRowLabelText("Render queue", renderQueue);
+    DrawRowLabelText("Vertices", std::to_string(meshComponent->GetVertexData().size()));
+    DrawRowLabelText("Indices", std::to_string(meshComponent->GetIndices().size()));
 }
 
 void Inspector::DrawAddComponentButton()
@@ -405,4 +439,15 @@ void Inspector::DrawRowLabelColor3(const std::string& label, float target[3])
         
         ImGui::EndPopup();
     }
+}
+
+void Inspector::DrawRowLabelText(const std::string& label, const std::string& text)
+{
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
+    ImGui::TextUnformatted(label.c_str());
+
+    ImGui::TableNextColumn();
+    ImGui::TextUnformatted(text.c_str());
 }

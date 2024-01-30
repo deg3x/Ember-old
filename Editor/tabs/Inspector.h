@@ -2,6 +2,7 @@
 
 #include "EditorTab.h"
 
+class Mesh;
 class Light;
 class Camera;
 class Hierarchy;
@@ -42,9 +43,11 @@ private:
     void DrawCameraElements(const std::shared_ptr<Camera>& cameraComponent);
     void DrawLight(const std::shared_ptr<Light>& lightComponent);
     void DrawLightElements(const std::shared_ptr<Light>& lightComponent);
-    void DrawMesh();
+    void DrawMesh(const std::shared_ptr<Mesh>& meshComponent);
+    void DrawMeshElements(const std::shared_ptr<Mesh>& meshComponent);
     void DrawAddComponentButton();
 
     void DrawRowLabelDragFloat(const std::string& label, float& target);
     void DrawRowLabelColor3(const std::string& label, float target[3]);
+    void DrawRowLabelText(const std::string& label, const std::string& text);
 };
