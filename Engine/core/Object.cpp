@@ -10,7 +10,10 @@
 Object::Object(const char* objName)
 {
     transform = CreateComponent<Transform>();
-    this->name = objName;
+    name      = objName;
+    uid       = nextAvailableID;
+
+    nextAvailableID++;
 }
 
 Object::~Object()

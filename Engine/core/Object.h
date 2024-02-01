@@ -10,11 +10,14 @@ class Transform;
 class ENGINE_API Object
 {
 public:
+    uint64_t uid;
     std::string name;
     std::shared_ptr<Transform> transform;
 
 private:
     std::vector<std::shared_ptr<Component>> components;
+    
+    inline static uint64_t nextAvailableID = 0;
     
 public:
     Object() = delete;
