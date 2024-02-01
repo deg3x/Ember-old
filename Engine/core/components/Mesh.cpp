@@ -8,7 +8,6 @@
 #include "core/materials/Material.h"
 #include "core/Object.h"
 #include "core/Renderer.h"
-#include "core/materials/MaterialSkybox.h"
 #include "logger/Logger.h"
 
 Mesh::Mesh(const std::vector<VertexData>& data, const std::vector<unsigned int>& initIndices, const std::shared_ptr<Material>& initMaterial)

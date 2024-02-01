@@ -2,21 +2,27 @@
 #include "EditorGrid.h"
 
 #include "core/components/Mesh.h"
-#include "core/materials/MaterialEditorGrid.h"
+#include "core/materials/Material.h"
 #include "core/Object.h"
+#include "core/Shader.h"
 #include "core/World.h"
 #include "core/components/Transform.h"
+#include "utils/PathBuilder.h"
 #include "utils/procedural/Plane.h"
 
 std::shared_ptr<Object> EditorGrid::Instantiate()
 {
+    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexEditorGrid.glsl");
+    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentEditorGrid.glsl");
+    
     const std::shared_ptr<Object> editorGrid = std::make_shared<Object>("Editor Grid");
-    const std::shared_ptr<MaterialEditorGrid> gridMaterial = std::make_shared<MaterialEditorGrid>();
-    const std::shared_ptr<Mesh> gridMesh = editorGrid->CreateComponent<Mesh>();
+    const std::shared_ptr<Shader> gridShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
+    const std::shared_ptr<Material> gridMat  = std::make_shared<Material>(gridShader);
+    const std::shared_ptr<Mesh> gridMesh     = editorGrid->CreateComponent<Mesh>();
     
     Plane::GeneratePlane(10, 100.0f, gridMesh);
     
-    gridMesh->material           = gridMaterial;
+    gridMesh->material           = gridMat;
     gridMesh->meshType           = MeshType::TRANSPARENT;
     gridMesh->cullingMode        = CullingMode::NONE;
     gridMesh->writeToDepthBuffer = false;

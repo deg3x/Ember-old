@@ -10,6 +10,6 @@ uniform mat4 view;
 void main()
 {
     TexCoords = aPos;
-    vec4 originalPosition = projection * view * vec4(aPos, 1.0);
+    vec4 originalPosition = projection * mat4(mat3(view)) * vec4(aPos, 1.0);
     gl_Position = originalPosition.xyww; // Set z = w so that we get the max depth value (1.0) after perspective division
 }

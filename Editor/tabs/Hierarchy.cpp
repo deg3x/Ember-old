@@ -3,13 +3,12 @@
 
 #include "core/World.h"
 #include "core/Object.h"
-#include "core/components/Mesh.h"
-#include "core/materials/MaterialBlinnPhong.h"
+#include "core/materials/Material.h"
 #include "input/Input.h"
 #include "themes/EditorTheme.h"
-#include "utils/procedural/Cube.h"
-#include "utils/procedural/Plane.h"
-#include "utils/procedural/Sphere.h"
+#include "utils/primitives/ObjectCube.h"
+#include "utils/primitives/ObjectPlane.h"
+#include "utils/primitives/ObjectSphere.h"
 
 Hierarchy::Hierarchy(Editor* owner) : EditorTab(owner)
 {
@@ -141,30 +140,15 @@ void Hierarchy::DrawPopupAddObject()
         const ImVec2 entriesSize = {ImGui::GetContentRegionAvail().x, 0.0f};
         if (ImGui::Button("Cube", entriesSize))
         {
-            const std::shared_ptr<Object> cubeObject = std::make_shared<Object>("Cube");
-            const std::shared_ptr<Mesh> cubeMesh = cubeObject->CreateComponent<Mesh>();
-            const std::shared_ptr<MaterialBlinnPhong> mat = std::make_shared<MaterialBlinnPhong>();
-            cubeMesh->material = mat;
-            Cube::GenerateCube(cubeMesh);
-            World::AddObject(cubeObject);
+            ObjectCube::Instantiate();
         }
         if (ImGui::Button("Sphere", entriesSize))
         {
-            const std::shared_ptr<Object> sphereObject = std::make_shared<Object>("Sphere");
-            const std::shared_ptr<Mesh> sphereMesh = sphereObject->CreateComponent<Mesh>();
-            const std::shared_ptr<MaterialBlinnPhong> mat = std::make_shared<MaterialBlinnPhong>();
-            sphereMesh->material = mat;
-            Sphere::GenerateSphere(32, 32, 0.5f, sphereMesh);
-            World::AddObject(sphereObject);
+            ObjectSphere::Instantiate();
         }
         if (ImGui::Button("Plane", entriesSize))
         {
-            const std::shared_ptr<Object> planeObject = std::make_shared<Object>("Plane");
-            const std::shared_ptr<Mesh> planeMesh = planeObject->CreateComponent<Mesh>();
-            const std::shared_ptr<MaterialBlinnPhong> mat = std::make_shared<MaterialBlinnPhong>();
-            planeMesh->material = mat;
-            Plane::GeneratePlane(10, 10.0f, planeMesh);
-            World::AddObject(planeObject);
+            ObjectPlane::Instantiate();
         }
 
         ImGui::PopStyleVar(2);

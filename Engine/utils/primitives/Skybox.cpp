@@ -2,28 +2,34 @@
 #include "Skybox.h"
 
 #include "core/components/Mesh.h"
-#include "core/materials/MaterialSkybox.h"
+#include "core/materials/Material.h"
 #include "core/Object.h"
+#include "core/Shader.h"
 #include "core/World.h"
-#include "core/textures/TextureCubemap.h"
+#include "core/textures/Texture.h"
+#include "utils/PathBuilder.h"
 #include "utils/procedural/Cube.h"
 
 std::shared_ptr<Object> Skybox::Instantiate()
 {
-    const std::shared_ptr<Object> skybox = std::make_shared<Object>("Skybox");
-    const std::shared_ptr<TextureCubemap> texture = std::make_shared<TextureCubemap>();
-    const std::shared_ptr<MaterialSkybox> matSky = std::make_shared<MaterialSkybox>();
+    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexSkybox.glsl");
+    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentSkybox.glsl");
     
-    matSky->SetCubemap(texture);
+    const std::shared_ptr<Object> skyObject = std::make_shared<Object>("Skybox");
+    const std::shared_ptr<Shader> skyShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
+    const std::shared_ptr<Material> skyMat  = std::make_shared<Material>(skyShader);
+    const std::shared_ptr<Texture> skyTex   = std::make_shared<Texture>("./Data/images/skybox/cubemap_clouds_", TextureType::CUBEMAP, TextureUnit::TEX_0);
+    
+    skyMat->AddTexture("skybox", skyTex);
 
-    const std::shared_ptr<Mesh> skyboxMesh = skybox->CreateComponent<Mesh>();
+    const std::shared_ptr<Mesh> skyboxMesh = skyObject->CreateComponent<Mesh>();
     Cube::GenerateCube(skyboxMesh);
     
-    skyboxMesh->material    = matSky;
+    skyboxMesh->material    = skyMat;
     skyboxMesh->cullingMode = CullingMode::FRONT;
     skyboxMesh->depthTest   = DepthTestMode::LEQUAL;
 
-    World::AddObject(skybox);
+    World::AddObject(skyObject);
 
-    return skybox;
+    return skyObject;
 }

@@ -1,9 +1,10 @@
 ﻿#include "engine_pch.h"
 #include "Model.h"
 
+#include "Shader.h"
 #include "core/components/Mesh.h"
-#include "core/textures/TextureDiffuse.h"
-#include "core/materials/MaterialBlinnPhong.h"
+#include "core/materials/Material.h"
+#include "core/textures/Texture.h"
 #include "utils/PathBuilder.h"
 #include "logger/Logger.h"
 
@@ -14,13 +15,13 @@
 namespace
 {
     std::vector<std::shared_ptr<Mesh>> loadedMeshes;
-    std::vector<std::shared_ptr<TextureDiffuse>> loadedTextures;
+    std::vector<std::shared_ptr<Texture>> loadedTextures;
 
     std::string directory;
 
-    std::vector<std::shared_ptr<TextureDiffuse>> ProcessTextures(const aiMaterial* mat, const aiTextureType& aiType)
+    std::vector<std::shared_ptr<Texture>> ProcessTextures(const aiMaterial* mat, const aiTextureType& aiType)
     {
-        std::vector<std::shared_ptr<TextureDiffuse>> retTextures;
+        std::vector<std::shared_ptr<Texture>> retTextures;
 
         for (unsigned int i = 0; i < mat->GetTextureCount(aiType); i++)
         {
@@ -40,8 +41,23 @@ namespace
 
             if (!alreadyLoaded)
             {
+                // FILL IN MORE TEXTURE TYPES IN THE FUTURE
+                TextureType type = TextureType::DIFFUSE;
+                switch(aiType)
+                {
+                case aiTextureType_NONE:
+                    break;
+                case aiTextureType_DIFFUSE:
+                    type = TextureType::DIFFUSE;
+                    break;
+                default:
+                    Logger::Log(LogCategory::WARNING, "Unhandled texture type found in model", "Model::ProcessTextures");
+                    break;
+                }
+                
                 std::string fullPath = directory + "/" + texturePath.C_Str();
-                std::shared_ptr<TextureDiffuse> texture = std::make_shared<TextureDiffuse>(fullPath.c_str());
+                std::shared_ptr<Texture> texture = std::make_shared<Texture>(fullPath, type);
+
                 loadedTextures.push_back(texture);
                 retTextures.push_back(texture);
             }
@@ -111,12 +127,12 @@ namespace
 
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        std::vector<std::shared_ptr<TextureDiffuse>> diffuseMaps  = ProcessTextures(material, aiTextureType_DIFFUSE);
-        std::vector<std::shared_ptr<TextureDiffuse>> normalMaps   = ProcessTextures(material, aiTextureType_NORMALS);
-        std::vector<std::shared_ptr<TextureDiffuse>> specularMaps = ProcessTextures(material, aiTextureType_SPECULAR);
-        std::vector<std::shared_ptr<TextureDiffuse>> heightMaps   = ProcessTextures(material, aiTextureType_HEIGHT);
+        std::vector<std::shared_ptr<Texture>> diffuseMaps  = ProcessTextures(material, aiTextureType_DIFFUSE);
+        std::vector<std::shared_ptr<Texture>> normalMaps   = ProcessTextures(material, aiTextureType_NORMALS);
+        std::vector<std::shared_ptr<Texture>> specularMaps = ProcessTextures(material, aiTextureType_SPECULAR);
+        std::vector<std::shared_ptr<Texture>> heightMaps   = ProcessTextures(material, aiTextureType_HEIGHT);
 
-        std::vector<std::shared_ptr<TextureDiffuse>> meshTextures;
+        std::vector<std::shared_ptr<Texture>> meshTextures;
         meshTextures.insert(meshTextures.end(), diffuseMaps.begin(), diffuseMaps.end());
         meshTextures.insert(meshTextures.end(), normalMaps.begin(), normalMaps.end());
         meshTextures.insert(meshTextures.end(), specularMaps.begin(), specularMaps.end());
@@ -124,11 +140,29 @@ namespace
 
         // Only use the first available diffuse texture for now
         // FIX IN THE FUTURE
-        std::shared_ptr<MaterialBlinnPhong> meshMaterial = std::make_shared<MaterialBlinnPhong>();
-        if (!diffuseMaps.empty())
-            meshMaterial->SetDiffuseTexture(diffuseMaps[0]);
+        const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexPhong.glsl");
+        const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl");
+
+        const std::shared_ptr<Shader> meshShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
+        const std::shared_ptr<Material> meshMat  = std::make_shared<Material>(meshShader);
+
+        meshMat->AddProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        meshMat->AddProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
+        meshMat->AddProperty("material.shininess", 64.0f);
         
-        return new Mesh(vertices, indices, meshMaterial);
+        if (!diffuseMaps.empty())
+        {
+            meshMat->AddTexture("diffuseTexture", diffuseMaps[0]);
+        }
+        else
+        {
+            std::shared_ptr<Texture> tex = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
+            meshMat->AddTexture("diffuseTexture", tex);
+        }
+
+        Mesh* ret = new Mesh(vertices, indices, meshMat);
+        
+        return ret;
     }
 
     void ProcessNode(aiNode* node, const aiScene* scene)

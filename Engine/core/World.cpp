@@ -1,13 +1,15 @@
 ﻿#include "engine_pch.h"
 #include "World.h"
 
+#include "Shader.h"
 #include "components/Mesh.h"
 #include "core/Object.h"
 #include "core/Renderer.h"
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
 #include "core/components/Transform.h"
-#include "core/materials/MaterialBlinnPhong.h"
+#include "core/materials/Material.h"
+#include "utils/PathBuilder.h"
 #include "utils/Types.h"
 #include "utils/primitives/EditorGrid.h"
 #include "utils/primitives/Skybox.h"
@@ -19,12 +21,20 @@ std::shared_ptr<Camera> World::camera;
 
 void World::Initialize()
 {
+    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexPhong.glsl");
+    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl");
+    
+    const std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
+    const std::shared_ptr<Material> defaultMat  = std::make_shared<Material>(defaultShader);
+
+    defaultMat->AddProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    defaultMat->AddProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
+    defaultMat->AddProperty("material.shininess", 64.0f);
+    
     const std::shared_ptr<Object> cameraObject = std::make_shared<Object>("Camera");
     cameraObject->CreateComponent<Camera>();
     cameraObject->transform->position = glm::vec3(0.0f, 3.0f, 3.0f);
     cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
-
-    const std::shared_ptr<MaterialBlinnPhong> defaultMat = std::make_shared<MaterialBlinnPhong>();
 
     const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>("Stanford Bunny");
     bunnyObject->transform->position = glm::vec3(0.0f, 0.2f, 0.0f);
@@ -35,8 +45,6 @@ void World::Initialize()
     dirLightObject->CreateComponent<Light>();
     dirLightObject->transform->rotation.x = 30.0f;
     dirLightObject->transform->rotation.y = -30.0f;
-
-    dirLightObject->GetComponent<Light>()->SetShaderProperties(*defaultMat->GetShader());
 
     AddObject(cameraObject);
     AddObject(bunnyObject);
