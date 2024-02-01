@@ -3,7 +3,7 @@
 
 #include "core/World.h"
 #include "core/Object.h"
-#include "core/materials/Material.h"
+#include "core/Material.h"
 #include "input/Input.h"
 #include "themes/EditorTheme.h"
 #include "utils/primitives/ObjectCube.h"
