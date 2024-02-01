@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Definitions.h"
-#include "core/textures/Texture.h"
+#include "core/Texture.h"
 
 class Shader;
 class Camera;

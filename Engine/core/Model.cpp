@@ -3,8 +3,8 @@
 
 #include "Shader.h"
 #include "core/components/Mesh.h"
-#include "core/materials/Material.h"
-#include "core/textures/Texture.h"
+#include "core/Material.h"
+#include "core/Texture.h"
 #include "utils/PathBuilder.h"
 #include "logger/Logger.h"
 

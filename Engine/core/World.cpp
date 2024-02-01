@@ -8,7 +8,7 @@
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
 #include "core/components/Transform.h"
-#include "core/materials/Material.h"
+#include "core/Material.h"
 #include "utils/PathBuilder.h"
 #include "utils/Types.h"
 #include "utils/primitives/EditorGrid.h"

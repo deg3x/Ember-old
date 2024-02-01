@@ -2,7 +2,7 @@
 #include "EditorGrid.h"
 
 #include "core/components/Mesh.h"
-#include "core/materials/Material.h"
+#include "core/Material.h"
 #include "core/Object.h"
 #include "core/Shader.h"
 #include "core/World.h"

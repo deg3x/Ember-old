@@ -5,7 +5,7 @@
 
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
-#include "core/materials/Material.h"
+#include "core/Material.h"
 #include "core/Object.h"
 #include "core/Renderer.h"
 #include "logger/Logger.h"

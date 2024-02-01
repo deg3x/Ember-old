@@ -5,7 +5,7 @@
 #include "core/Shader.h"
 #include "core/World.h"
 #include "core/components/Mesh.h"
-#include "core/materials/Material.h"
+#include "core/Material.h"
 #include "utils/PathBuilder.h"
 #include "utils/procedural/Plane.h"
 

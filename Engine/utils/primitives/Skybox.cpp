@@ -2,11 +2,11 @@
 #include "Skybox.h"
 
 #include "core/components/Mesh.h"
-#include "core/materials/Material.h"
+#include "core/Material.h"
 #include "core/Object.h"
 #include "core/Shader.h"
 #include "core/World.h"
-#include "core/textures/Texture.h"
+#include "core/Texture.h"
 #include "utils/PathBuilder.h"
 #include "utils/procedural/Cube.h"
 
