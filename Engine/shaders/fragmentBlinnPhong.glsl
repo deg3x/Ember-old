@@ -21,24 +21,24 @@ void main()
 	
 	for (int i = 0; i < activeLightsDir; i++)
 	{
-	    vec3 DSA = BlinnPhongComponents(normal, viewVector, directionalLight[i].direction, directionalLight[i].color, directionalLight[i].ambient);
-	    float lightEffect = CalculateLightDirectional(directionalLight[i]);
+	    vec3 DSA = BlinnPhongComponents(normal, viewVector, dirLights[i].direction, dirLights[i].color, dirLights[i].ambient);
+	    float lightEffect = CalculateLightDirectional(dirLights[i]);
 	    
 	    color += DSA * lightEffect;
 	}
 	for (int i = 0; i < activeLightsPoint; i++)
 	{
-	    vec3 lightDir = WorldPosition - pointLight[i].position;
-	    vec3 DSA = BlinnPhongComponents(normal, viewVector, lightDir, pointLight[i].color, pointLight[i].ambient);
-	    float lightEffect = CalculateLightPoint(pointLight[i], WorldPosition);
+	    vec3 lightDir = WorldPosition - pointLights[i].position;
+	    vec3 DSA = BlinnPhongComponents(normal, viewVector, lightDir, pointLights[i].color, pointLights[i].ambient);
+	    float lightEffect = CalculateLightPoint(pointLights[i], WorldPosition);
 	    
 	    color += DSA * lightEffect;
 	}
 	for (int i = 0; i < activeLightsSpot; i++)
 	{
-	    vec3 lightDir = WorldPosition - spotLight[i].position;
-	    vec3 DSA = BlinnPhongComponents(normal, viewVector, lightDir, spotLight[i].color, spotLight[i].ambient);
-	    float lightEffect = CalculateLightSpot(spotLight[i], WorldPosition);
+	    vec3 lightDir = WorldPosition - spotLights[i].position;
+	    vec3 DSA = BlinnPhongComponents(normal, viewVector, lightDir, spotLights[i].color, spotLights[i].ambient);
+	    float lightEffect = CalculateLightSpot(spotLights[i], WorldPosition);
 	    
 	    color += DSA * lightEffect;
 	}

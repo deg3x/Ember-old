@@ -19,22 +19,30 @@ void main()
     
     for (int i = 0; i < activeLightsDir; i++)
     {
+        vec3 lightVector = normalize(-dirLights[i].direction);
+        vec3 halfVector  = normalize(viewVector + lightVector);
         
+        vec3 radiance = dirLights[i].color * CalculateLightDirectional(dirLights[i]);
+        
+        irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance);
     }
     for (int i = 0; i < activeLightsPoint; i++)
     {
-        vec3 lightVector  = normalize(pointLight[i].position - WorldPosition);
-        vec3 halfVector   = normalize(viewVector + lightVector);
-        float distance    = length(pointLight[i].position - WorldPosition);
-        float attenuation = 1.0 / (distance * distance);
+        vec3 lightVector = normalize(pointLights[i].position - WorldPosition);
+        vec3 halfVector  = normalize(viewVector + lightVector);
         
-        vec3 radiance = pointLight[i].color * attenuation;
+        vec3 radiance = pointLights[i].color * CalculateLightPoint(pointLights[i], WorldPosition);
         
         irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance);
     }
     for (int i = 0; i < activeLightsSpot; i++)
     {
+        vec3 lightVector = normalize(spotLights[i].position - WorldPosition);
+        vec3 halfVector  = normalize(viewVector + lightVector);
         
+        vec3 radiance = spotLights[i].color * CalculateLightSpot(spotLights[i], WorldPosition);
+        
+        irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance);
     }
     
     vec3 ambient = vec3(0.03) * albedo * ambientOcclusion;

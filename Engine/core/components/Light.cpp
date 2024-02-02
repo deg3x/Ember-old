@@ -23,14 +23,14 @@ void Light::SetShaderProperties(const Shader& shaderProgram, int lightIndex) con
 	switch(lightType)
 	{
 	case LightType::DIRECTIONAL:
-		lightVar = "directionalLight[" + std::to_string(lightIndex) + "]";
+		lightVar = "dirLights[" + std::to_string(lightIndex) + "]";
 		shaderProgram.SetVector3(lightVar + ".ambient", ambient);
 		shaderProgram.SetVector3(lightVar + ".color", color);
 		shaderProgram.SetVector3(lightVar + ".direction", -owner->transform->GetUpVector());
 		shaderProgram.SetFloat(lightVar + ".intensity", intensity);
 		break;
 	case LightType::POINT:
-		lightVar = "pointLight[" + std::to_string(lightIndex) + "]";
+		lightVar = "pointLights[" + std::to_string(lightIndex) + "]";
 		shaderProgram.SetVector3(lightVar + ".ambient", ambient);
 		shaderProgram.SetVector3(lightVar + ".color", color);
 		shaderProgram.SetVector3(lightVar + ".position", owner->transform->position);
@@ -40,7 +40,7 @@ void Light::SetShaderProperties(const Shader& shaderProgram, int lightIndex) con
 		shaderProgram.SetFloat(lightVar + ".quadraticAttenuation", pointLightData.quadraticAttenuation);
 		break;
 	case LightType::SPOTLIGHT:
-		lightVar = "spotLight[" + std::to_string(lightIndex) + "]";
+		lightVar = "spotLights[" + std::to_string(lightIndex) + "]";
 		shaderProgram.SetVector3(lightVar + ".ambient", ambient);
 		shaderProgram.SetVector3(lightVar + ".color", color);
 		shaderProgram.SetVector3(lightVar + ".position", owner->transform->position);

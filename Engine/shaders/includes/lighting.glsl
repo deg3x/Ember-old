@@ -34,9 +34,9 @@ struct SpotLight
 #define MAX_DIR_LIGHTS 4
 #define MAX_POINT_LIGHTS 32
 #define MAX_SPOT_LIGHTS 32
-uniform DirectionalLight directionalLight[MAX_DIR_LIGHTS];
-uniform PointLight pointLight[MAX_POINT_LIGHTS];
-uniform SpotLight spotLight[MAX_SPOT_LIGHTS];
+uniform DirectionalLight dirLights[MAX_DIR_LIGHTS];
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 uniform int activeLightsDir;
 uniform int activeLightsPoint;
 uniform int activeLightsSpot;
