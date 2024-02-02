@@ -141,14 +141,15 @@ namespace
         // Only use the first available diffuse texture for now
         // FIX IN THE FUTURE
         const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexStandard.glsl");
-        const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentBlinnPhong.glsl");
+        const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentPBR.glsl");
 
         const std::shared_ptr<Shader> meshShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
         const std::shared_ptr<Material> meshMat  = std::make_shared<Material>(meshShader);
 
-        meshMat->SetProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        meshMat->SetProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-        meshMat->SetProperty("material.shininess", 64.0f);
+        meshMat->SetProperty("albedo", glm::vec3(0.85f, 0.1f, 0.1f));
+        meshMat->SetProperty("roughness", 0.3f);
+        meshMat->SetProperty("metallic", 0.0f);
+        meshMat->SetProperty("ambientOcclusion", 0.3f);
         
         if (!diffuseMaps.empty())
         {

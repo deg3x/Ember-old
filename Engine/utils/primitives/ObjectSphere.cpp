@@ -20,11 +20,6 @@ std::shared_ptr<Object> ObjectSphere::Instantiate()
     const std::shared_ptr<Material> sphereMat  = std::make_shared<Material>(sphereShader);
     const std::shared_ptr<Texture> sphereTex   = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
 
-    sphereMat->SetTexture("diffuseTexture", sphereTex);
-    //sphereMat->AddProperty("material.color", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    //sphereMat->AddProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-    //sphereMat->AddProperty("material.shininess", 64.0f);
-
     sphereMat->SetProperty("albedo", glm::vec3(0.85f, 0.1f, 0.1f));
     sphereMat->SetProperty("roughness", 0.1f);
     sphereMat->SetProperty("metallic", 0.9f);

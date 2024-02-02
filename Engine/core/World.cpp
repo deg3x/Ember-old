@@ -22,16 +22,6 @@ std::shared_ptr<Camera> World::camera;
 
 void World::Initialize()
 {
-    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexStandard.glsl");
-    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentBlinnPhong.glsl");
-    
-    const std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
-    const std::shared_ptr<Material> defaultMat  = std::make_shared<Material>(defaultShader);
-
-    defaultMat->SetProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    defaultMat->SetProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-    defaultMat->SetProperty("material.shininess", 64.0f);
-    
     const std::shared_ptr<Object> cameraObject = std::make_shared<Object>("Camera");
     cameraObject->CreateComponent<Camera>();
     cameraObject->transform->position = glm::vec3(0.0f, 3.0f, 3.0f);

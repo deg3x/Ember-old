@@ -12,7 +12,7 @@
 std::shared_ptr<Object> ObjectCube::Instantiate()
 {
     const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexStandard.glsl");
-    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentBlinnPhong.glsl");
+    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentPBR.glsl");
     
     const std::shared_ptr<Object> cubeObject = std::make_shared<Object>("Cube");
     const std::shared_ptr<Mesh> cubeMesh     = cubeObject->CreateComponent<Mesh>();
@@ -20,10 +20,10 @@ std::shared_ptr<Object> ObjectCube::Instantiate()
     const std::shared_ptr<Material> cubeMat  = std::make_shared<Material>(cubeShader);
     const std::shared_ptr<Texture> cubeTex   = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
 
-    cubeMat->SetTexture("diffuseTexture", cubeTex);
-    cubeMat->SetProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    cubeMat->SetProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-    cubeMat->SetProperty("material.shininess", 64.0f);
+    cubeMat->SetProperty("albedo", glm::vec3(0.85f, 0.1f, 0.1f));
+    cubeMat->SetProperty("roughness", 0.3f);
+    cubeMat->SetProperty("metallic", 0.0f);
+    cubeMat->SetProperty("ambientOcclusion", 0.3f);
 
     cubeMesh->material = cubeMat;
 
