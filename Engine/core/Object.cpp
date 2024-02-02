@@ -32,7 +32,7 @@ void Object::Tick()
     }
 }
 
-void Object::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const
+void Object::Draw(const std::shared_ptr<Camera>& camera, const std::unordered_set<std::shared_ptr<Light>>& lights) const
 {
     const std::vector<std::shared_ptr<Mesh>> meshes = GetComponents<Mesh>();
 

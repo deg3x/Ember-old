@@ -75,7 +75,7 @@ public:
 	Mesh(const std::vector<VertexData>& data, const std::vector<unsigned int>& initIndices, const std::shared_ptr<Material>& initMaterial);
 	virtual ~Mesh();
 
-	void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const;
+	void Draw(const std::shared_ptr<Camera>& camera, const std::unordered_set<std::shared_ptr<Light>>& lights) const;
 	void SetMeshData(const std::vector<VertexData>& newData, const std::vector<unsigned int>& newIndices, const std::shared_ptr<Material>& newMaterial = nullptr);
 
 	inline std::vector<VertexData> GetVertexData() const

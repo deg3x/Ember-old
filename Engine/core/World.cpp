@@ -9,6 +9,7 @@
 #include "core/components/Light.h"
 #include "core/components/Transform.h"
 #include "core/Material.h"
+#include "logger/Logger.h"
 #include "utils/PathBuilder.h"
 #include "utils/Types.h"
 #include "utils/primitives/EditorGrid.h"
@@ -16,7 +17,7 @@
 
 std::unordered_set<std::shared_ptr<Object>> World::objQueueOpaque;
 std::unordered_set<std::shared_ptr<Object>> World::objQueueTransparent;
-std::vector<std::shared_ptr<Light>> World::lights;
+std::unordered_set<std::shared_ptr<Light>> World::lights;
 std::shared_ptr<Camera> World::camera;
 
 void World::Initialize()
@@ -86,6 +87,16 @@ void World::AddObject(const std::shared_ptr<Object>& object)
     {
         return;
     }
+
+    const std::shared_ptr<Mesh> meshComponent = object->GetComponent<Mesh>();
+    if (meshComponent != nullptr && meshComponent->meshType == MeshType::TRANSPARENT)
+    {
+        objQueueTransparent.insert(object);
+    }
+    else
+    {
+        objQueueOpaque.insert(object);
+    }
     
     const std::shared_ptr<Camera> cameraComponent = object->GetComponent<Camera>();
     if (cameraComponent != nullptr)
@@ -96,17 +107,7 @@ void World::AddObject(const std::shared_ptr<Object>& object)
     const std::shared_ptr<Light> lightComponent = object->GetComponent<Light>();
     if (lightComponent != nullptr)
     {
-        lights.push_back(lightComponent);
-    }
-
-    const std::shared_ptr<Mesh> meshComponent = object->GetComponent<Mesh>();
-    if (meshComponent != nullptr && meshComponent->meshType == MeshType::TRANSPARENT)
-    {
-        objQueueTransparent.insert(object);
-    }
-    else
-    {
-        objQueueOpaque.insert(object);
+        AddLight(lightComponent);
     }
 }
 
@@ -125,4 +126,41 @@ void World::RemoveObject(const std::shared_ptr<Object>& object)
         
         return;
     }
+}
+
+void World::AddLight(const std::shared_ptr<Light>& light)
+{
+    // Extremely ugly solution
+    // Fix in the future before the universe explodes
+    bool found = false;
+    for (const std::shared_ptr<Object>& object : objQueueOpaque)
+    {
+        if (object.get() == light->GetOwner())
+        {
+            found = true;
+        }
+    }
+    for (const std::shared_ptr<Object>& object : objQueueTransparent)
+    {
+        if (object.get() == light->GetOwner())
+        {
+            found = true;
+        }
+    }
+    if (!found)
+    {
+        Logger::Log(LogCategory::WARNING, "Requested to add light in world but its object owner doesnt belong in it", "World::AddLight");
+        return;
+    }
+
+    if (lights.contains(light))
+    {
+        return;
+    }
+
+    lights.insert(light);
+}
+
+void World::RemoveLight(const std::shared_ptr<Light>& light)
+{
 }

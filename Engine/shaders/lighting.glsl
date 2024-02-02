@@ -4,7 +4,6 @@ struct DirectionalLight
 	vec3 diffuse;
 	vec3 direction;
 	float intensity;
-	bool isUsed;
 };
 
 struct PointLight
@@ -16,7 +15,6 @@ struct PointLight
 	float constantAttenuation;
 	float linearAttenuation;
 	float quadraticAttenuation;
-	bool isUsed;
 };
 
 struct SpotLight
@@ -31,7 +29,6 @@ struct SpotLight
 	float quadraticAttenuation;
 	float cutOffAngleCos;
 	float cutOffAngleOutCos;
-	bool isUsed;
 };
 
 struct Material
@@ -43,9 +40,15 @@ struct Material
 
 uniform Material material;
 
-uniform DirectionalLight directionalLight;
-uniform PointLight pointLight;
-uniform SpotLight spotLight;
+#define MAX_DIR_LIGHTS 4
+#define MAX_POINT_LIGHTS 32
+#define MAX_SPOT_LIGHTS 32
+uniform DirectionalLight directionalLight[MAX_DIR_LIGHTS];
+uniform PointLight pointLight[MAX_POINT_LIGHTS];
+uniform SpotLight spotLight[MAX_SPOT_LIGHTS];
+uniform int activeLightsDir;
+uniform int activeLightsPoint;
+uniform int activeLightsSpot;
 
 vec3 CalculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection)
 {

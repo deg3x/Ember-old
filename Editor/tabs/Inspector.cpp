@@ -314,11 +314,11 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
         DrawRowLabelDragFloat("Quadratic", lightComponent->pointLightData.quadraticAttenuation);
         break;
     case LightType::SPOTLIGHT:
-        DrawRowLabelDragFloat("Constant", lightComponent->spotlightData.constantAttenuation);
-        DrawRowLabelDragFloat("Linear", lightComponent->spotlightData.linearAttenuation);
-        DrawRowLabelDragFloat("Quadratic", lightComponent->spotlightData.quadraticAttenuation);
-        DrawRowLabelDragFloat("Cutoff Angle", lightComponent->spotlightData.cutOffAngle);
-        DrawRowLabelDragFloat("Cutoff Angle (out)", lightComponent->spotlightData.cutOffAngleOut);
+        DrawRowLabelDragFloat("Constant", lightComponent->spotLightData.constantAttenuation);
+        DrawRowLabelDragFloat("Linear", lightComponent->spotLightData.linearAttenuation);
+        DrawRowLabelDragFloat("Quadratic", lightComponent->spotLightData.quadraticAttenuation);
+        DrawRowLabelDragFloat("Cutoff Angle", lightComponent->spotLightData.cutOffAngle);
+        DrawRowLabelDragFloat("Cutoff Angle (out)", lightComponent->spotLightData.cutOffAngleOut);
         break;
     default:
         Logger::Log(LogCategory::WARNING, "Unknown light type. Skipping...", "Inspector::DrawLightComponents");

@@ -8,6 +8,7 @@
 #include "core/Material.h"
 #include "core/Object.h"
 #include "core/Renderer.h"
+#include "core/Shader.h"
 #include "logger/Logger.h"
 
 Mesh::Mesh(const std::vector<VertexData>& data, const std::vector<unsigned int>& initIndices, const std::shared_ptr<Material>& initMaterial)
@@ -42,7 +43,7 @@ void Mesh::SetMeshData(const std::vector<VertexData>& newData, const std::vector
 	SetupMesh();
 }
 
-void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const
+void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::unordered_set<std::shared_ptr<Light>>& lights) const
 {
 	if (material == nullptr)
 	{
@@ -52,10 +53,30 @@ void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::sh
 	
 	material->Use();
 
+	int lightIdxDir   = 0;
+	int lightIdxPoint = 0;
+	int lightIdxSpot  = 0;
 	for (const std::shared_ptr<Light>& light : lights)
 	{
-		light->SetShaderProperties(*material->GetShader());
+		switch (light->lightType)
+		{
+		case LightType::DIRECTIONAL:
+			light->SetShaderProperties(*material->GetShader(), lightIdxDir);
+			lightIdxDir++;
+			break;
+		case LightType::POINT:
+			light->SetShaderProperties(*material->GetShader(), lightIdxPoint);
+			lightIdxPoint++;
+			break;
+		case LightType::SPOTLIGHT:
+			light->SetShaderProperties(*material->GetShader(), lightIdxSpot);
+			lightIdxSpot++;
+			break;
+		}
 	}
+	material->GetShader()->SetInt("activeLightsDir", lightIdxDir);
+	material->GetShader()->SetInt("activeLightsPoint", lightIdxPoint);
+	material->GetShader()->SetInt("activeLightsSpot", lightIdxSpot);
 	
 	material->SetupShaderVariables(*GetOwner()->transform, *camera);
 

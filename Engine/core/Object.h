@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "Definitions.h"
+#include "World.h"
+#include "components/Light.h"
 #include "core/components/Component.h"
 
 class Light;
@@ -25,7 +27,7 @@ public:
     virtual ~Object();
 
     void Tick();
-    void Draw(const std::shared_ptr<Camera>& camera, const std::vector<std::shared_ptr<Light>>& lights) const;
+    void Draw(const std::shared_ptr<Camera>& camera, const std::unordered_set<std::shared_ptr<Light>>& lights) const;
     void LoadModel(const char* path);
 
     template <class Type, typename... Args>
@@ -65,6 +67,11 @@ void Object::AddComponent(const std::shared_ptr<Type>& component)
 
     component->owner = this;
     components.push_back(component);
+    
+    if (component->GetType() == ComponentType::LIGHT)
+    {
+        World::AddLight(std::dynamic_pointer_cast<Light>(component));
+    }
 }
 
 template <class Type, typename... Args>

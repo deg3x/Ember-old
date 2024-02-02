@@ -18,7 +18,7 @@ struct PointLightData
 	float quadraticAttenuation;
 };
 
-struct SpotlightData
+struct SpotLightData
 {
 	float cutOffAngle;
 	float cutOffAngleOut;
@@ -36,11 +36,11 @@ public:
 	glm::vec3 diffuse;
 	float intensity;
 	PointLightData pointLightData;
-	SpotlightData spotlightData;
+	SpotLightData spotLightData;
 	LightType lightType;
 
 public:
 	Light();
 	
-	void SetShaderProperties(const Shader& shaderProgram) const;
+	void SetShaderProperties(const Shader& shaderProgram, int lightIndex) const;
 };
