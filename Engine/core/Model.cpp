@@ -146,18 +146,18 @@ namespace
         const std::shared_ptr<Shader> meshShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
         const std::shared_ptr<Material> meshMat  = std::make_shared<Material>(meshShader);
 
-        meshMat->AddProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        meshMat->AddProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-        meshMat->AddProperty("material.shininess", 64.0f);
+        meshMat->SetProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        meshMat->SetProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
+        meshMat->SetProperty("material.shininess", 64.0f);
         
         if (!diffuseMaps.empty())
         {
-            meshMat->AddTexture("diffuseTexture", diffuseMaps[0]);
+            meshMat->SetTexture("diffuseTexture", diffuseMaps[0]);
         }
         else
         {
             std::shared_ptr<Texture> tex = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
-            meshMat->AddTexture("diffuseTexture", tex);
+            meshMat->SetTexture("diffuseTexture", tex);
         }
 
         Mesh* ret = new Mesh(vertices, indices, meshMat);

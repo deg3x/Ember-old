@@ -20,7 +20,7 @@ std::shared_ptr<Object> Skybox::Instantiate()
     const std::shared_ptr<Material> skyMat  = std::make_shared<Material>(skyShader);
     const std::shared_ptr<Texture> skyTex   = std::make_shared<Texture>("./Data/images/skybox/cubemap_clouds_", TextureType::CUBEMAP, TextureUnit::TEX_0);
     
-    skyMat->AddTexture("skybox", skyTex);
+    skyMat->SetTexture("skybox", skyTex);
 
     const std::shared_ptr<Mesh> skyboxMesh = skyObject->CreateComponent<Mesh>();
     Cube::GenerateCube(skyboxMesh);

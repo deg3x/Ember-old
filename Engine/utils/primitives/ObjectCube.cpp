@@ -20,10 +20,10 @@ std::shared_ptr<Object> ObjectCube::Instantiate()
     const std::shared_ptr<Material> cubeMat  = std::make_shared<Material>(cubeShader);
     const std::shared_ptr<Texture> cubeTex   = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
 
-    cubeMat->AddTexture("diffuseTexture", cubeTex);
-    cubeMat->AddProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    cubeMat->AddProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-    cubeMat->AddProperty("material.shininess", 64.0f);
+    cubeMat->SetTexture("diffuseTexture", cubeTex);
+    cubeMat->SetProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    cubeMat->SetProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
+    cubeMat->SetProperty("material.shininess", 64.0f);
 
     cubeMesh->material = cubeMat;
 

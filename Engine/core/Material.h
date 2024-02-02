@@ -90,10 +90,9 @@ public:
     virtual void SetupShaderVariables(const Transform& objectTransform, const Camera& camera) const;
 
     template <class Type>
-    void AddProperty(const std::string& name, const Type& value);
-
-    void AddTexture(const std::string& name, const std::string& path, TextureType type);
-    void AddTexture(const std::string& name, const std::shared_ptr<Texture>& texture);
+    void SetProperty(const std::string& name, const Type& value);
+    void SetTexture(const std::string& name, const std::string& path, TextureType type);
+    void SetTexture(const std::string& name, const std::shared_ptr<Texture>& texture);
 
     inline void SetShader(const std::shared_ptr<Shader>& newShader)
     {
@@ -117,7 +116,13 @@ public:
 };
 
 template <class Type>
-void Material::AddProperty(const std::string& name, const Type& value)
+void Material::SetProperty(const std::string& name, const Type& value)
 {
-    properties.insert(MaterialProperty(name, value));
+    constexpr MaterialProperty property = {name, value};
+    if (properties.contains(property))
+    {
+        properties.extract(property);
+    }
+    
+    properties.insert(property);
 }

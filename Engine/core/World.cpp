@@ -27,9 +27,9 @@ void World::Initialize()
     const std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
     const std::shared_ptr<Material> defaultMat  = std::make_shared<Material>(defaultShader);
 
-    defaultMat->AddProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    defaultMat->AddProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
-    defaultMat->AddProperty("material.shininess", 64.0f);
+    defaultMat->SetProperty("material.diffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    defaultMat->SetProperty("material.specular", glm::vec3(0.9f, 0.8f, 0.8f));
+    defaultMat->SetProperty("material.shininess", 64.0f);
     
     const std::shared_ptr<Object> cameraObject = std::make_shared<Object>("Camera");
     cameraObject->CreateComponent<Camera>();

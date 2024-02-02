@@ -63,12 +63,12 @@ void Material::SetupShaderVariables(const Transform& objectTransform, const Came
     }
 }
 
-void Material::AddTexture(const std::string& name, const std::string& path, TextureType type)
+void Material::SetTexture(const std::string& name, const std::string& path, TextureType type)
 {
     textures.insert(MaterialTexture(name, std::make_shared<Texture>(path, type)));
 }
 
-void Material::AddTexture(const std::string& name, const std::shared_ptr<Texture>& texture)
+void Material::SetTexture(const std::string& name, const std::shared_ptr<Texture>& texture)
 {
     textures.insert(MaterialTexture(name, texture));
 }
