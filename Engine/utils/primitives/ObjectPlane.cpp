@@ -11,8 +11,8 @@
 
 std::shared_ptr<Object> ObjectPlane::Instantiate()
 {
-    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexPhong.glsl");
-    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl");
+    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexStandard.glsl");
+    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentBlinnPhong.glsl");
     
     const std::shared_ptr<Object> planeObject = std::make_shared<Object>("Plane");
     const std::shared_ptr<Mesh> planeMesh     = planeObject->CreateComponent<Mesh>();

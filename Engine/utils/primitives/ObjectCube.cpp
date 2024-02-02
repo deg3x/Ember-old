@@ -11,8 +11,8 @@
 
 std::shared_ptr<Object> ObjectCube::Instantiate()
 {
-    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexPhong.glsl");
-    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl");
+    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexStandard.glsl");
+    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentBlinnPhong.glsl");
     
     const std::shared_ptr<Object> cubeObject = std::make_shared<Object>("Cube");
     const std::shared_ptr<Mesh> cubeMesh     = cubeObject->CreateComponent<Mesh>();

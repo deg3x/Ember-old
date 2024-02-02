@@ -140,8 +140,8 @@ namespace
 
         // Only use the first available diffuse texture for now
         // FIX IN THE FUTURE
-        const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexPhong.glsl");
-        const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl");
+        const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexStandard.glsl");
+        const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentBlinnPhong.glsl");
 
         const std::shared_ptr<Shader> meshShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
         const std::shared_ptr<Material> meshMat  = std::make_shared<Material>(meshShader);

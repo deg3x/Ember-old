@@ -333,10 +333,10 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
     }
     ImGui::PopStyleColor(1);
 
-    float* diffuse = glm::value_ptr(lightComponent->diffuse);
+    float* color   = glm::value_ptr(lightComponent->color);
     float* ambient = glm::value_ptr(lightComponent->ambient);
     
-    DrawRowLabelColor3("Diffuse", diffuse);
+    DrawRowLabelColor3("Color", color);
     DrawRowLabelColor3("Ambient", ambient);
     DrawRowLabelDragFloat("Intensity", lightComponent->intensity);
 

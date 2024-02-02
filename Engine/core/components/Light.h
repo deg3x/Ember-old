@@ -33,7 +33,7 @@ class ENGINE_API Light : public Component
 	
 public:
 	glm::vec3 ambient;
-	glm::vec3 diffuse;
+	glm::vec3 color;
 	float intensity;
 	PointLightData pointLightData;
 	SpotLightData spotLightData;

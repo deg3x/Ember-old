@@ -22,8 +22,8 @@ std::shared_ptr<Camera> World::camera;
 
 void World::Initialize()
 {
-    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexPhong.glsl");
-    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentPhong.glsl");
+    const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexStandard.glsl");
+    const std::string fragPath = PathBuilder::GetPath("./Engine/shaders/fragmentBlinnPhong.glsl");
     
     const std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
     const std::shared_ptr<Material> defaultMat  = std::make_shared<Material>(defaultShader);

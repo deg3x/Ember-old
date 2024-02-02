@@ -9,7 +9,7 @@
 Light::Light()
 {
 	intensity        = 1.0f;
-	diffuse          = glm::vec3(1.0f, 0.97f, 0.92f);
+	color          = glm::vec3(1.0f, 0.97f, 0.92f);
 	ambient          = glm::vec3(0.05f, 0.05f, 0.05f);
 	pointLightData = {1.0f, 0.045f, 0.0075f};
 	spotLightData  = { 12.5f, 13.0f, 1.0f, 0.045f, 0.0075f };
@@ -25,14 +25,14 @@ void Light::SetShaderProperties(const Shader& shaderProgram, int lightIndex) con
 	case LightType::DIRECTIONAL:
 		lightVar = "directionalLight[" + std::to_string(lightIndex) + "]";
 		shaderProgram.SetVector3(lightVar + ".ambient", ambient);
-		shaderProgram.SetVector3(lightVar + ".diffuse", diffuse);
+		shaderProgram.SetVector3(lightVar + ".color", color);
 		shaderProgram.SetVector3(lightVar + ".direction", -owner->transform->GetUpVector());
 		shaderProgram.SetFloat(lightVar + ".intensity", intensity);
 		break;
 	case LightType::POINT:
 		lightVar = "pointLight[" + std::to_string(lightIndex) + "]";
 		shaderProgram.SetVector3(lightVar + ".ambient", ambient);
-		shaderProgram.SetVector3(lightVar + ".diffuse", diffuse);
+		shaderProgram.SetVector3(lightVar + ".color", color);
 		shaderProgram.SetVector3(lightVar + ".position", owner->transform->position);
 		shaderProgram.SetFloat(lightVar + ".intensity", intensity);
 		shaderProgram.SetFloat(lightVar + ".constantAttenuation", pointLightData.constantAttenuation);
@@ -42,7 +42,7 @@ void Light::SetShaderProperties(const Shader& shaderProgram, int lightIndex) con
 	case LightType::SPOTLIGHT:
 		lightVar = "spotLight[" + std::to_string(lightIndex) + "]";
 		shaderProgram.SetVector3(lightVar + ".ambient", ambient);
-		shaderProgram.SetVector3(lightVar + ".diffuse", diffuse);
+		shaderProgram.SetVector3(lightVar + ".color", color);
 		shaderProgram.SetVector3(lightVar + ".position", owner->transform->position);
 		shaderProgram.SetVector3(lightVar + ".direction", -owner->transform->GetUpVector());
 		shaderProgram.SetFloat(lightVar + ".intensity", intensity);
