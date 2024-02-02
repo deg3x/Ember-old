@@ -8,6 +8,7 @@
 #include "core/components/Light.h"
 #include "core/components/Mesh.h"
 #include "core/Object.h"
+#include "core/Shader.h"
 #include "logger/Logger.h"
 #include "tabs/Hierarchy.h"
 #include "themes/EditorTheme.h"
@@ -396,6 +397,15 @@ void Inspector::DrawMaterial(const std::shared_ptr<Material>& material)
 void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
 {
     std::unordered_set<MaterialProperty, MaterialProperty> properties = material->GetProperties();
+
+    std::string vertPath = material->GetShader()->GetVertexPath();
+    std::string fragPath = material->GetShader()->GetFragmentPath();
+
+    vertPath = vertPath.substr(vertPath.find_last_of("/\\") + 1);
+    fragPath = fragPath.substr(fragPath.find_last_of("/\\") + 1);
+    
+    DrawRowLabelText("Vertex Shader", vertPath);
+    DrawRowLabelText("Fragment Shader", fragPath);
 
     for (auto property : properties)
     {
