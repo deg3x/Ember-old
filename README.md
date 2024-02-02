@@ -29,17 +29,20 @@ If you want to avoid installing it, you can manually run premake and build the p
 2. Open a terminal and change the working directory to the project root.
 3. Execute the project generation python script: `python ./generate_project.py` 
 
-## Incoming Features
+## Feature List
 - [x] Textures (diffuse, normals, etc.) [not fully implemented]
 - [ ] Shadows
 - [x] Cubemaps
 - [x] Model Loading
 - [ ] Deferred Rendering
-- [ ] PBR
+- [x] Physically Based Rendering
+- [x] Blinn-Phong
+- [x] Multiple world lights
+- [ ] Order Independent Transparency
 - [ ] Text Rendering
 - [ ] Vulkan support
 - [ ] Raytracing
-- [ ] Editor (ImGui)
+- [x] Editor (ImGui)
 
 ## License
 The MIT License (MIT) 
