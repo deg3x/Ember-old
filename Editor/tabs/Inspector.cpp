@@ -2,6 +2,7 @@
 #include "Inspector.h"
 
 #include "Editor.h"
+#include "core/Material.h"
 #include "core/components/Transform.h"
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
@@ -64,8 +65,12 @@ void Inspector::DrawComponents()
             DrawLight(std::dynamic_pointer_cast<Light>(component));
             break;
         case ComponentType::MESH:
-            DrawMesh(std::dynamic_pointer_cast<Mesh>(component));
-            break;
+            {
+                std::shared_ptr<Mesh> meshComponent = std::dynamic_pointer_cast<Mesh>(component);
+                DrawMesh(meshComponent);
+                DrawMaterial(meshComponent->material);
+                break;
+            }
         default:
             Logger::Log(LogCategory::WARNING, "Unrecognized component type found", "Inspector::DrawComponents");
             break;
@@ -178,8 +183,6 @@ void Inspector::DrawCamera(const std::shared_ptr<Camera>& cameraComponent)
 
     if (isHeaderOpen)
     {
-        const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
-
         constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingStretchProp;
         if (ImGui::BeginTable("Camera Data", 2, tableFlags))
         {
@@ -204,6 +207,11 @@ void Inspector::DrawCameraElements(const std::shared_ptr<Camera>& cameraComponen
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted("Projection");
     ImGui::TableNextColumn();
+    
+    ImVec4 popupBgColor = ImGui::GetStyle().Colors[ImGuiCol_PopupBg];
+    popupBgColor.w = 0.97f;
+    ImGui::PushStyleColor(ImGuiCol_PopupBg, popupBgColor);
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
     if (ImGui::BeginCombo("##no_label", selectedItem))
     {
         for (int i = 0; i < 2; i++)
@@ -217,6 +225,7 @@ void Inspector::DrawCameraElements(const std::shared_ptr<Camera>& cameraComponen
         
         ImGui::EndCombo();
     }
+    ImGui::PopStyleColor(1);
 
     if (cameraComponent->projectionType == CameraProjection::PERSPECTIVE)
     {
@@ -243,8 +252,6 @@ void Inspector::DrawLight(const std::shared_ptr<Light>& lightComponent)
 
     if (isHeaderOpen)
     {
-        const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
-
         constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingStretchProp;
         if (ImGui::BeginTable("Light Data", 2, tableFlags))
         {
@@ -269,6 +276,11 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted("Light Type");
     ImGui::TableNextColumn();
+
+    ImVec4 popupBgColor = ImGui::GetStyle().Colors[ImGuiCol_PopupBg];
+    popupBgColor.w = 0.97f;
+    ImGui::PushStyleColor(ImGuiCol_PopupBg, popupBgColor);
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
     if (ImGui::BeginCombo("##no_label", selectedItem))
     {
         for (int i = 0; i < 3; i++)
@@ -282,6 +294,7 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
         
         ImGui::EndCombo();
     }
+    ImGui::PopStyleColor(1);
 
     float* diffuse = glm::value_ptr(lightComponent->diffuse);
     float* ambient = glm::value_ptr(lightComponent->ambient);
@@ -324,10 +337,8 @@ void Inspector::DrawMesh(const std::shared_ptr<Mesh>& meshComponent)
 
     if (isHeaderOpen)
     {
-        const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
-
         constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingStretchProp;
-        if (ImGui::BeginTable("Light Data", 2, tableFlags))
+        if (ImGui::BeginTable("Mesh Data", 2, tableFlags))
         {
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthFirst);
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthSecond);
@@ -355,6 +366,61 @@ void Inspector::DrawMeshElements(const std::shared_ptr<Mesh>& meshComponent)
     DrawRowLabelText("Render queue", renderQueue);
     DrawRowLabelText("Vertices", std::to_string(meshComponent->GetVertexData().size()));
     DrawRowLabelText("Indices", std::to_string(meshComponent->GetIndices().size()));
+}
+
+void Inspector::DrawMaterial(const std::shared_ptr<Material>& material)
+{
+    constexpr ImGuiTreeNodeFlags materialFlags = ImGuiTreeNodeFlags_DefaultOpen;
+    
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 10.0f});
+    ImGui::PushFont(EditorTheme::FontMedium);
+    const bool isHeaderOpen = ImGui::CollapsingHeader("Material", materialFlags);
+    ImGui::PopFont();
+    ImGui::PopStyleVar();
+
+    if (isHeaderOpen)
+    {
+        constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingStretchProp;
+        if (ImGui::BeginTable("Material Data", 2, tableFlags))
+        {
+            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthFirst);
+            ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthSecond);
+
+            DrawMaterialElements(material);
+
+            ImGui::EndTable();
+        }
+    }
+}
+
+void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
+{
+    std::unordered_set<MaterialProperty, MaterialProperty> properties = material->GetProperties();
+
+    for (auto property : properties)
+    {
+        switch(property.type)
+        {
+        case MaterialProperty::PropertyType::INTEGER:
+            DrawRowLabelDragInt(property.name, property.value.intVal);
+            break;
+        case MaterialProperty::PropertyType::BOOLEAN:
+            Logger::Log(LogCategory::WARNING, "Material property with no proper Draw function found: " + property.name, "Inspector::DrawMaterialElements");
+            break;
+        case MaterialProperty::PropertyType::FLOAT:
+            DrawRowLabelDragFloat(property.name, property.value.floatVal);
+            break;
+        case MaterialProperty::PropertyType::VECTOR3:
+            DrawRowLabelDragFloat3(property.name, property.value.vector3Val);
+            break;
+        case MaterialProperty::PropertyType::VECTOR4:
+            DrawRowLabelDragFloat4(property.name, property.value.vector4Val);
+            break;
+        case MaterialProperty::PropertyType::MATRIX4X4:
+            Logger::Log(LogCategory::WARNING, "Material property with no proper Draw function found: " + property.name, "Inspector::DrawMaterialElements");
+            break;
+        }
+    }
 }
 
 void Inspector::DrawAddComponentButton()
@@ -401,6 +467,19 @@ void Inspector::DrawAddComponentButton()
     }
 }
 
+void Inspector::DrawRowLabelDragInt(const std::string& label, int& target)
+{
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
+    ImGui::AlignTextToFramePadding();
+    ImGui::TextUnformatted(label.c_str());
+
+    ImGui::TableNextColumn();
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
+    ImGui::DragInt(("##" + label).c_str(), &target, compDragFloatSpeed);
+}
+
 void Inspector::DrawRowLabelDragFloat(const std::string& label, float& target)
 {
     ImGui::TableNextRow();
@@ -410,7 +489,44 @@ void Inspector::DrawRowLabelDragFloat(const std::string& label, float& target)
     ImGui::TextUnformatted(label.c_str());
 
     ImGui::TableNextColumn();
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
     ImGui::DragFloat(("##" + label).c_str(), &target, compDragFloatSpeed, 0, 0, "%.3f");
+}
+
+void Inspector::DrawRowLabelDragFloat3(const std::string& label, glm::vec3& target)
+{
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
+    ImGui::AlignTextToFramePadding();
+    ImGui::TextUnformatted(label.c_str());
+
+    ImGui::TableNextColumn();
+
+    float intermediate[3] = { target.x, target.y, target.z };
+
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
+    ImGui::DragFloat3(("##" + label).c_str(), intermediate, compDragFloatSpeed, 0, 0, "%.3f");
+
+    target = { intermediate[0], intermediate[1], intermediate[2] };
+}
+
+void Inspector::DrawRowLabelDragFloat4(const std::string& label, glm::vec4& target)
+{
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
+    ImGui::AlignTextToFramePadding();
+    ImGui::TextUnformatted(label.c_str());
+
+    ImGui::TableNextColumn();
+
+    float intermediate[4] = { target.x, target.y, target.z, target.w };
+
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
+    ImGui::DragFloat4(("##" + label).c_str(), intermediate, compDragFloatSpeed, 0, 0, "%.3f");
+
+    target = { intermediate[0], intermediate[1], intermediate[2], intermediate[3] };
 }
 
 void Inspector::DrawRowLabelColor3(const std::string& label, float target[3])
@@ -423,7 +539,7 @@ void Inspector::DrawRowLabelColor3(const std::string& label, float target[3])
     
     ImGui::TableNextColumn();
     const ImVec4 buttonColor = {target[0], target[1], target[2], 1.0f};
-    const ImVec2 buttonSize  = {ImGui::GetContentRegionAvail().x * 0.65f, 0.0f};
+    const ImVec2 buttonSize  = {ImGui::GetContentRegionAvail().x * compColWidthSecondMult, 0.0f};
     if (ImGui::ColorButton(label.c_str(), buttonColor, ImGuiColorEditFlags_Float, buttonSize))
     {
         ImGui::OpenPopup(("ColorPicker" + label).c_str(), ImGuiPopupFlags_None);
@@ -449,5 +565,6 @@ void Inspector::DrawRowLabelText(const std::string& label, const std::string& te
     ImGui::TextUnformatted(label.c_str());
 
     ImGui::TableNextColumn();
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
     ImGui::TextUnformatted(text.c_str());
 }

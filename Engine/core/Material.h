@@ -113,6 +113,11 @@ public:
     {
         return shader;
     }
+
+    inline std::unordered_set<MaterialProperty, MaterialProperty> GetProperties() const
+    {
+        return properties;
+    }
 };
 
 template <class Type>
