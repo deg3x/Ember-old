@@ -54,7 +54,7 @@ void Inspector::DrawHeader()
     const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
     const ImGuiStyle& style = ImGui::GetStyle();
 
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 2.0f});
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 0.0f});
     ImGui::PushFont(EditorTheme::FontMedium);
 
     const ImVec4 color = {EditorTheme::ColorGreen.x, EditorTheme::ColorGreen.y, EditorTheme::ColorGreen.z, EditorTheme::ColorGreen.w};

@@ -58,6 +58,11 @@ void Mesh::Draw(const std::shared_ptr<Camera>& camera, const std::unordered_set<
 	int lightIdxSpot  = 0;
 	for (const std::shared_ptr<Light>& light : lights)
 	{
+		if (!light->GetOwner()->isActive)
+		{
+			continue;
+		}
+		
 		switch (light->lightType)
 		{
 		case LightType::DIRECTIONAL:
