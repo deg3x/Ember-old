@@ -12,6 +12,7 @@ class Transform;
 class ENGINE_API Object
 {
 public:
+    bool isActive;
     uint64_t uid;
     std::string name;
     std::shared_ptr<Transform> transform;

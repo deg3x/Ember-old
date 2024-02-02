@@ -68,8 +68,7 @@ void Inspector::DrawHeader()
     const ImVec2 checkboxPosition = {headerPosMin.x + 20.0f, headerPosMin.y + (headerSize.y - style.FramePadding.y - ImGui::GetFontSize()) * 0.5f};
     ImGui::SetCursorScreenPos(checkboxPosition);
 
-    static bool enabled = true;
-    ImGui::Checkbox("##no_label", &enabled);
+    ImGui::Checkbox("##no_label", &selection->isActive);
 
     ImGui::SameLine();
 

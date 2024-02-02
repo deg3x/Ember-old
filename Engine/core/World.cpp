@@ -69,6 +69,11 @@ void World::Tick()
     // Opaque object tick and rendering
     for (const std::shared_ptr<Object>& object : objQueueOpaque)
     {
+        if (!object->isActive)
+        {
+            continue;
+        }
+        
         object->Tick();
         object->Draw(camera, lights);
     }
@@ -76,6 +81,11 @@ void World::Tick()
     // Transparent object tick and rendering
     for (const std::shared_ptr<Object>& object : objQueueTransparent)
     {
+        if (!object->isActive)
+        {
+            continue;
+        }
+        
         object->Tick();
         object->Draw(camera, lights);
     }

@@ -9,6 +9,7 @@
 
 Object::Object(const char* objName)
 {
+    isActive  = true;
     transform = CreateComponent<Transform>();
     name      = objName;
     uid       = nextAvailableID;
