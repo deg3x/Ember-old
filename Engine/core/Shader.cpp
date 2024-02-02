@@ -6,17 +6,17 @@
 
 Shader::Shader(const char* vertPath, const char* fragPath)
 {
-    std::string vertexFile   = vertPath;
-    std::string fragmentFile = fragPath;
+	vertexPath   = vertPath;
+	fragmentPath = fragPath;
 
-	const std::string vertexDir   = vertexFile.substr(0, vertexFile.find_last_of("/\\") + 1);
-	const std::string fragmentDir = fragmentFile.substr(0, fragmentFile.find_last_of("/\\") + 1);
+	const std::string vertexDir   = vertexPath.substr(0, vertexPath.find_last_of("/\\") + 1);
+	const std::string fragmentDir = fragmentPath.substr(0, fragmentPath.find_last_of("/\\") + 1);
 
 	shaderIncludeDirs.insert(vertexDir);
 	shaderIncludeDirs.insert(fragmentDir);
     
-    vertexFile   = vertexFile.substr(vertexFile.find_last_of("/\\") + 1);
-    fragmentFile = fragmentFile.substr(fragmentFile.find_last_of("/\\") + 1);
+    std::string vertexFile   = vertexPath.substr(vertexPath.find_last_of("/\\") + 1);
+    std::string fragmentFile = fragmentPath.substr(fragmentPath.find_last_of("/\\") + 1);
     
 	std::string vCode;
 	std::string fCode;

@@ -7,6 +7,8 @@ class ENGINE_API Shader
 private:
 	unsigned int programID;
 	std::unordered_set<std::string> shaderIncludeDirs;
+	std::string vertexPath;
+	std::string fragmentPath;
 
 	inline static const std::unordered_set<std::string> reservedDirectives = {
 		"#version", "#define", "#undef", "#ifdef", "#ifndef",
@@ -31,6 +33,16 @@ public:
 	void SetVector3(const std::string& name, const glm::vec3& vector) const;
 	void SetVector4(const std::string& name, const glm::vec4& vector) const;
 	void SetMatrix4x4(const std::string& name, const glm::mat4x4& matrix) const;
+
+	inline std::string GetVertexPath() const
+	{
+		return vertexPath;
+	}
+
+	inline std::string GetFragmentPath() const
+	{
+		return fragmentPath;
+	}
     
 private:
 	std::string Preprocess(const std::string& shaderCode);
