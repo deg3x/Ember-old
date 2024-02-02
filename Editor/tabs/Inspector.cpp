@@ -31,6 +31,7 @@ void Inspector::Tick()
     {
         if (hierarchyTab != nullptr && !hierarchyTab->SelectedObject.expired())
         {
+            DrawHeader();
             DrawComponents();
 
             ImGui::Spacing();
@@ -46,6 +47,42 @@ void Inspector::Tick()
 
         ImGui::End();
     }
+}
+
+void Inspector::DrawHeader()
+{
+    const std::shared_ptr<Object> selection = hierarchyTab->SelectedObject.lock();
+    const ImGuiStyle& style = ImGui::GetStyle();
+
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {8.0f, 2.0f});
+    ImGui::PushFont(EditorTheme::FontMedium);
+
+    const ImVec4 color = {EditorTheme::ColorGreen.x, EditorTheme::ColorGreen.y, EditorTheme::ColorGreen.z, EditorTheme::ColorGreen.w};
+    const ImU32 headerColor   = IM_COL32(color.x * 255, color.y * 255, color.z * 255, color.w * 255);
+    const ImVec2 headerSize   = {ImGui::GetContentRegionAvail().x, 50.0f};
+    const ImVec2 headerPosMin = ImGui::GetCursorScreenPos();
+    const ImVec2 headerPosMax = {headerPosMin.x + headerSize.x, headerPosMin.y + headerSize.y};
+    
+    ImGui::GetWindowDrawList()->AddRectFilled(headerPosMin, headerPosMax, headerColor, style.FrameRounding);
+
+    const ImVec2 checkboxPosition = {headerPosMin.x + 20.0f, headerPosMin.y + (headerSize.y - style.FramePadding.y - ImGui::GetFontSize()) * 0.5f};
+    ImGui::SetCursorScreenPos(checkboxPosition);
+
+    static bool enabled = true;
+    ImGui::Checkbox("##no_label", &enabled);
+
+    ImGui::SameLine();
+
+    const float textFieldPosY = headerPosMin.y + (headerSize.y - style.FramePadding.y - ImGui::GetFontSize()) * 0.5f;
+    const ImVec2 textFieldPos = {ImGui::GetItemRectMax().x + 20.0f, textFieldPosY};
+    ImGui::SetCursorScreenPos(textFieldPos);
+
+    ImGui::TextUnformatted(selection->name.c_str());
+    
+    ImGui::PopStyleVar();
+    ImGui::PopFont();
+    
+    ImGui::SetCursorScreenPos({headerPosMin.x, headerPosMax.y + style.ItemSpacing.y});
 }
 
 void Inspector::DrawComponents()

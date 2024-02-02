@@ -38,6 +38,7 @@ public:
     }
 
 private:
+    void DrawHeader();
     void DrawComponents();
     void DrawTransform();
     void DrawTransformVector(const std::string& label, glm::vec3* vector);
