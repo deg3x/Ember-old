@@ -149,12 +149,6 @@ void World::AddLight(const std::shared_ptr<Light>& light)
     }
     if (!found)
     {
-        Logger::Log(LogCategory::WARNING, "Requested to add light in world but its object owner doesnt belong in it", "World::AddLight");
-        return;
-    }
-
-    if (lights.contains(light))
-    {
         return;
     }
 
@@ -163,4 +157,5 @@ void World::AddLight(const std::shared_ptr<Light>& light)
 
 void World::RemoveLight(const std::shared_ptr<Light>& light)
 {
+    lights.extract(light);
 }
