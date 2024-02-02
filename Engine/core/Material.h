@@ -118,7 +118,7 @@ public:
 template <class Type>
 void Material::SetProperty(const std::string& name, const Type& value)
 {
-    constexpr MaterialProperty property = {name, value};
+    const MaterialProperty property = {name, value};
     if (properties.contains(property))
     {
         properties.extract(property);
