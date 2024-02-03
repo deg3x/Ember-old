@@ -17,7 +17,7 @@ void main()
     vec3 viewVector = normalize(cameraPosition - WorldPosition);
     vec3 irradiance = vec3(0.0);
     
-    vec3 albedoVal     = hasMapAlbedo ? texture(albedoMap, TexCoord).rgb : albedo;
+    vec3 albedoVal     = hasMapAlbedo ? pow(texture(albedoMap, TexCoord).rgb, vec3(2.2)) : albedo;
     float metallicVal  = hasMapMetallic ? texture(metallicMap, TexCoord).r : metallic;
     float roughnessVal = hasMapRoughness ? texture(roughnessMap, TexCoord).r : roughness;
     float ao           = !hasMapAmbientOcclusion ? texture(ambientOcclusionMap, TexCoord).r : ambientOcclusion;
