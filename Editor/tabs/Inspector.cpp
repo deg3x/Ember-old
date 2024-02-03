@@ -452,7 +452,6 @@ void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
             material->SetProperty(property.name, property.value.intVal);
             break;
         case MaterialProperty::PropertyType::BOOLEAN:
-            Logger::Log(LogCategory::WARNING, "Material property with no proper Draw function found: " + property.name, "Inspector::DrawMaterialElements");
             break;
         case MaterialProperty::PropertyType::FLOAT:
             DrawRowLabelDragFloat(property.name, property.value.floatVal);
@@ -467,7 +466,6 @@ void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
             material->SetProperty(property.name, property.value.vector4Val);
             break;
         case MaterialProperty::PropertyType::MATRIX4X4:
-            Logger::Log(LogCategory::WARNING, "Material property with no proper Draw function found: " + property.name, "Inspector::DrawMaterialElements");
             break;
         }
     }

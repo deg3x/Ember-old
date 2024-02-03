@@ -17,6 +17,11 @@ void main()
     vec3 viewVector = normalize(cameraPosition - WorldPosition);
     vec3 irradiance = vec3(0.0);
     
+    vec3 albedoVal     = hasMapAlbedo ? texture(albedoMap, TexCoord).rgb : albedo;
+    float metallicVal  = hasMapMetallic ? texture(metallicMap, TexCoord).r : metallic;
+    float roughnessVal = hasMapRoughness ? texture(roughnessMap, TexCoord).r : roughness;
+    float ao           = !hasMapAmbientOcclusion ? texture(ambientOcclusionMap, TexCoord).r : ambientOcclusion;
+    
     for (int i = 0; i < activeLightsDir; i++)
     {
         vec3 lightVector = normalize(-dirLights[i].direction);
@@ -24,7 +29,7 @@ void main()
         
         vec3 radiance = dirLights[i].color * CalculateLightDirectional(dirLights[i]);
         
-        irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance);
+        irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance, albedoVal, metallicVal, roughnessVal);
     }
     for (int i = 0; i < activeLightsPoint; i++)
     {
@@ -33,7 +38,7 @@ void main()
         
         vec3 radiance = pointLights[i].color * CalculateLightPoint(pointLights[i], WorldPosition);
         
-        irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance);
+        irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance, albedoVal, metallicVal, roughnessVal);
     }
     for (int i = 0; i < activeLightsSpot; i++)
     {
@@ -42,10 +47,10 @@ void main()
         
         vec3 radiance = spotLights[i].color * CalculateLightSpot(spotLights[i], WorldPosition);
         
-        irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance);
+        irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance, albedoVal, metallicVal, roughnessVal);
     }
     
-    vec3 ambient = vec3(0.03) * albedo * ambientOcclusion;
+    vec3 ambient = vec3(0.03) * albedoVal * ao;
     vec3 color   = ambient + irradiance;
     
     // HDR mapping and Gamma correction

@@ -20,7 +20,7 @@ Texture::Texture(const std::string& texPath, TextureType texType, TextureUnit te
 
 void Texture::Bind() const
 {
-    glActiveTexture(unit);
+    glActiveTexture(GL_TEXTURE0 + unit);
     
     switch(type)
     {

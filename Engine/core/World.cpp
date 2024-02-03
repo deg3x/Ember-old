@@ -13,6 +13,7 @@
 #include "utils/PathBuilder.h"
 #include "utils/Types.h"
 #include "utils/primitives/EditorGrid.h"
+#include "utils/primitives/ObjectSphere.h"
 #include "utils/primitives/Skybox.h"
 
 std::unordered_set<std::shared_ptr<Object>> World::objQueueOpaque;
@@ -27,10 +28,12 @@ void World::Initialize()
     cameraObject->transform->position = glm::vec3(0.0f, 3.0f, 3.0f);
     cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
 
-    const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>("Stanford Bunny");
+    /*const std::shared_ptr<Object> bunnyObject = std::make_shared<Object>("Stanford Bunny");
     bunnyObject->transform->position = glm::vec3(0.0f, 0.2f, 0.0f);
     bunnyObject->transform->scale = glm::vec3(0.5f, 0.5f, 0.5f);
-    bunnyObject->LoadModel("./Data/models/bunny.obj");
+    bunnyObject->LoadModel("./Data/models/bunny.obj");*/
+
+    const std::shared_ptr<Object> sphereObject = ObjectSphere::Instantiate();
 
     const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>("Directional Light");
     dirLightObject->CreateComponent<Light>();
@@ -38,7 +41,8 @@ void World::Initialize()
     dirLightObject->transform->rotation.y = -30.0f;
 
     AddObject(cameraObject);
-    AddObject(bunnyObject);
+    //AddObject(bunnyObject);
+    AddObject(sphereObject);
     AddObject(dirLightObject);
 
     Skybox::Instantiate();
