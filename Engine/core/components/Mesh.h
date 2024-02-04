@@ -51,6 +51,7 @@ enum class DepthTestMode : uint8_t
 class ENGINE_API Mesh : public Component
 {
 	MAKE_COMPONENT_TYPE(MESH)
+	friend class ProceduralMesh;
 	
 public:
 	std::shared_ptr<Material> material;
