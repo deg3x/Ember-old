@@ -136,7 +136,22 @@ unsigned int Shader::CompileShader(const char* shaderCode, unsigned int type)
 	glShaderSource(shaderID, 1, &shaderCode, nullptr);
 	glCompileShader(shaderID);
 
-	CheckShaderCompiled(shaderID, shaderCode);
+	std::string shaderName;
+	switch(type)
+	{
+	case GL_VERTEX_SHADER:
+		shaderName = vertexPath;
+		break;
+	case GL_FRAGMENT_SHADER:
+		shaderName = fragmentPath;
+		break;
+	default:
+		shaderName = "UNKNOWN";
+		Logger::Log(LogCategory::WARNING, "Unknown shader type being checked for correct compilation", "Shader::CompileShader");
+		break;
+	}
+	
+	CheckShaderCompiled(shaderID, shaderName);
 
 	return shaderID;
 }
