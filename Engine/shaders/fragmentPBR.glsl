@@ -1,6 +1,5 @@
 #version 410 core
 
-in vec3 Normal;
 in vec2 TexCoord;
 in vec3 WorldPosition;
 in mat3 TBN;
@@ -36,7 +35,7 @@ void main()
     vec3 irradiance = vec3(0.0);
     
     vec3 albedoVal     = hasMapAlbedo ? pow(texture(albedoMap, TexCoord).rgb, vec3(2.2)) : albedo;
-    vec3 normVector    = hasMapNormal ? SampleNormalMap(normalMap, TexCoord, TBN) : normalize(Normal);
+    vec3 normVector    = hasMapNormal ? SampleNormalMap(normalMap, TexCoord, TBN) : normalize(TBN[2]);
     float metallicVal  = hasMapMetallic ? texture(metallicMap, TexCoord).r : metallic;
     float roughnessVal = hasMapRoughness ? texture(roughnessMap, TexCoord).r : roughness;
     float ao           = !hasMapAmbientOcclusion ? texture(ambientOcclusionMap, TexCoord).r : ambientOcclusion;

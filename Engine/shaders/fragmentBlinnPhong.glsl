@@ -1,8 +1,8 @@
 #version 410 core
 
-in vec3 Normal;
 in vec2 TexCoord;
 in vec3 WorldPosition;
+in mat3 TBN;
 
 out vec4 FragmentColor;
 
@@ -14,7 +14,7 @@ uniform sampler2D diffuseTexture;
 
 void main()
 {
-	vec3 normal = normalize(Normal);
+	vec3 normal = normalize(TBN[2]);
 	vec3 viewVector = normalize(cameraPosition - WorldPosition);
 
 	vec3 color = vec3(0.0, 0.0, 0.0);
