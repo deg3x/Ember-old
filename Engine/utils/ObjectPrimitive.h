@@ -3,6 +3,7 @@
 #include "Definitions.h"
 
 class Object;
+class Texture;
 
 class ENGINE_API ObjectPrimitive
 {

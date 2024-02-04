@@ -21,10 +21,23 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateCube()
     const std::shared_ptr<Material> cubeMat  = std::make_shared<Material>(cubeShader);
     const std::shared_ptr<Texture> cubeTex   = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
 
-    cubeMat->SetProperty("albedo", glm::vec3(0.85f, 0.1f, 0.1f));
-    cubeMat->SetProperty("roughness", 0.3f);
+    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
+    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
+    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
+    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+
     cubeMat->SetProperty("metallic", 0.0f);
-    cubeMat->SetProperty("ambientOcclusion", 0.3f);
+    
+    cubeMat->SetTexture("albedoMap", texAlbedo);
+    cubeMat->SetTexture("normalMap", texNormal);
+    cubeMat->SetTexture("roughnessMap", texRoughness);
+    cubeMat->SetTexture("ambientOcclusionMap", texAO);
+
+    cubeMat->SetProperty("hasMapAlbedo", true);
+    cubeMat->SetProperty("hasMapNormal", true);
+    cubeMat->SetProperty("hasMapMetallic", false);
+    cubeMat->SetProperty("hasMapRoughness", true);
+    cubeMat->SetProperty("hasMapAmbientOcclusion", true);
 
     cubeMesh->material = cubeMat;
 
@@ -45,10 +58,23 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiatePlane()
     const std::shared_ptr<Material> planeMat  = std::make_shared<Material>(planeShader);
     const std::shared_ptr<Texture> planeTex   = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
 
-    planeMat->SetProperty("albedo", glm::vec3(0.85f, 0.1f, 0.1f));
-    planeMat->SetProperty("roughness", 0.3f);
+    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
+    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
+    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
+    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+
     planeMat->SetProperty("metallic", 0.0f);
-    planeMat->SetProperty("ambientOcclusion", 0.3f);
+    
+    planeMat->SetTexture("albedoMap", texAlbedo);
+    planeMat->SetTexture("normalMap", texNormal);
+    planeMat->SetTexture("roughnessMap", texRoughness);
+    planeMat->SetTexture("ambientOcclusionMap", texAO);
+
+    planeMat->SetProperty("hasMapAlbedo", true);
+    planeMat->SetProperty("hasMapNormal", true);
+    planeMat->SetProperty("hasMapMetallic", false);
+    planeMat->SetProperty("hasMapRoughness", true);
+    planeMat->SetProperty("hasMapAmbientOcclusion", true);
     
     planeMesh->material = planeMat;
     
@@ -68,21 +94,21 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSphere()
     const std::shared_ptr<Shader> sphereShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
     const std::shared_ptr<Material> sphereMat  = std::make_shared<Material>(sphereShader);
 
-    const std::shared_ptr<Texture> sphereTexAlbedo    = std::make_shared<Texture>("./Data/images/metals/0071_color_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
-    const std::shared_ptr<Texture> sphereTexNormal    = std::make_shared<Texture>("./Data/images/metals/0071_normal_4k.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
-    const std::shared_ptr<Texture> sphereTexMetallic  = std::make_shared<Texture>("./Data/images/metals/0071_metallic_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
-    const std::shared_ptr<Texture> sphereTexRoughness = std::make_shared<Texture>("./Data/images/metals/0071_roughness_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
-    const std::shared_ptr<Texture> sphereTexAO        = std::make_shared<Texture>("./Data/images/metals/0071_ao_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_4);
+    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
+    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
+    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
+    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+
+    sphereMat->SetProperty("metallic", 0.0f);
     
-    sphereMat->SetTexture("albedoMap", sphereTexAlbedo);
-    sphereMat->SetTexture("normalMap", sphereTexNormal);
-    sphereMat->SetTexture("metallicMap", sphereTexMetallic);
-    sphereMat->SetTexture("roughnessMap", sphereTexRoughness);
-    sphereMat->SetTexture("ambientOcclusionMap", sphereTexAO);
+    sphereMat->SetTexture("albedoMap", texAlbedo);
+    sphereMat->SetTexture("normalMap", texNormal);
+    sphereMat->SetTexture("roughnessMap", texRoughness);
+    sphereMat->SetTexture("ambientOcclusionMap", texAO);
 
     sphereMat->SetProperty("hasMapAlbedo", true);
     sphereMat->SetProperty("hasMapNormal", true);
-    sphereMat->SetProperty("hasMapMetallic", true);
+    sphereMat->SetProperty("hasMapMetallic", false);
     sphereMat->SetProperty("hasMapRoughness", true);
     sphereMat->SetProperty("hasMapAmbientOcclusion", true);
 
