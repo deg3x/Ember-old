@@ -11,6 +11,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
+#include "utils/ProceduralMesh.h"
 
 namespace
 {
@@ -71,6 +72,9 @@ namespace
         std::vector<VertexData> vertices;
         std::vector<unsigned int> indices;
 
+        const bool hasNormals  = mesh->HasNormals();
+        const bool hasTangents = mesh->HasTangentsAndBitangents();
+
         // Vertex Processing
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
         {
@@ -82,19 +86,15 @@ namespace
             vector.z = mesh->mVertices[i].z;
             vertex.position = vector;
 
-            if (mesh->HasNormals())
+            if (hasNormals)
             {
                 vector.x = mesh->mNormals[i].x;
                 vector.y = mesh->mNormals[i].y;
                 vector.z = mesh->mNormals[i].z;
                 vertex.normal = vector;
             }
-            else
-            {
-                Logger::Log(LogCategory::WARNING, "Imported mesh contains no normals", "Model::ProcessMesh");
-            }
 
-            if (mesh->HasTangentsAndBitangents())
+            if (hasTangents)
             {
                 vector.x = mesh->mTangents[i].x;
                 vector.y = mesh->mTangents[i].y;
@@ -105,10 +105,6 @@ namespace
                 vector.y = mesh->mBitangents[i].y;
                 vector.z = mesh->mBitangents[i].z;
                 vertex.bitangent = vector;
-            }
-            else
-            {
-                Logger::Log(LogCategory::WARNING, "Imported mesh contains no tangents/bitangents", "Model::ProcessMesh");
             }
 
             if (mesh->mTextureCoords[0])
@@ -175,6 +171,16 @@ namespace
         }
 
         Mesh* ret = new Mesh(vertices, indices, meshMat);
+
+        if (!hasNormals)
+        {
+            Logger::Log(LogCategory::WARNING, "Imported mesh contains no normals", "Model::ProcessMesh");
+        }
+
+        if (!hasTangents)
+        {
+            Logger::Log(LogCategory::WARNING, "Imported mesh contains no tangents/bitangents.", "Model::ProcessMesh");
+        }
         
         return ret;
     }
