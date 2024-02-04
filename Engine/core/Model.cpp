@@ -89,6 +89,10 @@ namespace
                 vector.z = mesh->mNormals[i].z;
                 vertex.normal = vector;
             }
+            else
+            {
+                Logger::Log(LogCategory::WARNING, "Imported mesh contains no normals", "Model::ProcessMesh");
+            }
 
             if (mesh->HasTangentsAndBitangents())
             {
@@ -96,6 +100,15 @@ namespace
                 vector.y = mesh->mTangents[i].y;
                 vector.z = mesh->mTangents[i].z;
                 vertex.tangent = vector;
+
+                vector.x = mesh->mBitangents[i].x;
+                vector.y = mesh->mBitangents[i].y;
+                vector.z = mesh->mBitangents[i].z;
+                vertex.bitangent = vector;
+            }
+            else
+            {
+                Logger::Log(LogCategory::WARNING, "Imported mesh contains no tangents/bitangents", "Model::ProcessMesh");
             }
 
             if (mesh->mTextureCoords[0])
