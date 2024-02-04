@@ -10,9 +10,7 @@
 #include "core/components/Light.h"
 #include "core/components/Transform.h"
 #include "utils/Types.h"
-#include "utils/primitives/EditorGrid.h"
-#include "utils/primitives/ObjectSphere.h"
-#include "utils/primitives/Skybox.h"
+#include "utils/ObjectPrimitive.h"
 
 std::unordered_set<std::shared_ptr<Object>> World::objQueueOpaque;
 std::unordered_set<std::shared_ptr<Object>> World::objQueueTransparent;
@@ -31,8 +29,6 @@ void World::Initialize()
     bunnyObject->transform->scale = glm::vec3(0.5f, 0.5f, 0.5f);
     bunnyObject->LoadModel("./Data/models/bunny.obj");*/
 
-    const std::shared_ptr<Object> sphereObject = ObjectSphere::Instantiate();
-
     const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>("Directional Light");
     dirLightObject->CreateComponent<Light>();
     dirLightObject->transform->rotation.x = 30.0f;
@@ -40,11 +36,11 @@ void World::Initialize()
 
     AddObject(cameraObject);
     //AddObject(bunnyObject);
-    AddObject(sphereObject);
     AddObject(dirLightObject);
 
-    Skybox::Instantiate();
-    EditorGrid::Instantiate();
+    ObjectPrimitive::InstantiateSphere();
+    ObjectPrimitive::InstantiateSkybox();
+    ObjectPrimitive::InstantiateEditorGrid();
 
     // Startup renderer state
     constexpr Color clear_color = {0.16f, 0.15f, 0.18f, 1.00f};

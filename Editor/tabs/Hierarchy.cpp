@@ -6,9 +6,7 @@
 #include "core/Material.h"
 #include "input/Input.h"
 #include "themes/EditorTheme.h"
-#include "utils/primitives/ObjectCube.h"
-#include "utils/primitives/ObjectPlane.h"
-#include "utils/primitives/ObjectSphere.h"
+#include "utils/ObjectPrimitive.h"
 
 Hierarchy::Hierarchy(Editor* owner) : EditorTab(owner)
 {
@@ -140,15 +138,15 @@ void Hierarchy::DrawPopupAddObject()
         const ImVec2 entriesSize = {ImGui::GetContentRegionAvail().x, 0.0f};
         if (ImGui::Button("Cube", entriesSize))
         {
-            ObjectCube::Instantiate();
+            ObjectPrimitive::InstantiateCube();
         }
         if (ImGui::Button("Sphere", entriesSize))
         {
-            ObjectSphere::Instantiate();
+            ObjectPrimitive::InstantiateSphere();
         }
         if (ImGui::Button("Plane", entriesSize))
         {
-            ObjectPlane::Instantiate();
+            ObjectPrimitive::InstantiatePlane();
         }
 
         ImGui::PopStyleVar(2);
