@@ -1,20 +1,5 @@
 const float PI = 3.1415926538;
 
-uniform sampler2D albedoMap;
-uniform sampler2D metallicMap;
-uniform sampler2D roughnessMap;
-uniform sampler2D ambientOcclusionMap;
-
-uniform bool hasMapAlbedo;
-uniform bool hasMapMetallic;
-uniform bool hasMapRoughness;
-uniform bool hasMapAmbientOcclusion;
-
-uniform vec3 albedo;
-uniform float metallic;
-uniform float roughness;
-uniform float ambientOcclusion;
-
 vec3 FresnelSchlick(float dotHalfView, vec3 albedoVal, float metallicVal)
 {
     vec3 baseRefl = vec3(0.04);

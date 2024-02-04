@@ -3,6 +3,7 @@
 in vec3 Normal;
 in vec2 TexCoord;
 in vec3 WorldPosition;
+in mat3 TBN;
 
 out vec4 FragmentColor;
 
@@ -11,13 +12,30 @@ out vec4 FragmentColor;
 
 uniform vec3 cameraPosition;
 
+uniform sampler2D albedoMap;
+uniform sampler2D normalMap;
+uniform sampler2D metallicMap;
+uniform sampler2D roughnessMap;
+uniform sampler2D ambientOcclusionMap;
+
+uniform bool hasMapAlbedo           = false;
+uniform bool hasMapNormal           = false;
+uniform bool hasMapMetallic         = false;
+uniform bool hasMapRoughness        = false;
+uniform bool hasMapAmbientOcclusion = false;
+
+uniform vec3 albedo;
+uniform float metallic;
+uniform float roughness;
+uniform float ambientOcclusion;
+
 void main()
 {
-    vec3 normVector = normalize(Normal);
     vec3 viewVector = normalize(cameraPosition - WorldPosition);
     vec3 irradiance = vec3(0.0);
     
     vec3 albedoVal     = hasMapAlbedo ? pow(texture(albedoMap, TexCoord).rgb, vec3(2.2)) : albedo;
+    vec3 normVector    = hasMapNormal ? normalize(TBN * (normalize(texture(normalMap, TexCoord).rgb) * 2.0 - 1.0)) : normalize(Normal);
     float metallicVal  = hasMapMetallic ? texture(metallicMap, TexCoord).r : metallic;
     float roughnessVal = hasMapRoughness ? texture(roughnessMap, TexCoord).r : roughness;
     float ao           = !hasMapAmbientOcclusion ? texture(ambientOcclusionMap, TexCoord).r : ambientOcclusion;

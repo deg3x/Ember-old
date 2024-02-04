@@ -69,16 +69,19 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSphere()
     const std::shared_ptr<Material> sphereMat  = std::make_shared<Material>(sphereShader);
 
     const std::shared_ptr<Texture> sphereTexAlbedo    = std::make_shared<Texture>("./Data/images/metals/0071_color_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
-    const std::shared_ptr<Texture> sphereTexMetallic  = std::make_shared<Texture>("./Data/images/metals/0071_metallic_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_1);
-    const std::shared_ptr<Texture> sphereTexRoughness = std::make_shared<Texture>("./Data/images/metals/0071_roughness_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
-    const std::shared_ptr<Texture> sphereTexAO        = std::make_shared<Texture>("./Data/images/metals/0071_ao_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+    const std::shared_ptr<Texture> sphereTexNormal    = std::make_shared<Texture>("./Data/images/metals/0071_normal_4k.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
+    const std::shared_ptr<Texture> sphereTexMetallic  = std::make_shared<Texture>("./Data/images/metals/0071_metallic_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
+    const std::shared_ptr<Texture> sphereTexRoughness = std::make_shared<Texture>("./Data/images/metals/0071_roughness_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+    const std::shared_ptr<Texture> sphereTexAO        = std::make_shared<Texture>("./Data/images/metals/0071_ao_4k.jpg", TextureType::DIFFUSE, TextureUnit::TEX_4);
     
     sphereMat->SetTexture("albedoMap", sphereTexAlbedo);
+    sphereMat->SetTexture("normalMap", sphereTexNormal);
     sphereMat->SetTexture("metallicMap", sphereTexMetallic);
     sphereMat->SetTexture("roughnessMap", sphereTexRoughness);
     sphereMat->SetTexture("ambientOcclusionMap", sphereTexAO);
 
     sphereMat->SetProperty("hasMapAlbedo", true);
+    sphereMat->SetProperty("hasMapNormal", true);
     sphereMat->SetProperty("hasMapMetallic", true);
     sphereMat->SetProperty("hasMapRoughness", true);
     sphereMat->SetProperty("hasMapAmbientOcclusion", true);
