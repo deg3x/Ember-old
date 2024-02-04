@@ -67,7 +67,7 @@ namespace
         return retTextures;
     }
 
-    Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene)
+    void ProcessMesh(aiMesh* mesh, const aiScene* scene)
     {
         std::vector<VertexData> vertices;
         std::vector<unsigned int> indices;
@@ -170,7 +170,7 @@ namespace
             meshMat->SetTexture("diffuseTexture", tex);
         }
 
-        Mesh* ret = new Mesh(vertices, indices, meshMat);
+        std::shared_ptr<Mesh> ret = std::make_shared<Mesh>(vertices, indices, meshMat);
 
         if (!hasNormals)
         {
@@ -179,18 +179,19 @@ namespace
 
         if (!hasTangents)
         {
-            Logger::Log(LogCategory::WARNING, "Imported mesh contains no tangents/bitangents.", "Model::ProcessMesh");
+            Logger::Log(LogCategory::WARNING, "Imported mesh contains no tangents/bitangents. Attempting to generate...", "Model::ProcessMesh");
+            ProceduralMesh::GenerateTangentsBitangents(ret);
         }
         
-        return ret;
+        loadedMeshes.push_back(ret);
     }
 
-    void ProcessNode(aiNode* node, const aiScene* scene)
+    void ProcessNode(const aiNode* node, const aiScene* scene)
     {
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-            loadedMeshes.push_back(std::shared_ptr<Mesh>(ProcessMesh(mesh, scene)));
+            ProcessMesh(mesh, scene);
         }
 
         for (unsigned int i = 0; i < node->mNumChildren; i++)
