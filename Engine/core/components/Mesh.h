@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glad/glad.h>
-
 #include "core/components/Component.h"
 
 class Light;
@@ -14,6 +12,7 @@ struct VertexData
 	glm::vec3 normal;
 	glm::vec2 uv;
 	glm::vec3 tangent;
+	glm::vec3 bitangent;
 	glm::vec4 color;
 };
 

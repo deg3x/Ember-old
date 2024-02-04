@@ -1,16 +1,14 @@
 ﻿#include "engine_pch.h"
 #include "World.h"
 
-#include "Shader.h"
+#include "glad/glad.h"
+
 #include "components/Mesh.h"
 #include "core/Object.h"
 #include "core/Renderer.h"
 #include "core/components/Camera.h"
 #include "core/components/Light.h"
 #include "core/components/Transform.h"
-#include "core/Material.h"
-#include "logger/Logger.h"
-#include "utils/PathBuilder.h"
 #include "utils/Types.h"
 #include "utils/primitives/EditorGrid.h"
 #include "utils/primitives/ObjectSphere.h"
