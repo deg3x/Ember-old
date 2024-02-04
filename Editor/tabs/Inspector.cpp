@@ -452,6 +452,8 @@ void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
             material->SetProperty(property.name, property.value.intVal);
             break;
         case MaterialProperty::PropertyType::BOOLEAN:
+            DrawRowLabelCheckbox(property.name, property.value.boolVal);
+            material->SetProperty(property.name, property.value.boolVal);
             break;
         case MaterialProperty::PropertyType::FLOAT:
             DrawRowLabelDragFloat(property.name, property.value.floatVal);
@@ -515,13 +517,26 @@ void Inspector::DrawAddComponentButton()
     }
 }
 
-void Inspector::DrawRowLabelDragInt(const std::string& label, int& target)
+void Inspector::DrawRowLabel(const std::string& label)
 {
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
     ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted(label.c_str());
+}
+
+void Inspector::DrawRowLabelCheckbox(const std::string& label, bool& target)
+{
+    DrawRowLabel(label);
+
+    ImGui::TableNextColumn();
+    ImGui::Checkbox(("##" + label).c_str(), &target);
+}
+
+void Inspector::DrawRowLabelDragInt(const std::string& label, int& target)
+{
+    DrawRowLabel(label);
 
     ImGui::TableNextColumn();
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
@@ -530,11 +545,7 @@ void Inspector::DrawRowLabelDragInt(const std::string& label, int& target)
 
 void Inspector::DrawRowLabelDragFloat(const std::string& label, float& target)
 {
-    ImGui::TableNextRow();
-    ImGui::TableNextColumn();
-    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
-    ImGui::AlignTextToFramePadding();
-    ImGui::TextUnformatted(label.c_str());
+    DrawRowLabel(label);
 
     ImGui::TableNextColumn();
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
@@ -543,11 +554,7 @@ void Inspector::DrawRowLabelDragFloat(const std::string& label, float& target)
 
 void Inspector::DrawRowLabelDragFloat3(const std::string& label, glm::vec3& target)
 {
-    ImGui::TableNextRow();
-    ImGui::TableNextColumn();
-    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
-    ImGui::AlignTextToFramePadding();
-    ImGui::TextUnformatted(label.c_str());
+    DrawRowLabel(label);
 
     ImGui::TableNextColumn();
 
@@ -561,11 +568,7 @@ void Inspector::DrawRowLabelDragFloat3(const std::string& label, glm::vec3& targ
 
 void Inspector::DrawRowLabelDragFloat4(const std::string& label, glm::vec4& target)
 {
-    ImGui::TableNextRow();
-    ImGui::TableNextColumn();
-    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
-    ImGui::AlignTextToFramePadding();
-    ImGui::TextUnformatted(label.c_str());
+    DrawRowLabel(label);
 
     ImGui::TableNextColumn();
 
@@ -579,11 +582,7 @@ void Inspector::DrawRowLabelDragFloat4(const std::string& label, glm::vec4& targ
 
 void Inspector::DrawRowLabelColor3(const std::string& label, float target[3])
 {
-    ImGui::TableNextRow();
-    ImGui::TableNextColumn();
-    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
-    ImGui::AlignTextToFramePadding();
-    ImGui::TextUnformatted(label.c_str());
+    DrawRowLabel(label);
     
     ImGui::TableNextColumn();
     const ImVec4 buttonColor = {target[0], target[1], target[2], 1.0f};
@@ -607,10 +606,7 @@ void Inspector::DrawRowLabelColor3(const std::string& label, float target[3])
 
 void Inspector::DrawRowLabelText(const std::string& label, const std::string& text)
 {
-    ImGui::TableNextRow();
-    ImGui::TableNextColumn();
-    ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x * compLabelIndent);
-    ImGui::TextUnformatted(label.c_str());
+    DrawRowLabel(label);
 
     ImGui::TableNextColumn();
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);

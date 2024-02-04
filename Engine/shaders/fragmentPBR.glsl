@@ -7,6 +7,7 @@ in mat3 TBN;
 
 out vec4 FragmentColor;
 
+#include "includes/common.glsl"
 #include "includes/lighting.glsl"
 #include "includes/PBR.glsl"
 
@@ -35,7 +36,7 @@ void main()
     vec3 irradiance = vec3(0.0);
     
     vec3 albedoVal     = hasMapAlbedo ? pow(texture(albedoMap, TexCoord).rgb, vec3(2.2)) : albedo;
-    vec3 normVector    = hasMapNormal ? normalize(TBN * (normalize(texture(normalMap, TexCoord).rgb) * 2.0 - 1.0)) : normalize(Normal);
+    vec3 normVector    = hasMapNormal ? SampleNormalMap(normalMap, TexCoord, TBN) : normalize(Normal);
     float metallicVal  = hasMapMetallic ? texture(metallicMap, TexCoord).r : metallic;
     float roughnessVal = hasMapRoughness ? texture(roughnessMap, TexCoord).r : roughness;
     float ao           = !hasMapAmbientOcclusion ? texture(ambientOcclusionMap, TexCoord).r : ambientOcclusion;

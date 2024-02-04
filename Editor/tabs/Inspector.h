@@ -51,7 +51,9 @@ private:
     void DrawMaterial(const std::shared_ptr<Material>& material);
     void DrawMaterialElements(const std::shared_ptr<Material>& material);
     void DrawAddComponentButton();
-    
+
+    void DrawRowLabel(const std::string& label);
+    void DrawRowLabelCheckbox(const std::string& label, bool& target);
     void DrawRowLabelDragInt(const std::string& label, int& target);
     void DrawRowLabelDragFloat(const std::string& label, float& target);
     void DrawRowLabelDragFloat3(const std::string& label, glm::vec3& target);
