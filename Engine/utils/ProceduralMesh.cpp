@@ -298,25 +298,28 @@ void ProceduralMesh::GenerateTangentsBitangents(const std::shared_ptr<Mesh>& tar
 {
     for (size_t i = 0; i < targetMesh->indices.size(); i += 3)
     {
-        VertexData vert1 = targetMesh->vertexData[targetMesh->indices[i]];
-        VertexData vert2 = targetMesh->vertexData[targetMesh->indices[i + 1]];
-        VertexData vert3 = targetMesh->vertexData[targetMesh->indices[i + 2]];
+        VertexData& vert1 = targetMesh->vertexData[targetMesh->indices[i]];
+        VertexData& vert2 = targetMesh->vertexData[targetMesh->indices[i + 1]];
+        VertexData& vert3 = targetMesh->vertexData[targetMesh->indices[i + 2]];
         
         const glm::vec3 dPos1 = vert2.position - vert1.position;
         const glm::vec3 dPos2 = vert3.position - vert1.position;
         const glm::vec2 dUV1  = vert2.uv - vert1.uv;
         const glm::vec2 dUV2  = vert3.uv - vert1.uv;
 
-        const float normFactor = 1.0f / (dUV1.x * dUV2.y - dUV1.y * dUV2.x);
+        const float invDet = 1.0f / (dUV1.x * dUV2.y - dUV1.y * dUV2.x);
 
-        vert1.tangent   = normFactor * (dUV2.y * dPos1 - dUV1.y * dPos2);
-        vert1.bitangent = normFactor * (dUV1.x * dPos2 - dUV2.x * dPos1);
+        glm::vec3 tangent = invDet * (dUV2.y * dPos1 - dUV1.y * dPos2);
+        glm::vec3 bitangent = invDet * (dUV1.x * dPos2 - dUV2.x * dPos1);
 
-        targetMesh->vertexData[targetMesh->indices[i]].tangent       = vert1.tangent;
-        targetMesh->vertexData[targetMesh->indices[i]].bitangent     = vert1.bitangent;
-        targetMesh->vertexData[targetMesh->indices[i + 1]].tangent   = vert1.tangent;
-        targetMesh->vertexData[targetMesh->indices[i + 1]].bitangent = vert1.bitangent;
-        targetMesh->vertexData[targetMesh->indices[i + 2]].tangent   = vert1.tangent;
-        targetMesh->vertexData[targetMesh->indices[i + 2]].bitangent = vert1.bitangent;
+        tangent   = glm::normalize(tangent);
+        bitangent = glm::normalize(bitangent);
+
+        vert1.tangent   = tangent;
+        vert1.bitangent = bitangent;
+        vert2.tangent   = tangent;
+        vert2.bitangent = bitangent;
+        vert3.tangent   = tangent;
+        vert3.bitangent = bitangent;
     }
 }
