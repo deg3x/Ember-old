@@ -21,10 +21,10 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateCube()
     const std::shared_ptr<Material> cubeMat  = std::make_shared<Material>(cubeShader);
     const std::shared_ptr<Texture> cubeTex   = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
 
-    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
-    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
-    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
-    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
+    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
+    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/marble/1K/cracks_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
+    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/marble/1K/cracks_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
 
     cubeMat->SetProperty("metallic", 0.0f);
     
@@ -35,7 +35,6 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateCube()
 
     cubeMat->SetProperty("hasMapAlbedo", true);
     cubeMat->SetProperty("hasMapNormal", true);
-    cubeMat->SetProperty("hasMapMetallic", false);
     cubeMat->SetProperty("hasMapRoughness", true);
     cubeMat->SetProperty("hasMapAmbientOcclusion", true);
 
@@ -58,10 +57,10 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiatePlane()
     const std::shared_ptr<Material> planeMat  = std::make_shared<Material>(planeShader);
     const std::shared_ptr<Texture> planeTex   = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
 
-    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
-    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
-    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
-    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
+    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
+    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/marble/1K/cracks_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
+    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/marble/1K/cracks_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
 
     planeMat->SetProperty("metallic", 0.0f);
     
@@ -72,7 +71,6 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiatePlane()
 
     planeMat->SetProperty("hasMapAlbedo", true);
     planeMat->SetProperty("hasMapNormal", true);
-    planeMat->SetProperty("hasMapMetallic", false);
     planeMat->SetProperty("hasMapRoughness", true);
     planeMat->SetProperty("hasMapAmbientOcclusion", true);
     
@@ -94,10 +92,10 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSphere()
     const std::shared_ptr<Shader> sphereShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
     const std::shared_ptr<Material> sphereMat  = std::make_shared<Material>(sphereShader);
 
-    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
-    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
-    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
-    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/rocks/1K/crystal_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
+    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
+    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/marble/1K/cracks_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
+    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/marble/1K/cracks_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
 
     sphereMat->SetProperty("metallic", 0.0f);
     
@@ -108,13 +106,12 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSphere()
 
     sphereMat->SetProperty("hasMapAlbedo", true);
     sphereMat->SetProperty("hasMapNormal", true);
-    sphereMat->SetProperty("hasMapMetallic", false);
     sphereMat->SetProperty("hasMapRoughness", true);
     sphereMat->SetProperty("hasMapAmbientOcclusion", true);
 
     sphereMesh->material = sphereMat;
 
-    ProceduralMesh::GenerateSphere(32, 32, 0.5f, sphereMesh);
+    ProceduralMesh::GenerateSphere(64, 64, 0.5f, sphereMesh);
     World::AddObject(sphereObject);
 
     return sphereObject;
