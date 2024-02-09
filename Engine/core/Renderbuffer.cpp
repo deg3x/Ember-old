@@ -6,16 +6,17 @@
 #include "RendererTypes.h"
 #include "TextureTypes.h"
 
-Renderbuffer::Renderbuffer(int initWidth, int initHeight)
+Renderbuffer::Renderbuffer(int initWidth, int initHeight, TextureFormat rbFormat)
 {
     width  = initWidth;
     height = initHeight;
+    format = rbFormat;
 
     glGenRenderbuffers(1, &id);
     
     Bind();
     
-    glRenderbufferStorage(RENDERBUFFER, DEPTH24_STENCIL8, initWidth, initHeight);
+    glRenderbufferStorage(RENDERBUFFER, format, initWidth, initHeight);
     
     Unbind();
 }
@@ -46,5 +47,5 @@ void Renderbuffer::Resize(int newWidth, int newHeight)
     height = newHeight;
 
     Bind();
-    glRenderbufferStorage(RENDERBUFFER, DEPTH24_STENCIL8, newWidth, newHeight);
+    glRenderbufferStorage(RENDERBUFFER, format, newWidth, newHeight);
 }
