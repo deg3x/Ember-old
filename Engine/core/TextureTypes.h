@@ -1,6 +1,6 @@
 #pragma once
 
-enum class TextureFormat : uint16_t
+enum TextureFormat : uint16_t
 {
     // Values taken by the equivalent GLAD "enums" for API compliance
     R = 0x1903,
