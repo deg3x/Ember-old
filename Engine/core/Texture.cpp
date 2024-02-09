@@ -31,6 +31,7 @@ void Texture::Bind() const
         glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
         break;
     case TextureType::HDR:
+        glBindTexture(GL_TEXTURE_2D, textureID);
         break;
     }
 }
