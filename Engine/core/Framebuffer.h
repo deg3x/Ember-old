@@ -1,19 +1,19 @@
 #pragma once
 
 #include "Definitions.h"
-#include "RendererTypes.h"
 #include "Texture.h"
+
+class Renderbuffer;
 
 class ENGINE_API Framebuffer
 {
 private:
-    unsigned int fbo;
-    unsigned int rbo;
+    unsigned int id;
+    int width;
+    int height;
 
+    std::unique_ptr<Renderbuffer> renderbuffer;
     std::unique_ptr<Texture> textureFB;
-
-    int currentWidth;
-    int currentHeight;
     
 public:
     Framebuffer() = delete;
@@ -32,11 +32,11 @@ public:
 
     inline int GetWidth() const
     {
-        return currentWidth;
+        return width;
     }
 
     inline int GetHeight() const
     {
-        return currentHeight;
+        return height;
     }
 };

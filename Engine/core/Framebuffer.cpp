@@ -1,16 +1,18 @@
 #include "engine_pch.h"
 #include "Framebuffer.h"
 
+#include "Renderbuffer.h"
 #include "glad/glad.h"
 
+#include "RendererTypes.h"
 #include "logger/Logger.h"
 
 Framebuffer::Framebuffer(int initWidth, int initHeight)
 {
-    currentWidth  = initWidth;
-    currentHeight = initHeight;
+    width  = initWidth;
+    height = initHeight;
     
-    glGenFramebuffers(1, &fbo);
+    glGenFramebuffers(1, &id);
     Bind();
     
     // Color texture attachment
@@ -22,16 +24,13 @@ Framebuffer::Framebuffer(int initWidth, int initHeight)
     
     // Render buffer object attachment for depth/stencil
     // Use a texture instead if we need to sample, since reading is suboptimal in Renderbuffers in favour of performance
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(RENDERBUFFER, rbo);
-    glRenderbufferStorage(RENDERBUFFER, DEPTH24_STENCIL8, initWidth, initHeight);
-    glBindRenderbuffer(RENDERBUFFER, 0);
+    renderbuffer = std::make_unique<Renderbuffer>(initWidth, initHeight);
 
     // std::unique<Texture> texture = std::make_unique<Texture>(TextureType::DIFFUSE, TEX_0, DEPTH24_STENCIL8);
     // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, texDepthStencil, 0);
     
     glFramebufferTexture2D(FRAMEBUFFER, COLOR_ATTACHMENT_0, TEXTURE_2D, textureFB->GetID(), 0);
-    glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_STENCIL, RENDERBUFFER, rbo);
+    glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_STENCIL, RENDERBUFFER, renderbuffer->GetID());
     
     if (glCheckFramebufferStatus(FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
@@ -43,13 +42,12 @@ Framebuffer::Framebuffer(int initWidth, int initHeight)
 
 Framebuffer::~Framebuffer()
 {
-    glDeleteRenderbuffers(1, &rbo);
-    glDeleteFramebuffers(1, &fbo);
+    glDeleteFramebuffers(1, &id);
 }
 
 void Framebuffer::Bind() const
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, id);
 }
 
 void Framebuffer::Unbind() const
@@ -59,21 +57,22 @@ void Framebuffer::Unbind() const
 
 void Framebuffer::Resize(int newWidth, int newHeight)
 {
-    if (currentWidth == newWidth && currentHeight == newHeight)
+    if (width == newWidth && height == newHeight)
     {
         return;
     }
     
-    currentWidth  = newWidth;
-    currentHeight = newHeight;
+    width  = newWidth;
+    height = newHeight;
 
     textureFB->SetWidth(newWidth);
     textureFB->SetHeight(newHeight);
     textureFB->SetTextureData(nullptr);
+    
+    renderbuffer->Resize(newWidth, newHeight);
 
+    Bind();
+    
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureFB->GetID(), 0);
-
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, newWidth, newHeight);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer->GetID());
 }
