@@ -3,30 +3,37 @@
 
 #include "glad/glad.h"
 
-#define STB_IMAGE_IMPLEMENTATION 
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#include "Renderer.h"
 #include "logger/Logger.h"
 #include "utils/PathBuilder.h"
 
-Texture::Texture(TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat)
+Texture::Texture(TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType)
 {
     path        = "NO_FILE";
     type        = texType;
     unit        = texUnit;
     formatSaved = savedFormat;
     formatImage = imageFormat;
+    dataType    = texDataType;
+    
+    Renderer::GetViewportResolution(width, height);
 
     InitializeTexture(nullptr);
 }
 
-Texture::Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat)
+Texture::Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType)
 {
     path        = texPath;
     type        = texType;
     unit        = texUnit;
     formatSaved = savedFormat;
     formatImage = imageFormat;
+    dataType    = texDataType;
+
+    Renderer::GetViewportResolution(width, height);
 
     InitializeTexture(PathBuilder::GetPath(texPath).c_str());
 }
@@ -47,6 +54,13 @@ void Texture::Bind() const
         glBindTexture(TEXTURE_2D, textureID);
         break;
     }
+}
+
+void Texture::SetTextureData(const void* data, TextureTarget target) const
+{
+    Bind();
+
+    glTexImage2D(target, 0, formatSaved, width, height, 0, formatImage, dataType, data);
 }
 
 TextureFormat Texture::ChannelsToFormat(int channels)
@@ -84,9 +98,6 @@ void Texture::InitializeTexture(const char* texPath)
 void Texture::InitializeTextureDiffuse(const char* texPath)
 {
     uint8_t *data = nullptr;
-
-    int width;
-    int height;
     int channels;
 
     if (texPath != nullptr)
@@ -104,7 +115,7 @@ void Texture::InitializeTextureDiffuse(const char* texPath)
     glTexParameteri(TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
     glGenerateMipmap(TEXTURE_2D);
 
     if (data)
@@ -117,8 +128,6 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
 {
     uint8_t *data = nullptr;
 
-    int width;
-    int height;
     int nChannels;
 
     const std::string faces[6] = {
@@ -143,7 +152,7 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
             data = LoadImage(fullPath.c_str(), width, height, nChannels, false);
         }
 
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, formatSaved, width, height, 0, formatImage, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, formatSaved, width, height, 0, formatImage, dataType, data);
 
         if (data)
         {
@@ -160,8 +169,6 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
 
 void Texture::InitializeTextureHDR(const char* texturePath)
 {
-    int width;
-    int height;
     int nChannels;
     
     float *data = nullptr;
@@ -173,7 +180,7 @@ void Texture::InitializeTextureHDR(const char* texturePath)
     glGenTextures(1, &textureID);
     glBindTexture(TEXTURE_2D, textureID);
 
-    glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, GL_FLOAT, data);
+    glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
 
     glTexParameteri(TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

@@ -16,10 +16,22 @@ enum class TextureType : uint8_t
     HDR
 };
 
-enum TextureBindings : uint16_t
+enum TextureDataType : uint16_t
 {
-    TEXTURE_2D = 0x0DE1,
+    UNSIGNED_BYTE = 0x1401,
+    FLOAT         = 0x1406
+};
+
+enum TextureTarget : uint16_t
+{
+    TEXTURE_2D       = 0x0DE1,
     TEXTURE_CUBE_MAP = 0x8513,
+    TEXTURE_CUBE_MAP_POSITIVE_X = 0x8515,
+    TEXTURE_CUBE_MAP_NEGATIVE_X = 0x8516,
+    TEXTURE_CUBE_MAP_POSITIVE_Y = 0x8517,
+    TEXTURE_CUBE_MAP_NEGATIVE_Y = 0x8518,
+    TEXTURE_CUBE_MAP_POSITIVE_Z = 0x8519,
+    TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x851A,
 };
 
 enum TextureUnit : uint16_t

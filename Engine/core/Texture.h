@@ -7,20 +7,41 @@ class ENGINE_API Texture
 {
 private:
     std::string path;
+    
     unsigned int textureID;
-    TextureFormat formatImage;
-    TextureFormat formatSaved;
+    int width;
+    int height;
+    
     TextureType type;
     TextureUnit unit;
+    TextureFormat formatSaved;
+    TextureFormat formatImage;
+    TextureDataType dataType;
     
 public:
     Texture() = delete;
-    Texture(TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB);
-    Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB);
+    Texture(TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE);
+    Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE);
     
     void Bind() const;
+    void SetTextureData(const void* data, TextureTarget target) const;
 
     static TextureFormat ChannelsToFormat(int channels);
+
+    inline void SetDataType(TextureDataType newDataType)
+    {
+        dataType = newDataType;
+    }
+    
+    inline void SetWidth(int newWidth)
+    {
+        width = newWidth;
+    }
+
+    inline void SetHeight(int newHeight)
+    {
+        height = newHeight;
+    }
 
     inline TextureFormat GetFormat() const
     {
@@ -40,6 +61,11 @@ public:
     inline std::string GetPath() const
     {
         return path;
+    }
+
+    inline unsigned int GetID() const
+    {
+        return textureID;
     }
     
 private:
