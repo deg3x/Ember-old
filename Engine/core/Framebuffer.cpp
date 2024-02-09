@@ -27,7 +27,7 @@ Framebuffer::Framebuffer(int initWidth, int initHeight)
     renderbuffer = std::make_unique<Renderbuffer>(initWidth, initHeight);
 
     // std::unique<Texture> texture = std::make_unique<Texture>(TextureType::DIFFUSE, TEX_0, DEPTH24_STENCIL8);
-    // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, texDepthStencil, 0);
+    // glFramebufferTexture2D(FRAMEBUFFER, DEPTH_STENCIL, TEXTURE_2D, texture->GetID(), 0);
     
     glFramebufferTexture2D(FRAMEBUFFER, COLOR_ATTACHMENT_0, TEXTURE_2D, textureFB->GetID(), 0);
     glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_STENCIL, RENDERBUFFER, renderbuffer->GetID());
