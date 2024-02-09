@@ -125,7 +125,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
     const std::shared_ptr<Object> skyObject = std::make_shared<Object>("Skybox");
     const std::shared_ptr<Shader> skyShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
     const std::shared_ptr<Material> skyMat  = std::make_shared<Material>(skyShader);
-    const std::shared_ptr<Texture> skyTex   = std::make_shared<Texture>("./Data/images/skybox/cubemap_clouds_", TextureType::CUBEMAP, TextureUnit::TEX_0);
+    const std::shared_ptr<Texture> skyTex   = std::make_shared<Texture>("./Data/images/skybox/cubemap_clouds_", TextureType::CUBE_MAP, TextureUnit::TEX_0);
     
     skyMat->SetTexture("skybox", skyTex);
 

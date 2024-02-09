@@ -2,17 +2,24 @@
 
 enum TextureFormat : uint16_t
 {
-    // Values taken by the equivalent GLAD "enums" for API compliance
-    R = 0x1903,
-    RGB = 0x1907,
-    RGBA = 0x1908
+    R      = 0x1903,
+    RGB    = 0x1907,
+    RGBA   = 0x1908,
+    RGB16F = 0x881B,
+    NONE   = 0x00
 };
 
 enum class TextureType : uint8_t
 {
     DIFFUSE,
-    CUBEMAP,
+    CUBE_MAP,
     HDR
+};
+
+enum TextureBindings : uint16_t
+{
+    TEXTURE_2D = 0x0DE1,
+    TEXTURE_CUBE_MAP = 0x8513,
 };
 
 enum TextureUnit : uint16_t
@@ -48,5 +55,5 @@ enum TextureUnit : uint16_t
     TEX_28 = 0x84DC,
     TEX_29 = 0x84DD,
     TEX_30 = 0x84DE,
-    TEX_31 = 0x84DF,
+    TEX_31 = 0x84DF
 };
