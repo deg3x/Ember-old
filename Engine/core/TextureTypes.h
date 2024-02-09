@@ -2,10 +2,13 @@
 
 enum TextureFormat : uint16_t
 {
-    R      = 0x1903,
-    RGB    = 0x1907,
-    RGBA   = 0x1908,
-    RGB16F = 0x881B,
+    R                = 0x1903,
+    RGB              = 0x1907,
+    RGBA             = 0x1908,
+    RGB16F           = 0x881B,
+    DEPTH24          = 0x81A6,
+    DEPTH24_STENCIL8 = 0x88F0,
+    
     NONE   = 0x00
 };
 
@@ -24,14 +27,16 @@ enum TextureDataType : uint16_t
 
 enum TextureTarget : uint16_t
 {
-    TEXTURE_2D       = 0x0DE1,
-    TEXTURE_CUBE_MAP = 0x8513,
+    TEXTURE_2D                  = 0x0DE1,
+    TEXTURE_CUBE_MAP            = 0x8513,
     TEXTURE_CUBE_MAP_POSITIVE_X = 0x8515,
     TEXTURE_CUBE_MAP_NEGATIVE_X = 0x8516,
     TEXTURE_CUBE_MAP_POSITIVE_Y = 0x8517,
     TEXTURE_CUBE_MAP_NEGATIVE_Y = 0x8518,
     TEXTURE_CUBE_MAP_POSITIVE_Z = 0x8519,
     TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x851A,
+    
+    AUTO = 0x0000
 };
 
 enum TextureUnit : uint16_t

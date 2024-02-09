@@ -2,23 +2,22 @@
 
 #include "Definitions.h"
 #include "RendererTypes.h"
+#include "Texture.h"
 
 class ENGINE_API Framebuffer
 {
 private:
     unsigned int fbo;
     unsigned int rbo;
-    unsigned int textureID;
-    
-    RenderbufferType typeRB;
-    FramebufferAttachment attachmentFB;
+
+    std::unique_ptr<Texture> textureFB;
 
     int currentWidth;
     int currentHeight;
     
 public:
     Framebuffer() = delete;
-    Framebuffer(int initWidth, int initHeight, FramebufferAttachment fbAttachment = FramebufferAttachment::DEPTH_STENCIL, RenderbufferType rbType = RenderbufferType::DEPTH24_STENCIL8);
+    Framebuffer(int initWidth, int initHeight);
     virtual ~Framebuffer();
     
     void Bind() const;
@@ -28,7 +27,7 @@ public:
 
     inline unsigned int GetTextureID() const
     {
-        return textureID;
+        return textureFB->GetID();
     }
 
     inline int GetWidth() const

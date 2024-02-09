@@ -60,6 +60,22 @@ void Texture::SetTextureData(const void* data, TextureTarget target) const
 {
     Bind();
 
+    if (target == AUTO)
+    {
+        switch(type)
+        {
+        case TextureType::DIFFUSE:
+            glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
+            return;
+        case TextureType::CUBE_MAP:
+            glTexImage2D(TEXTURE_CUBE_MAP, 0, formatSaved, width, height, 0, formatImage, dataType, data);
+            return;
+        case TextureType::HDR:
+            glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
+            return;
+        }
+    }
+
     glTexImage2D(target, 0, formatSaved, width, height, 0, formatImage, dataType, data);
 }
 
