@@ -15,7 +15,8 @@ enum class TextureFormat : uint16_t
 enum class TextureType : uint8_t
 {
     DIFFUSE,
-    CUBEMAP
+    CUBEMAP,
+    HDR
 };
 
 enum TextureUnit : uint8_t
@@ -77,4 +78,5 @@ private:
     void InitializeTexture(const char* texPath);
     void InitializeTextureDiffuse(const char* texPath);
     void InitializeTextureCubemap(const char* texturePath);
+    void InitializeTextureHDR(const char* texturePath);
 };

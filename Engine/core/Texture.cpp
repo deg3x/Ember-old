@@ -30,6 +30,8 @@ void Texture::Bind() const
     case TextureType::CUBEMAP:
         glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
         break;
+    case TextureType::HDR:
+        break;
     }
 }
 
@@ -42,6 +44,9 @@ void Texture::InitializeTexture(const char* texPath)
         break;
     case TextureType::CUBEMAP:
         InitializeTextureCubemap(texPath);
+        break;
+    case TextureType::HDR:
+        InitializeTextureHDR(texPath);
         break;
     }
 }
@@ -132,4 +137,35 @@ void Texture::InitializeTextureCubemap(const char* texturePath)
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+}
+
+void Texture::InitializeTextureHDR(const char* texturePath)
+{
+    int width;
+    int height;
+    int nChannels;
+
+    stbi_set_flip_vertically_on_load(true);
+    
+    float *data = stbi_loadf(texturePath, &width, &height, &nChannels, 0);
+    if (!data)
+    {
+        const std::string errorMsg = "Unable to read HDR texture file from path: ";
+        Logger::Log(LogCategory::ERROR, errorMsg + texturePath, "Texture::InitializeTextureHDR");
+
+        return;
+    }
+    
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, data);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_image_free(data);
 }
