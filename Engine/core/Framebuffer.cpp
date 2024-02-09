@@ -5,10 +5,12 @@
 
 #include "logger/Logger.h"
 
-Framebuffer::Framebuffer(int initWidth, int initHeight)
+Framebuffer::Framebuffer(int initWidth, int initHeight, FramebufferAttachment fbAttachment, RenderbufferType rbType)
 {
     currentWidth  = initWidth;
     currentHeight = initHeight;
+    attachmentFB  = fbAttachment;
+    typeRB        = rbType;
     
     glGenFramebuffers(1, &fbo);
     Bind();
@@ -25,7 +27,7 @@ Framebuffer::Framebuffer(int initWidth, int initHeight)
     // Use a texture instead if we need to sample, since reading is suboptimal in Renderbuffers in favour of performance
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, initWidth, initHeight);
+    glRenderbufferStorage(GL_RENDERBUFFER, rbType, initWidth, initHeight);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
     
     //unsigned int texDepthStencil;
@@ -38,7 +40,7 @@ Framebuffer::Framebuffer(int initWidth, int initHeight)
     //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, texDepthStencil, 0);
     
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, fbAttachment, GL_RENDERBUFFER, rbo);
     
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
