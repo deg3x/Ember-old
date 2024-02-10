@@ -146,17 +146,16 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
 
     const std::string vertHDR = PathBuilder::GetPath("./Engine/shaders/vertexHDRI.glsl");
     const std::string fragHDR = PathBuilder::GetPath("./Engine/shaders/fragmentHDRI.glsl");
-    
     const std::shared_ptr<Shader> hdrShader = std::make_shared<Shader>(vertHDR.c_str(), fragHDR.c_str());
     const std::shared_ptr<Texture> hdrTex   = std::make_shared<Texture>("./Data/images/HDR/cloudy_dusky_sky_4k.hdr", TextureType::HDR, TEX_0, RGB16F, RGB, FLOAT);
 
-    int resolution = 2048;
+    constexpr int cubeMapResolution = 2048;
     
     const std::shared_ptr<FrameBuffer> fb  = std::make_shared<FrameBuffer>();
-    const std::shared_ptr<RenderBuffer> rb = std::make_shared<RenderBuffer>(resolution, resolution, TextureFormat::DEPTH24);
+    const std::shared_ptr<RenderBuffer> rb = std::make_shared<RenderBuffer>(cubeMapResolution, cubeMapResolution, TextureFormat::DEPTH24);
     fb->SetRenderBufferAttachment(rb, RenderAttachment::DEPTH);
 
-    const std::shared_ptr<Texture> cube = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_0, RGB16F, RGB, FLOAT, resolution, resolution);
+    const std::shared_ptr<Texture> cubeMap = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_0, RGB16F, RGB, FLOAT, cubeMapResolution, cubeMapResolution);
     
     const std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
     ProceduralMesh::GenerateCube(mesh);
@@ -166,21 +165,49 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
     hdrShader->SetInt("equirectMap", hdrTex->GetUnit());
     hdrShader->SetMatrix4x4("projection", captureProjection);
 
-    glViewport(0, 0, resolution, resolution);
+    glViewport(0, 0, cubeMapResolution, cubeMapResolution);
     fb->Bind();
     for (unsigned int i = 0; i < 6; ++i)
     {
         hdrShader->SetMatrix4x4("view", captureViews[i]);
-        fb->SetTextureAttachment(cube, COLOR_ATTACHMENT_0, (TextureTarget)(TEXTURE_CUBE_MAP_POSITIVE_X + i));
+        fb->SetTextureAttachment(cubeMap, COLOR_ATTACHMENT_0, (TextureTarget)(TEXTURE_CUBE_MAP_POSITIVE_X + i));
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindVertexArray(mesh->VAO);
-        glDrawElements(GL_TRIANGLES, (GLsizei)mesh->GetIndices().size(), GL_UNSIGNED_INT, nullptr); // renders a 1x1 cube
+        glDrawElements(GL_TRIANGLES, (GLsizei)mesh->GetIndices().size(), GL_UNSIGNED_INT, nullptr);
+    }
+    fb->Unbind();
+
+    const std::string vertIrr = PathBuilder::GetPath("./Engine/shaders/vertexHDRI.glsl");
+    const std::string fragIrr = PathBuilder::GetPath("./Engine/shaders/fragmentIrradianceMap.glsl");
+    const std::shared_ptr<Shader> irrShader = std::make_shared<Shader>(vertIrr.c_str(), fragIrr.c_str());
+    
+    constexpr int irrMapResolution = 32;
+    const std::shared_ptr<Texture> irradianceMap = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_0, RGB16F, RGB, FLOAT, irrMapResolution, irrMapResolution);
+
+    rb->Resize(irrMapResolution, irrMapResolution);
+
+    irrShader->Use();
+    irrShader->SetInt("environmentMap", cubeMap->GetUnit());
+    irrShader->SetMatrix4x4("projection", captureProjection);
+
+    cubeMap->Bind();
+    glViewport(0, 0, irrMapResolution, irrMapResolution);
+    fb->Bind();
+    for (int i = 0; i < 6; i++)
+    {
+        irrShader->SetMatrix4x4("view", captureViews[i]);
+        fb->SetTextureAttachment(irradianceMap, COLOR_ATTACHMENT_0, (TextureTarget)(TEXTURE_CUBE_MAP_POSITIVE_X + i));
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glBindVertexArray(mesh->VAO);
+        glDrawElements(GL_TRIANGLES, (GLsizei)mesh->GetIndices().size(), GL_UNSIGNED_INT, nullptr);
     }
     fb->Unbind();
     
-    skyMat->SetTexture("skybox", cube);
+    skyMat->SetTexture("skybox", cubeMap);
     
     skyboxMesh->material    = skyMat;
     skyboxMesh->cullingMode = CullingMode::FRONT;

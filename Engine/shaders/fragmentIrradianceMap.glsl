@@ -1,6 +1,6 @@
 #version 410
 
-out vec3 FragmentColor;
+out vec4 FragmentColor;
 
 in vec3 localPos;
 
@@ -33,6 +33,6 @@ void main()
         }
     }
     
-    irradiance   *= PI * (1.0/(float)nSamples);
+    irradiance    = irradiance * PI * (1.0/float(nSamples));
     FragmentColor = vec4(irradiance, 1.0);
 }
