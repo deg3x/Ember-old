@@ -10,7 +10,7 @@
 #include "logger/Logger.h"
 #include "utils/PathBuilder.h"
 
-Texture::Texture(TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType)
+Texture::Texture(TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType, int texWidth, int texHeight)
 {
     path        = "NO_FILE";
     type        = texType;
@@ -18,13 +18,13 @@ Texture::Texture(TextureType texType, TextureUnit texUnit, TextureFormat savedFo
     formatSaved = savedFormat;
     formatImage = imageFormat;
     dataType    = texDataType;
-    
-    Renderer::GetViewportResolution(width, height);
+    width       = texWidth;
+    height      = texHeight;
 
     InitializeTexture(nullptr);
 }
 
-Texture::Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType)
+Texture::Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType, int texWidth, int texHeight)
 {
     path        = texPath;
     type        = texType;
@@ -32,8 +32,8 @@ Texture::Texture(const std::string& texPath, TextureType texType, TextureUnit te
     formatSaved = savedFormat;
     formatImage = imageFormat;
     dataType    = texDataType;
-
-    Renderer::GetViewportResolution(width, height);
+    width       = texWidth;
+    height      = texHeight;
 
     InitializeTexture(PathBuilder::GetPath(texPath).c_str());
 }
@@ -68,7 +68,10 @@ void Texture::SetData(const void* data, TextureTarget target) const
             glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
             return;
         case TextureType::CUBE_MAP:
-            glTexImage2D(TEXTURE_CUBE_MAP, 0, formatSaved, width, height, 0, formatImage, dataType, data);
+            for (int i = 0; i < 6; i++)
+            {
+                glTexImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, formatSaved, width, height, 0, formatImage, dataType, data);
+            }
             return;
         case TextureType::HDR:
             glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
@@ -160,11 +163,11 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
     
     for (unsigned int i = 0; i < 6; i++)
     {
-        std::string fullPath = texturePath;
-        fullPath += faces[i];
-
         if (texturePath != nullptr)
         {
+            std::string fullPath = texturePath;
+            fullPath += faces[i];
+            
             data = LoadImage(fullPath.c_str(), width, height, nChannels, false);
         }
 

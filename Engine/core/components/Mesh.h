@@ -52,6 +52,7 @@ class ENGINE_API Mesh : public Component
 {
 	MAKE_COMPONENT_TYPE(MESH)
 	friend class ProceduralMesh;
+	friend class ObjectPrimitive;
 	
 public:
 	std::shared_ptr<Material> material;

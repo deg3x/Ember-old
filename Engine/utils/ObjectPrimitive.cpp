@@ -1,10 +1,15 @@
 ﻿#include "engine_pch.h"
 #include "ObjectPrimitive.h"
 
+#include <glad/glad.h>
+
+#include "core/FrameBuffer.h"
 #include "core/Object.h"
 #include "core/Shader.h"
 #include "core/Texture.h"
 #include "core/Material.h"
+#include "core/RenderBuffer.h"
+#include "core/Renderer.h"
 #include "core/components/Mesh.h"
 #include "core/components/Transform.h"
 #include "utils/PathBuilder.h"
@@ -125,12 +130,57 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
     const std::shared_ptr<Object> skyObject = std::make_shared<Object>("Skybox");
     const std::shared_ptr<Shader> skyShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
     const std::shared_ptr<Material> skyMat  = std::make_shared<Material>(skyShader);
-    const std::shared_ptr<Texture> skyTex   = std::make_shared<Texture>("./Data/images/skybox/cubemap_clouds_", TextureType::CUBE_MAP, TextureUnit::TEX_0);
     
-    skyMat->SetTexture("skybox", skyTex);
-
     const std::shared_ptr<Mesh> skyboxMesh = skyObject->CreateComponent<Mesh>();
     ProceduralMesh::GenerateCube(skyboxMesh);
+
+    const glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+    const glm::mat4 captureViews[] = {
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
+     };
+
+    const std::string vertHDR = PathBuilder::GetPath("./Engine/shaders/vertexHDRI.glsl");
+    const std::string fragHDR = PathBuilder::GetPath("./Engine/shaders/fragmentHDRI.glsl");
+    
+    const std::shared_ptr<Shader> hdrShader = std::make_shared<Shader>(vertHDR.c_str(), fragHDR.c_str());
+    const std::shared_ptr<Texture> hdrTex   = std::make_shared<Texture>("./Data/images/HDR/cloudy_dusky_sky_4k.hdr", TextureType::HDR, TEX_0, RGB16F, RGB, FLOAT);
+
+    int resolution = 2048;
+    
+    const std::shared_ptr<FrameBuffer> fb  = std::make_shared<FrameBuffer>();
+    const std::shared_ptr<RenderBuffer> rb = std::make_shared<RenderBuffer>(resolution, resolution, TextureFormat::DEPTH24);
+    fb->SetRenderBufferAttachment(rb, RenderAttachment::DEPTH);
+
+    const std::shared_ptr<Texture> cube = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_0, RGB16F, RGB, FLOAT, resolution, resolution);
+    
+    const std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
+    ProceduralMesh::GenerateCube(mesh);
+
+    hdrTex->Bind();
+    hdrShader->Use();
+    hdrShader->SetInt("equirectMap", hdrTex->GetUnit());
+    hdrShader->SetMatrix4x4("projection", captureProjection);
+
+    glViewport(0, 0, resolution, resolution);
+    fb->Bind();
+    for (unsigned int i = 0; i < 6; ++i)
+    {
+        hdrShader->SetMatrix4x4("view", captureViews[i]);
+        fb->SetTextureAttachment(cube, COLOR_ATTACHMENT_0, (TextureTarget)(TEXTURE_CUBE_MAP_POSITIVE_X + i));
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glBindVertexArray(mesh->VAO);
+        glDrawElements(GL_TRIANGLES, (GLsizei)mesh->GetIndices().size(), GL_UNSIGNED_INT, nullptr); // renders a 1x1 cube
+    }
+    fb->Unbind();
+    
+    skyMat->SetTexture("skybox", cube);
     
     skyboxMesh->material    = skyMat;
     skyboxMesh->cullingMode = CullingMode::FRONT;

@@ -2,11 +2,11 @@ vec3 SampleNormalMap(sampler2D map, vec2 uv, mat3 tbnMatrix)
 {
     vec3 normal = normalize(texture(map, uv).rgb) * 2.0 - 1.0;
     
-    vec3 tangent    = TBN[0];
-    vec3 bitangent  = TBN[1];
+    vec3 tangent    = tbnMatrix[0];
+    vec3 bitangent  = tbnMatrix[1];
     vec3 calcNormal = cross(tangent, bitangent);
     
-    float normalCheck = dot(calcNormal, TBN[2]);
+    float normalCheck = dot(calcNormal, tbnMatrix[2]);
     
     if (normalCheck < 0.5)
     {
@@ -19,4 +19,14 @@ vec3 SampleNormalMap(sampler2D map, vec2 uv, mat3 tbnMatrix)
     }
     
     return normal;
+}
+
+const vec2 invAtan = vec2(0.1591, 0.3183);
+vec2 SampleSphericalMap(vec3 vector)
+{
+    vec2 uv = vec2(atan(vector.z, vector.x), asin(vector.y));
+    uv *= invAtan;
+    uv += 0.5;
+    
+    return uv;
 }

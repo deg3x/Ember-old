@@ -44,7 +44,7 @@ void FrameBuffer::SetRenderBufferAttachment(const std::shared_ptr<RenderBuffer>&
 {
     Bind();
 
-    glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_STENCIL, RENDERBUFFER, renderBuffer->GetID());
+    glFramebufferRenderbuffer(FRAMEBUFFER, attachment, RENDERBUFFER, renderBuffer->GetID());
 }
 
 bool FrameBuffer::CheckIsComplete()

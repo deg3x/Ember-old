@@ -20,8 +20,8 @@ private:
     
 public:
     Texture() = delete;
-    Texture(TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE);
-    Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE);
+    Texture(TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE, int texWidth = 0, int texHeight = 0);
+    Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE, int texWidth = 0, int texHeight = 0);
     
     void Bind() const;
     void SetData(const void* data, TextureTarget target = TextureTarget::AUTO) const;
