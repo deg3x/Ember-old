@@ -1,16 +1,22 @@
 ﻿#pragma once
 
 #include "Definitions.h"
+#include "Texture.h"
 
+class Texture;
+class Renderbuffer;
 class Framebuffer;
 struct Color;
 
 class ENGINE_API Renderer
 {
 public:
-    static std::unique_ptr<Framebuffer> WorldFrameBuffer;
+    static std::unique_ptr<Framebuffer> ViewportFrameBuffer;
     
 private:
+    inline static std::shared_ptr<Renderbuffer> viewportRenderBuffer;
+    inline static std::shared_ptr<Texture> viewportTexture;
+    
     static unsigned int clearBits;
     
 public:
@@ -48,6 +54,11 @@ public:
     static void RemoveClearBits(unsigned int bitsToRemove)
     {
         clearBits &= (bitsToRemove ^ 0xFFFFFFFF);
+    }
+
+    static unsigned int GetViewportTextureID()
+    {
+        return viewportTexture->GetID();
     }
     
     static unsigned int GetClearBits()

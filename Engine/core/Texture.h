@@ -24,7 +24,7 @@ public:
     Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE);
     
     void Bind() const;
-    void SetTextureData(const void* data, TextureTarget target = TextureTarget::AUTO) const;
+    void SetData(const void* data, TextureTarget target = TextureTarget::AUTO) const;
 
     static TextureFormat ChannelsToFormat(int channels);
 

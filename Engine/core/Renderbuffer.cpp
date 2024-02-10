@@ -17,8 +17,6 @@ Renderbuffer::Renderbuffer(int initWidth, int initHeight, TextureFormat rbFormat
     Bind();
     
     glRenderbufferStorage(RENDERBUFFER, format, initWidth, initHeight);
-    
-    Unbind();
 }
 
 Renderbuffer::~Renderbuffer()

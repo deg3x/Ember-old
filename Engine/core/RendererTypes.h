@@ -6,7 +6,7 @@ enum RenderTarget
     RENDERBUFFER = 0x8D41
 };
 
-enum FramebufferAttachment
+enum RenderAttachment
 {
     DEPTH               = 0x8D00,
     DEPTH_STENCIL       = 0x821A,

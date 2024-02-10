@@ -1,16 +1,19 @@
 ﻿#include "engine_pch.h"
 #include "Renderer.h"
 
-#include "Framebuffer.h"
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
+
+#include "Framebuffer.h"
+#include "Renderbuffer.h"
+#include "Texture.h"
 
 #include "window/Window.h"
 #include "utils/Types.h"
 #include "logger/Logger.h"
 
 unsigned int Renderer::clearBits;
-std::unique_ptr<Framebuffer> Renderer::WorldFrameBuffer;
+std::unique_ptr<Framebuffer> Renderer::ViewportFrameBuffer;
 
 void Renderer::Initialize()
 {
@@ -22,7 +25,14 @@ void Renderer::Initialize()
     int width  = Window::GetWindowWidth();
     int height = Window::GetWindowHeight();
     
-    WorldFrameBuffer = std::make_unique<Framebuffer>(width, height);
+    ViewportFrameBuffer  = std::make_unique<Framebuffer>();
+    viewportRenderBuffer = std::make_shared<Renderbuffer>(width, height);
+    viewportTexture      = std::make_shared<Texture>(TextureType::DIFFUSE);
+
+    ViewportFrameBuffer->SetTextureAttachment(viewportTexture, COLOR_ATTACHMENT_0, TEXTURE_2D);
+    ViewportFrameBuffer->SetRenderBufferAttachment(viewportRenderBuffer, DEPTH_STENCIL);
+
+    ViewportFrameBuffer->CheckIsComplete();
 
     // For some reason OSX requires double the window dimensions
 #if defined(_WIN32)
@@ -65,7 +75,11 @@ void Renderer::SetViewport(int bottomLeftX, int bottomLeftY, int width, int heig
 {
     glViewport(bottomLeftX, bottomLeftY, width, height);
 
-    WorldFrameBuffer->Resize(width, height);
+    viewportTexture->SetWidth(width);
+    viewportTexture->SetHeight(height);
+    viewportTexture->SetData(nullptr);
+    
+    viewportRenderBuffer->Resize(width, height);
 }
 
 void Renderer::SetDepthTestEnabled(bool state)

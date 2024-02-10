@@ -56,7 +56,7 @@ void Texture::Bind() const
     }
 }
 
-void Texture::SetTextureData(const void* data, TextureTarget target) const
+void Texture::SetData(const void* data, TextureTarget target) const
 {
     Bind();
 

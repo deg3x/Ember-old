@@ -19,12 +19,12 @@ void Engine::Initialize()
 
 void Engine::Tick()
 {
-    Renderer::WorldFrameBuffer->Bind();
+    Renderer::ViewportFrameBuffer->Bind();
     Renderer::Clear();
     
     Time::Tick();
     Input::Tick();
     World::Tick();
     
-    Renderer::WorldFrameBuffer->Unbind();
+    Renderer::ViewportFrameBuffer->Unbind();
 }

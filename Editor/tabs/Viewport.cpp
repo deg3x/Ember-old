@@ -65,6 +65,6 @@ void Viewport::Tick()
         World::GetCamera()->GetOwner()->transform->position.y = radius * glm::cos(phi);
     }
 
-    ImGui::Image(reinterpret_cast<ImTextureID>(Renderer::WorldFrameBuffer->GetTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
+    ImGui::Image(reinterpret_cast<ImTextureID>(Renderer::GetViewportTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
     ImGui::End();
 }
