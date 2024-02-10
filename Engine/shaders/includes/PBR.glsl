@@ -1,11 +1,19 @@
 const float PI = 3.1415926538;
 
-vec3 FresnelSchlick(float dotHalfView, vec3 albedoVal, float metallicVal)
+vec3 FresnelSchlick(float dotHalfView, vec3 albedoVal, float metallicVal, vec3 baseReflectivity)
 {
-    vec3 baseRefl = vec3(0.04);
-    baseRefl      = mix(baseRefl, albedoVal, metallicVal);
+    baseReflectivity = mix(baseReflectivity, albedoVal, metallicVal);
     
-    vec3 fresnel  = baseRefl + (1.0 - baseRefl) * pow(clamp(1.0 - dotHalfView, 0.0, 1.0), 5.0);
+    vec3 fresnel  = baseReflectivity + (1.0 - baseReflectivity) * pow(clamp(1.0 - dotHalfView, 0.0, 1.0), 5.0);
+    
+    return fresnel;
+}
+
+vec3 FresnelSchlickRoughness(float dotHalfView, vec3 albedoVal, float metallicVal, vec3 baseReflectivity, float roughness)
+{
+    baseReflectivity = mix(baseReflectivity, albedoVal, metallicVal);
+    
+    vec3 fresnel  = baseReflectivity + (max(vec3(1.0 - roughness), baseReflectivity) - baseReflectivity) * pow(clamp(1.0 - dotHalfView, 0.0, 1.0), 5.0);
     
     return fresnel;
 }
@@ -43,7 +51,7 @@ vec3 PBREquationComponent(vec3 normal, vec3 viewVector, vec3 lightVector, vec3 h
     float dotHalfView    = dot(halfVector, viewVector);
     float dotNormalHalf  = max(dot(normal, halfVector), 0.0);
     
-    vec3 fresnel   = FresnelSchlick(dotHalfView, albedoVal, metallicVal);
+    vec3 fresnel   = FresnelSchlick(dotHalfView, albedoVal, metallicVal, vec3(0.04));
     float geometry = GeometrySmith(dotNormalView, dotNormalLight, roughnessVal);
     float NDF      = NDFTrowbridgeReitz(dotNormalHalf, roughnessVal);
     

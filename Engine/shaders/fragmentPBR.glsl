@@ -12,6 +12,9 @@ out vec4 FragmentColor;
 
 uniform vec3 cameraPosition;
 
+uniform samplerCube irradianceMap;
+uniform bool hasIrradianceMap;
+
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
 uniform sampler2D metallicMap;
@@ -68,7 +71,20 @@ void main()
         irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance, albedoVal, metallicVal, roughnessVal);
     }
     
-    vec3 ambient = vec3(0.03) * albedoVal * ao;
+    vec3 ambient = vec3(0.03) * albedoVal;
+    
+    // Indirect/Image lighting
+    if (hasIrradianceMap)
+    {
+        vec3 specular = FresnelSchlickRoughness(max(dot(normal, viewVector), 0.0), albedoVal, metallicVal, roughnessVal);
+        vec3 diffuse  = 1.0 - specular;
+        
+        vec3 envIrradiance = texture(irradianceMap, normal).rgb;
+        
+        ambient = envIrradiance * albedoVal * diffuse;
+    }
+    
+    ambient = ambient * ao;
     vec3 color   = ambient + irradiance;
     
     // HDR mapping and Gamma correction
