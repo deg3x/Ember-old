@@ -5,7 +5,7 @@
 
 #include "core/World.h"
 #include "core/Renderer.h"
-#include "core/Framebuffer.h"
+#include "core/FrameBuffer.h"
 #include "core/Object.h"
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"

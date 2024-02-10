@@ -4,8 +4,8 @@
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 
-#include "Framebuffer.h"
-#include "Renderbuffer.h"
+#include "FrameBuffer.h"
+#include "RenderBuffer.h"
 #include "Texture.h"
 
 #include "window/Window.h"
@@ -13,7 +13,7 @@
 #include "logger/Logger.h"
 
 unsigned int Renderer::clearBits;
-std::unique_ptr<Framebuffer> Renderer::ViewportFrameBuffer;
+std::unique_ptr<FrameBuffer> Renderer::ViewportFrameBuffer;
 
 void Renderer::Initialize()
 {
@@ -25,8 +25,8 @@ void Renderer::Initialize()
     int width  = Window::GetWindowWidth();
     int height = Window::GetWindowHeight();
     
-    ViewportFrameBuffer  = std::make_unique<Framebuffer>();
-    viewportRenderBuffer = std::make_shared<Renderbuffer>(width, height);
+    ViewportFrameBuffer  = std::make_unique<FrameBuffer>();
+    viewportRenderBuffer = std::make_shared<RenderBuffer>(width, height);
     viewportTexture      = std::make_shared<Texture>(TextureType::DIFFUSE);
 
     ViewportFrameBuffer->SetTextureAttachment(viewportTexture, COLOR_ATTACHMENT_0, TEXTURE_2D);

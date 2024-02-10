@@ -1,12 +1,12 @@
 ﻿#include "engine_pch.h"
-#include "Renderbuffer.h"
+#include "RenderBuffer.h"
 
 #include "glad/glad.h"
 
 #include "RendererTypes.h"
 #include "TextureTypes.h"
 
-Renderbuffer::Renderbuffer(int initWidth, int initHeight, TextureFormat rbFormat)
+RenderBuffer::RenderBuffer(int initWidth, int initHeight, TextureFormat rbFormat)
 {
     width  = initWidth;
     height = initHeight;
@@ -19,22 +19,22 @@ Renderbuffer::Renderbuffer(int initWidth, int initHeight, TextureFormat rbFormat
     glRenderbufferStorage(RENDERBUFFER, format, initWidth, initHeight);
 }
 
-Renderbuffer::~Renderbuffer()
+RenderBuffer::~RenderBuffer()
 {
     glDeleteRenderbuffers(1, &id);
 }
 
-void Renderbuffer::Bind() const
+void RenderBuffer::Bind() const
 {
     glBindRenderbuffer(RENDERBUFFER, id);
 }
 
-void Renderbuffer::Unbind() const
+void RenderBuffer::Unbind() const
 {
     glBindRenderbuffer(RENDERBUFFER, 0);
 }
 
-void Renderbuffer::Resize(int newWidth, int newHeight)
+void RenderBuffer::Resize(int newWidth, int newHeight)
 {
     if (width == newWidth && height == newHeight)
     {

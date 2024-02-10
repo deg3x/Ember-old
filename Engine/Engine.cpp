@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "Engine.h"
 
-#include "core/Framebuffer.h"
+#include "core/FrameBuffer.h"
 #include "window/Window.h"
 #include "core/World.h"
 #include "core/Renderer.h"

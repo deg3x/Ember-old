@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "EditorTab.h"
 
-class Framebuffer;
+class FrameBuffer;
 
 class Viewport : public EditorTab
 {

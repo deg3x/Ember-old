@@ -1,13 +1,13 @@
 #include "engine_pch.h"
-#include "Framebuffer.h"
+#include "FrameBuffer.h"
 
-#include "Renderbuffer.h"
+#include "RenderBuffer.h"
 #include "glad/glad.h"
 
 #include "RendererTypes.h"
 #include "logger/Logger.h"
 
-Framebuffer::Framebuffer()
+FrameBuffer::FrameBuffer()
 {
     glGenFramebuffers(1, &id);
     
@@ -18,36 +18,36 @@ Framebuffer::Framebuffer()
     // glFramebufferTexture2D(FRAMEBUFFER, DEPTH_STENCIL, TEXTURE_2D, texture->GetID(), 0);
 }
 
-Framebuffer::~Framebuffer()
+FrameBuffer::~FrameBuffer()
 {
     glDeleteFramebuffers(1, &id);
 }
 
-void Framebuffer::Bind() const
+void FrameBuffer::Bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, id);
 }
 
-void Framebuffer::Unbind() const
+void FrameBuffer::Unbind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Framebuffer::SetTextureAttachment(const std::shared_ptr<Texture>& texture, RenderAttachment attachment, TextureTarget texTarget)
+void FrameBuffer::SetTextureAttachment(const std::shared_ptr<Texture>& texture, RenderAttachment attachment, TextureTarget texTarget)
 {
     Bind();
     
     glFramebufferTexture2D(FRAMEBUFFER, attachment, texTarget, texture->GetID(), 0);
 }
 
-void Framebuffer::SetRenderBufferAttachment(const std::shared_ptr<Renderbuffer>& renderBuffer, RenderAttachment attachment)
+void FrameBuffer::SetRenderBufferAttachment(const std::shared_ptr<RenderBuffer>& renderBuffer, RenderAttachment attachment)
 {
     Bind();
 
     glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_STENCIL, RENDERBUFFER, renderBuffer->GetID());
 }
 
-bool Framebuffer::CheckIsComplete()
+bool FrameBuffer::CheckIsComplete()
 {
     Bind();
     

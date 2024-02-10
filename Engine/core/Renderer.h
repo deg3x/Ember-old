@@ -4,17 +4,17 @@
 #include "Texture.h"
 
 class Texture;
-class Renderbuffer;
-class Framebuffer;
+class RenderBuffer;
+class FrameBuffer;
 struct Color;
 
 class ENGINE_API Renderer
 {
 public:
-    static std::unique_ptr<Framebuffer> ViewportFrameBuffer;
+    static std::unique_ptr<FrameBuffer> ViewportFrameBuffer;
     
 private:
-    inline static std::shared_ptr<Renderbuffer> viewportRenderBuffer;
+    inline static std::shared_ptr<RenderBuffer> viewportRenderBuffer;
     inline static std::shared_ptr<Texture> viewportTexture;
     
     static unsigned int clearBits;

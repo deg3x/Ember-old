@@ -3,7 +3,7 @@
 #include "Definitions.h"
 #include "TextureTypes.h"
 
-class ENGINE_API Renderbuffer
+class ENGINE_API RenderBuffer
 {
 private:
     unsigned int id;
@@ -13,9 +13,9 @@ private:
     TextureFormat format;
     
 public:
-    Renderbuffer() = delete;
-    Renderbuffer(int initWidth, int initHeight, TextureFormat rbFormat = DEPTH24_STENCIL8);
-    virtual ~Renderbuffer();
+    RenderBuffer() = delete;
+    RenderBuffer(int initWidth, int initHeight, TextureFormat rbFormat = DEPTH24_STENCIL8);
+    virtual ~RenderBuffer();
 
     void Bind() const;
     void Unbind() const;
