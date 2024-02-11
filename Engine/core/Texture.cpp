@@ -81,6 +81,13 @@ void Texture::SetData(const void* data, TextureTarget target) const
     glTexImage2D(target, 0, formatSaved, width, height, 0, formatImage, dataType, data);
 }
 
+void Texture::SetParameter(TextureTarget target, TextureParameterName paramName, TextureParameter paramValue) const
+{
+    Bind();
+    
+    glTexParameteri(target, paramName, paramValue);
+}
+
 TextureFormat Texture::ChannelsToFormat(int channels)
 {
     switch (channels)

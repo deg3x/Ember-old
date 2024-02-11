@@ -25,6 +25,7 @@ public:
     
     void Bind() const;
     void SetData(const void* data, TextureTarget target = TextureTarget::AUTO) const;
+    void SetParameter(TextureTarget target, TextureParameterName paramName, TextureParameter paramValue) const;
 
     static TextureFormat ChannelsToFormat(int channels);
 
