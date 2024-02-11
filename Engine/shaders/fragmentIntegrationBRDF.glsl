@@ -1,4 +1,4 @@
-#version 410
+#version 410 core
 
 out vec2 FragmentColor;
 
