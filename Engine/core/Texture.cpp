@@ -88,6 +88,13 @@ void Texture::SetParameter(TextureTarget target, TextureParameterName paramName,
     glTexParameteri(target, paramName, paramValue);
 }
 
+void Texture::GenerateMipmap(TextureTarget target) const 
+{
+    Bind();
+    
+    glGenerateMipmap(target);
+}
+
 TextureFormat Texture::ChannelsToFormat(int channels)
 {
     switch (channels)
@@ -141,7 +148,7 @@ void Texture::InitializeTextureDiffuse(const char* texPath)
     glTexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
 
     glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
-    glGenerateMipmap(TEXTURE_2D);
+    GenerateMipmap(TEXTURE_2D);
 
     if (data)
     {

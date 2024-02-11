@@ -27,6 +27,8 @@ public:
     void SetData(const void* data, TextureTarget target = TextureTarget::AUTO) const;
     void SetParameter(TextureTarget target, TextureParameterName paramName, TextureParameter paramValue) const;
 
+    void GenerateMipmap(TextureTarget target) const;
+
     static TextureFormat ChannelsToFormat(int channels);
 
     inline void SetUnit(TextureUnit newUnit)
