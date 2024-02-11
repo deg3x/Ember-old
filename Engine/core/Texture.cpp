@@ -128,10 +128,10 @@ void Texture::InitializeTextureDiffuse(const char* texPath)
     glGenTextures(1, &textureID);
     Bind();
 
-    glTexParameteri(TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(TEXTURE_2D, TEXTURE_WRAP_S, REPEAT);
+    glTexParameteri(TEXTURE_2D, TEXTURE_WRAP_T, REPEAT);
+    glTexParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
+    glTexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
 
     glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
     glGenerateMipmap(TEXTURE_2D);
@@ -178,11 +178,11 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
         }
     }
     
-    glTexParameteri(TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(TEXTURE_CUBE_MAP, TEXTURE_MIN_FILTER, LINEAR);
+    glTexParameteri(TEXTURE_CUBE_MAP, TEXTURE_MAG_FILTER, LINEAR);
+    glTexParameteri(TEXTURE_CUBE_MAP, TEXTURE_WRAP_S, CLAMP_TO_EDGE);
+    glTexParameteri(TEXTURE_CUBE_MAP, TEXTURE_WRAP_T, CLAMP_TO_EDGE);
+    glTexParameteri(TEXTURE_CUBE_MAP, TEXTURE_WRAP_R, CLAMP_TO_EDGE);
 }
 
 void Texture::InitializeTextureHDR(const char* texturePath)
@@ -200,10 +200,10 @@ void Texture::InitializeTextureHDR(const char* texturePath)
 
     glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
 
-    glTexParameteri(TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(TEXTURE_2D, TEXTURE_WRAP_S, CLAMP_TO_EDGE);
+    glTexParameteri(TEXTURE_2D, TEXTURE_WRAP_T, CLAMP_TO_EDGE);
+    glTexParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
+    glTexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
 
     if (data)
     {

@@ -1,5 +1,26 @@
 #pragma once
 
+//
+// Assigned values are mapped to OpenGL definitions
+//
+
+enum TextureParameterName : uint16_t
+{
+    TEXTURE_MAG_FILTER = 0x2800,
+    TEXTURE_MIN_FILTER = 0x2801,
+    TEXTURE_WRAP_S     = 0x2802,
+    TEXTURE_WRAP_T     = 0x2803,
+    TEXTURE_WRAP_R     = 0x8072,
+};
+
+enum TextureParameter : uint16_t
+{
+    LINEAR               = 0x2601,
+    LINEAR_MIPMAP_LINEAR = 0x2703,
+    REPEAT               = 0x2901,
+    CLAMP_TO_EDGE        = 0x812F,
+};
+
 enum TextureFormat : uint16_t
 {
     R                = 0x1903,
