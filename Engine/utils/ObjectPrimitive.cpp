@@ -165,6 +165,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
     fb->SetRenderBufferAttachment(rb, RenderAttachment::DEPTH);
 
     const std::shared_ptr<Texture> cubeMap = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_0, RGB16F, RGB, FLOAT, cubeMapResolution, cubeMapResolution);
+    cubeMap->SetParameter(TEXTURE_CUBE_MAP, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_LINEAR);
     
     const std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
     ProceduralMesh::GenerateCube(mesh);
@@ -187,6 +188,8 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
         glDrawElements(GL_TRIANGLES, (GLsizei)mesh->GetIndices().size(), GL_UNSIGNED_INT, nullptr);
     }
     fb->Unbind();
+
+    cubeMap->GenerateMipmap(TEXTURE_CUBE_MAP);
 
     const std::string vertIrr = PathBuilder::GetPath("./Engine/shaders/vertexHDRI.glsl");
     const std::string fragIrr = PathBuilder::GetPath("./Engine/shaders/fragmentIrradianceMap.glsl");

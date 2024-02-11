@@ -29,8 +29,19 @@ void main()
         float dotNormalLight = max(dot(normal, light), 0.0);
         if (dotNormalLight > 0.0)
         {
-            outputColor += texture(environmentMap, light).rgb * dotNormalLight;
-            totalWeight      += dotNormalLight;
+            float dotNormalHalf = max(dot(normal, halfV), 0.0);
+            float dotHalfView   = max(dot(halfV, view), 0.0);
+            float D             = GeometrySchlickGGX(dotNormalHalf, roughness);
+            float pdf           = D * dotNormalHalf / (4.0 * dotHalfView) + 0.0001;
+            
+            float resolution = 2048;
+            float saTexel    = 4.0 * PI / (6.0 * resolution * resolution);
+            float saSample   = 1.0 / (float(nSamples) * pdf + 0.0001);
+            
+            float mipLevel = roughness == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel);
+            
+            outputColor += textureLod(environmentMap, light, mipLevel).rgb * dotNormalLight;
+            totalWeight += dotNormalLight;
         }
     }
     
