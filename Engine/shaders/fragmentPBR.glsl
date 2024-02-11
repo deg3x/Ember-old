@@ -13,7 +13,10 @@ out vec4 FragmentColor;
 uniform vec3 cameraPosition;
 
 uniform samplerCube irradianceMap;
-uniform bool hasIrradianceMap = false;
+uniform samplerCube prefilterMap;
+uniform sampler2D brdfMap;
+
+uniform bool hasImageBasedLighting = false;
 
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
@@ -71,13 +74,26 @@ void main()
         irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance, albedoVal, metallicVal, roughnessVal);
     }
     
-    // Indirect/Image lighting
-    float dotNormView  = max(dot(normVector, viewVector), 0.0);
-    vec3 specular      = FresnelSchlickRoughness(dotNormView, albedoVal, metallicVal, vec3(0.04), roughnessVal);
+    ////// Indirect/Image lighting
+    vec3 baseReflectivity = vec3(0.04);
+    float dotNormView     = max(dot(normVector, viewVector), 0.0);
+    
+    // Diffuse
+    vec3 specular      = FresnelSchlickRoughness(dotNormView, albedoVal, metallicVal, baseReflectivity, roughnessVal);
     vec3 diffuse       = (1.0 - specular) * (1.0 - metallicVal);
     vec3 envIrradiance = texture(irradianceMap, normVector).rgb;
     
-    vec3 ambient = hasIrradianceMap ? (envIrradiance * albedoVal * diffuse) * ao : (vec3(0.03) * albedoVal) * ao;
+    // Specular
+    const float maxReflectionLOD = 4.0;
+    
+    vec3 reflection     = reflect(-viewVector, normVector);
+    vec3 prefilterColor = textureLod(prefilterMap, reflection, roughnessVal * maxReflectionLOD).rgb;
+    vec3 fresnel        = FresnelSchlickRoughness(dotNormView, albedoVal, metallicVal, baseReflectivity, roughnessVal);
+    vec2 envBRDF        = texture(brdfMap, vec2(dotNormView, roughnessVal)).rg;
+    vec3 envSpecular    = prefilterColor * (fresnel * envBRDF.x + envBRDF.y);
+    
+    
+    vec3 ambient = hasImageBasedLighting ? (envIrradiance * albedoVal * diffuse + envSpecular) * ao : (vec3(0.03) * albedoVal) * ao;
     
     vec3 color = ambient + irradiance;
     

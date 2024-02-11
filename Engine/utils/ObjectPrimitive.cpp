@@ -15,6 +15,40 @@
 #include "utils/PathBuilder.h"
 #include "utils/ProceduralMesh.h"
 
+namespace
+{
+    unsigned int quadVAO = 0;
+    unsigned int quadVBO;
+    void renderQuad()
+    {
+        if (quadVAO == 0)
+        {
+            float quadVertices[] = {
+                // positions       // normals          // texture Coords
+                -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                 1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            };
+            // setup plane VAO
+            glGenVertexArrays(1, &quadVAO);
+            glGenBuffers(1, &quadVBO);
+            glBindVertexArray(quadVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        }
+        glBindVertexArray(quadVAO);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
+    }
+}
+
 std::shared_ptr<Object> ObjectPrimitive::InstantiateCube()
 {
     const std::string vertPath = PathBuilder::GetPath("./Engine/shaders/vertexStandard.glsl");
@@ -44,7 +78,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateCube()
     cubeMat->SetProperty("hasMapAmbientOcclusion", true);
     
     cubeMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
-    cubeMat->SetProperty("hasIrradianceMap", true);
+    cubeMat->SetProperty("hasImageBasedLighting", true);
 
     cubeMesh->material = cubeMat;
 
@@ -83,7 +117,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiatePlane()
     planeMat->SetProperty("hasMapAmbientOcclusion", true);
 
     planeMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
-    planeMat->SetProperty("hasIrradianceMap", true);
+    planeMat->SetProperty("hasImageBasedLighting", true);
     
     planeMesh->material = planeMat;
     
@@ -121,7 +155,9 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSphere()
     sphereMat->SetProperty("hasMapAmbientOcclusion", true);
 
     sphereMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
-    sphereMat->SetProperty("hasIrradianceMap", true);
+    sphereMat->SetTexture("prefilterMap", Renderer::SkyboxPrefilteredMap);
+    sphereMat->SetTexture("brdfMap", Renderer::SkyboxBRDFMap);
+    sphereMat->SetProperty("hasImageBasedLighting", true);
 
     sphereMesh->material = sphereMat;
 
@@ -257,6 +293,32 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
     }
     fb->Unbind();
 
+    const std::string vertBRDF = PathBuilder::GetPath("./Engine/shaders/vertexScreen.glsl");
+    const std::string fragBRDF = PathBuilder::GetPath("./Engine/shaders/fragmentIntegrationBrdf.glsl");
+    const std::shared_ptr<Shader> brdfShader = std::make_shared<Shader>(vertBRDF.c_str(), fragBRDF.c_str());
+    
+    constexpr int brdfResolution = 512;
+    const std::shared_ptr<Texture> integratedBRDFMap = std::make_shared<Texture>(TextureType::DIFFUSE, TEX_29, RGB16F, RG, FLOAT, brdfResolution, brdfResolution);
+    integratedBRDFMap->SetParameter(TEXTURE_2D, TEXTURE_WRAP_S, CLAMP_TO_EDGE);
+    integratedBRDFMap->SetParameter(TEXTURE_2D, TEXTURE_WRAP_T, CLAMP_TO_EDGE);
+
+    unsigned int brdfLUTTexture;
+    glGenTextures(1, &brdfLUTTexture);
+
+    fb->Bind();
+    rb->Resize(brdfResolution, brdfResolution);
+    fb->SetTextureAttachment(integratedBRDFMap, COLOR_ATTACHMENT_0, TEXTURE_2D);
+
+    glViewport(0, 0, brdfResolution, brdfResolution);
+    brdfShader->Use();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // We using an anonymous NS function for now. Add quad mesh or fix plane for resolution 1.
+    renderQuad();
+    fb->Unbind();
+
+    Renderer::SkyboxBRDFMap        = integratedBRDFMap;
     Renderer::SkyboxCubeMapHDR     = cubeMap;
     Renderer::SkyboxIrradianceMap  = irradianceMap;
     Renderer::SkyboxPrefilteredMap = filteredEnvMap;

@@ -1,4 +1,4 @@
-﻿#version 410
+#version 410
 
 out vec4 FragmentColor;
 

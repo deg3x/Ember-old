@@ -25,6 +25,13 @@ float GeometrySchlickGGX(float dotNormalView, float roughnessVal)
     return dotNormalView / (dotNormalView * (1.0 - kappa) + kappa);
 }
 
+float GeometrySchlickIBLGGX(float dotNormalView, float roughnessVal)
+{
+    float kappa = (roughnessVal * roughnessVal) / 2.0;
+    
+    return dotNormalView / (dotNormalView * (1.0 - kappa) + kappa);
+}
+
 vec3 ImportanceSampleGGX(vec2 vector, vec3 normal, float roughnessVal)
 {
     float alpha    = roughnessVal * roughnessVal;
@@ -52,6 +59,14 @@ float GeometrySmith(float dotNormalView, float dotNormalLight, float roughnessVa
 {
     float ggx1 = GeometrySchlickGGX(dotNormalView, roughnessVal);
     float ggx2 = GeometrySchlickGGX(dotNormalLight, roughnessVal);
+    
+    return ggx1 * ggx2;
+}
+
+float GeometrySmithIBL(float dotNormalView, float dotNormalLight, float roughnessVal)
+{
+    float ggx1 = GeometrySchlickIBLGGX(dotNormalView, roughnessVal);
+    float ggx2 = GeometrySchlickIBLGGX(dotNormalLight, roughnessVal);
     
     return ggx1 * ggx2;
 }

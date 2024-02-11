@@ -24,6 +24,7 @@ enum TextureParameter : uint16_t
 enum TextureFormat : uint16_t
 {
     R                = 0x1903,
+    RG               = 0x8227,
     RGB              = 0x1907,
     RGBA             = 0x1908,
     RGB16F           = 0x881B,

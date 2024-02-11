@@ -18,6 +18,7 @@ std::unique_ptr<FrameBuffer> Renderer::ViewportFrameBuffer;
 std::shared_ptr<Texture> Renderer::SkyboxCubeMapHDR;
 std::shared_ptr<Texture> Renderer::SkyboxIrradianceMap;
 std::shared_ptr<Texture> Renderer::SkyboxPrefilteredMap;
+std::shared_ptr<Texture> Renderer::SkyboxBRDFMap;
 
 void Renderer::Initialize()
 {
