@@ -30,9 +30,9 @@ uniform bool hasMapMetallic         = false;
 uniform bool hasMapRoughness        = false;
 uniform bool hasMapAmbientOcclusion = false;
 
-uniform vec3 albedo            = vec3(0.9, 0.15, 0.1);
-uniform float metallic         = 0.0;
-uniform float roughness        = 0.1;
+uniform vec3 albedo            = vec3(1.0, 1.0, 1.0);
+uniform float metallic         = 1.0;
+uniform float roughness        = 0.0;
 uniform float ambientOcclusion = 0.1;
 
 void main()

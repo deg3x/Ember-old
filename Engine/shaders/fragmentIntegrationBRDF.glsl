@@ -12,10 +12,10 @@ void main()
     float dotNormalView = TexCoords.x;
     float roughness     = TexCoords.y;
     
-    vec3 point;
-    point.x = sqrt(1.0 - dotNormalView * dotNormalView);
-    point.y = 0.0;
-    point.z = dotNormalView;
+    vec3 view;
+    view.x = sqrt(1.0 - dotNormalView * dotNormalView);
+    view.y = 0.0;
+    view.z = dotNormalView;
     
     float A = 0.0;
     float B = 0.0;
@@ -27,17 +27,17 @@ void main()
     {
         vec2 vector = HammersleySequence(i, nSamples);
         vec3 halfV  = ImportanceSampleGGX(vector, planeNorm, roughness);
-        vec3 light  = normalize(2.0 * dot(point, halfV) * halfV - point);
+        vec3 light  = normalize(2.0 * dot(view, halfV) * halfV - view);
         
         float dotNormalLight = max(light.z, 0.0);
         float dotNormalHalf  = max(halfV.z, 0.0);
-        float dotPointHalf   = max(dot(point, halfV), 0.0);
+        float dotViewHalf   = max(dot(view, halfV), 0.0);
         
         if (dotNormalLight > 0.0)
         {
             float geometry    = GeometrySmithIBL(dotNormalView, dotNormalLight, roughness);
-            float geometryVis = (geometry * dotPointHalf) / (dotNormalHalf * dotNormalView);
-            float fresnel     = pow(1.0 - dotPointHalf, 5.0);
+            float geometryVis = (geometry * dotViewHalf) / (dotNormalHalf * dotNormalView);
+            float fresnel     = pow(1.0 - dotViewHalf, 5.0);
             
             A += (1.0 - fresnel) * geometryVis;
             B += fresnel * geometryVis;

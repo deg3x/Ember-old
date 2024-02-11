@@ -41,16 +41,16 @@ vec3 ImportanceSampleGGX(vec2 vector, vec3 normal, float roughnessVal)
     float cosTheta = sqrt((1.0 - vector.x) / (1.0 + (alphaSqr - 1.0) * vector.y));
     float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
     
-    vec3 point;
-    point.x = cos(phi) * sinTheta;
-    point.y = sin(phi) * sinTheta;
-    point.z = cosTheta;
+    vec3 halfV;
+    halfV.x = cos(phi) * sinTheta;
+    halfV.y = sin(phi) * sinTheta;
+    halfV.z = cosTheta;
     
     vec3 up        = abs(normal.z) < 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
     vec3 tangent   = normalize(cross(up, normal));
     vec3 bitangent = cross(normal, tangent);
     
-    vec3 sampleVector = tangent * point.x + bitangent * point.y + normal * point.z;
+    vec3 sampleVector = tangent * halfV.x + bitangent * halfV.y + normal * halfV.z;
     
     return normalize(sampleVector);
 }

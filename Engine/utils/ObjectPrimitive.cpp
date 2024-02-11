@@ -137,18 +137,19 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSphere()
     const std::shared_ptr<Shader> sphereShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
     const std::shared_ptr<Material> sphereMat  = std::make_shared<Material>(sphereShader);
 
-    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
-    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
-    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/marble/1K/cracks_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
-    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/marble/1K/cracks_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+    const std::shared_ptr<Texture> texAlbedo    = std::make_shared<Texture>("./Data/images/metals/1K/copper_color.jpg", TextureType::DIFFUSE, TextureUnit::TEX_0);
+    const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/metals/1K/copper_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
+    const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/metals/1K/copper_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
+    const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/metals/1K/copper_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
+    const std::shared_ptr<Texture> texMetallic  = std::make_shared<Texture>("./Data/images/metals/1K/copper_metallic.jpg", TextureType::DIFFUSE, TextureUnit::TEX_4);
     
-    sphereMat->SetProperty("metallic", 0.0f);
-    
+    sphereMat->SetTexture("metallicMap", texMetallic);
     sphereMat->SetTexture("albedoMap", texAlbedo);
     sphereMat->SetTexture("normalMap", texNormal);
     sphereMat->SetTexture("roughnessMap", texRoughness);
     sphereMat->SetTexture("ambientOcclusionMap", texAO);
 
+    sphereMat->SetProperty("hasMapMetallic", true);
     sphereMat->SetProperty("hasMapAlbedo", true);
     sphereMat->SetProperty("hasMapNormal", true);
     sphereMat->SetProperty("hasMapRoughness", true);

@@ -32,7 +32,7 @@ void main()
             float dotNormalHalf = max(dot(normal, halfV), 0.0);
             float dotHalfView   = max(dot(halfV, view), 0.0);
             float D             = GeometrySchlickGGX(dotNormalHalf, roughness);
-            float pdf           = D * dotNormalHalf / (4.0 * dotHalfView) + 0.0001;
+            float pdf           = D * dotNormalHalf / ((4.0 * dotHalfView) + 0.0001);
             
             float resolution = 2048;
             float saTexel    = 4.0 * PI / (6.0 * resolution * resolution);
