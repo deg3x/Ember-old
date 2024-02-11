@@ -171,7 +171,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
 
     hdrTex->Bind();
     hdrShader->Use();
-    hdrShader->SetInt("equirectMap", hdrTex->GetUnit());
+    hdrShader->SetInt("equirectMap", hdrTex->GetUnit() - TEX_0);
     hdrShader->SetMatrix4x4("projection", captureProjection);
 
     glViewport(0, 0, cubeMapResolution, cubeMapResolution);
@@ -199,7 +199,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
 
     cubeMap->Bind();
     irrShader->Use();
-    irrShader->SetInt("environmentMap", cubeMap->GetUnit());
+    irrShader->SetInt("environmentMap", cubeMap->GetUnit() - TEX_0);
     irrShader->SetMatrix4x4("projection", captureProjection);
 
     glViewport(0, 0, irrMapResolution, irrMapResolution);
@@ -216,8 +216,47 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
     }
     fb->Unbind();
 
-    Renderer::SkyboxCubeMapHDR    = cubeMap;
-    Renderer::SkyboxIrradianceMap = irradianceMap;
+    const std::string vertPrefilter = PathBuilder::GetPath("./Engine/shaders/vertexHDRI.glsl");
+    const std::string fragPrefilter = PathBuilder::GetPath("./Engine/shaders/fragmentFilteredEnvMap.glsl");
+    const std::shared_ptr<Shader> prefilterShader = std::make_shared<Shader>(vertPrefilter.c_str(), fragPrefilter.c_str());
+    
+    constexpr int filtEnvMapResolution = 256;
+    const std::shared_ptr<Texture> filteredEnvMap = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_30, RGB16F, RGB, FLOAT, filtEnvMapResolution, filtEnvMapResolution);
+    filteredEnvMap->SetParameter(TEXTURE_CUBE_MAP, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_LINEAR);
+    filteredEnvMap->GenerateMipmap(TEXTURE_CUBE_MAP);
+
+    cubeMap->Bind();
+    prefilterShader->Use();
+    prefilterShader->SetInt("environmentMap", cubeMap->GetUnit() - TEX_0);
+    prefilterShader->SetMatrix4x4("projection", captureProjection);
+    
+    fb->Bind();
+    constexpr int maxMipLevels = 5;
+    for (int level = 0; level < maxMipLevels; level++)
+    {
+        int mipResolution = static_cast<int>(static_cast<float>(filtEnvMapResolution) * std::pow(0.5, level));
+
+        rb->Resize(mipResolution, mipResolution);
+        glViewport(0, 0, mipResolution, mipResolution);
+
+        float roughness = static_cast<float>(level) / static_cast<float>(maxMipLevels - 1);
+        prefilterShader->SetFloat("roughness", roughness);
+        for (int i = 0; i < 6; i++)
+        {
+            prefilterShader->SetMatrix4x4("view", captureViews[i]);
+            fb->SetTextureAttachment(filteredEnvMap, COLOR_ATTACHMENT_0, (TextureTarget)(TEXTURE_CUBE_MAP_POSITIVE_X + i), level);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            glBindVertexArray(mesh->VAO);
+            glDrawElements(GL_TRIANGLES, (GLsizei)mesh->GetIndices().size(), GL_UNSIGNED_INT, nullptr);
+        }
+    }
+    fb->Unbind();
+
+    Renderer::SkyboxCubeMapHDR     = cubeMap;
+    Renderer::SkyboxIrradianceMap  = irradianceMap;
+    Renderer::SkyboxPrefilteredMap = filteredEnvMap;
     
     skyMat->SetTexture("skybox", cubeMap);
     

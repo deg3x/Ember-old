@@ -14,6 +14,7 @@ public:
     static std::unique_ptr<FrameBuffer> ViewportFrameBuffer;
     static std::shared_ptr<Texture> SkyboxCubeMapHDR;
     static std::shared_ptr<Texture> SkyboxIrradianceMap;
+    static std::shared_ptr<Texture> SkyboxPrefilteredMap;
     
 private:
     inline static std::shared_ptr<RenderBuffer> viewportRenderBuffer;

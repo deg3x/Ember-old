@@ -33,11 +33,11 @@ void FrameBuffer::Unbind() const
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void FrameBuffer::SetTextureAttachment(const std::shared_ptr<Texture>& texture, RenderAttachment attachment, TextureTarget texTarget)
+void FrameBuffer::SetTextureAttachment(const std::shared_ptr<Texture>& texture, RenderAttachment attachment, TextureTarget texTarget, int mipLevel)
 {
     Bind();
     
-    glFramebufferTexture2D(FRAMEBUFFER, attachment, texTarget, texture->GetID(), 0);
+    glFramebufferTexture2D(FRAMEBUFFER, attachment, texTarget, texture->GetID(), mipLevel);
 }
 
 void FrameBuffer::SetRenderBufferAttachment(const std::shared_ptr<RenderBuffer>& renderBuffer, RenderAttachment attachment)

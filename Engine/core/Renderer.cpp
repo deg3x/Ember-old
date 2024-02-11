@@ -17,6 +17,7 @@ unsigned int Renderer::clearBits;
 std::unique_ptr<FrameBuffer> Renderer::ViewportFrameBuffer;
 std::shared_ptr<Texture> Renderer::SkyboxCubeMapHDR;
 std::shared_ptr<Texture> Renderer::SkyboxIrradianceMap;
+std::shared_ptr<Texture> Renderer::SkyboxPrefilteredMap;
 
 void Renderer::Initialize()
 {
@@ -51,6 +52,7 @@ void Renderer::Initialize()
     SetDepthTestEnabled(true);
     SetStencilTestEnabled(false);
 
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
     ObjectPrimitive::InstantiateSkybox();
 
     Logger::Log(LogCategory::INFO, "Renderer initialization completed successfully", "Renderer::Initialize");

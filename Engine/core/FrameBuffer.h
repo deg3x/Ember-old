@@ -18,7 +18,7 @@ public:
     void Bind() const;
     void Unbind() const;
 
-    void SetTextureAttachment(const std::shared_ptr<Texture>& texture, RenderAttachment attachment, TextureTarget texTarget);
+    void SetTextureAttachment(const std::shared_ptr<Texture>& texture, RenderAttachment attachment, TextureTarget texTarget, int mipLevel = 0);
     void SetRenderBufferAttachment(const std::shared_ptr<RenderBuffer>& renderBuffer, RenderAttachment attachment);
 
     bool CheckIsComplete();
