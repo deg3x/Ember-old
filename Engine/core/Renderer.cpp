@@ -11,9 +11,12 @@
 #include "window/Window.h"
 #include "utils/Types.h"
 #include "logger/Logger.h"
+#include "utils/ObjectPrimitive.h"
 
 unsigned int Renderer::clearBits;
 std::unique_ptr<FrameBuffer> Renderer::ViewportFrameBuffer;
+std::shared_ptr<Texture> Renderer::SkyboxCubeMapHDR;
+std::shared_ptr<Texture> Renderer::SkyboxIrradianceMap;
 
 void Renderer::Initialize()
 {
@@ -47,6 +50,8 @@ void Renderer::Initialize()
     AppendClearBits(GL_COLOR_BUFFER_BIT);
     SetDepthTestEnabled(true);
     SetStencilTestEnabled(false);
+
+    ObjectPrimitive::InstantiateSkybox();
 
     Logger::Log(LogCategory::INFO, "Renderer initialization completed successfully", "Renderer::Initialize");
 }

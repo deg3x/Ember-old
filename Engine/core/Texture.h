@@ -28,6 +28,11 @@ public:
 
     static TextureFormat ChannelsToFormat(int channels);
 
+    inline void SetUnit(TextureUnit newUnit)
+    {
+        unit = newUnit;
+    }
+
     inline void SetFormatSaved(TextureFormat newFormat)
     {
         formatSaved = newFormat;

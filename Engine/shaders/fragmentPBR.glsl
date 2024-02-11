@@ -13,7 +13,7 @@ out vec4 FragmentColor;
 uniform vec3 cameraPosition;
 
 uniform samplerCube irradianceMap;
-uniform bool hasIrradianceMap;
+uniform bool hasIrradianceMap = false;
 
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
@@ -27,10 +27,10 @@ uniform bool hasMapMetallic         = false;
 uniform bool hasMapRoughness        = false;
 uniform bool hasMapAmbientOcclusion = false;
 
-uniform vec3 albedo;
-uniform float metallic;
-uniform float roughness;
-uniform float ambientOcclusion;
+uniform vec3 albedo            = vec3(0.9, 0.15, 0.1);
+uniform float metallic         = 0.0;
+uniform float roughness        = 0.1;
+uniform float ambientOcclusion = 0.1;
 
 void main()
 {
@@ -41,7 +41,7 @@ void main()
     vec3 normVector    = hasMapNormal ? SampleNormalMap(normalMap, TexCoord, TBN) : normalize(TBN[2]);
     float metallicVal  = hasMapMetallic ? texture(metallicMap, TexCoord).r : metallic;
     float roughnessVal = hasMapRoughness ? texture(roughnessMap, TexCoord).r : roughness;
-    float ao           = !hasMapAmbientOcclusion ? texture(ambientOcclusionMap, TexCoord).r : ambientOcclusion;
+    float ao           = hasMapAmbientOcclusion ? texture(ambientOcclusionMap, TexCoord).r : ambientOcclusion;
     
     for (int i = 0; i < activeLightsDir; i++)
     {
@@ -71,21 +71,15 @@ void main()
         irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance, albedoVal, metallicVal, roughnessVal);
     }
     
-    vec3 ambient = vec3(0.03) * albedoVal;
-    
     // Indirect/Image lighting
-    if (hasIrradianceMap)
-    {
-        vec3 specular = FresnelSchlickRoughness(max(dot(normal, viewVector), 0.0), albedoVal, metallicVal, roughnessVal);
-        vec3 diffuse  = 1.0 - specular;
-        
-        vec3 envIrradiance = texture(irradianceMap, normal).rgb;
-        
-        ambient = envIrradiance * albedoVal * diffuse;
-    }
+    float dotNormView  = max(dot(normVector, viewVector), 0.0);
+    vec3 specular      = FresnelSchlickRoughness(dotNormView, albedoVal, metallicVal, vec3(0.04), roughnessVal);
+    vec3 diffuse       = (1.0 - specular) * (1.0 - metallicVal);
+    vec3 envIrradiance = texture(irradianceMap, normVector).rgb;
     
-    ambient = ambient * ao;
-    vec3 color   = ambient + irradiance;
+    vec3 ambient = hasIrradianceMap ? (envIrradiance * albedoVal * diffuse) * ao : (vec3(0.03) * albedoVal) * ao;
+    
+    vec3 color = ambient + irradiance;
     
     // HDR mapping and Gamma correction
     color = color / (color + vec3(1.0));

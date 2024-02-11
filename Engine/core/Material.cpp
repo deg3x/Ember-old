@@ -1,6 +1,8 @@
 ﻿#include "engine_pch.h"
 #include "Material.h"
 
+#include <glad/glad.h>
+
 #include "core/Object.h"
 #include "core/Shader.h"
 #include "core/components/Camera.h"
@@ -34,7 +36,7 @@ void Material::SetupShaderVariables(const Transform& objectTransform, const Came
 
     for (const MaterialTexture& matTexture : textures)
     {
-        shader->SetInt(matTexture.name, matTexture.texture->GetUnit());
+        shader->SetInt(matTexture.name, matTexture.texture->GetUnit() - TEX_0);
     }
 
     for (const MaterialProperty& property : properties)

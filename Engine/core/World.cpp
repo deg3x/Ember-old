@@ -33,7 +33,6 @@ void World::Initialize()
     AddObject(dirLightObject);
 
     ObjectPrimitive::InstantiateSphere();
-    ObjectPrimitive::InstantiateSkybox();
     ObjectPrimitive::InstantiateEditorGrid();
 
     // Startup renderer state

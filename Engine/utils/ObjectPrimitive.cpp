@@ -42,6 +42,9 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateCube()
     cubeMat->SetProperty("hasMapNormal", true);
     cubeMat->SetProperty("hasMapRoughness", true);
     cubeMat->SetProperty("hasMapAmbientOcclusion", true);
+    
+    cubeMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
+    cubeMat->SetProperty("hasIrradianceMap", true);
 
     cubeMesh->material = cubeMat;
 
@@ -78,6 +81,9 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiatePlane()
     planeMat->SetProperty("hasMapNormal", true);
     planeMat->SetProperty("hasMapRoughness", true);
     planeMat->SetProperty("hasMapAmbientOcclusion", true);
+
+    planeMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
+    planeMat->SetProperty("hasIrradianceMap", true);
     
     planeMesh->material = planeMat;
     
@@ -101,7 +107,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSphere()
     const std::shared_ptr<Texture> texNormal    = std::make_shared<Texture>("./Data/images/marble/1K/cracks_normal.png", TextureType::DIFFUSE, TextureUnit::TEX_1);
     const std::shared_ptr<Texture> texRoughness = std::make_shared<Texture>("./Data/images/marble/1K/cracks_roughness.jpg", TextureType::DIFFUSE, TextureUnit::TEX_2);
     const std::shared_ptr<Texture> texAO        = std::make_shared<Texture>("./Data/images/marble/1K/cracks_ao.jpg", TextureType::DIFFUSE, TextureUnit::TEX_3);
-
+    
     sphereMat->SetProperty("metallic", 0.0f);
     
     sphereMat->SetTexture("albedoMap", texAlbedo);
@@ -113,6 +119,9 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSphere()
     sphereMat->SetProperty("hasMapNormal", true);
     sphereMat->SetProperty("hasMapRoughness", true);
     sphereMat->SetProperty("hasMapAmbientOcclusion", true);
+
+    sphereMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
+    sphereMat->SetProperty("hasIrradianceMap", true);
 
     sphereMesh->material = sphereMat;
 
@@ -184,15 +193,15 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
     const std::shared_ptr<Shader> irrShader = std::make_shared<Shader>(vertIrr.c_str(), fragIrr.c_str());
     
     constexpr int irrMapResolution = 32;
-    const std::shared_ptr<Texture> irradianceMap = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_0, RGB16F, RGB, FLOAT, irrMapResolution, irrMapResolution);
+    const std::shared_ptr<Texture> irradianceMap = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_31, RGB16F, RGB, FLOAT, irrMapResolution, irrMapResolution);
 
     rb->Resize(irrMapResolution, irrMapResolution);
 
+    cubeMap->Bind();
     irrShader->Use();
     irrShader->SetInt("environmentMap", cubeMap->GetUnit());
     irrShader->SetMatrix4x4("projection", captureProjection);
 
-    cubeMap->Bind();
     glViewport(0, 0, irrMapResolution, irrMapResolution);
     fb->Bind();
     for (int i = 0; i < 6; i++)
@@ -206,6 +215,9 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateSkybox()
         glDrawElements(GL_TRIANGLES, (GLsizei)mesh->GetIndices().size(), GL_UNSIGNED_INT, nullptr);
     }
     fb->Unbind();
+
+    Renderer::SkyboxCubeMapHDR    = cubeMap;
+    Renderer::SkyboxIrradianceMap = irradianceMap;
     
     skyMat->SetTexture("skybox", cubeMap);
     

@@ -6,7 +6,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#include "Renderer.h"
 #include "logger/Logger.h"
 #include "utils/PathBuilder.h"
 
@@ -127,7 +126,7 @@ void Texture::InitializeTextureDiffuse(const char* texPath)
     }
 
     glGenTextures(1, &textureID);
-    glBindTexture(TEXTURE_2D, textureID);
+    Bind();
 
     glTexParameteri(TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -159,7 +158,7 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
     };
 
     glGenTextures(1, &textureID);
-    glBindTexture(TEXTURE_CUBE_MAP, textureID);
+    Bind();
     
     for (unsigned int i = 0; i < 6; i++)
     {
@@ -197,7 +196,7 @@ void Texture::InitializeTextureHDR(const char* texturePath)
     }
     
     glGenTextures(1, &textureID);
-    glBindTexture(TEXTURE_2D, textureID);
+    Bind();
 
     glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
 
