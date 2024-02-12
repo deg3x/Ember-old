@@ -38,7 +38,7 @@ vec3 ImportanceSampleGGX(vec2 vector, vec3 normal, float roughnessVal)
     float alphaSqr = alpha * alpha;
     
     float phi      = 2.0 * PI * vector.x;
-    float cosTheta = sqrt((1.0 - vector.x) / (1.0 + (alphaSqr - 1.0) * vector.y));
+    float cosTheta = sqrt((1.0 - vector.y) / (1.0 + (alphaSqr - 1.0) * vector.y));
     float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
     
     vec3 halfV;
