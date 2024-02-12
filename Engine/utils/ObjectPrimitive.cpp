@@ -163,7 +163,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateEditorGrid()
     const std::shared_ptr<Material> gridMat  = std::make_shared<Material>(gridShader);
     const std::shared_ptr<Mesh> gridMesh     = editorGrid->CreateComponent<Mesh>();
     
-    ProceduralMesh::GeneratePlane(10, 100.0f, gridMesh);
+    ProceduralMesh::GeneratePlane(1, 1000.0f, gridMesh);
     
     gridMesh->material           = gridMat;
     gridMesh->meshType           = MeshType::TRANSPARENT;
