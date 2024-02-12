@@ -32,6 +32,7 @@ void World::Initialize()
     AddObject(cameraObject);
     AddObject(dirLightObject);
 
+    ObjectPrimitive::InstantiateSkybox();
     ObjectPrimitive::InstantiateSphere();
     ObjectPrimitive::InstantiateEditorGrid();
 

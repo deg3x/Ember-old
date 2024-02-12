@@ -60,7 +60,6 @@ void Renderer::Initialize()
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
     InitializeSkyboxIBL();
-    ObjectPrimitive::InstantiateSkybox();
 
     Logger::Log(LogCategory::INFO, "Renderer initialization completed successfully", "Renderer::Initialize");
 }
