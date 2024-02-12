@@ -1,14 +1,10 @@
 ﻿#include "engine_pch.h"
 #include "ObjectPrimitive.h"
 
-#include <glad/glad.h>
-
-#include "core/FrameBuffer.h"
 #include "core/Object.h"
 #include "core/Shader.h"
 #include "core/Texture.h"
 #include "core/Material.h"
-#include "core/RenderBuffer.h"
 #include "core/Renderer.h"
 #include "core/components/Mesh.h"
 #include "core/components/Transform.h"
