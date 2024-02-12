@@ -3,6 +3,48 @@
 
 #include "core/components/Mesh.h"
 
+void ProceduralMesh::GenerateQuad(const std::shared_ptr<Mesh>& targetMesh)
+{
+    std::vector<VertexData> vertexData;
+    std::vector<unsigned int> indices;
+
+    VertexData data;
+    
+    data.position = glm::vec3(-1.0f, 1.0f, 0.0f);
+    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+    data.uv = glm::vec2(0.0f, 1.0f);
+
+    vertexData.push_back(data);
+
+    data.position = glm::vec3(-1.0f, -1.0f, 0.0f);
+    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+    data.uv = glm::vec2(0.0f, 0.0f);
+
+    vertexData.push_back(data);
+
+    data.position = glm::vec3(1.0f, 1.0f, 0.0f);
+    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+    data.uv = glm::vec2(1.0f, 1.0f);
+
+    vertexData.push_back(data);
+
+    data.position = glm::vec3(1.0f, -1.0f, 0.0f);
+    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+    data.uv = glm::vec2(1.0f, 0.0f);
+
+    vertexData.push_back(data);
+
+    indices.push_back(0);
+    indices.push_back(1);
+    indices.push_back(2);
+    indices.push_back(1);
+    indices.push_back(2);
+    indices.push_back(3);
+
+    targetMesh->SetMeshData(vertexData, indices);
+    GenerateTangentsBitangents(targetMesh);
+}
+
 void ProceduralMesh::GenerateCube(const std::shared_ptr<Mesh>& targetMesh)
 {
     std::vector<VertexData> vertexData;
@@ -201,7 +243,7 @@ void ProceduralMesh::GeneratePlane(int resolution, float size, const std::shared
 			
             currentVertex.position = glm::vec3(currentPosX, 0.0f, currentPosZ);
             currentVertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-            currentVertex.uv = glm::vec2((float)i / (float)resolution, (float)j / (float)resolution);
+            currentVertex.uv = glm::vec2((float)j / (float)resolution, (float)i / (float)resolution);
 
             vertexData.push_back(currentVertex);
         }
