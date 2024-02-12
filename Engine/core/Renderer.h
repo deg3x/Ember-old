@@ -69,4 +69,7 @@ public:
     {
         return clearBits;
     }
+
+private:
+    static void InitializeSkyboxIBL();
 };

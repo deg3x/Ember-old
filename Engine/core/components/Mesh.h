@@ -52,7 +52,6 @@ class ENGINE_API Mesh : public Component
 {
 	MAKE_COMPONENT_TYPE(MESH)
 	friend class ProceduralMesh;
-	friend class ObjectPrimitive;
 	
 public:
 	std::shared_ptr<Material> material;
@@ -87,6 +86,11 @@ public:
 	inline std::vector<unsigned int> GetIndices() const
 	{
 		return indices;
+	}
+
+	inline unsigned int GetVAO() const
+	{
+		return VAO;
 	}
 	
 protected:
