@@ -13,7 +13,7 @@ void Input::Initialize()
     glfwSetInputMode(Window::GetWindow(), GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetInputMode(Window::GetWindow(), GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
 
-    Mouse.sensitivity = 0.01f;
+    Mouse.sensitivity = 1.0f;
 
     Logger::Log(LogCategory::INFO, "Input system initialization completed successfully", "Input::Initialize");
 }

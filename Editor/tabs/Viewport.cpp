@@ -5,16 +5,15 @@
 
 #include "core/World.h"
 #include "core/Renderer.h"
-#include "core/FrameBuffer.h"
 #include "core/Object.h"
+#include "core/Time.h"
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"
 #include "input/Input.h"
+#include "logger/Logger.h"
 
 namespace
 {
-    float theta  = -glm::half_pi<float>();
-    float phi    = -glm::half_pi<float>();
     float radius;
 }
 
@@ -25,6 +24,7 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     flags |= ImGuiWindowFlags_NoMove;
 
     radius = (float)World::GetCamera()->GetOwner()->transform->position.length();
+    Logger::Log(std::to_string(radius));
 }
 
 void Viewport::Tick()
@@ -46,25 +46,55 @@ void Viewport::Tick()
     
     Renderer::SetViewport(0, 0, static_cast<int>(width), static_cast<int>(height));
 
-    if (ImGui::IsWindowHovered())
+    if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused())
     {
-        const MouseData mouse = Input::Mouse;
-
-        if (Input::GetMouseDrag(MOUSE_BTN_LEFT))
-        {
-            theta  += (float)mouse.leftMouseDragDeltaX * mouse.sensitivity;
-            phi	   += (float)mouse.leftMouseDragDeltaY * mouse.sensitivity;
-        }
-        if (Input::GetMouseDrag(MOUSE_BTN_RIGHT))
-        {
-            radius -= (float)mouse.rightMouseDragDeltaY * mouse.sensitivity;
-        }
-
-        World::GetCamera()->GetOwner()->transform->position.x = radius * glm::cos(theta) * glm::sin(phi);
-        World::GetCamera()->GetOwner()->transform->position.z = radius * glm::sin(theta) * glm::sin(phi);
-        World::GetCamera()->GetOwner()->transform->position.y = radius * glm::cos(phi);
+        TickViewportCamera();
     }
 
     ImGui::Image(reinterpret_cast<ImTextureID>(Renderer::GetViewportTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
     ImGui::End();
+}
+
+void Viewport::TickViewportCamera()
+{
+    const MouseData mouse = Input::Mouse;
+
+    const std::shared_ptr<Transform> cameraTransform = World::GetCamera()->GetOwner()->transform;
+    
+    glm::vec3 newPosition = cameraTransform->position;
+
+    // Rotation around center
+    const float rotSpeed     = mouse.sensitivity * Time::DeltaTime * cameraRotSpeed;
+    const float angleYaw     = static_cast<float>(mouse.leftMouseDragDeltaX) * rotSpeed * -1.0f;
+    const float anglePitch   = static_cast<float>(mouse.leftMouseDragDeltaY) * rotSpeed;
+    const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
+    const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
+    const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
+    const float sinHalfPitch = glm::sin(anglePitch * 0.5f);
+    
+    const glm::vec3 upVector    = glm::vec3(0.0f, 1.0f, 0.0f);
+    const glm::vec3 rightVector = normalize(glm::cross(cameraTransform->position, upVector));
+    
+    const glm::quat rotationYaw   = glm::quat(cosHalfYaw, upVector * sinHalfYaw);
+    const glm::quat rotationPitch = glm::quat(cosHalfPitch, rightVector * sinHalfPitch);
+    
+    bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_LEFT);
+    bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_LEFT);
+    applyPitch     &= glm::abs(glm::dot(upVector, glm::normalize(rotationPitch * cameraTransform->position))) < 0.99f;
+    
+    newPosition = applyYaw ? rotationYaw * newPosition : newPosition;
+    newPosition = applyPitch ? rotationPitch * newPosition : newPosition;
+
+    // Distance from center
+    const float zoomSpeed         = mouse.sensitivity * Time::DeltaTime * cameraZoomSpeed;
+    const float distanceDelta     = static_cast<float>(mouse.rightMouseDragDeltaY) * zoomSpeed * -1.0f;
+    const glm::vec3 zoomDirection = glm::normalize(newPosition);
+    
+    bool applyDistance = Input::GetMouseDrag(MOUSE_BTN_RIGHT);
+    applyDistance     &= glm::length(newPosition + zoomDirection * distanceDelta) > 1.0f;
+    
+    newPosition = newPosition + (applyDistance ? zoomDirection * distanceDelta : glm::vec3(0.0));
+
+    // Apply
+    cameraTransform->position = newPosition;
 }
