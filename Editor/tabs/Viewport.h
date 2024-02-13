@@ -7,7 +7,7 @@ class Viewport : public EditorTab
 {
 public:
     inline static constexpr float cameraRotSpeed  = 5.0f;
-    inline static constexpr float cameraZoomSpeed = 6.0f;
+    inline static constexpr float cameraZoomSpeed = 3.0f;
 public:
     Viewport() = delete;
     Viewport(Editor* owner);

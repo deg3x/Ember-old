@@ -10,21 +10,12 @@
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"
 #include "input/Input.h"
-#include "logger/Logger.h"
-
-namespace
-{
-    float radius;
-}
 
 Viewport::Viewport(Editor* owner) : EditorTab(owner)
 {
     title  = "Viewport";
     flags |= ImGuiWindowFlags_NoScrollbar;
     flags |= ImGuiWindowFlags_NoMove;
-
-    radius = (float)World::GetCamera()->GetOwner()->transform->position.length();
-    Logger::Log(std::to_string(radius));
 }
 
 void Viewport::Tick()
@@ -86,14 +77,23 @@ void Viewport::TickViewportCamera()
     newPosition = applyPitch ? rotationPitch * newPosition : newPosition;
 
     // Distance from center
-    const float zoomSpeed         = mouse.sensitivityScroll * Time::DeltaTime * cameraZoomSpeed;
+    constexpr float minZoomDistance  = 1.0f;
+    constexpr float minDistanceSpeed = 5.0f;
+    constexpr float maxDistanceSpeed = 150.0f;
+    constexpr float minDistanceMult  = 1.0f;
+    constexpr float maxDistanceMult  = 5.0f;
+    
+    const float speedDistMultDelta = glm::clamp((glm::length(cameraTransform->position) - minDistanceSpeed) / (maxDistanceSpeed - minDistanceSpeed), 0.0f, 1.0f); 
+    const float speedDistanceMult  = speedDistMultDelta * maxDistanceMult + (1.0f - speedDistMultDelta) * minDistanceMult;
+        
+    const float zoomSpeed         = mouse.sensitivityScroll * Time::DeltaTime * cameraZoomSpeed * speedDistanceMult;
     const float distanceDelta     = static_cast<float>(mouse.mouseScrollDeltaYSmooth) * zoomSpeed * -1.0f;
     const glm::vec3 zoomDirection = glm::normalize(newPosition);
     
-    bool applyDistance = glm::length(newPosition + zoomDirection * distanceDelta) > 1.0f;
+    bool applyDistance = glm::length(newPosition + zoomDirection * distanceDelta) > minZoomDistance;
     
     newPosition = newPosition + (applyDistance ? zoomDirection * distanceDelta : glm::vec3(0.0));
 
-    // Apply
+    // Apply new camera position
     cameraTransform->position = newPosition;
 }
