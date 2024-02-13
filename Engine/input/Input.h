@@ -1,13 +1,18 @@
 ﻿#pragma once
 
 #include "Definitions.h"
-#include "KeyCodes.h"
 #include "Mouse.h"
+
+struct GLFWwindow;
 
 class ENGINE_API Input
 {
 public:
     static MouseData Mouse;
+
+private:
+    inline static constexpr float scrollResetTimer = 0.2f;
+    inline static float currentScrollResetTimer;
     
 public:
     Input() = delete;
@@ -24,4 +29,5 @@ public:
     
 protected:
     static void UpdateMouseData();
+    static void ScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 };

@@ -21,7 +21,14 @@ struct MouseData
     double leftMouseDragDeltaY;
     double rightMouseDragDeltaX;
     double rightMouseDragDeltaY;
+    double mouseScrollDeltaX;
+    double mouseScrollDeltaY;
+    double mouseScrollDeltaXSmooth;
+    double mouseScrollDeltaYSmooth;
+    double lastMouseScrollDeltaX;
+    double lastMouseScrollDeltaY;
     float sensitivity;
+    float sensitivityScroll;
     bool leftButtonPressed;
     bool leftButtonPressedLastFrame;
     bool rightButtonPressed;

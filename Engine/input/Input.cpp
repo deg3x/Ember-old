@@ -1,6 +1,7 @@
 ﻿#include "engine_pch.h"
 #include "Input.h"
 
+#include "core/Time.h"
 #include "window/Window.h"
 #include "logger/Logger.h"
 
@@ -13,7 +14,12 @@ void Input::Initialize()
     glfwSetInputMode(Window::GetWindow(), GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetInputMode(Window::GetWindow(), GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
 
-    Mouse.sensitivity = 1.0f;
+    Mouse.sensitivity       = 1.0f;
+    Mouse.sensitivityScroll = 10.0f;
+    
+    currentScrollResetTimer = scrollResetTimer;
+
+    glfwSetScrollCallback(Window::GetWindow(), ScrollCallback);
 
     Logger::Log(LogCategory::INFO, "Input system initialization completed successfully", "Input::Initialize");
 }
@@ -21,6 +27,11 @@ void Input::Initialize()
 void Input::Tick()
 {
     UpdateMouseData();
+
+    if (currentScrollResetTimer > 0.0f)
+    {
+        currentScrollResetTimer -= Time::DeltaTime;
+    }
     
     // We should move this call to our own Event queue Poll function
     glfwPollEvents();
@@ -99,4 +110,25 @@ void Input::UpdateMouseData()
     
     Mouse.posX = mousePos.x;
     Mouse.posY = mousePos.y;
+
+    // Reset scroll delta. Will be updated in glfwPollEvents() that gets called after UpdateMouseData().
+    float smoothing = glm::clamp(currentScrollResetTimer / scrollResetTimer, 0.0f, 1.0f);
+    smoothing *= smoothing;
+    
+    Mouse.mouseScrollDeltaX       = 0.0f;
+    Mouse.mouseScrollDeltaY       = 0.0f;
+    Mouse.mouseScrollDeltaXSmooth = smoothing * Mouse.lastMouseScrollDeltaX;
+    Mouse.mouseScrollDeltaYSmooth = smoothing * Mouse.lastMouseScrollDeltaY;
+}
+
+void Input::ScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
+{
+    Mouse.mouseScrollDeltaX       = xOffset;
+    Mouse.mouseScrollDeltaY       = yOffset;
+    Mouse.mouseScrollDeltaXSmooth = xOffset;
+    Mouse.mouseScrollDeltaYSmooth = yOffset;
+    Mouse.lastMouseScrollDeltaX   = xOffset;
+    Mouse.lastMouseScrollDeltaY   = yOffset;
+
+    currentScrollResetTimer = scrollResetTimer;
 }

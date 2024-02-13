@@ -86,12 +86,11 @@ void Viewport::TickViewportCamera()
     newPosition = applyPitch ? rotationPitch * newPosition : newPosition;
 
     // Distance from center
-    const float zoomSpeed         = mouse.sensitivity * Time::DeltaTime * cameraZoomSpeed;
-    const float distanceDelta     = static_cast<float>(mouse.rightMouseDragDeltaY) * zoomSpeed * -1.0f;
+    const float zoomSpeed         = mouse.sensitivityScroll * Time::DeltaTime * cameraZoomSpeed;
+    const float distanceDelta     = static_cast<float>(mouse.mouseScrollDeltaYSmooth) * zoomSpeed * -1.0f;
     const glm::vec3 zoomDirection = glm::normalize(newPosition);
     
-    bool applyDistance = Input::GetMouseDrag(MOUSE_BTN_RIGHT);
-    applyDistance     &= glm::length(newPosition + zoomDirection * distanceDelta) > 1.0f;
+    bool applyDistance = glm::length(newPosition + zoomDirection * distanceDelta) > 1.0f;
     
     newPosition = newPosition + (applyDistance ? zoomDirection * distanceDelta : glm::vec3(0.0));
 

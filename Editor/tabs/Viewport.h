@@ -6,8 +6,8 @@ class FrameBuffer;
 class Viewport : public EditorTab
 {
 public:
-    inline static float cameraRotSpeed  = 5.0f;
-    inline static float cameraZoomSpeed = 8.0f;
+    inline static constexpr float cameraRotSpeed  = 5.0f;
+    inline static constexpr float cameraZoomSpeed = 6.0f;
 public:
     Viewport() = delete;
     Viewport(Editor* owner);
