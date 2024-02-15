@@ -138,15 +138,15 @@ void Hierarchy::DrawPopupAddObject()
         const ImVec2 entriesSize = {ImGui::GetContentRegionAvail().x, 0.0f};
         if (ImGui::Button("Cube", entriesSize))
         {
-            ObjectPrimitive::InstantiateCube();
+            SelectedObject = ObjectPrimitive::InstantiateCube();
         }
         if (ImGui::Button("Sphere", entriesSize))
         {
-            ObjectPrimitive::InstantiateSphere();
+            SelectedObject = ObjectPrimitive::InstantiateSphere();
         }
         if (ImGui::Button("Plane", entriesSize))
         {
-            ObjectPrimitive::InstantiatePlane();
+            SelectedObject = ObjectPrimitive::InstantiatePlane();
         }
 
         ImGui::PopStyleVar(2);
