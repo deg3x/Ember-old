@@ -40,6 +40,8 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateCube()
     cubeMat->SetProperty("hasMapAmbientOcclusion", true);
     
     cubeMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
+    cubeMat->SetTexture("prefilterMap", Renderer::SkyboxPrefilteredMap);
+    cubeMat->SetTexture("brdfMap", Renderer::SkyboxBRDFMap);
     cubeMat->SetProperty("hasImageBasedLighting", true);
 
     cubeMesh->material = cubeMat;
@@ -79,6 +81,8 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiatePlane()
     planeMat->SetProperty("hasMapAmbientOcclusion", true);
 
     planeMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
+    planeMat->SetTexture("prefilterMap", Renderer::SkyboxPrefilteredMap);
+    planeMat->SetTexture("brdfMap", Renderer::SkyboxBRDFMap);
     planeMat->SetProperty("hasImageBasedLighting", true);
     
     planeMesh->material = planeMat;
