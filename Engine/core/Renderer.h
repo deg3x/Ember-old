@@ -3,6 +3,8 @@
 #include "Definitions.h"
 #include "Texture.h"
 
+class Mesh;
+class Light;
 class Texture;
 class RenderBuffer;
 class FrameBuffer;
@@ -20,6 +22,8 @@ public:
 private:
     inline static std::shared_ptr<RenderBuffer> viewportRenderBuffer;
     inline static std::shared_ptr<Texture> viewportTexture;
+    inline static std::vector<std::shared_ptr<Mesh>> renderQueue;
+    inline static std::vector<std::shared_ptr<Light>> lights;
     
     static unsigned int clearBits;
     
@@ -27,7 +31,15 @@ public:
     Renderer() = delete;
     
     static void Initialize();
+    static void Tick();
     static void Clear();
+
+    static void RenderQueueAppend(const std::shared_ptr<Mesh>& mesh);
+    static void RenderQueuePrepend(const std::shared_ptr<Mesh>& mesh);
+    static void RenderQueueRemove(const std::shared_ptr<Mesh>& mesh);
+
+    static void LightsAppend(const std::shared_ptr<Light>& light);
+    static void LightsRemove(const std::shared_ptr<Light>& light);
     
     static void SetPolygonMode(int face, int mode);
     static void SetClearColor(const Color& c);

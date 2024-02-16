@@ -77,6 +77,11 @@ public:
 
 	void Draw(const std::shared_ptr<Camera>& camera, const std::unordered_set<std::shared_ptr<Light>>& lights) const;
 	void SetMeshData(const std::vector<VertexData>& newData, const std::vector<unsigned int>& newIndices, const std::shared_ptr<Material>& newMaterial = nullptr);
+	
+	void SetupDepthTestMode() const;
+	void SetupPolygonMode() const;
+	void SetupCullingMode() const;
+	void ResetRendererState() const;
 
 	inline std::vector<VertexData> GetVertexData() const
 	{
@@ -96,8 +101,4 @@ public:
 protected:
 	void SetupMesh();
 	void CleanupMesh();
-	void SetupDepthTestMode() const;
-	void SetupPolygonMode() const;
-	void SetupCullingMode() const;
-	void ResetRendererState() const;
 };

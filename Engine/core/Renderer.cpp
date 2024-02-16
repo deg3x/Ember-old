@@ -5,15 +5,17 @@
 #include "glfw/glfw3.h"
 
 #include "FrameBuffer.h"
+#include "Material.h"
+#include "Object.h"
 #include "RenderBuffer.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "components/Camera.h"
 #include "components/Mesh.h"
 
 #include "window/Window.h"
 #include "utils/Types.h"
 #include "logger/Logger.h"
-#include "utils/ObjectPrimitive.h"
 #include "utils/PathBuilder.h"
 #include "utils/ProceduralMesh.h"
 
@@ -64,9 +66,113 @@ void Renderer::Initialize()
     Logger::Log(LogCategory::INFO, "Renderer initialization completed successfully", "Renderer::Initialize");
 }
 
+void Renderer::Tick()
+{
+    if (Camera::ActiveCamera == nullptr)
+    {
+        return;
+    }
+    
+    for (const std::shared_ptr<Mesh>& mesh : renderQueue)
+    {
+        if (!mesh->GetOwner()->isActive)
+        {
+            continue;
+        }
+
+        if (mesh->material == nullptr)
+        {
+            Logger::Log(LogCategory::ERROR, "Mesh has no material: " + mesh->GetOwner()->name, "Mesh::Draw");
+            continue;
+        }
+
+        mesh->material->Use();
+
+        int lightIdxDir   = 0;
+        int lightIdxPoint = 0;
+        int lightIdxSpot  = 0;
+        for (const std::shared_ptr<Light>& light : lights)
+        {
+            const Object* lightObject = light->GetOwner();
+            if (lightObject != nullptr)
+            {
+                if (!lightObject->isActive)
+                {
+                    continue;
+                }
+            }
+		
+            switch (light->lightType)
+            {
+            case LightType::DIRECTIONAL:
+                light->SetShaderProperties(*mesh->material->GetShader(), lightIdxDir);
+                lightIdxDir++;
+                break;
+            case LightType::POINT:
+                light->SetShaderProperties(*mesh->material->GetShader(), lightIdxPoint);
+                lightIdxPoint++;
+                break;
+            case LightType::SPOTLIGHT:
+                light->SetShaderProperties(*mesh->material->GetShader(), lightIdxSpot);
+                lightIdxSpot++;
+                break;
+            }
+        }
+        mesh->material->GetShader()->SetInt("activeLightsDir", lightIdxDir);
+        mesh->material->GetShader()->SetInt("activeLightsPoint", lightIdxPoint);
+        mesh->material->GetShader()->SetInt("activeLightsSpot", lightIdxSpot);
+	
+        mesh->material->SetupShaderVariables(*mesh->GetOwner()->transform, *Camera::ActiveCamera);
+
+        mesh->SetupDepthTestMode();
+        mesh->SetupCullingMode();
+        mesh->SetupPolygonMode();
+	
+        glBindVertexArray(mesh->GetVAO());
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndices().size()), GL_UNSIGNED_INT, nullptr);
+
+        mesh->ResetRendererState();
+    }
+}
+
 void Renderer::Clear()
 {
     glClear(clearBits);
+}
+
+void Renderer::RenderQueueAppend(const std::shared_ptr<Mesh>& mesh)
+{
+    renderQueue.emplace_back(mesh);
+}
+
+void Renderer::RenderQueuePrepend(const std::shared_ptr<Mesh>& mesh)
+{
+    renderQueue.insert(renderQueue.begin(), mesh);
+}
+
+void Renderer::RenderQueueRemove(const std::shared_ptr<Mesh>& mesh)
+{
+    const auto iterator = std::ranges::find(renderQueue, mesh);
+
+    if (iterator != renderQueue.end())
+    {
+        renderQueue.erase(iterator);
+    }
+}
+
+void Renderer::LightsAppend(const std::shared_ptr<Light>& light)
+{
+    lights.emplace_back(light);
+}
+
+void Renderer::LightsRemove(const std::shared_ptr<Light>& light)
+{
+    const auto iterator = std::ranges::find(lights, light);
+
+    if (iterator != lights.end())
+    {
+        lights.erase(iterator);
+    }
 }
 
 void Renderer::SetPolygonMode(int face, int mode)

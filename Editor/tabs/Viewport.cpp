@@ -16,6 +16,13 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     title  = "Viewport";
     flags |= ImGuiWindowFlags_NoScrollbar;
     flags |= ImGuiWindowFlags_NoMove;
+    
+    viewportCamera = std::make_shared<Object>("Camera");
+    Camera::ActiveCamera = viewportCamera->CreateComponent<Camera>();
+    viewportCamera->transform->position = glm::vec3(0.0f, 3.0f, 3.0f);
+    viewportCamera->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
+
+    World::AddObject(viewportCamera);
 }
 
 void Viewport::Tick()
@@ -50,7 +57,7 @@ void Viewport::TickViewportCamera()
 {
     const MouseData mouse = Input::Mouse;
 
-    const std::shared_ptr<Transform> cameraTransform = World::GetCamera()->GetOwner()->transform;
+    const std::shared_ptr<Transform> cameraTransform = viewportCamera->transform;
     
     glm::vec3 newPosition = cameraTransform->position;
 

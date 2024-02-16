@@ -12,24 +12,15 @@
 #include "utils/Types.h"
 #include "utils/ObjectPrimitive.h"
 
-std::unordered_set<std::shared_ptr<Object>> World::objQueueOpaque;
-std::unordered_set<std::shared_ptr<Object>> World::objQueueTransparent;
-std::unordered_set<std::shared_ptr<Light>> World::lights;
-std::shared_ptr<Camera> World::camera;
+std::unordered_set<std::shared_ptr<Object>> World::worldObjects;
 
 void World::Initialize()
 {
-    const std::shared_ptr<Object> cameraObject = std::make_shared<Object>("Camera");
-    cameraObject->CreateComponent<Camera>();
-    cameraObject->transform->position = glm::vec3(0.0f, 3.0f, 3.0f);
-    cameraObject->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
-
     const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>("Directional Light");
     dirLightObject->CreateComponent<Light>();
     dirLightObject->transform->rotation.x = 30.0f;
     dirLightObject->transform->rotation.y = -30.0f;
 
-    AddObject(cameraObject);
     AddObject(dirLightObject);
 
     ObjectPrimitive::InstantiateSkybox();
@@ -48,106 +39,60 @@ void World::Initialize()
 
 void World::Tick()
 {
-    // Opaque object tick and rendering
-    for (const std::shared_ptr<Object>& object : objQueueOpaque)
-    {
-        if (!object->isActive)
-        {
-            continue;
-        }
-        
-        object->Tick();
-        object->Draw(camera, lights);
-    }
     
-    // Transparent object tick and rendering
-    for (const std::shared_ptr<Object>& object : objQueueTransparent)
-    {
-        if (!object->isActive)
-        {
-            continue;
-        }
-        
-        object->Tick();
-        object->Draw(camera, lights);
-    }
 }
 
 void World::AddObject(const std::shared_ptr<Object>& object)
 {
-    if (objQueueOpaque.contains(object) || objQueueTransparent.contains(object))
+    if (worldObjects.contains(object))
     {
         return;
     }
 
+    worldObjects.insert(object);
+
     const std::shared_ptr<Mesh> meshComponent = object->GetComponent<Mesh>();
-    if (meshComponent != nullptr && meshComponent->meshType == MeshType::TRANSPARENT)
+    if (meshComponent != nullptr)
     {
-        objQueueTransparent.insert(object);
-    }
-    else
-    {
-        objQueueOpaque.insert(object);
+        if (meshComponent->meshType == MeshType::TRANSPARENT)
+        {
+            Renderer::RenderQueueAppend(meshComponent);
+        }
+        else
+        {
+            Renderer::RenderQueuePrepend(meshComponent);
+        }
     }
     
     const std::shared_ptr<Camera> cameraComponent = object->GetComponent<Camera>();
     if (cameraComponent != nullptr)
     {
-        camera = cameraComponent;
+        // Special handling of camera
     }
 
     const std::shared_ptr<Light> lightComponent = object->GetComponent<Light>();
     if (lightComponent != nullptr)
     {
-        AddLight(lightComponent);
+        Renderer::LightsAppend(lightComponent);
     }
 }
 
 void World::RemoveObject(const std::shared_ptr<Object>& object)
 {
-    if (objQueueOpaque.contains(object))
+    if (worldObjects.contains(object))
     {
-        objQueueOpaque.erase(object);
-        
-        return;
-    }
+        const std::shared_ptr<Light> lightComponent = object->GetComponent<Light>();
+        const std::shared_ptr<Mesh> meshComponent   = object->GetComponent<Mesh>();
 
-    if (objQueueTransparent.contains(object))
-    {
-        objQueueTransparent.erase(object);
-        
-        return;
-    }
-}
-
-void World::AddLight(const std::shared_ptr<Light>& light)
-{
-    // Extremely ugly solution
-    // Fix in the future before the universe explodes
-    bool found = false;
-    for (const std::shared_ptr<Object>& object : objQueueOpaque)
-    {
-        if (object.get() == light->GetOwner())
+        if (meshComponent != nullptr)
         {
-            found = true;
+            Renderer::RenderQueueRemove(meshComponent);
         }
-    }
-    for (const std::shared_ptr<Object>& object : objQueueTransparent)
-    {
-        if (object.get() == light->GetOwner())
+        if (lightComponent != nullptr)
         {
-            found = true;
+            Renderer::LightsRemove(lightComponent);
         }
+        
+        worldObjects.erase(object);
     }
-    if (!found)
-    {
-        return;
-    }
-
-    lights.insert(light);
-}
-
-void World::RemoveLight(const std::shared_ptr<Light>& light)
-{
-    lights.extract(light);
 }

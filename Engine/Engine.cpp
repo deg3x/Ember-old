@@ -25,6 +25,7 @@ void Engine::Tick()
     Time::Tick();
     Input::Tick();
     World::Tick();
+    Renderer::Tick();
     
     Renderer::ViewportFrameBuffer->Unbind();
 }

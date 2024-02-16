@@ -3,10 +3,12 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <ranges>
 #include <cstdint>
 #include <fstream>
 #include <sstream>
 #include <cstdarg>
+#include <algorithm>
 #include <type_traits>
 #include <unordered_set>
 

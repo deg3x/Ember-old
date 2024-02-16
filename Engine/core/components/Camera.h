@@ -13,6 +13,8 @@ class ENGINE_API Camera : public Component
 	MAKE_COMPONENT_TYPE(CAMERA)
 
 public:
+	static std::shared_ptr<Camera> ActiveCamera;
+	
 	float perspectiveFOV;
 	float orthographicSize;
 	float nearClipping;

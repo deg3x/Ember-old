@@ -6,6 +6,8 @@
 #include "core/components/Transform.h"
 #include "logger/Logger.h"
 
+std::shared_ptr<Camera> Camera::ActiveCamera;
+
 Camera::Camera()
 {
 	perspectiveFOV   = 60.0f;

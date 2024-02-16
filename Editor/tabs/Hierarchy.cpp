@@ -22,9 +22,8 @@ void Hierarchy::Tick()
     EditorTab::Tick();
 
     std::vector<std::shared_ptr<Object>> objects;
-    objects.reserve(World::objQueueOpaque.size() + World::objQueueTransparent.size());
-    objects.insert(objects.end(), World::objQueueOpaque.begin(), World::objQueueOpaque.end());
-    objects.insert(objects.end(), World::objQueueTransparent.begin(), World::objQueueTransparent.end());
+    objects.reserve(World::worldObjects.size());
+    objects.insert(objects.end(), World::worldObjects.begin(), World::worldObjects.end());
     
     if (ImGui::Begin(title.c_str(), nullptr, flags))
     {

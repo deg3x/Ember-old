@@ -68,11 +68,6 @@ void Object::AddComponent(const std::shared_ptr<Type>& component)
 
     component->owner = this;
     components.push_back(component);
-    
-    if (component->GetType() == ComponentType::LIGHT)
-    {
-        World::AddLight(std::dynamic_pointer_cast<Light>(component));
-    }
 }
 
 template <class Type, typename... Args>
