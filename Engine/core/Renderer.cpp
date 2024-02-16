@@ -76,69 +76,74 @@ void Renderer::Tick()
     
     for (const std::shared_ptr<Mesh>& mesh : renderQueue)
     {
-        if (!mesh->GetOwner()->isActive)
-        {
-            continue;
-        }
-
-        if (mesh->material == nullptr)
-        {
-            Logger::Log(LogCategory::ERROR, "Mesh has no material: " + mesh->GetOwner()->name, "Mesh::Draw");
-            continue;
-        }
-
-        mesh->material->Use();
-
-        int lightIdxDir   = 0;
-        int lightIdxPoint = 0;
-        int lightIdxSpot  = 0;
-        for (const std::shared_ptr<Light>& light : lights)
-        {
-            const Object* lightObject = light->GetOwner();
-            if (lightObject != nullptr)
-            {
-                if (!lightObject->isActive)
-                {
-                    continue;
-                }
-            }
-		
-            switch (light->lightType)
-            {
-            case LightType::DIRECTIONAL:
-                light->SetShaderProperties(*mesh->material->GetShader(), lightIdxDir);
-                lightIdxDir++;
-                break;
-            case LightType::POINT:
-                light->SetShaderProperties(*mesh->material->GetShader(), lightIdxPoint);
-                lightIdxPoint++;
-                break;
-            case LightType::SPOTLIGHT:
-                light->SetShaderProperties(*mesh->material->GetShader(), lightIdxSpot);
-                lightIdxSpot++;
-                break;
-            }
-        }
-        mesh->material->SetInt("activeLightsDir", lightIdxDir);
-        mesh->material->SetInt("activeLightsPoint", lightIdxPoint);
-        mesh->material->SetInt("activeLightsSpot", lightIdxSpot);
-	
-        mesh->material->SetupShaderVariables(*mesh->GetOwner()->transform, *Camera::ActiveCamera);
-
-        mesh->SetupDepthTestMode();
-        mesh->SetupCullingMode();
-        mesh->SetupPolygonMode();
-	
-        glBindVertexArray(mesh->GetVAO());
-        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndices().size()), GL_UNSIGNED_INT, nullptr);
-
-        mesh->ResetRendererState();
+        DrawMesh(mesh);
     }
 }
 
 void Renderer::Clear()
 {
     glClear(clearBits);
+}
+
+void Renderer::DrawMesh(const std::shared_ptr<Mesh>& mesh)
+{
+    if (!mesh->GetOwner()->isActive)
+    {
+        return;
+    }
+
+    if (mesh->material == nullptr)
+    {
+        Logger::Log(LogCategory::ERROR, "Mesh has no material: " + mesh->GetOwner()->name, "Mesh::Draw");
+        return;
+    }
+
+    mesh->material->Use();
+
+    int lightIdxDir   = 0;
+    int lightIdxPoint = 0;
+    int lightIdxSpot  = 0;
+    for (const std::shared_ptr<Light>& light : lights)
+    {
+        const Object* lightObject = light->GetOwner();
+        if (lightObject != nullptr)
+        {
+            if (!lightObject->isActive)
+            {
+                continue;
+            }
+        }
+		
+        switch (light->lightType)
+        {
+        case LightType::DIRECTIONAL:
+            light->SetShaderProperties(*mesh->material->GetShader(), lightIdxDir);
+            lightIdxDir++;
+            break;
+        case LightType::POINT:
+            light->SetShaderProperties(*mesh->material->GetShader(), lightIdxPoint);
+            lightIdxPoint++;
+            break;
+        case LightType::SPOTLIGHT:
+            light->SetShaderProperties(*mesh->material->GetShader(), lightIdxSpot);
+            lightIdxSpot++;
+            break;
+        }
+    }
+    mesh->material->SetInt("activeLightsDir", lightIdxDir);
+    mesh->material->SetInt("activeLightsPoint", lightIdxPoint);
+    mesh->material->SetInt("activeLightsSpot", lightIdxSpot);
+	
+    mesh->material->SetupShaderVariables(*mesh->GetOwner()->transform, *Camera::ActiveCamera);
+
+    mesh->SetupDepthTestMode();
+    mesh->SetupCullingMode();
+    mesh->SetupPolygonMode();
+	
+    glBindVertexArray(mesh->GetVAO());
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndices().size()), GL_UNSIGNED_INT, nullptr);
+
+    mesh->ResetRendererState();
 }
 
 void Renderer::RenderQueueAppend(const std::shared_ptr<Mesh>& mesh)

@@ -34,6 +34,8 @@ public:
     static void Tick();
     static void Clear();
 
+    static void DrawMesh(const std::shared_ptr<Mesh>& mesh);
+
     static void RenderQueueAppend(const std::shared_ptr<Mesh>& mesh);
     static void RenderQueuePrepend(const std::shared_ptr<Mesh>& mesh);
     static void RenderQueueRemove(const std::shared_ptr<Mesh>& mesh);
