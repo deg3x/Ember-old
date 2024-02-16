@@ -39,7 +39,10 @@ void World::Initialize()
 
 void World::Tick()
 {
-    
+    for (const std::shared_ptr<Object>& object : worldObjects)
+    {
+        object->Tick();
+    }
 }
 
 void World::AddObject(const std::shared_ptr<Object>& object)

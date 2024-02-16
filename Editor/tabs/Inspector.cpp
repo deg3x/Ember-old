@@ -305,7 +305,7 @@ void Inspector::DrawLight(const std::shared_ptr<Light>& lightComponent)
 void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
 {
     const char* lightTypes[] = {"Directional Light", "Point Light", "Spotlight"};
-    const char* selectedItem = lightTypes[static_cast<int>(lightComponent->lightType)];
+    const char* selectedItem = lightTypes[static_cast<int>(lightComponent->type)];
 
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
@@ -325,7 +325,7 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
             const bool isSelected = (selectedItem == lightTypes[i]);
             if (ImGui::Selectable(lightTypes[i], isSelected))
             {
-                lightComponent->lightType = static_cast<LightType>(i);
+                lightComponent->type = static_cast<LightType>(i);
             }
         }
         
@@ -333,28 +333,42 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
     }
     ImGui::PopStyleColor(1);
 
-    float* color   = glm::value_ptr(lightComponent->color);
-    float* ambient = glm::value_ptr(lightComponent->ambient);
-    
-    DrawRowLabelColor3("Color", color);
-    DrawRowLabelColor3("Ambient", ambient);
-    DrawRowLabelDragFloat("Intensity", lightComponent->intensity);
+    float* color;
+    float* ambient;
 
-    switch (lightComponent->lightType)
+    switch (lightComponent->type)
     {
     case LightType::DIRECTIONAL:
+        color   = glm::value_ptr(lightComponent->directional.color);
+        ambient = glm::value_ptr(lightComponent->directional.ambient);
+    
+        DrawRowLabelColor3("Color", color);
+        DrawRowLabelColor3("Ambient", ambient);
+        DrawRowLabelDragFloat("Intensity", lightComponent->directional.intensity);
         break;
     case LightType::POINT:
-        DrawRowLabelDragFloat("Constant", lightComponent->pointLightData.constantAttenuation);
-        DrawRowLabelDragFloat("Linear", lightComponent->pointLightData.linearAttenuation);
-        DrawRowLabelDragFloat("Quadratic", lightComponent->pointLightData.quadraticAttenuation);
+        color   = glm::value_ptr(lightComponent->point.color);
+        ambient = glm::value_ptr(lightComponent->point.ambient);
+    
+        DrawRowLabelColor3("Color", color);
+        DrawRowLabelColor3("Ambient", ambient);
+        DrawRowLabelDragFloat("Intensity", lightComponent->point.intensity);
+        DrawRowLabelDragFloat("Constant", lightComponent->point.constantAttenuation);
+        DrawRowLabelDragFloat("Linear", lightComponent->point.linearAttenuation);
+        DrawRowLabelDragFloat("Quadratic", lightComponent->point.quadraticAttenuation);
         break;
     case LightType::SPOTLIGHT:
-        DrawRowLabelDragFloat("Constant", lightComponent->spotLightData.constantAttenuation);
-        DrawRowLabelDragFloat("Linear", lightComponent->spotLightData.linearAttenuation);
-        DrawRowLabelDragFloat("Quadratic", lightComponent->spotLightData.quadraticAttenuation);
-        DrawRowLabelDragFloat("Cutoff Angle", lightComponent->spotLightData.cutOffAngle);
-        DrawRowLabelDragFloat("Cutoff Angle (out)", lightComponent->spotLightData.cutOffAngleOut);
+        color   = glm::value_ptr(lightComponent->spot.color);
+        ambient = glm::value_ptr(lightComponent->spot.ambient);
+    
+        DrawRowLabelColor3("Color", color);
+        DrawRowLabelColor3("Ambient", ambient);
+        DrawRowLabelDragFloat("Intensity", lightComponent->spot.intensity);
+        DrawRowLabelDragFloat("Constant", lightComponent->spot.constantAttenuation);
+        DrawRowLabelDragFloat("Linear", lightComponent->spot.linearAttenuation);
+        DrawRowLabelDragFloat("Quadratic", lightComponent->spot.quadraticAttenuation);
+        DrawRowLabelDragFloat("Cutoff Angle", lightComponent->spot.cutOffAngle);
+        DrawRowLabelDragFloat("Cutoff Angle (out)", lightComponent->spot.cutOffAngleOut);
         break;
     default:
         Logger::Log(LogCategory::WARNING, "Unknown light type. Skipping...", "Inspector::DrawLightComponents");

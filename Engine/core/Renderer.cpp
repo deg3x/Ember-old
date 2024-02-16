@@ -114,7 +114,7 @@ void Renderer::DrawMesh(const std::shared_ptr<Mesh>& mesh)
             }
         }
 		
-        switch (light->lightType)
+        switch (light->type)
         {
         case LightType::DIRECTIONAL:
             light->SetShaderProperties(*mesh->material->GetShader(), lightIdxDir);
