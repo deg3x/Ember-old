@@ -94,6 +94,14 @@ public:
     void SetTexture(const std::string& name, const std::string& path, TextureType type);
     void SetTexture(const std::string& name, const std::shared_ptr<Texture>& texture);
 
+    // Wrappers for the respective shader functions
+    void SetBool(const std::string& name, bool value) const;
+    void SetInt(const std::string& name, int value) const;
+    void SetFloat(const std::string& name, float value) const;
+    void SetVector3(const std::string& name, const glm::vec3& vector) const;
+    void SetVector4(const std::string& name, const glm::vec4& vector) const;
+    void SetMatrix4x4(const std::string& name, const glm::mat4x4& matrix) const;
+
     inline void SetShader(const std::shared_ptr<Shader>& newShader)
     {
         shader = newShader;

@@ -74,3 +74,33 @@ void Material::SetTexture(const std::string& name, const std::shared_ptr<Texture
 {
     textures.insert(MaterialTexture(name, texture));
 }
+
+void Material::SetBool(const std::string& name, bool value) const
+{
+    shader->SetBool(name, value);
+}
+
+void Material::SetInt(const std::string& name, int value) const
+{
+    shader->SetInt(name, value);
+}
+
+void Material::SetFloat(const std::string& name, float value) const
+{
+    shader->SetFloat(name, value);
+}
+
+void Material::SetVector3(const std::string& name, const glm::vec3& vector) const
+{
+    shader->SetVector3(name, vector);
+}
+
+void Material::SetVector4(const std::string& name, const glm::vec4& vector) const
+{
+    shader->SetVector4(name, vector);
+}
+
+void Material::SetMatrix4x4(const std::string& name, const glm::mat4x4& matrix) const
+{
+    shader->SetMatrix4x4(name, matrix);
+}
