@@ -1,7 +1,6 @@
 ﻿#include "engine_pch.h"
 #include "Object.h"
 
-#include "World.h"
 #include "core/Model.h"
 #include "core/components/Component.h"
 #include "core/components/Transform.h"
@@ -30,21 +29,6 @@ void Object::Tick()
     for (const std::shared_ptr<Component>& component : components)
     {
         component->Tick();
-    }
-}
-
-void Object::Draw(const std::shared_ptr<Camera>& camera, const std::unordered_set<std::shared_ptr<Light>>& lights) const
-{
-    const std::vector<std::shared_ptr<Mesh>> meshes = GetComponents<Mesh>();
-
-    for (const std::shared_ptr<Mesh>& mesh : meshes)
-    {
-        if (mesh == nullptr)
-        {
-            continue;
-        }
-
-        mesh->Draw(camera, lights);
     }
 }
 

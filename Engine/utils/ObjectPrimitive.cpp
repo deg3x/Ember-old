@@ -1,6 +1,7 @@
 ﻿#include "engine_pch.h"
 #include "ObjectPrimitive.h"
 
+#include "core/World.h"
 #include "core/Object.h"
 #include "core/Shader.h"
 #include "core/Texture.h"

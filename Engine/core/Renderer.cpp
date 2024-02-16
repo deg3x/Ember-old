@@ -11,6 +11,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "components/Camera.h"
+#include "components/Light.h"
 #include "components/Mesh.h"
 
 #include "window/Window.h"
@@ -118,9 +119,9 @@ void Renderer::Tick()
                 break;
             }
         }
-        mesh->material->GetShader()->SetInt("activeLightsDir", lightIdxDir);
-        mesh->material->GetShader()->SetInt("activeLightsPoint", lightIdxPoint);
-        mesh->material->GetShader()->SetInt("activeLightsSpot", lightIdxSpot);
+        mesh->material->SetInt("activeLightsDir", lightIdxDir);
+        mesh->material->SetInt("activeLightsPoint", lightIdxPoint);
+        mesh->material->SetInt("activeLightsSpot", lightIdxSpot);
 	
         mesh->material->SetupShaderVariables(*mesh->GetOwner()->transform, *Camera::ActiveCamera);
 

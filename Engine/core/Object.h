@@ -1,12 +1,8 @@
 ﻿#pragma once
 
 #include "Definitions.h"
-#include "World.h"
-#include "components/Light.h"
 #include "core/components/Component.h"
 
-class Light;
-class Camera;
 class Transform;
 
 class ENGINE_API Object
@@ -28,7 +24,6 @@ public:
     virtual ~Object();
 
     void Tick();
-    void Draw(const std::shared_ptr<Camera>& camera, const std::unordered_set<std::shared_ptr<Light>>& lights) const;
     void LoadModel(const char* path);
 
     template <class Type, typename... Args>
