@@ -1,6 +1,7 @@
 ﻿#include "engine_pch.h"
 #include "World.h"
 
+#include "Model.h"
 #include "glad/glad.h"
 
 #include "components/Mesh.h"
@@ -21,7 +22,12 @@ void World::Initialize()
     dirLightObject->transform->rotation.x = 30.0f;
     dirLightObject->transform->rotation.y = -30.0f;
 
+    const std::shared_ptr<Object> helmet = std::make_shared<Object>("Damaged Helmet");
+    helmet->LoadModel("./Data/models/DamagedHelmet.glb");
+    helmet->transform->rotation.x = 90.0f;
+
     AddObject(dirLightObject);
+    AddObject(helmet);
 
     ObjectPrimitive::InstantiateSkybox();
     ObjectPrimitive::InstantiateSphere();
