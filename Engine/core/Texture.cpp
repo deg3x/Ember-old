@@ -9,7 +9,7 @@
 #include "logger/Logger.h"
 #include "utils/PathBuilder.h"
 
-Texture::Texture(TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType, int texWidth, int texHeight)
+Texture::Texture(TextureType texType, const void* texData, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType, int texWidth, int texHeight)
 {
     path        = "NO_FILE";
     type        = texType;
@@ -20,7 +20,7 @@ Texture::Texture(TextureType texType, TextureUnit texUnit, TextureFormat savedFo
     width       = texWidth;
     height      = texHeight;
 
-    InitializeTexture(nullptr);
+    InitializeTexture(nullptr, texData);
 }
 
 Texture::Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit, TextureFormat savedFormat, TextureFormat imageFormat, TextureDataType texDataType, int texWidth, int texHeight)
@@ -111,25 +111,25 @@ TextureFormat Texture::ChannelsToFormat(int channels)
     }
 }
 
-void Texture::InitializeTexture(const char* texPath)
+void Texture::InitializeTexture(const char* texPath, const void* texData)
 {
     switch(type)
     {
     case TextureType::DIFFUSE:
-        InitializeTextureDiffuse(texPath);
+        InitializeTextureDiffuse(texPath, texData);
         break;
     case TextureType::CUBE_MAP:
-        InitializeTextureCubeMap(texPath);
+        InitializeTextureCubeMap(texPath, texData);
         break;
     case TextureType::HDR:
-        InitializeTextureHDR(texPath);
+        InitializeTextureHDR(texPath, texData);
         break;
     }
 }
 
-void Texture::InitializeTextureDiffuse(const char* texPath)
+void Texture::InitializeTextureDiffuse(const char* texPath, const void* texData)
 {
-    uint8_t *data = nullptr;
+    uint8_t *data = (uint8_t*)texData;
     int channels;
 
     if (texPath != nullptr)
@@ -150,15 +150,15 @@ void Texture::InitializeTextureDiffuse(const char* texPath)
     glTexImage2D(TEXTURE_2D, 0, formatSaved, width, height, 0, formatImage, dataType, data);
     GenerateMipmap(TEXTURE_2D);
 
-    if (data)
+    if (data && texPath != nullptr)
     {
         stbi_image_free(data);
     }
 }
 
-void Texture::InitializeTextureCubeMap(const char* texturePath)
+void Texture::InitializeTextureCubeMap(const char* texPath, const void* texData)
 {
-    uint8_t *data = nullptr;
+    uint8_t *data = (uint8_t*)texData;
 
     int nChannels;
 
@@ -176,9 +176,9 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
     
     for (unsigned int i = 0; i < 6; i++)
     {
-        if (texturePath != nullptr)
+        if (texPath != nullptr)
         {
-            std::string fullPath = texturePath;
+            std::string fullPath = texPath;
             fullPath += faces[i];
             
             data = LoadImage(fullPath.c_str(), width, height, nChannels, false);
@@ -186,7 +186,7 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
 
         glTexImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, formatSaved, width, height, 0, formatImage, dataType, data);
 
-        if (data)
+        if (data && texPath != nullptr)
         {
             stbi_image_free(data);
         }
@@ -199,14 +199,14 @@ void Texture::InitializeTextureCubeMap(const char* texturePath)
     glTexParameteri(TEXTURE_CUBE_MAP, TEXTURE_WRAP_R, CLAMP_TO_EDGE);
 }
 
-void Texture::InitializeTextureHDR(const char* texturePath)
+void Texture::InitializeTextureHDR(const char* texPath, const void* texData)
 {
     int nChannels;
     
-    float *data = nullptr;
-    if (texturePath != nullptr)
+    float *data = (float*)texData;
+    if (texPath != nullptr)
     {
-        data = LoadImageFloat(texturePath, width, height, nChannels);
+        data = LoadImageFloat(texPath, width, height, nChannels);
     }
     
     glGenTextures(1, &textureID);
@@ -219,7 +219,7 @@ void Texture::InitializeTextureHDR(const char* texturePath)
     glTexParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
     glTexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
 
-    if (data)
+    if (data && texPath != nullptr)
     {
         stbi_image_free(data);
     }

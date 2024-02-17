@@ -1,6 +1,9 @@
 ﻿#include "engine_pch.h"
 #include "Model.h"
 
+#include <stb_image.h>
+
+#include "Renderer.h"
 #include "Shader.h"
 #include "core/components/Mesh.h"
 #include "core/Material.h"
@@ -20,14 +23,15 @@ namespace
 
     std::string directory;
 
-    std::vector<std::shared_ptr<Texture>> ProcessTextures(const aiMaterial* mat, const aiTextureType& aiType)
+    std::vector<std::shared_ptr<Texture>> ProcessTextures(const aiScene* scene, const aiMaterial* mat, const aiTextureType& aiType, TextureUnit unit)
     {
         std::vector<std::shared_ptr<Texture>> retTextures;
 
         for (unsigned int i = 0; i < mat->GetTextureCount(aiType); i++)
         {
             aiString texturePath;
-            mat->GetTexture(aiType, i, &texturePath);
+            //mat->GetTexture(aiType, i, &texturePath);
+            mat->Get(AI_MATKEY_TEXTURE(aiType, i), texturePath);
             bool alreadyLoaded = false;
 
             for (unsigned int j = 0; j < loadedTextures.size(); j++)
@@ -52,12 +56,27 @@ namespace
                     type = TextureType::DIFFUSE;
                     break;
                 default:
+                    type = TextureType::DIFFUSE;
                     Logger::Log(LogCategory::WARNING, "Unhandled texture type found in model", "Model::ProcessTextures");
                     break;
                 }
                 
-                std::string fullPath = directory + "/" + texturePath.C_Str();
-                std::shared_ptr<Texture> texture = std::make_shared<Texture>(fullPath, type);
+                const aiTexture* textureEmb = scene->GetEmbeddedTexture(texturePath.C_Str());
+                std::shared_ptr<Texture> texture;
+
+                if (textureEmb != nullptr)
+                {
+                    int width;
+                    int height;
+                    int channels;
+                    const uint8_t* texData = stbi_load_from_memory((stbi_uc*)textureEmb->pcData, textureEmb->mWidth, &width, &height, &channels, 0);
+                    texture = std::make_shared<Texture>(type, texData, unit, RGB, RGB, UNSIGNED_BYTE, width, height);
+                }
+                else
+                {
+                    const std::string fullPath = directory + "/" + texturePath.C_Str();
+                    texture = std::make_shared<Texture>(fullPath, type);
+                }
 
                 loadedTextures.push_back(texture);
                 retTextures.push_back(texture);
@@ -112,7 +131,7 @@ namespace
                 glm::vec2 v;
 
                 v.x = mesh->mTextureCoords[0][i].x;
-                v.y = mesh->mTextureCoords[0][i].y;
+                v.y = 1.0f - mesh->mTextureCoords[0][i].y;
                 vertex.uv = v;
             }
             else
@@ -136,16 +155,11 @@ namespace
 
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        std::vector<std::shared_ptr<Texture>> diffuseMaps  = ProcessTextures(material, aiTextureType_DIFFUSE);
-        std::vector<std::shared_ptr<Texture>> normalMaps   = ProcessTextures(material, aiTextureType_NORMALS);
-        std::vector<std::shared_ptr<Texture>> specularMaps = ProcessTextures(material, aiTextureType_SPECULAR);
-        std::vector<std::shared_ptr<Texture>> heightMaps   = ProcessTextures(material, aiTextureType_HEIGHT);
-
-        std::vector<std::shared_ptr<Texture>> meshTextures;
-        meshTextures.insert(meshTextures.end(), diffuseMaps.begin(), diffuseMaps.end());
-        meshTextures.insert(meshTextures.end(), normalMaps.begin(), normalMaps.end());
-        meshTextures.insert(meshTextures.end(), specularMaps.begin(), specularMaps.end());
-        meshTextures.insert(meshTextures.end(), heightMaps.begin(), heightMaps.end());
+        std::vector<std::shared_ptr<Texture>> diffuseMaps  = ProcessTextures(scene, material, aiTextureType_BASE_COLOR, TEX_0);
+        std::vector<std::shared_ptr<Texture>> normalMaps   = ProcessTextures(scene, material, aiTextureType_NORMALS, TEX_1);
+        std::vector<std::shared_ptr<Texture>> roughMaps    = ProcessTextures(scene, material, aiTextureType_DIFFUSE_ROUGHNESS, TEX_2);
+        std::vector<std::shared_ptr<Texture>> ambientMaps  = ProcessTextures(scene, material, aiTextureType_AMBIENT, TEX_3);
+        std::vector<std::shared_ptr<Texture>> metallicMaps = ProcessTextures(scene, material, aiTextureType_METALNESS, TEX_4);
 
         // Only use the first available diffuse texture for now
         // FIX IN THE FUTURE
@@ -155,19 +169,55 @@ namespace
         const std::shared_ptr<Shader> meshShader = std::make_shared<Shader>(vertPath.c_str(), fragPath.c_str());
         const std::shared_ptr<Material> meshMat  = std::make_shared<Material>(meshShader);
 
-        meshMat->SetProperty("albedo", glm::vec3(0.85f, 0.1f, 0.1f));
-        meshMat->SetProperty("roughness", 0.3f);
-        meshMat->SetProperty("metallic", 0.0f);
-        meshMat->SetProperty("ambientOcclusion", 0.3f);
+        meshMat->SetTexture("irradianceMap", Renderer::SkyboxIrradianceMap);
+        meshMat->SetTexture("prefilterMap", Renderer::SkyboxPrefilteredMap);
+        meshMat->SetTexture("brdfMap", Renderer::SkyboxBRDFMap);
+        meshMat->SetProperty("hasImageBasedLighting", true);
         
         if (!diffuseMaps.empty())
         {
-            meshMat->SetTexture("diffuseTexture", diffuseMaps[0]);
+            meshMat->SetTexture("albedoMap", diffuseMaps[0]);
+            meshMat->SetProperty("hasMapAlbedo", true);
         }
         else
         {
-            std::shared_ptr<Texture> tex = std::make_shared<Texture>("./Data/images/white.png", TextureType::DIFFUSE);
-            meshMat->SetTexture("diffuseTexture", tex);
+            meshMat->SetProperty("albedo", glm::vec3(0.85f, 0.1f, 0.1f));
+        }
+        
+        if (!normalMaps.empty())
+        {
+            meshMat->SetTexture("normalMap", normalMaps[0]);
+            meshMat->SetProperty("hasMapNormal", true);
+        }
+        
+        if (!metallicMaps.empty())
+        {
+            meshMat->SetTexture("metallicMap", metallicMaps[0]);
+            meshMat->SetProperty("hasMapMetallic", true);
+        }
+        else
+        {
+            meshMat->SetProperty("metallic", 0.0f);
+        }
+        
+        if (!roughMaps.empty())
+        {
+            meshMat->SetTexture("roughnessMap", roughMaps[0]);
+            meshMat->SetProperty("hasMapRoughness", true);
+        }
+        else
+        {
+            meshMat->SetProperty("roughness", 0.3f);
+        }
+        
+        if (!ambientMaps.empty())
+        {
+            meshMat->SetTexture("ambientOcclusionMap", ambientMaps[0]);
+            meshMat->SetProperty("hasMapAmbientOcclusion", true);
+        }
+        else
+        {
+            meshMat->SetProperty("ambientOcclusion", 0.3f);
         }
 
         std::shared_ptr<Mesh> ret = std::make_shared<Mesh>(vertices, indices, meshMat);

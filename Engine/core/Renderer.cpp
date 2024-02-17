@@ -336,10 +336,10 @@ void Renderer::InitializeSkyboxIBL()
     constexpr int brdfResolution    = 512;
     
     const std::shared_ptr<Texture> skyboxTexHDR  = std::make_shared<Texture>("./Data/images/HDR/cloudy_dusky_sky_4k.hdr", TextureType::HDR, TEX_0, RGB16F, RGB, FLOAT);
-    const std::shared_ptr<Texture> cubeMap       = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_0, RGB16F, RGB, FLOAT, cubeMapResolution, cubeMapResolution);
-    const std::shared_ptr<Texture> irradianceMap = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_31, RGB16F, RGB, FLOAT, irrMapResolution, irrMapResolution);
-    const std::shared_ptr<Texture> filteredMap   = std::make_shared<Texture>(TextureType::CUBE_MAP, TEX_30, RGB16F, RGB, FLOAT, filtMapResolution, filtMapResolution);
-    const std::shared_ptr<Texture> brdfLutMap    = std::make_shared<Texture>(TextureType::DIFFUSE, TEX_29, RGB16F, RG, FLOAT, brdfResolution, brdfResolution);
+    const std::shared_ptr<Texture> cubeMap       = std::make_shared<Texture>(TextureType::CUBE_MAP, nullptr, TEX_0, RGB16F, RGB, FLOAT, cubeMapResolution, cubeMapResolution);
+    const std::shared_ptr<Texture> irradianceMap = std::make_shared<Texture>(TextureType::CUBE_MAP, nullptr, TEX_31, RGB16F, RGB, FLOAT, irrMapResolution, irrMapResolution);
+    const std::shared_ptr<Texture> filteredMap   = std::make_shared<Texture>(TextureType::CUBE_MAP, nullptr, TEX_30, RGB16F, RGB, FLOAT, filtMapResolution, filtMapResolution);
+    const std::shared_ptr<Texture> brdfLutMap    = std::make_shared<Texture>(TextureType::DIFFUSE, nullptr, TEX_29, RGB16F, RG, FLOAT, brdfResolution, brdfResolution);
 
     cubeMap->SetParameter(TEXTURE_CUBE_MAP, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_LINEAR);
     

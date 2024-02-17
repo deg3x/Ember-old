@@ -20,7 +20,7 @@ private:
     
 public:
     Texture() = delete;
-    Texture(TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE, int texWidth = 0, int texHeight = 0);
+    Texture(TextureType texType, const void* texData = nullptr, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE, int texWidth = 0, int texHeight = 0);
     Texture(const std::string& texPath, TextureType texType, TextureUnit texUnit = TEX_0, TextureFormat savedFormat = RGB, TextureFormat imageFormat = RGB, TextureDataType texDataType = UNSIGNED_BYTE, int texWidth = 0, int texHeight = 0);
     
     void Bind() const;
@@ -82,10 +82,10 @@ public:
     }
     
 private:
-    void InitializeTexture(const char* texPath);
-    void InitializeTextureDiffuse(const char* texPath);
-    void InitializeTextureCubeMap(const char* texturePath);
-    void InitializeTextureHDR(const char* texturePath);
+    void InitializeTexture(const char* texPath, const void* texData = nullptr);
+    void InitializeTextureDiffuse(const char* texPath, const void* texData = nullptr);
+    void InitializeTextureCubeMap(const char* texPath, const void* texData = nullptr);
+    void InitializeTextureHDR(const char* texPath, const void* texData = nullptr);
 
     static uint8_t* LoadImage(const char* path, int& width, int& height, int& channels, bool flip = true);
     static float* LoadImageFloat(const char* path, int& width, int& height, int& channels, bool flip = true);
