@@ -23,12 +23,14 @@ uniform sampler2D normalMap;
 uniform sampler2D metallicMap;
 uniform sampler2D roughnessMap;
 uniform sampler2D ambientOcclusionMap;
+uniform sampler2D emissionMap;
 
 uniform bool hasMapAlbedo           = false;
 uniform bool hasMapNormal           = false;
 uniform bool hasMapMetallic         = false;
 uniform bool hasMapRoughness        = false;
 uniform bool hasMapAmbientOcclusion = false;
+uniform bool hasMapEmission         = false;
 
 uniform vec3 albedo            = vec3(1.0, 1.0, 1.0);
 uniform float metallic         = 1.0;
@@ -97,9 +99,14 @@ void main()
     
     vec3 color = ambient + irradiance;
     
+    vec3 emissionVal = hasMapEmission ? texture(emissionMap, TexCoord).rgb : vec3(0.0);
+    
     // HDR mapping and Gamma correction
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));
+    
+    // Add emission after HDR + gamma
+    color += emissionVal;
     
     FragmentColor = vec4(color, 1.0);
 }

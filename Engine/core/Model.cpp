@@ -160,6 +160,7 @@ namespace
         std::vector<std::shared_ptr<Texture>> roughMaps    = ProcessTextures(scene, material, aiTextureType_DIFFUSE_ROUGHNESS, TEX_2);
         std::vector<std::shared_ptr<Texture>> ambientMaps  = ProcessTextures(scene, material, aiTextureType_AMBIENT, TEX_3);
         std::vector<std::shared_ptr<Texture>> metallicMaps = ProcessTextures(scene, material, aiTextureType_METALNESS, TEX_4);
+        std::vector<std::shared_ptr<Texture>> emissionMaps = ProcessTextures(scene, material, aiTextureType_EMISSIVE, TEX_5);
 
         // Only use the first available diffuse texture for now
         // FIX IN THE FUTURE
@@ -218,6 +219,12 @@ namespace
         else
         {
             meshMat->SetProperty("ambientOcclusion", 0.3f);
+        }
+        
+        if (!emissionMaps.empty())
+        {
+            meshMat->SetTexture("emissionMap", emissionMaps[0]);
+            meshMat->SetProperty("hasMapEmission", true);
         }
 
         std::shared_ptr<Mesh> ret = std::make_shared<Mesh>(vertices, indices, meshMat);
