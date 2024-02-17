@@ -1,6 +1,6 @@
 vec3 SampleNormalMap(sampler2D map, vec2 uv, mat3 tbnMatrix)
 {
-    vec3 normal = normalize(texture(map, uv).rgb) * 2.0 - 1.0;
+    vec3 normal = normalize(texture(map, uv).rgb * 2.0 - 1.0);
     
     vec3 tangent    = tbnMatrix[0];
     vec3 bitangent  = tbnMatrix[1];

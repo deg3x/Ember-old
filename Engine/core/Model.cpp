@@ -131,7 +131,7 @@ namespace
                 glm::vec2 v;
 
                 v.x = mesh->mTextureCoords[0][i].x;
-                v.y = 1.0f - mesh->mTextureCoords[0][i].y;
+                v.y = mesh->mTextureCoords[0][i].y;
                 vertex.uv = v;
             }
             else
@@ -263,7 +263,7 @@ std::vector<std::shared_ptr<Mesh>> Model::Load(const char* path)
     std::vector<std::shared_ptr<Mesh>>().swap(loadedMeshes);
     
     Assimp::Importer importer;
-    constexpr unsigned int importFlags = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace;
+    constexpr unsigned int importFlags = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace;
     const aiScene* scene = importer.ReadFile(PathBuilder::GetPath(path), importFlags);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
