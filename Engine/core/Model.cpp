@@ -23,7 +23,7 @@ namespace
 
     std::string directory;
 
-    std::vector<std::shared_ptr<Texture>> ProcessTextures(const aiScene* scene, const aiMaterial* mat, const aiTextureType& aiType, TextureUnit unit)
+    std::vector<std::shared_ptr<Texture>> ProcessTextures(const aiScene* scene, const aiMaterial* mat, const aiTextureType& aiType, TextureUnit unit, TextureFormat imgFormat = RGB)
     {
         std::vector<std::shared_ptr<Texture>> retTextures;
 
@@ -70,7 +70,7 @@ namespace
                     int height;
                     int channels;
                     const uint8_t* texData = stbi_load_from_memory((stbi_uc*)textureEmb->pcData, textureEmb->mWidth, &width, &height, &channels, 0);
-                    texture = std::make_shared<Texture>(type, texData, unit, RGB, RGB, UNSIGNED_BYTE, width, height);
+                    texture = std::make_shared<Texture>(type, texData, unit, RGB, imgFormat, UNSIGNED_BYTE, width, height);
                 }
                 else
                 {
@@ -159,7 +159,7 @@ namespace
         std::vector<std::shared_ptr<Texture>> normalMaps   = ProcessTextures(scene, material, aiTextureType_NORMALS, TEX_1);
         std::vector<std::shared_ptr<Texture>> roughMaps    = ProcessTextures(scene, material, aiTextureType_DIFFUSE_ROUGHNESS, TEX_2);
         std::vector<std::shared_ptr<Texture>> ambientMaps  = ProcessTextures(scene, material, aiTextureType_AMBIENT, TEX_3);
-        std::vector<std::shared_ptr<Texture>> metallicMaps = ProcessTextures(scene, material, aiTextureType_METALNESS, TEX_4);
+        std::vector<std::shared_ptr<Texture>> metallicMaps = ProcessTextures(scene, material, aiTextureType_METALNESS, TEX_4, BGR);
         std::vector<std::shared_ptr<Texture>> emissionMaps = ProcessTextures(scene, material, aiTextureType_EMISSIVE, TEX_5);
 
         // Only use the first available diffuse texture for now
