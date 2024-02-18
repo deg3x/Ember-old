@@ -93,4 +93,5 @@ void EditorTheme::ApplyTheme()
     style.GrabRounding                      = 3;
     style.LogSliderDeadzone                 = 4;
     style.TabRounding                       = 4;
+    style.WindowMinSize                     = ImVec2(250.0f, 250.0f);
 }
