@@ -507,7 +507,11 @@ void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
 
 void Inspector::DrawAddComponentButton()
 {
-    const ImVec2 buttonSize = {ImGui::GetContentRegionAvail().x * 0.5f, 30.0f};
+    const float buttonWidthMin = ImGui::CalcTextSize("Add component").x + 20.0f;
+    const float buttonWidthMax = buttonWidthMin + 100.0f;
+    const float buttonWidth    = glm::clamp(ImGui::GetContentRegionAvail().x * 0.6f, buttonWidthMin, buttonWidthMax);
+    
+    const ImVec2 buttonSize = {buttonWidth, 30.0f};
     const float buttonPosX = (ImGui::GetContentRegionAvail().x - buttonSize.x) * 0.5f;
 
     ImGui::SetCursorPosX(buttonPosX);
