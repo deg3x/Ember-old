@@ -1,7 +1,7 @@
 
 ------------ Configuration Variables ------------
 
-SOLUTION_NAME = "GraphicsPlayground"
+SOLUTION_NAME = "Ember"
 SOLUTION_PATH = ".."
 BIN_DIR = "../bin"
 OBJ_DIR = "../obj"
