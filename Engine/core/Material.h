@@ -126,6 +126,11 @@ public:
     {
         return properties;
     }
+
+    inline std::unordered_set<MaterialTexture, MaterialTexture> GetTextures() const
+    {
+        return textures;
+    }
 };
 
 template <class Type>

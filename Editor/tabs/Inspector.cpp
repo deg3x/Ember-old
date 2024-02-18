@@ -447,6 +447,7 @@ void Inspector::DrawMaterial(const std::shared_ptr<Material>& material)
 void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
 {
     std::unordered_set<MaterialProperty, MaterialProperty> properties = material->GetProperties();
+    std::unordered_set<MaterialTexture, MaterialTexture> textures     = material->GetTextures();
 
     std::string vertPath = material->GetShader()->GetVertexPath();
     std::string fragPath = material->GetShader()->GetFragmentPath();
@@ -484,6 +485,23 @@ void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
         case MaterialProperty::PropertyType::MATRIX4X4:
             break;
         }
+    }
+
+    for (const auto& texture : textures)
+    {
+        const std::unordered_set<std::string> skipTextures = {"irradianceMap", "prefilterMap", "brdfMap"};
+        if (skipTextures.contains(texture.name))
+        {
+            continue;
+        }
+
+        // We cannot properly draw cubemaps
+        if (texture.texture->GetType() == TextureType::CUBE_MAP)
+        {
+            continue;
+        }
+
+        DrawRowLabelTexture(texture.name, texture.texture->GetID());
     }
 }
 
@@ -625,4 +643,20 @@ void Inspector::DrawRowLabelText(const std::string& label, const std::string& te
     ImGui::TableNextColumn();
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
     ImGui::TextUnformatted(text.c_str());
+}
+
+void Inspector::DrawRowLabelTexture(const std::string& label, unsigned id)
+{
+    constexpr float imgMinSize = 60.0f;
+    constexpr float imgMaxSize = 120.0f;
+
+    const float imgSize    = glm::clamp(ImGui::GetContentRegionAvail().x * 0.4f, imgMinSize, imgMaxSize);
+    const ImVec2 imgSize2D = { imgSize, imgSize };
+
+    DrawRowLabel(label);
+
+    ImGui::TableNextColumn();
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * compColWidthSecondMult);
+    
+    ImGui::Image((void*)(intptr_t)id, imgSize2D);
 }
