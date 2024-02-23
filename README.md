@@ -33,6 +33,9 @@ If you want to avoid installing it, you can manually run premake and build the p
 There is also a command to clean the generated solution/projects:
 1. `python ./generate_project.py clean` 
 
+## Media
+![Alt text](./Data/images/engine_media.png "Engine")
+
 ## Feature List
 - [x] Textures (diffuse, normals, etc.) [not fully implemented]
 - [ ] Shadows
