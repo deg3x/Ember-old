@@ -1,4 +1,3 @@
-# Ember Engine
 ![Alt text](./Data/images/ember_banner.png "Ember Logo")
 
 ## Overview
