@@ -1,4 +1,5 @@
 # Ember Engine
+![Alt text](./Data/images/ember_banner.png "Ember Logo")
 
 ## Overview
 Ember engine is a project that I started in order to dive into Engine/Graphics programming. \
