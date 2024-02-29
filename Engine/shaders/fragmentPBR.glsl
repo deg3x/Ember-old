@@ -45,7 +45,7 @@ void main()
     vec3 albedoVal     = hasMapAlbedo ? pow(texture(albedoMap, TexCoord).rgb, vec3(2.2)) : albedo;
     vec3 normVector    = hasMapNormal ? SampleNormalMap(normalMap, TexCoord, TBN) : normalize(TBN[2]);
     float metallicVal  = hasMapMetallic ? texture(metallicMap, TexCoord).r : metallic;
-    float roughnessVal = hasMapRoughness ? texture(roughnessMap, TexCoord).r : roughness;
+    float roughnessVal = hasMapRoughness ? texture(roughnessMap, TexCoord).g : roughness;
     float ao           = hasMapAmbientOcclusion ? texture(ambientOcclusionMap, TexCoord).r : ambientOcclusion;
     
     for (int i = 0; i < activeLightsDir; i++)
