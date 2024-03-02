@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "UniformBuffer.h"
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 #include "Shader.h"
 #include "logger/Logger.h"

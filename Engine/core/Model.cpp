@@ -1,7 +1,7 @@
-﻿#include "engine_pch.h"
+#include "engine_pch.h"
 #include "Model.h"
 
-#include <stb_image.h>
+#include "stb_image.h"
 
 #include "Renderer.h"
 #include "Shader.h"

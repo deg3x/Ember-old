@@ -1,7 +1,7 @@
-﻿#include "engine_pch.h"
+#include "engine_pch.h"
 #include "Material.h"
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 #include "core/Object.h"
 #include "core/Shader.h"

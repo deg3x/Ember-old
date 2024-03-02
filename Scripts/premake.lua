@@ -75,9 +75,6 @@ project (ENGINE_PROJ_NAME)
     language "C++"
     cppdialect "C++20"
 
-    pchheader "engine_pch.h"
-    pchsource (ENGINE_DIR .. "/engine_pch.cpp")
-
     files 
     {
         ENGINE_DIR .. "/**.cpp",
@@ -95,6 +92,9 @@ project (ENGINE_PROJ_NAME)
         includedirs (ENGINE_INCL_PATH_WIN)
         -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
 
+        pchheader "engine_pch.h"
+        pchsource (ENGINE_DIR .. "/engine_pch.cpp")
+
         postbuildcommands
         {
             "{COPY} %{wks.location}/ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
@@ -105,6 +105,14 @@ project (ENGINE_PROJ_NAME)
         libdirs (ENGINE_LIBS_PATH_OSX)
         includedirs (ENGINE_INCL_PATH_OSX)
         -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
+
+        pchheader "Engine/engine_pch.h"
+        pchsource "Engine/engine_pch.cpp"
+
+        xcodebuildsettings
+        {
+            ["GCC_INPUT_FILETYPE"] = "sourcecode.cpp.cpp",
+        }
 
         postbuildcommands
         {
@@ -137,9 +145,6 @@ project (EDITOR_PROJ_NAME)
     language "C++"
     cppdialect "C++20"
 
-    pchheader "editor_pch.h"
-    pchsource (EDITOR_DIR .. "/editor_pch.cpp")
-
     files 
     {
         EDITOR_DIR .. "/**.cpp",
@@ -154,6 +159,9 @@ project (EDITOR_PROJ_NAME)
         libdirs (EDITOR_LIBS_PATH_WIN)
         includedirs (EDITOR_INCL_PATH_WIN)
 
+        pchheader "editor_pch.h"
+        pchsource (EDITOR_DIR .. "/editor_pch.cpp")
+
         postbuildcommands
         {
             "{COPY} %{wks.location}/ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}",
@@ -165,6 +173,14 @@ project (EDITOR_PROJ_NAME)
         links (EDITOR_LIBS_OSX)
         libdirs (EDITOR_LIBS_PATH_OSX)
         includedirs (EDITOR_INCL_PATH_OSX)
+
+        pchheader "Editor/editor_pch.h"
+        pchsource "Editor/editor_pch.cpp"
+
+        xcodebuildsettings
+        {
+            ["GCC_INPUT_FILETYPE"] = "sourcecode.cpp.cpp",
+        }
 
         postbuildcommands
         {
