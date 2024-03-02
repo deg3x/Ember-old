@@ -330,7 +330,7 @@ void Renderer::InitializeSkyboxIBL()
     const std::shared_ptr<Shader> filtShader = std::make_shared<Shader>(vertPref.c_str(), fragPref.c_str());
     const std::shared_ptr<Shader> brdfShader = std::make_shared<Shader>(vertBRDF.c_str(), fragBRDF.c_str());
 
-    constexpr int cubeMapResolution = 2048;
+    constexpr int cubeMapResolution = 1024;
     constexpr int irrMapResolution  = 32;
     constexpr int filtMapResolution = 256;
     constexpr int brdfResolution    = 512;
