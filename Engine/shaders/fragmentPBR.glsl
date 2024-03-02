@@ -1,7 +1,7 @@
 #version 410 core
 
 in vec2 TexCoord;
-in vec3 WorldPosition;
+in vec3 WorldPos;
 in mat3 TBN;
 
 out vec4 FragmentColor;
@@ -39,7 +39,7 @@ uniform float ambientOcclusion = 0.1;
 
 void main()
 {
-    vec3 viewVector = normalize(cameraPosition - WorldPosition);
+    vec3 viewVector = normalize(cameraPosition - WorldPos);
     vec3 irradiance = vec3(0.0);
     
     vec3 albedoVal     = hasMapAlbedo ? pow(texture(albedoMap, TexCoord).rgb, vec3(2.2)) : albedo;
@@ -59,19 +59,19 @@ void main()
     }
     for (int i = 0; i < activeLightsPoint; i++)
     {
-        vec3 lightVector = normalize(pointLights[i].position - WorldPosition);
+        vec3 lightVector = normalize(pointLights[i].position - WorldPos);
         vec3 halfVector  = normalize(viewVector + lightVector);
         
-        vec3 radiance = pointLights[i].color * CalculateLightPoint(pointLights[i], WorldPosition);
+        vec3 radiance = pointLights[i].color * CalculateLightPoint(pointLights[i], WorldPos);
         
         irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance, albedoVal, metallicVal, roughnessVal);
     }
     for (int i = 0; i < activeLightsSpot; i++)
     {
-        vec3 lightVector = normalize(spotLights[i].position - WorldPosition);
+        vec3 lightVector = normalize(spotLights[i].position - WorldPos);
         vec3 halfVector  = normalize(viewVector + lightVector);
         
-        vec3 radiance = spotLights[i].color * CalculateLightSpot(spotLights[i], WorldPosition);
+        vec3 radiance = spotLights[i].color * CalculateLightSpot(spotLights[i], WorldPos);
         
         irradiance += PBREquationComponent(normVector, viewVector, lightVector, halfVector, radiance, albedoVal, metallicVal, roughnessVal);
     }
