@@ -18,11 +18,11 @@ public:                                     \
         return true;                        \
     }                                       \
 
-#define MAKE_COMPONENT_TYPE(type)           \
-public:                                     \
-    virtual inline ComponentType GetType()  \
-    {                                       \
-        return ComponentType::type;         \
+#define MAKE_COMPONENT_TYPE(type)                   \
+public:                                             \
+    virtual inline ComponentType GetType() override \
+    {                                               \
+        return ComponentType::type;                 \
     }
 
 class Object;
@@ -30,8 +30,6 @@ class Object;
 class ENGINE_API Component
 {
     friend class Object;
-    
-    MAKE_COMPONENT_TYPE(COUNT)
     
 protected:
     // Handled by the AddComponent() function of Object
@@ -52,6 +50,11 @@ public:
     virtual inline bool IsUnique()
     {
         return true;
+    }
+    
+    virtual inline ComponentType GetType()
+    {
+        return ComponentType::COUNT;
     }
 };
 
