@@ -49,7 +49,7 @@ public:
     
     virtual inline bool IsUnique()
     {
-        return true;
+        return false;
     }
     
     virtual inline ComponentType GetType()

@@ -10,6 +10,7 @@ enum class CameraProjection : uint8_t
 
 class ENGINE_API Camera : public Component
 {
+	MAKE_UNIQUE_COMPONENT()
 	MAKE_COMPONENT_TYPE(CAMERA)
 
 public:
