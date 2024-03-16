@@ -21,4 +21,5 @@ public:
     
     static void AddObject(const std::shared_ptr<Object>& object);
     static void RemoveObject(const std::shared_ptr<Object>& object);
+    static bool ContainsObject(const uint64_t object_id);
 };

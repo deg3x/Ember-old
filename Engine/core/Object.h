@@ -1,7 +1,10 @@
 ﻿#pragma once
 
 #include "Definitions.h"
+#include "Renderer.h"
+#include "World.h"
 #include "core/components/Component.h"
+#include "core/components/Light.h"
 
 class Transform;
 
@@ -63,6 +66,12 @@ void Object::AddComponent(const std::shared_ptr<Type>& component)
 
     component->owner = this;
     components.push_back(component);
+
+    const std::shared_ptr<Light> light = std::dynamic_pointer_cast<Light>(component);
+    if (light != nullptr && World::ContainsObject(uid))
+    {
+        Renderer::LightsAppend(light);
+    }
 }
 
 template <class Type, typename... Args>

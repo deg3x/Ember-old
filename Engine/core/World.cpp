@@ -79,10 +79,10 @@ void World::AddObject(const std::shared_ptr<Object>& object)
         // Special handling of camera
     }
 
-    const std::shared_ptr<Light> lightComponent = object->GetComponent<Light>();
-    if (lightComponent != nullptr)
+    const std::vector<std::shared_ptr<Light>> lightComponents = object->GetComponents<Light>();
+    for (const std::shared_ptr<Light>& light : lightComponents)
     {
-        Renderer::LightsAppend(lightComponent);
+        Renderer::LightsAppend(light);
     }
 }
 
@@ -104,4 +104,17 @@ void World::RemoveObject(const std::shared_ptr<Object>& object)
         
         worldObjects.erase(object);
     }
+}
+
+bool World::ContainsObject(const uint64_t object_id)
+{
+    for (const std::shared_ptr<Object>& obj : worldObjects)
+    {
+        if (obj->uid == object_id)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
