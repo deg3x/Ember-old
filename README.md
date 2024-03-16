@@ -51,5 +51,8 @@ There is also a command to clean the generated solution/projects:
 - [ ] Raytracing
 - [x] Editor (ImGui)
 
+## Special Thanks
+The ember engine logo was created by [Yiannis Avgoloupis](https://www.artstation.com/yiannisart), one of the most talented artists out there.
+
 ## License
 The MIT License (MIT) 
