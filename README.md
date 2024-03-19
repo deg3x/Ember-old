@@ -37,7 +37,7 @@ There is also a command to clean the generated solution/projects:
 ![Alt text](./Data/images/engine_media.png "Engine")
 
 ## Feature List
-- [x] Textures (diffuse, normals, etc.) [not fully implemented]
+- [x] Multiple textures (diffuse, normals, etc.)
 - [ ] Shadows
 - [x] Cubemaps
 - [x] Model Loading
@@ -51,8 +51,9 @@ There is also a command to clean the generated solution/projects:
 - [ ] Raytracing
 - [x] Editor (ImGui)
 
-## Special Thanks
-The ember engine logo was created by [Yiannis Avgoloupis](https://www.artstation.com/yiannisart), one of the most talented artists out there.
+## Acknowledgements
+- The ember engine logo was created by [Yiannis Avgoloupis](https://www.artstation.com/yiannisart), one of the most talented artists out there.
+- This project would not be possible without the constant support and motivation by my friend [Panos Karabelas](https://twitter.com/panoskarabelas1). Panos is also the programmer behind [Spartan](https://github.com/PanosK92/SpartanEngine), one of the biggest open source graphics engines.
 
 ## License
 The MIT License (MIT) 
