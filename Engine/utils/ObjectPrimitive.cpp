@@ -176,7 +176,7 @@ std::shared_ptr<Object> ObjectPrimitive::InstantiateEditorGrid()
     gridMesh->writeToDepthBuffer = false;
 
     // We push the grid lower to avoid Z-fighting
-    editorGrid->transform->position = {0.0f, -0.01f, 0.0f};
+    editorGrid->transform->SetPosition({0.0f, -0.01f, 0.0f});
 
     World::AddObject(editorGrid);
 

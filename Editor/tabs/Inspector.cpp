@@ -135,9 +135,23 @@ void Inspector::DrawTransform()
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthFirstTransf);
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthSecondTransf);
 
-            DrawTransformVector("Position", &selection->transform->position);
-            DrawTransformVector("Rotation", &selection->transform->rotation);
-            DrawTransformVector("Scale", &selection->transform->scale);
+            // FIX THESE BEFORE SUBMITTING
+            glm::vec3 placeholder;
+
+            placeholder = selection->transform->GetPosition();
+            DrawTransformVector("Position", &placeholder);
+            selection->transform->SetPosition(placeholder);
+
+            placeholder = selection->transform->GetRotation();
+            DrawTransformVector("Rotation", &placeholder);
+            selection->transform->SetRotation(placeholder);
+
+            placeholder = selection->transform->GetScale();
+            DrawTransformVector("Scale", &placeholder);
+            selection->transform->SetScale(placeholder);
+            
+            //DrawTransformVector("Rotation", &selection->transform->GetRotation());
+            //DrawTransformVector("Scale", &selection->transform->GetScale());
 
             ImGui::EndTable();
         }

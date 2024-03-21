@@ -19,8 +19,8 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     
     viewportCamera = std::make_shared<Object>("Camera");
     Camera::ActiveCamera = viewportCamera->CreateComponent<Camera>();
-    viewportCamera->transform->position = glm::vec3(0.0f, 3.0f, 3.0f);
-    viewportCamera->transform->rotation = glm::vec3(0.0f, -90.0f, 0.0f);
+    viewportCamera->transform->SetPosition({0.0f, 3.0f, 3.0f});
+    viewportCamera->transform->SetRotation({0.0f, -90.0f, 0.0f});
 
     World::AddObject(viewportCamera);
 }
@@ -59,7 +59,7 @@ void Viewport::TickViewportCamera()
 
     const std::shared_ptr<Transform> cameraTransform = viewportCamera->transform;
     
-    glm::vec3 newPosition = cameraTransform->position;
+    glm::vec3 newPosition = cameraTransform->GetPosition();
 
     // Rotation around center
     const float rotSpeed     = mouse.sensitivity * Time::DeltaTime * cameraRotSpeed;
@@ -71,14 +71,14 @@ void Viewport::TickViewportCamera()
     const float sinHalfPitch = glm::sin(anglePitch * 0.5f);
     
     const glm::vec3 upVector    = glm::vec3(0.0f, 1.0f, 0.0f);
-    const glm::vec3 rightVector = normalize(glm::cross(cameraTransform->position, upVector));
+    const glm::vec3 rightVector = normalize(glm::cross(cameraTransform->GetPosition(), upVector));
     
     const glm::quat rotationYaw   = glm::quat(cosHalfYaw, upVector * sinHalfYaw);
     const glm::quat rotationPitch = glm::quat(cosHalfPitch, rightVector * sinHalfPitch);
     
     bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_LEFT);
     bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_LEFT);
-    applyPitch     &= glm::abs(glm::dot(upVector, glm::normalize(rotationPitch * cameraTransform->position))) < 0.99f;
+    applyPitch     &= glm::abs(glm::dot(upVector, glm::normalize(rotationPitch * cameraTransform->GetPosition()))) < 0.99f;
     
     newPosition = applyYaw ? rotationYaw * newPosition : newPosition;
     newPosition = applyPitch ? rotationPitch * newPosition : newPosition;
@@ -90,7 +90,7 @@ void Viewport::TickViewportCamera()
     constexpr float minDistanceMult  = 1.0f;
     constexpr float maxDistanceMult  = 5.0f;
     
-    const float speedDistMultDelta = glm::clamp((glm::length(cameraTransform->position) - minDistanceSpeed) / (maxDistanceSpeed - minDistanceSpeed), 0.0f, 1.0f); 
+    const float speedDistMultDelta = glm::clamp((glm::length(cameraTransform->GetPosition()) - minDistanceSpeed) / (maxDistanceSpeed - minDistanceSpeed), 0.0f, 1.0f); 
     const float speedDistanceMult  = speedDistMultDelta * maxDistanceMult + (1.0f - speedDistMultDelta) * minDistanceMult;
         
     const float zoomSpeed         = mouse.sensitivityScroll * Time::DeltaTime * cameraZoomSpeed * speedDistanceMult;
@@ -102,5 +102,5 @@ void Viewport::TickViewportCamera()
     newPosition = newPosition + (applyDistance ? zoomDirection * distanceDelta : glm::vec3(0.0));
 
     // Apply new camera position
-    cameraTransform->position = newPosition;
+    cameraTransform->SetPosition(newPosition);
 }

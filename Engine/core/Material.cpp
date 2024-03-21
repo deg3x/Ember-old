@@ -32,7 +32,7 @@ void Material::SetupShaderVariables(const Transform& objectTransform, const Came
     shader->SetMatrix4x4("view", camera.GetViewMatrix());
     shader->SetMatrix4x4("projection", camera.GetProjectionMatrix());
     shader->SetMatrix4x4("normalMatrix", normalMatrix);
-    shader->SetVector3("cameraPosition", camera.GetOwner()->transform->position);
+    shader->SetVector3("cameraPosition", camera.GetOwner()->transform->GetPosition());
 
     for (const MaterialTexture& matTexture : textures)
     {

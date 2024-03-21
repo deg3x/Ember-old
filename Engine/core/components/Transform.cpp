@@ -31,10 +31,46 @@ void Transform::Tick()
 {
 	Component::Tick();
 
-	if (owner != nullptr && owner->isActive)
+	if (isModelUpdated)
 	{
-		UpdateLocalModelMatrix();
+		return;
 	}
+
+	isModelUpdated = true;
+	UpdateLocalModelMatrix();
+}
+
+void Transform::SetPosition(const glm::vec3& newPosition)
+{
+	if (glm::all(glm::epsilonEqual(position, newPosition, 0.001f)))
+	{
+		return;
+	}
+
+	position = newPosition;
+	isModelUpdated = false;
+}
+
+void Transform::SetRotation(const glm::vec3& newRotation)
+{
+	if (glm::all(glm::epsilonEqual(rotation, newRotation, 0.001f)))
+	{
+		return;
+	}
+
+	rotation = newRotation;
+	isModelUpdated = false;
+}
+
+void Transform::SetScale(const glm::vec3& newScale)
+{
+	if (glm::all(glm::epsilonEqual(scale, newScale, 0.001f)))
+	{
+		return;
+	}
+
+	scale = newScale;
+	isModelUpdated = false;
 }
 
 glm::mat4x4 Transform::GetModelMatrix() const

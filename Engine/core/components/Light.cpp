@@ -31,7 +31,7 @@ void Light::Tick()
 	Component::Tick();
 
 	const glm::vec3 direction = -owner->transform->GetUpVector();
-	const glm::vec3 position  = owner->transform->position;
+	const glm::vec3 position  = owner->transform->GetPosition();
 	
 	directional.direction = direction;
 	point.position        = position;

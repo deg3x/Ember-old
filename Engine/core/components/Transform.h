@@ -6,8 +6,13 @@ class ENGINE_API Transform : public Component
 {
 	MAKE_UNIQUE_COMPONENT()
 	MAKE_COMPONENT_TYPE(TRANSFORM)
-	
+
 public:
+	static const glm::vec3 worldForward;
+	static const glm::vec3 worldRight;
+	static const glm::vec3 worldUp;
+	
+private:
 	glm::vec3 position;
 	glm::vec3 rotation; // Switch to quaternions later
 	glm::vec3 scale;
@@ -16,11 +21,8 @@ public:
 	std::shared_ptr<Transform> parent = nullptr;
 	std::vector<Transform> children;
 
-	static const glm::vec3 worldForward;
-	static const glm::vec3 worldRight;
-	static const glm::vec3 worldUp;
-
 private:
+	bool isModelUpdated = false;
 	glm::mat4x4 localModelMatrix = glm::mat4x4(1.0f);
 	
 public:
@@ -30,6 +32,25 @@ public:
 	virtual ~Transform() = default;
 
 	void Tick() override;
+
+	inline glm::vec3 GetPosition() const
+	{
+		return position;
+	}
+	
+	inline glm::vec3 GetRotation() const
+	{
+		return rotation;
+	}
+
+	inline glm::vec3 GetScale() const
+	{
+		return scale;
+	}
+
+	void SetPosition(const glm::vec3& newPosition);
+	void SetRotation(const glm::vec3& newRotation);
+	void SetScale(const glm::vec3& newScale);
 
 	glm::mat4x4 GetModelMatrix() const;
 	glm::vec3 GetForwardVector() const;

@@ -19,12 +19,11 @@ void World::Initialize()
 {
     const std::shared_ptr<Object> dirLightObject = std::make_shared<Object>("Directional Light");
     dirLightObject->CreateComponent<Light>();
-    dirLightObject->transform->rotation.x = 30.0f;
-    dirLightObject->transform->rotation.y = -30.0f;
+    dirLightObject->transform->SetRotation({30.0f, -30.0f, 0.0f});
 
     const std::shared_ptr<Object> helmet = std::make_shared<Object>("Damaged Helmet");
     helmet->LoadModel("./Data/models/DamagedHelmet.glb");
-    helmet->transform->rotation.x = 90.0f;
+    helmet->transform->SetRotation({90.0f, 0.0f, 0.0f});
 
     AddObject(dirLightObject);
     AddObject(helmet);

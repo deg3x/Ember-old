@@ -19,7 +19,7 @@ Camera::Camera()
 
 glm::mat4x4 Camera::GetViewMatrix() const
 {
-	const glm::mat4x4 lookAtMatrix = glm::lookAt(owner->transform->position, glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+	const glm::mat4x4 lookAtMatrix = glm::lookAt(owner->transform->GetPosition(), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 
 	return lookAtMatrix;
 }
