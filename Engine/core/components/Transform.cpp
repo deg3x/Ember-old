@@ -1,6 +1,8 @@
 #include "engine_pch.h"
 #include "Transform.h"
 
+#include "core/Object.h"
+
 Transform::Transform()
 {
 	position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -25,7 +27,17 @@ Transform::Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 i
 	pivotOffset = initPivotOffset;
 }
 
-glm::mat4x4 Transform::GetModelMatrix() const
+void Transform::Tick()
+{
+	Component::Tick();
+
+	if (owner != nullptr && owner->isActive)
+	{
+		modelMatrix = GetModelMatrix();
+	}
+}
+
+glm::mat4x4 Transform::GetModelMatrix()
 {
 	glm::mat4x4 model = glm::mat4x4(1.0f);
 

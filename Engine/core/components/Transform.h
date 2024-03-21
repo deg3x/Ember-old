@@ -20,14 +20,20 @@ public:
 	static const glm::vec3 worldRight;
 	static const glm::vec3 worldUp;
 	
+	glm::mat4x4 modelMatrix = glm::mat4x4(1.0f);
+	
 public:
 	Transform();
 	Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale);
 	Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale, glm::vec3 initPivotOffset);
 	virtual ~Transform() = default;
 
-	glm::mat4x4 GetModelMatrix() const;
+	void Tick() override;
+
 	glm::vec3 GetForwardVector() const;
 	glm::vec3 GetRightVector() const;
 	glm::vec3 GetUpVector() const;
+
+private:
+	glm::mat4x4 GetModelMatrix();
 };
