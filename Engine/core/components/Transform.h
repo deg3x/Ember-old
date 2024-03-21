@@ -19,8 +19,9 @@ public:
 	static const glm::vec3 worldForward;
 	static const glm::vec3 worldRight;
 	static const glm::vec3 worldUp;
-	
-	glm::mat4x4 modelMatrix = glm::mat4x4(1.0f);
+
+private:
+	glm::mat4x4 localModelMatrix = glm::mat4x4(1.0f);
 	
 public:
 	Transform();
@@ -30,10 +31,11 @@ public:
 
 	void Tick() override;
 
+	glm::mat4x4 GetModelMatrix() const;
 	glm::vec3 GetForwardVector() const;
 	glm::vec3 GetRightVector() const;
 	glm::vec3 GetUpVector() const;
 
 private:
-	glm::mat4x4 GetModelMatrix();
+	void UpdateLocalModelMatrix();
 };

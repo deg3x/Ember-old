@@ -33,25 +33,18 @@ void Transform::Tick()
 
 	if (owner != nullptr && owner->isActive)
 	{
-		modelMatrix = GetModelMatrix();
+		UpdateLocalModelMatrix();
 	}
 }
 
-glm::mat4x4 Transform::GetModelMatrix()
+glm::mat4x4 Transform::GetModelMatrix() const
 {
-	glm::mat4x4 model = glm::mat4x4(1.0f);
+	if (parent == nullptr)
+	{
+		return localModelMatrix;
+	}
 
-	model = glm::translate(model, position);
-
-	model = glm::translate(model, pivotOffset);
-	model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::translate(model, -pivotOffset);
-
-	model = glm::scale(model, scale);
-
-	return model;
+	return localModelMatrix * parent->localModelMatrix;
 }
 
 glm::vec3 Transform::GetForwardVector() const
@@ -73,6 +66,23 @@ glm::vec3 Transform::GetRightVector() const
 glm::vec3 Transform::GetUpVector() const
 {
 	return glm::normalize(glm::cross(GetRightVector(), GetForwardVector()));
+}
+
+void Transform::UpdateLocalModelMatrix()
+{
+	glm::mat4x4 model = glm::mat4x4(1.0f);
+
+	model = glm::translate(model, position);
+
+	model = glm::translate(model, pivotOffset);
+	model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, -pivotOffset);
+
+	model = glm::scale(model, scale);
+
+	localModelMatrix = model;
 }
 
 const glm::vec3 Transform::worldForward = glm::vec3(0.0f, 0.0f, 1.0f);

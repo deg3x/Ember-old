@@ -25,7 +25,7 @@ void Material::SetupShaderVariables(const Transform& objectTransform, const Came
 {
     shader->Use();
 
-    const glm::mat4x4 modelMatrix  = objectTransform.modelMatrix;
+    const glm::mat4x4 modelMatrix  = objectTransform.GetModelMatrix();
     const glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(modelMatrix));
 
     shader->SetMatrix4x4("model", modelMatrix);
