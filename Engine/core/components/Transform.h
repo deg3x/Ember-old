@@ -13,6 +13,9 @@ public:
 	glm::vec3 scale;
 	glm::vec3 pivotOffset;
 
+	std::shared_ptr<Transform> parent = nullptr;
+	std::vector<Transform> children;
+
 	static const glm::vec3 worldForward;
 	static const glm::vec3 worldRight;
 	static const glm::vec3 worldUp;
