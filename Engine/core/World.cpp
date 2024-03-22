@@ -28,8 +28,11 @@ void World::Initialize()
     AddObject(dirLightObject);
     AddObject(helmet);
 
+    const std::shared_ptr<Object> sphere = ObjectPrimitive::InstantiateSphere();
+    sphere->transform->SetPosition({2.0f, 0.0f, 0.0f});
+    sphere->transform->SetParent(helmet->transform);
+    
     ObjectPrimitive::InstantiateSkybox();
-    ObjectPrimitive::InstantiateSphere();
     ObjectPrimitive::InstantiateEditorGrid();
 
     // Startup renderer state
