@@ -19,7 +19,7 @@ private:
 	glm::vec3 pivotOffset;
 
 	std::shared_ptr<Transform> parent = nullptr;
-	std::vector<Transform> children;
+	std::vector<std::shared_ptr<Transform>> children;
 
 private:
 	bool isModelUpdated = false;
@@ -48,10 +48,12 @@ public:
 		return scale;
 	}
 
-	inline void SetParent(const std::shared_ptr<Transform>& newParent)
+	inline std::shared_ptr<Transform> GetParent() const
 	{
-		parent = newParent;
+		return parent;
 	}
+
+	static void SetParent(const std::shared_ptr<Transform>& child, const std::shared_ptr<Transform>& parent);
 
 	void SetPosition(const glm::vec3& newPosition);
 	void SetRotation(const glm::vec3& newRotation);

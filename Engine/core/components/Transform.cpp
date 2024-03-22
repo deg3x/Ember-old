@@ -40,6 +40,13 @@ void Transform::Tick()
 	UpdateLocalModelMatrix();
 }
 
+void Transform::SetParent(const std::shared_ptr<Transform>& child, const std::shared_ptr<Transform>& parent)
+{
+	child->parent = parent;
+
+	parent->children.emplace_back(child);
+}
+
 void Transform::SetPosition(const glm::vec3& newPosition)
 {
 	if (glm::all(glm::epsilonEqual(position, newPosition, 0.001f)))
