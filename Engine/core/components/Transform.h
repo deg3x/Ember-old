@@ -48,6 +48,11 @@ public:
 		return scale;
 	}
 
+	inline void SetParent(const std::shared_ptr<Transform>& newParent)
+	{
+		parent = newParent;
+	}
+
 	void SetPosition(const glm::vec3& newPosition);
 	void SetRotation(const glm::vec3& newRotation);
 	void SetScale(const glm::vec3& newScale);
