@@ -80,7 +80,7 @@ glm::mat4x4 Transform::GetModelMatrix() const
 		return localModelMatrix;
 	}
 
-	return localModelMatrix * parent->localModelMatrix;
+	return parent->localModelMatrix * localModelMatrix;
 }
 
 glm::vec3 Transform::GetForwardVector() const
