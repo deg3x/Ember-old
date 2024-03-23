@@ -34,11 +34,11 @@ void Hierarchy::Tick()
         ImGuiTreeNodeFlags treeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_FramePadding;
 
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0.0f, 0.0f});
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {6.0f, 5.0f});
+        ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 15.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {4.0f, 5.0f});
         ImGui::PushStyleColor(ImGuiCol_Header, EditorTheme::ColorGreen);
         ImGui::PushStyleColor(ImGuiCol_HeaderHovered, EditorTheme::ColorGreenHovered);
         ImGui::PushStyleColor(ImGuiCol_HeaderActive, EditorTheme::ColorGreenActive);
-        
         if (ImGui::TreeNodeEx("World", treeFlags))
         {
             treeFlags = ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_FramePadding;
@@ -47,24 +47,12 @@ void Hierarchy::Tick()
             
             for (const std::shared_ptr<Object>& object : objects)
             {
-                if (!SelectedObject.expired())
-                {
-                    if (SelectedObject.lock() == object)
-                    {
-                        treeFlags |= ImGuiTreeNodeFlags_Selected;
-                    }
-                    else
-                    {
-                        treeFlags &= ~ImGuiTreeNodeFlags_Selected;
-                    }
-                }
-
                 if (object->GetParent() != nullptr)
                 {
                     continue;
                 }
 
-                AddNodeRecursive(object, treeFlags);
+                AddNode(object, treeFlags);
             }
 
             if (!anyHovered)
@@ -76,7 +64,7 @@ void Hierarchy::Tick()
         }
 
         ImGui::PopStyleColor(3);
-        ImGui::PopStyleVar(2);
+        ImGui::PopStyleVar(3);
 
         DrawPopupAddObject();
         
@@ -86,30 +74,35 @@ void Hierarchy::Tick()
     }
 }
 
-void Hierarchy::AddNodeRecursive(const std::shared_ptr<Object>& object, ImGuiTreeNodeFlags nodeFlags)
-{
-    if (object->GetNumChildren() == 0)
-    {
-        AddNode(object, nodeFlags | ImGuiTreeNodeFlags_Leaf);
-        return;
-    }
-
-    AddNode(object, nodeFlags);
-
-    for (const std::shared_ptr<Object>& child : object->GetChildren())
-    {
-        AddNodeRecursive(child, nodeFlags);
-    }
-}
-
 void Hierarchy::AddNode(const std::shared_ptr<Object>& object, ImGuiTreeNodeFlags nodeFlags)
 {
-    if(ImGui::TreeNodeEx(object->name.c_str(), nodeFlags))
+    nodeFlags |= object->GetNumChildren() == 0 ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
+
+    if (!SelectedObject.expired())
     {
-        if(ImGui::IsItemHovered())
+        if (SelectedObject.lock() == object)
         {
-            hoveredObject = object;
-            anyHovered    = true;
+            nodeFlags |= ImGuiTreeNodeFlags_Selected;
+        }
+        else
+        {
+            nodeFlags &= ~ImGuiTreeNodeFlags_Selected;
+        }
+    }
+
+    const bool isNodeOpen = ImGui::TreeNodeEx(object->name.c_str(), nodeFlags);
+    
+    if(ImGui::IsItemHovered())
+    {
+        hoveredObject = object;
+        anyHovered    = true;
+    }
+    
+    if(isNodeOpen)
+    {
+        for (const std::shared_ptr<Object>& child : object->GetChildren())
+        {
+            AddNode(child, nodeFlags);
         }
                     
         ImGui::TreePop();
