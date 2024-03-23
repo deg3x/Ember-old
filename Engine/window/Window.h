@@ -4,11 +4,11 @@
 
 struct WindowData
 {
-	const char* title;
-	int windowW;
-	int windowH;
-	float aspectRatio;
-	bool vsync;
+    const char* title;
+    int windowW;
+    int windowH;
+    float aspectRatio;
+    bool vsync;
 };
 
 struct GLFWwindow;
@@ -16,45 +16,45 @@ struct GLFWwindow;
 class ENGINE_API Window
 {
 private:
-	// Leave this as a raw pointer since we only manage it internally
-	static GLFWwindow* window;
-	static WindowData windowData;
+    // Leave this as a raw pointer since we only manage it internally
+    static GLFWwindow* window;
+    static WindowData windowData;
 
 public:
-	Window() = delete;
+    Window() = delete;
 
-	static void Initialize();
-	static void SwapBuffers();
-	static bool ShouldClose();
-	static void SetVSync(bool state);
+    static void Initialize();
+    static void SwapBuffers();
+    static bool ShouldClose();
+    static void SetVSync(bool state);
 
-	inline static bool GetVSync()
-	{
-		return windowData.vsync;
-	}
+    inline static bool GetVSync()
+    {
+        return windowData.vsync;
+    }
 
-	inline static WindowData GetWindowData()
-	{
-		return windowData;
-	}
+    inline static WindowData GetWindowData()
+    {
+        return windowData;
+    }
 
-	inline static GLFWwindow* GetWindow()
-	{
-		return window;
-	}
+    inline static GLFWwindow* GetWindow()
+    {
+        return window;
+    }
 
-	inline static int GetWindowWidth()
-	{
-		return windowData.windowW;
-	}
+    inline static int GetWindowWidth()
+    {
+        return windowData.windowW;
+    }
 
-	inline static int GetWindowHeight()
-	{
-		return windowData.windowH;
-	}
+    inline static int GetWindowHeight()
+    {
+        return windowData.windowH;
+    }
 
-	inline static float GetAspectRatio()
-	{
-		return windowData.aspectRatio;
-	}
+    inline static float GetAspectRatio()
+    {
+        return windowData.aspectRatio;
+    }
 };

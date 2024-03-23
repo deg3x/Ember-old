@@ -9,18 +9,18 @@ class Shader;
 
 class ENGINE_API Light : public Component
 {
-	MAKE_COMPONENT_TYPE(LIGHT)
-	
+    MAKE_COMPONENT_TYPE(LIGHT)
+    
 public:
-	DirectionalLightData directional;
-	PointLightData point;
-	SpotLightData spot;
-	LightType type;
+    DirectionalLightData directional;
+    PointLightData point;
+    SpotLightData spot;
+    LightType type;
 
 public:
-	Light();
+    Light();
 
-	void Tick() override;
-	
-	void SetShaderProperties(const Shader& shaderProgram, int lightIndex) const;
+    void Tick() override;
+    
+    void SetShaderProperties(const Shader& shaderProgram, int lightIndex) const;
 };

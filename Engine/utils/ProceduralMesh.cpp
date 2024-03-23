@@ -227,7 +227,7 @@ void ProceduralMesh::GeneratePlane(int resolution, float size, const std::shared
     const float stepSize = size / (float)resolution;
     const float initPosX = -size / 2.0f;
     const float initPosZ = -size / 2.0f;
-	
+    
     float currentPosX = initPosX;
     float currentPosZ = initPosZ;
 
@@ -240,7 +240,7 @@ void ProceduralMesh::GeneratePlane(int resolution, float size, const std::shared
             currentPosX = initPosX + j * stepSize;
 
             VertexData currentVertex;
-			
+            
             currentVertex.position = glm::vec3(currentPosX, 0.0f, currentPosZ);
             currentVertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
             currentVertex.uv = glm::vec2((float)j / (float)resolution, (float)i / (float)resolution);
@@ -254,7 +254,7 @@ void ProceduralMesh::GeneratePlane(int resolution, float size, const std::shared
     {
         unsigned int vertId = i * (resolution + 1);
         unsigned int nextRowVertId = (i+1) * (resolution + 1);
-		
+        
         for (int j = 0; j < resolution; j++)
         {
             indices.push_back(vertId);

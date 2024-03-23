@@ -113,7 +113,7 @@ void Renderer::DrawMesh(const std::shared_ptr<Mesh>& mesh)
                 continue;
             }
         }
-		
+        
         switch (light->type)
         {
         case LightType::DIRECTIONAL:
@@ -133,13 +133,13 @@ void Renderer::DrawMesh(const std::shared_ptr<Mesh>& mesh)
     mesh->material->SetInt("activeLightsDir", lightIdxDir);
     mesh->material->SetInt("activeLightsPoint", lightIdxPoint);
     mesh->material->SetInt("activeLightsSpot", lightIdxSpot);
-	
+    
     mesh->material->SetupShaderVariables(*mesh->GetOwner()->transform, *Camera::ActiveCamera);
 
     mesh->SetupDepthTestMode();
     mesh->SetupCullingMode();
     mesh->SetupPolygonMode();
-	
+    
     glBindVertexArray(mesh->GetVAO());
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndices().size()), GL_UNSIGNED_INT, nullptr);
 

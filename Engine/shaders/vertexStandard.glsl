@@ -17,13 +17,13 @@ uniform mat4 normalMatrix;
 
 void main()
 {
-	gl_Position = projection * view * model * vec4(aPosition.x, aPosition.y, aPosition.z, 1.0);
-	WorldPos    = vec3(model * vec4(aPosition.x, aPosition.y, aPosition.z, 1.0));
-	TexCoord    = vec2(aTexCoord.x, aTexCoord.y);
+    gl_Position = projection * view * model * vec4(aPosition.x, aPosition.y, aPosition.z, 1.0);
+    WorldPos    = vec3(model * vec4(aPosition.x, aPosition.y, aPosition.z, 1.0));
+    TexCoord    = vec2(aTexCoord.x, aTexCoord.y);
     
     vec3 Normal    = normalize(vec3(normalMatrix * vec4(aNormal, 0.0)));
-	vec3 Tangent   = normalize(vec3(normalMatrix * vec4(aTangent, 0)));
-	vec3 Bitangent = normalize(vec3(normalMatrix * vec4(aBitangent, 0)));
-	
-	TBN = mat3(Tangent, Bitangent, Normal);
+    vec3 Tangent   = normalize(vec3(normalMatrix * vec4(aTangent, 0)));
+    vec3 Bitangent = normalize(vec3(normalMatrix * vec4(aBitangent, 0)));
+    
+    TBN = mat3(Tangent, Bitangent, Normal);
 }

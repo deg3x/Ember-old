@@ -3,9 +3,9 @@
 
 int main()
 {
-	Editor editor;
+    Editor editor;
 
-	editor.Tick();
+    editor.Tick();
 
-	return 0;
+    return 0;
 }
