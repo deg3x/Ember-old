@@ -3,10 +3,14 @@
 
 #include "core/World.h"
 #include "core/Object.h"
-#include "core/Material.h"
 #include "input/Input.h"
 #include "themes/EditorTheme.h"
 #include "utils/ObjectPrimitive.h"
+
+namespace
+{
+    bool anyHovered;
+}
 
 Hierarchy::Hierarchy(Editor* owner) : EditorTab(owner)
 {
@@ -34,11 +38,12 @@ void Hierarchy::Tick()
         ImGui::PushStyleColor(ImGuiCol_Header, EditorTheme::ColorGreen);
         ImGui::PushStyleColor(ImGuiCol_HeaderHovered, EditorTheme::ColorGreenHovered);
         ImGui::PushStyleColor(ImGuiCol_HeaderActive, EditorTheme::ColorGreenActive);
+        
         if (ImGui::TreeNodeEx("World", treeFlags))
         {
-            treeFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_FramePadding;
+            treeFlags = ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_FramePadding;
             
-            bool anyHovered = false;
+            anyHovered = false;
             
             for (const std::shared_ptr<Object>& object : objects)
             {
@@ -53,16 +58,13 @@ void Hierarchy::Tick()
                         treeFlags &= ~ImGuiTreeNodeFlags_Selected;
                     }
                 }
-                if(ImGui::TreeNodeEx(object->name.c_str(), treeFlags))
+
+                if (object->GetParent() != nullptr)
                 {
-                    if(ImGui::IsItemHovered())
-                    {
-                        hoveredObject = object;
-                        anyHovered    = true;
-                    }
-                    
-                    ImGui::TreePop();
+                    continue;
                 }
+
+                AddNodeRecursive(object, treeFlags);
             }
 
             if (!anyHovered)
@@ -81,6 +83,36 @@ void Hierarchy::Tick()
         HandleMouseBehavior();
         
         ImGui::End();
+    }
+}
+
+void Hierarchy::AddNodeRecursive(const std::shared_ptr<Object>& object, ImGuiTreeNodeFlags nodeFlags)
+{
+    if (object->GetNumChildren() == 0)
+    {
+        AddNode(object, nodeFlags | ImGuiTreeNodeFlags_Leaf);
+        return;
+    }
+
+    AddNode(object, nodeFlags);
+
+    for (const std::shared_ptr<Object>& child : object->GetChildren())
+    {
+        AddNodeRecursive(child, nodeFlags);
+    }
+}
+
+void Hierarchy::AddNode(const std::shared_ptr<Object>& object, ImGuiTreeNodeFlags nodeFlags)
+{
+    if(ImGui::TreeNodeEx(object->name.c_str(), nodeFlags))
+    {
+        if(ImGui::IsItemHovered())
+        {
+            hoveredObject = object;
+            anyHovered    = true;
+        }
+                    
+        ImGui::TreePop();
     }
 }
 

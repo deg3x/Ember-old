@@ -25,6 +25,8 @@ public:
     }
 
 private:
+    void AddNodeRecursive(const std::shared_ptr<Object>& object, ImGuiTreeNodeFlags nodeFlags);
+    void AddNode(const std::shared_ptr<Object>& object, ImGuiTreeNodeFlags nodeFlags);
     void HandleMouseBehavior();
     void DrawPopupAddObject();
 };

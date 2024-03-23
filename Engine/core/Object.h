@@ -18,6 +18,9 @@ public:
 
 private:
     std::vector<std::shared_ptr<Component>> components;
+
+    std::shared_ptr<Object> parent = nullptr;
+    std::vector<std::shared_ptr<Object>> children;
     
     inline static uint64_t nextAvailableID = 0;
     
@@ -28,6 +31,8 @@ public:
 
     void Tick();
     void LoadModel(const char* path);
+    
+    static void SetParent(const std::shared_ptr<Object>& child, const std::shared_ptr<Object>& parent);
 
     template <class Type, typename... Args>
     std::shared_ptr<Type> CreateComponent(Args... args);
@@ -47,6 +52,21 @@ public:
     inline std::vector<std::shared_ptr<Component>> GetComponents() const
     {
         return components;
+    }
+
+    inline std::shared_ptr<Object> GetParent() const
+    {
+        return parent;
+    }
+    
+    inline std::vector<std::shared_ptr<Object>> GetChildren() const
+    {
+        return children;
+    }
+
+    inline uint64_t GetNumChildren() const
+    {
+        return children.size();
     }
 };
 

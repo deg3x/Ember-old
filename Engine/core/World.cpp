@@ -30,7 +30,8 @@ void World::Initialize()
 
     const std::shared_ptr<Object> sphere = ObjectPrimitive::InstantiateSphere();
     sphere->transform->SetPosition({2.0f, 0.0f, 0.0f});
-    Transform::SetParent(sphere->transform, helmet->transform);
+
+    Object::SetParent(sphere, helmet);
     
     ObjectPrimitive::InstantiateSkybox();
     ObjectPrimitive::InstantiateEditorGrid();

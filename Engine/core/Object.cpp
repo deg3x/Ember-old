@@ -41,3 +41,10 @@ void Object::LoadModel(const char* path)
         AddComponent(mesh);
     }
 }
+
+void Object::SetParent(const std::shared_ptr<Object>& child, const std::shared_ptr<Object>& parent)
+{
+    child->parent = parent;
+
+    parent->children.emplace_back(child);
+}
