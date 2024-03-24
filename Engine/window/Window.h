@@ -2,8 +2,11 @@
 
 #include "Definitions.h"
 
+struct GLFWimage;
+
 struct WindowData
 {
+    GLFWimage* icon;
     const char* title;
     int windowW;
     int windowH;

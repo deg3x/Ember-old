@@ -1,11 +1,14 @@
 #include "engine_pch.h"
 #include "Window.h"
 
+#include <stb_image.h>
+
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 
 #include "logger/Logger.h"
 #include "screen/Screen.h"
+#include "utils/PathBuilder.h"
 
 GLFWwindow* Window::window;
 WindowData Window::windowData;
@@ -28,11 +31,17 @@ void Window::Initialize()
 #endif
 
     VideoMode mode = Screen::GetCurrentVideoMode();
+
+    const std::string iconPath = PathBuilder::GetPath("./Data/images/ember/ember_icon_64.png");
     
-    windowData.title       = "Ember Engine";
-    windowData.windowW     = 1366;
-    windowData.windowH     = 768;
-    windowData.aspectRatio = 1366.0f / 768.0f;
+    windowData.icon         = new GLFWimage();
+    windowData.icon->width  = 64;
+    windowData.icon->height = 64;
+    windowData.icon->pixels = stbi_load(iconPath.c_str(), &windowData.icon->width, &windowData.icon->height, nullptr, 4);
+    windowData.title        = "Ember Engine";
+    windowData.windowW      = 1366;
+    windowData.windowH      = 768;
+    windowData.aspectRatio  = 1366.0f / 768.0f;
 
     window = glfwCreateWindow(windowData.windowW, windowData.windowH, windowData.title, NULL, NULL);
     if (window == NULL)
@@ -40,6 +49,8 @@ void Window::Initialize()
         Logger::Log(LogCategory::ERROR, "Failed to create GLFW window", "Window::Initialize");
         glfwTerminate();
     }
+
+    glfwSetWindowIcon(window, 1, windowData.icon);
 
     glfwMakeContextCurrent(window);
 
