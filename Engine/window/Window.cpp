@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "Window.h"
 
-#include <stb_image.h>
+#include "stb_image.h"
 
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
@@ -50,6 +50,7 @@ void Window::Initialize()
         glfwTerminate();
     }
 
+    // This does not work on OS X. We need a bundled app to specify dock icon.
     glfwSetWindowIcon(window, 1, windowData.icon);
 
     glfwMakeContextCurrent(window);
