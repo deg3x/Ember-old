@@ -29,7 +29,7 @@ void Window::Initialize()
 
     VideoMode mode = Screen::GetCurrentVideoMode();
     
-    windowData.title       = "Graphics Engine";
+    windowData.title       = "Ember Engine";
     windowData.windowW     = 1366;
     windowData.windowH     = 768;
     windowData.aspectRatio = 1366.0f / 768.0f;
