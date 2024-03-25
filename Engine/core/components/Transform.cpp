@@ -83,6 +83,13 @@ glm::mat4x4 Transform::GetModelMatrix() const
     return owner->GetParent()->transform->localModelMatrix * localModelMatrix;
 }
 
+glm::vec3 Transform::GetWorldPosition() const
+{
+    const glm::mat4x4 model = GetModelMatrix();
+
+    return {model[3][0], model[3][1], model[3][2]};
+}
+
 glm::vec3 Transform::GetForwardVector() const
 {
     glm::vec3 forward;

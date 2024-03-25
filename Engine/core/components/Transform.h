@@ -50,6 +50,7 @@ public:
     void SetScale(const glm::vec3& newScale);
 
     glm::mat4x4 GetModelMatrix() const;
+    glm::vec3 GetWorldPosition() const;
     glm::vec3 GetForwardVector() const;
     glm::vec3 GetRightVector() const;
     glm::vec3 GetUpVector() const;
