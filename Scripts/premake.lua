@@ -97,7 +97,7 @@ project (ENGINE_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}/ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
+            "{COPY} %{wks.location}ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
         }
 
     elseif os.target() == "macosx" then
@@ -116,7 +116,7 @@ project (ENGINE_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
+            "{COPY} %{wks.location}ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
         }
 
     end
@@ -129,11 +129,37 @@ project (ENGINE_PROJ_NAME)
         optimize "Off"
         symbols "On"
 
+        if os.target() == "windows" then
+            postbuildcommands
+            {
+                "{MKDIR} %{wks.location}bin/" .. EDITOR_PROJ_NAME .. "/Debug",
+                "{COPY} %{wks.location}bin/" .. ENGINE_PROJ_NAME .. "/Debug/" .. ENGINE_PROJ_NAME .. ".dll bin/" .. EDITOR_PROJ_NAME .. "/Debug"
+            }
+        elseif os.target() == "macosx" then
+            --postbuildcommands
+            --{
+
+            --}
+        end
+
     filter "configurations:Release"
         targetdir (ENGINE_BIN_DIR .. "/Release")
         defines { "RELEASE" }
         optimize "Speed"
         symbols "Off"
+
+        if os.target() == "windows" then
+            postbuildcommands
+            {
+                "{MKDIR} %{wks.location}bin/" .. EDITOR_PROJ_NAME .. "/Release",
+                "{COPY} %{wks.location}bin/" .. ENGINE_PROJ_NAME .. "/Release/" .. ENGINE_PROJ_NAME .. ".dll bin/" .. EDITOR_PROJ_NAME .. "/Release"
+            }
+        elseif os.target() == "macosx" then
+            --postbuildcommands
+            --{
+
+            --}
+        end
 
     filter "files:**.c"
         flags { "NoPCH" }
@@ -164,8 +190,8 @@ project (EDITOR_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}/ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}",
-            "{COPY} %{wks.location}/ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
+            "{COPY} %{wks.location}ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}",
+            "{COPY} %{wks.location}ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
         }
 
         -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
@@ -184,10 +210,10 @@ project (EDITOR_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.2.4.dylib %{cfg.targetdir}",
-            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.dylib %{cfg.targetdir}",
-            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.dylib %{cfg.targetdir}",
-            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
+            "{COPY} %{wks.location}ThirdParty/libraries/osx/libassimp.5.2.4.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}ThirdParty/libraries/osx/libassimp.5.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}ThirdParty/libraries/osx/libassimp.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
         }
 
         -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
@@ -199,35 +225,11 @@ project (EDITOR_PROJ_NAME)
         optimize "Off"
         symbols "On"
 
-        if os.target() == "windows" then
-            postbuildcommands
-            {
-                "{COPY} %{wks.location}/bin/" .. ENGINE_PROJ_NAME .. "/Debug/" .. ENGINE_PROJ_NAME .. ".dll %{cfg.targetdir}"
-            }
-        elseif os.target() == "macosx" then
-            --postbuildcommands
-            --{
-
-            --}
-        end
-
     filter "configurations:Release"
         targetdir (EDITOR_BIN_DIR .. "/Release")
         defines { "RELEASE" }
         optimize "Speed"
         symbols "Off"
-
-        if os.target() == "windows" then
-            postbuildcommands
-            {
-                "{COPY} %{wks.location}/bin/" .. ENGINE_PROJ_NAME .. "/Release/" .. ENGINE_PROJ_NAME .. ".dll %{cfg.targetdir}"
-            }
-        elseif os.target() == "macosx" then
-            --postbuildcommands
-            --{
-                
-            --}
-        end
     
     filter ("files:" .. EDITOR_DIR .. "/imgui/*.cpp")
         flags { "NoPCH" }
