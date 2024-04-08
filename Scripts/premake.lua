@@ -231,5 +231,5 @@ project (EDITOR_PROJ_NAME)
         optimize "Speed"
         symbols "Off"
     
-    filter ("files:" .. EDITOR_DIR .. "/imgui/*.cpp")
+    filter ("files:" .. EDITOR_DIR .. "/imgui/**.cpp")
         flags { "NoPCH" }

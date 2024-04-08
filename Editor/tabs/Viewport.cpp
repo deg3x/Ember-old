@@ -2,6 +2,7 @@
 #include "Viewport.h"
 
 #include "Editor.h"
+#include "Hierarchy.h"
 
 #include "core/World.h"
 #include "core/Renderer.h"
@@ -9,6 +10,7 @@
 #include "core/Time.h"
 #include "core/components/Camera.h"
 #include "core/components/Transform.h"
+#include "imgui/ImGuizmo/ImGuizmo.h"
 #include "input/Input.h"
 
 Viewport::Viewport(Editor* owner) : EditorTab(owner)
@@ -37,6 +39,8 @@ void Viewport::Tick()
         return;
     }
 
+    TickGuizmo();
+
     const ImVec2 viewportSize = ImGui::GetContentRegionAvail();
 
     width  = viewportSize.x;
@@ -51,6 +55,28 @@ void Viewport::Tick()
 
     ImGui::Image(reinterpret_cast<ImTextureID>(Renderer::GetViewportTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
     ImGui::End();
+}
+
+void Viewport::TickGuizmo()
+{
+    const std::shared_ptr<Hierarchy> hierarchyTab = std::dynamic_pointer_cast<Hierarchy>(editor->FindTabByType(TabType::HIERARCHY));
+    const std::shared_ptr<Object> selected = hierarchyTab->SelectedObject.lock();
+    if (selected)
+    {
+        ImGuizmo::SetOrthographic(false);
+
+        constexpr ImGuizmo::OPERATION op = ImGuizmo::OPERATION::TRANSLATE;
+        constexpr ImGuizmo::MODE mode    = ImGuizmo::MODE::WORLD;
+
+        glm::mat4x4 identity = glm::mat4x4(1.0f);
+        glm::mat4x4 view     = Camera::ActiveCamera->GetViewMatrix();
+        glm::mat4x4 proj     = Camera::ActiveCamera->GetProjectionMatrix();
+        glm::mat4x4 model    = selected->transform->GetModelMatrix();
+
+        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+        //ImGuizmo::DrawCubes(glm::value_ptr(view), glm::value_ptr(proj), glm::value_ptr(model), 1);
+        ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), op, mode, glm::value_ptr(model));
+    }
 }
 
 void Viewport::TickViewportCamera()

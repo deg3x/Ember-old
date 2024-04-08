@@ -10,6 +10,7 @@
 #include "Engine.h"
 #include "window/Window.h"
 #include "imgui/imgui_internal.h"
+#include "imgui/ImGuizmo/ImGuizmo.h"
 
 #include "tabs/Viewport.h"
 #include "tabs/MainMenuBar.h"
@@ -98,6 +99,8 @@ void Editor::RenderEditor() const
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
+    ImGuizmo::BeginFrame();
 
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->WorkPos);
