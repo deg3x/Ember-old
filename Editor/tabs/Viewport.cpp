@@ -63,7 +63,8 @@ void Viewport::TickGuizmo()
     const std::shared_ptr<Object> selected = hierarchyTab->SelectedObject.lock();
     if (selected)
     {
-        ImGuizmo::SetOrthographic(false);
+        const bool isOrthographic = Camera::ActiveCamera->projectionType == CameraProjection::ORTHOGRAPHIC;
+        ImGuizmo::SetOrthographic(isOrthographic);
 
         constexpr ImGuizmo::OPERATION op = ImGuizmo::OPERATION::TRANSLATE;
         constexpr ImGuizmo::MODE mode    = ImGuizmo::MODE::WORLD;
