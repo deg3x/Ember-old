@@ -59,24 +59,38 @@ void Viewport::Tick()
 
 void Viewport::TickGuizmo()
 {
+    constexpr ImGuizmo::OPERATION op = ImGuizmo::OPERATION::TRANSLATE;
+    constexpr ImGuizmo::MODE mode    = ImGuizmo::MODE::WORLD;
+    
+    const ImVec2 windowPos = ImGui::GetWindowPos();
+    const float windowW    = ImGui::GetWindowWidth();
+    const float windowH    = ImGui::GetWindowHeight();
+
+    glm::mat4x4 view  = Camera::ActiveCamera->GetViewMatrix();
+    glm::mat4x4 proj  = Camera::ActiveCamera->GetProjectionMatrix();
+    glm::mat4x4 id    = glm::mat4x4(1.0f);
+    
     const std::shared_ptr<Hierarchy> hierarchyTab = std::dynamic_pointer_cast<Hierarchy>(editor->FindTabByType(TabType::HIERARCHY));
     const std::shared_ptr<Object> selected = hierarchyTab->SelectedObject.lock();
+    
     if (selected)
     {
         const bool isOrthographic = Camera::ActiveCamera->projectionType == CameraProjection::ORTHOGRAPHIC;
         ImGuizmo::SetOrthographic(isOrthographic);
 
-        constexpr ImGuizmo::OPERATION op = ImGuizmo::OPERATION::TRANSLATE;
-        constexpr ImGuizmo::MODE mode    = ImGuizmo::MODE::WORLD;
-
-        glm::mat4x4 view     = Camera::ActiveCamera->GetViewMatrix();
-        glm::mat4x4 proj     = Camera::ActiveCamera->GetProjectionMatrix();
-        glm::mat4x4 model    = selected->transform->GetModelMatrix();
-
-        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
-        //ImGuizmo::DrawCubes(glm::value_ptr(view), glm::value_ptr(proj), glm::value_ptr(model), 1);
+        glm::mat4x4 model = selected->transform->GetModelMatrix();
+        
+        ImGuizmo::SetRect(windowPos.x, windowPos.y, windowW, windowH);
         ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), op, mode, glm::value_ptr(model));
     }
+
+    const ImGuiStyle style = ImGui::GetStyle();
+    
+    const float cubeDimension  = glm::clamp(windowW * 0.08f, 50.0f, 180.0f);
+    const ImVec2 viewGizmoSize = {cubeDimension, cubeDimension};
+    const ImVec2 viewGizmoPos  = {windowW - viewGizmoSize.x, windowPos.y + 4 * style.FramePadding.y + ImGui::CalcTextSize("Viewport").y};
+        
+    ImGuizmo::ViewManipulate(glm::value_ptr(view), glm::value_ptr(proj), op, mode, glm::value_ptr(id), 1.0f, viewGizmoPos, viewGizmoSize, IM_COL32(30, 30, 30, 0));
 }
 
 void Viewport::TickViewportCamera()
