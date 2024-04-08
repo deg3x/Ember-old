@@ -96,9 +96,9 @@ void Viewport::TickGuizmo()
     const float windowW    = ImGui::GetWindowWidth();
     const float windowH    = ImGui::GetWindowHeight();
 
-    glm::mat4x4 view  = Camera::ActiveCamera->GetViewMatrix();
-    glm::mat4x4 proj  = Camera::ActiveCamera->GetProjectionMatrix();
-    glm::mat4x4 id    = glm::mat4x4(1.0f);
+    glm::mat4x4 view = Camera::ActiveCamera->GetViewMatrix();
+    glm::mat4x4 proj = Camera::ActiveCamera->GetProjectionMatrix();
+    glm::mat4x4 id   = glm::mat4x4(1.0f);
     
     const std::shared_ptr<Hierarchy> hierarchyTab = std::dynamic_pointer_cast<Hierarchy>(editor->FindTabByType(TabType::HIERARCHY));
     const std::shared_ptr<Object> selected = hierarchyTab->SelectedObject.lock();
@@ -112,15 +112,26 @@ void Viewport::TickGuizmo()
         
         ImGuizmo::SetRect(windowPos.x, windowPos.y, windowW, windowH);
         ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), op, mode, glm::value_ptr(model));
+
+        // glm::vec3 position;
+        // glm::vec3 rotation;
+        // glm::vec3 scale;
+        // ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(model), glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale));
+        // 
+        // selected->transform->SetPosition(position);
+        // selected->transform->SetRotation(rotation);
+        // selected->transform->SetScale(scale);
     }
 
     const ImGuiStyle style = ImGui::GetStyle();
-    
-    const float cubeDimension  = glm::clamp(windowW * 0.08f, 50.0f, 180.0f);
+
+    constexpr float offsetX    = 20.0f;
+    constexpr float offsetY    = 10.0f;
+    const float cubeDimension  = glm::clamp(windowW * 0.07f, 50.0f, 200.0f);
     const ImVec2 viewGizmoSize = {cubeDimension, cubeDimension};
-    const ImVec2 viewGizmoPos  = {windowW - viewGizmoSize.x, windowPos.y + 4 * style.FramePadding.y + ImGui::CalcTextSize("Viewport").y};
+    const ImVec2 viewGizmoPos  = {windowW - viewGizmoSize.x - offsetX, windowPos.y + 4 * style.FramePadding.y + ImGui::CalcTextSize("Viewport").y + offsetY};
         
-    ImGuizmo::ViewManipulate(glm::value_ptr(view), glm::value_ptr(proj), op, mode, glm::value_ptr(id), 1.0f, viewGizmoPos, viewGizmoSize, IM_COL32(30, 30, 30, 0));
+    ImGuizmo::ViewManipulate(glm::value_ptr(view), glm::value_ptr(proj), op, mode, glm::value_ptr(id), 1.0f, viewGizmoPos, viewGizmoSize, IM_COL32(0, 0, 0, 0));
 }
 
 void Viewport::TickViewportCamera()

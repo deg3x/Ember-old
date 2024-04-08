@@ -2888,7 +2888,7 @@ namespace IMGUIZMO_NAMESPACE
                if (iPass)
                {
                   ImU32 directionColor = GetColorU32(DIRECTION_X + normalIndex);
-                  gContext.mDrawList->AddConvexPolyFilled(faceCoordsScreen, 4, (directionColor | IM_COL32(0x80, 0x80, 0x80, 0x80)) | (isInside ? IM_COL32(0x08, 0x08, 0x08, 0) : 0));
+                  gContext.mDrawList->AddConvexPolyFilled(faceCoordsScreen, 4, (directionColor & IM_COL32(0xFF, 0xFF, 0xFF, 0x80)) | (isInside ? IM_COL32(0x08, 0x08, 0x08, 0) : 0));
                   if (boxes[boxCoordInt])
                   {
                      gContext.mDrawList->AddConvexPolyFilled(faceCoordsScreen, 4, IM_COL32(0xF0, 0xA0, 0x60, 0x80));
