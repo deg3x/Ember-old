@@ -12,6 +12,8 @@
 #include "core/components/Transform.h"
 #include "imgui/ImGuizmo/ImGuizmo.h"
 #include "input/Input.h"
+#include "input/KeyCodes.h"
+#include "themes/EditorTheme.h"
 
 Viewport::Viewport(Editor* owner) : EditorTab(owner)
 {
@@ -59,8 +61,36 @@ void Viewport::Tick()
 
 void Viewport::TickGuizmo()
 {
-    constexpr ImGuizmo::OPERATION op = ImGuizmo::OPERATION::TRANSLATE;
-    constexpr ImGuizmo::MODE mode    = ImGuizmo::MODE::WORLD;
+    static ImGuizmo::OPERATION op = ImGuizmo::OPERATION::TRANSLATE;
+    constexpr ImGuizmo::MODE mode = ImGuizmo::MODE::WORLD;
+
+    if (Input::GetKey(KEYCODE_W))
+    {
+        op = ImGuizmo::OPERATION::TRANSLATE;
+    }
+    else if (Input::GetKey(KEYCODE_E))
+    {
+        op = ImGuizmo::OPERATION::ROTATE;
+    }
+    else if (Input::GetKey(KEYCODE_R))
+    {
+        op = ImGuizmo::OPERATION::SCALE;
+    }
+
+    switch(op)
+    {
+    case ImGuizmo::TRANSLATE:
+        ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeT);
+        break;
+    case ImGuizmo::ROTATE:
+        ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeR);
+        break;
+    case ImGuizmo::SCALE:
+        ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeS);
+        break;
+    default:
+        ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeT);
+    }
     
     const ImVec2 windowPos = ImGui::GetWindowPos();
     const float windowW    = ImGui::GetWindowWidth();

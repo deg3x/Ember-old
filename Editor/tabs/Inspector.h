@@ -13,10 +13,6 @@ class Inspector : public EditorTab
 private:
     std::shared_ptr<Hierarchy> hierarchyTab;
 
-    static constexpr ImVec4 labelColorX = {0.75f, 0.20f, 0.20f, 0.80f};
-    static constexpr ImVec4 labelColorY = {0.20f, 0.75f, 0.20f, 0.80f};
-    static constexpr ImVec4 labelColorZ = {0.20f, 0.20f, 0.75f, 0.80f};
-
     static constexpr float compColWidthFirstTransf  = 0.2f;
     static constexpr float compColWidthSecondTransf = 0.8f;
     static constexpr float compColWidthFirst        = 0.40f;

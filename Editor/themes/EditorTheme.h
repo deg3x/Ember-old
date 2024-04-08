@@ -16,6 +16,14 @@ public:
     static constexpr ImVec4 ColorTextWarning  = ImVec4(0.80f, 0.75f, 0.30f, 1.00f);
     static constexpr ImVec4 ColorTextError    = ImVec4(0.90f, 0.30f, 0.10f, 1.00f);
 
+    static constexpr ImVec4 InspectorColorX   = ImVec4(0.75f, 0.20f, 0.20f, 0.80f);
+    static constexpr ImVec4 InspectorColorY   = ImVec4(0.20f, 0.75f, 0.20f, 0.80f);
+    static constexpr ImVec4 InspectorColorZ   = ImVec4(0.20f, 0.20f, 0.75f, 0.80f);
+
+    static constexpr float ViewportGizmoSizeT = 0.09f;
+    static constexpr float ViewportGizmoSizeR = 0.07f;
+    static constexpr float ViewportGizmoSizeS = 0.09f;
+
     inline static ImFont* FontRegular;
     inline static ImFont* FontMedium;
     inline static ImFont* FontLight;

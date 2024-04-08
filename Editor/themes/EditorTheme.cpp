@@ -2,6 +2,7 @@
 #include "EditorTheme.h"
 
 #include "imgui/imgui.h"
+#include "imgui/ImGuizmo/ImGuizmo.h"
 
 #include "utils/PathBuilder.h"
 
@@ -94,4 +95,25 @@ void EditorTheme::ApplyTheme()
     style.LogSliderDeadzone                 = 4;
     style.TabRounding                       = 4;
     style.WindowMinSize                     = ImVec2(250.0f, 250.0f);
+
+    
+    ImGuizmo::Style& gizmoStyle = ImGuizmo::GetStyle();
+    gizmoStyle.Colors[ImGuizmo::COLOR::DIRECTION_X]        = ImVec4(InspectorColorX.x, InspectorColorX.y, InspectorColorX.z, 1.0f);
+    gizmoStyle.Colors[ImGuizmo::COLOR::DIRECTION_Y]        = ImVec4(InspectorColorY.x, InspectorColorY.y, InspectorColorY.z, 1.0f);
+    gizmoStyle.Colors[ImGuizmo::COLOR::DIRECTION_Z]        = ImVec4(InspectorColorZ.x, InspectorColorZ.y, InspectorColorZ.z, 1.0f);
+    gizmoStyle.Colors[ImGuizmo::COLOR::PLANE_X]            = InspectorColorX;
+    gizmoStyle.Colors[ImGuizmo::COLOR::PLANE_Y]            = InspectorColorY;
+    gizmoStyle.Colors[ImGuizmo::COLOR::PLANE_Z]            = InspectorColorZ;
+    gizmoStyle.Colors[ImGuizmo::COLOR::HATCHED_AXIS_LINES] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+
+    gizmoStyle.CenterCircleSize = 5.0f;
+    
+    gizmoStyle.TranslationLineThickness   = 4.0f;
+    gizmoStyle.TranslationLineArrowSize   = 6.0f;
+    gizmoStyle.RotationLineThickness      = 3.0f;
+    gizmoStyle.RotationOuterLineThickness = 2.0f;
+    gizmoStyle.ScaleLineThickness         = 4.0f;
+    gizmoStyle.ScaleLineCircleSize        = 7.0f;
+
+    ImGuizmo::AllowAxisFlip(false);
 }

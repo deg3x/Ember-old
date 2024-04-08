@@ -177,9 +177,9 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0);
 
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
-    ImGui::PushStyleColor(ImGuiCol_Button, labelColorX);
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorX);
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorX);
+    ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::InspectorColorX);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::InspectorColorX);
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::InspectorColorX);
     ImGui::PushFont(EditorTheme::FontBold);
     ImGui::Button("X", {buttonSize, buttonSize});
     ImGui::PopFont();
@@ -192,9 +192,9 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 
     ImGui::SameLine();
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
-    ImGui::PushStyleColor(ImGuiCol_Button, labelColorY);
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorY);
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorY);
+    ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::InspectorColorY);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::InspectorColorY);
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::InspectorColorY);
     ImGui::PushFont(EditorTheme::FontBold);
     ImGui::Button("Y");
     ImGui::PopFont();
@@ -207,9 +207,9 @@ void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
 
     ImGui::SameLine();
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0, 0});
-    ImGui::PushStyleColor(ImGuiCol_Button, labelColorZ);
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, labelColorZ);
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, labelColorZ);
+    ImGui::PushStyleColor(ImGuiCol_Button, EditorTheme::InspectorColorZ);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, EditorTheme::InspectorColorZ);
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, EditorTheme::InspectorColorZ);
     ImGui::PushFont(EditorTheme::FontBold);
     ImGui::Button("Z");
     ImGui::PopFont();
