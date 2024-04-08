@@ -69,7 +69,6 @@ void Viewport::TickGuizmo()
         constexpr ImGuizmo::OPERATION op = ImGuizmo::OPERATION::TRANSLATE;
         constexpr ImGuizmo::MODE mode    = ImGuizmo::MODE::WORLD;
 
-        glm::mat4x4 identity = glm::mat4x4(1.0f);
         glm::mat4x4 view     = Camera::ActiveCamera->GetViewMatrix();
         glm::mat4x4 proj     = Camera::ActiveCamera->GetProjectionMatrix();
         glm::mat4x4 model    = selected->transform->GetModelMatrix();
