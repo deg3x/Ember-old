@@ -2,6 +2,12 @@
 
 #include "core/components/Component.h"
 
+enum class CoordSpace
+{
+    LOCAL,
+    WORLD
+};
+
 class ENGINE_API Transform : public Component
 {
     MAKE_UNIQUE_COMPONENT()
@@ -54,7 +60,7 @@ public:
         return scale;
     }
     
-    glm::mat4x4 GetModelMatrix() const;
+    glm::mat4x4 GetModelMatrix(CoordSpace space = CoordSpace::WORLD) const;
     glm::vec3 GetWorldPosition() const;
     glm::vec3 GetForwardVector() const;
     glm::vec3 GetRightVector() const;

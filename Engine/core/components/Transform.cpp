@@ -73,9 +73,9 @@ void Transform::Scale(const glm::vec3& scaleValue)
     isModelUpdated = false;
 }
 
-glm::mat4x4 Transform::GetModelMatrix() const
+glm::mat4x4 Transform::GetModelMatrix(CoordSpace space) const
 {
-    if (owner == nullptr || owner->GetParent() == nullptr)
+    if (owner == nullptr || owner->GetParent() == nullptr || space == CoordSpace::LOCAL)
     {
         return localModelMatrix;
     }
