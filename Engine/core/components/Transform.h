@@ -14,7 +14,7 @@ public:
     
 private:
     glm::vec3 position;
-    glm::vec3 rotation; // Switch to quaternions later
+    glm::quat rotation;
     glm::vec3 scale;
     glm::vec3 pivotOffset;
 
@@ -24,8 +24,8 @@ private:
     
 public:
     Transform();
-    Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale);
-    Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale, glm::vec3 initPivotOffset);
+    Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale);
+    Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale, const glm::vec3& initPivotOffset);
     virtual ~Transform() = default;
 
     void Tick() override;
@@ -34,10 +34,15 @@ public:
     {
         return position;
     }
-    
-    inline glm::vec3 GetRotation() const
+
+    inline glm::quat GetRotation() const
     {
         return rotation;
+    }
+    
+    inline glm::vec3 GetRotationEuler() const
+    {
+        return glm::degrees(glm::eulerAngles(rotation));
     }
 
     inline glm::vec3 GetScale() const
@@ -46,7 +51,8 @@ public:
     }
 
     void SetPosition(const glm::vec3& newPosition);
-    void SetRotation(const glm::vec3& newRotation);
+    void SetRotation(const glm::quat& newRotation);
+    void SetRotationEuler(const glm::vec3& newRotation);
     void SetScale(const glm::vec3& newScale);
 
     glm::mat4x4 GetModelMatrix() const;

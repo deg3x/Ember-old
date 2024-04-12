@@ -25,7 +25,7 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     viewportCamera = std::make_shared<Object>("Camera");
     Camera::ActiveCamera = viewportCamera->CreateComponent<Camera>();
     viewportCamera->transform->SetPosition({0.0f, 3.0f, 3.0f});
-    viewportCamera->transform->SetRotation({0.0f, -90.0f, 0.0f});
+    viewportCamera->transform->SetRotationEuler({0.0f, -90.0f, 0.0f});
 
     World::AddObject(viewportCamera);
 }
@@ -142,7 +142,7 @@ void Viewport::TickGuizmo()
                 selected->transform->SetPosition(position);
                 break;
             case ImGuizmo::ROTATE:
-                selected->transform->SetRotation(rotation);
+                selected->transform->SetRotationEuler(rotation);
                 break;
             case ImGuizmo::SCALE:
                 selected->transform->SetScale(scale);

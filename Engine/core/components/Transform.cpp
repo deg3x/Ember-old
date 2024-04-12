@@ -6,12 +6,12 @@
 Transform::Transform()
 {
     position = glm::vec3(0.0f, 0.0f, 0.0f);
-    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
     scale = glm::vec3(1.0f, 1.0f, 1.0f);
     pivotOffset = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-Transform::Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale)
+Transform::Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale)
 {
     position = initPosition;
     rotation = initRotation;
@@ -19,7 +19,7 @@ Transform::Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 i
     pivotOffset = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-Transform::Transform(glm::vec3 initPosition, glm::vec3 initRotation, glm::vec3 initScale, glm::vec3 initPivotOffset)
+Transform::Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale, const glm::vec3& initPivotOffset)
 {
     position = initPosition;
     rotation = initRotation;
@@ -51,7 +51,7 @@ void Transform::SetPosition(const glm::vec3& newPosition)
     isModelUpdated = false;
 }
 
-void Transform::SetRotation(const glm::vec3& newRotation)
+void Transform::SetRotation(const glm::quat& newRotation)
 {
     if (glm::all(glm::epsilonEqual(rotation, newRotation, 0.001f)))
     {
@@ -59,6 +59,19 @@ void Transform::SetRotation(const glm::vec3& newRotation)
     }
 
     rotation = newRotation;
+    isModelUpdated = false;
+}
+
+void Transform::SetRotationEuler(const glm::vec3& newRotation)
+{
+    const glm::quat rotQuat(glm::radians(newRotation));
+    
+    if (glm::all(glm::epsilonEqual(rotation, rotQuat, 0.001f)))
+    {
+        return;
+    }
+
+    rotation = rotQuat;
     isModelUpdated = false;
 }
 
@@ -92,11 +105,13 @@ glm::vec3 Transform::GetWorldPosition() const
 
 glm::vec3 Transform::GetForwardVector() const
 {
+    const glm::vec3 rotEulerRad = glm::eulerAngles(rotation);
+
     glm::vec3 forward;
 
-    forward.x = glm::cos(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x));
-    forward.y = glm::sin(glm::radians(rotation.x));
-    forward.z = glm::sin(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x));
+    forward.x = glm::cos(rotEulerRad.x) * glm::cos(glm::radians(rotEulerRad.x));
+    forward.y = glm::sin(rotEulerRad.y);
+    forward.z = glm::sin(rotEulerRad.z) * glm::cos(glm::radians(rotEulerRad.x));
 
     return glm::normalize(forward);
 }
@@ -113,14 +128,16 @@ glm::vec3 Transform::GetUpVector() const
 
 void Transform::UpdateLocalModelMatrix()
 {
+    const glm::vec3 rotEuler = glm::degrees(glm::eulerAngles(rotation));
+
     glm::mat4x4 model = glm::mat4x4(1.0f);
 
     model = glm::translate(model, position);
 
     model = glm::translate(model, pivotOffset);
-    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::rotate(model, glm::radians(rotEuler.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotEuler.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotEuler.z), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::translate(model, -pivotOffset);
 
     model = glm::scale(model, scale);

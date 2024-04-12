@@ -142,9 +142,9 @@ void Inspector::DrawTransform()
             DrawTransformVector("Position", &placeholder);
             selection->transform->SetPosition(placeholder);
 
-            placeholder = selection->transform->GetRotation();
+            placeholder = selection->transform->GetRotationEuler();
             DrawTransformVector("Rotation", &placeholder);
-            selection->transform->SetRotation(placeholder);
+            selection->transform->SetRotationEuler(placeholder);
 
             placeholder = selection->transform->GetScale();
             DrawTransformVector("Scale", &placeholder);
