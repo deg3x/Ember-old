@@ -30,6 +30,10 @@ public:
 
     void Tick() override;
 
+    void Translate(const glm::vec3& translateValue);
+    void Rotate(const glm::quat& rotateValue);
+    void Scale(const glm::vec3& scaleValue);
+
     inline glm::vec3 GetPosition() const
     {
         return position;
@@ -49,17 +53,17 @@ public:
     {
         return scale;
     }
-
-    void SetPosition(const glm::vec3& newPosition);
-    void SetRotation(const glm::quat& newRotation);
-    void SetRotationEuler(const glm::vec3& newRotation);
-    void SetScale(const glm::vec3& newScale);
-
+    
     glm::mat4x4 GetModelMatrix() const;
     glm::vec3 GetWorldPosition() const;
     glm::vec3 GetForwardVector() const;
     glm::vec3 GetRightVector() const;
     glm::vec3 GetUpVector() const;
+
+    void SetPosition(const glm::vec3& newPosition);
+    void SetRotation(const glm::quat& newRotation);
+    void SetRotationEuler(const glm::vec3& newRotation);
+    void SetScale(const glm::vec3& newScale);
 
 private:
     void UpdateLocalModelMatrix();

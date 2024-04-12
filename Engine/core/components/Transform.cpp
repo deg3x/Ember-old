@@ -5,10 +5,10 @@
 
 Transform::Transform()
 {
-    position = glm::vec3(0.0f, 0.0f, 0.0f);
-    rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+    position = glm::vec3();
+    rotation = glm::quat();
     scale = glm::vec3(1.0f, 1.0f, 1.0f);
-    pivotOffset = glm::vec3(0.0f, 0.0f, 0.0f);
+    pivotOffset = glm::vec3();
 }
 
 Transform::Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale)
@@ -38,6 +38,79 @@ void Transform::Tick()
 
     isModelUpdated = true;
     UpdateLocalModelMatrix();
+}
+
+void Transform::Translate(const glm::vec3& translateValue)
+{
+    if (glm::all(glm::epsilonEqual(translateValue, glm::vec3(), 0.001f)))
+    {
+        return;
+    }
+
+    position += translateValue;
+    isModelUpdated = false;
+}
+
+void Transform::Rotate(const glm::quat& rotateValue)
+{
+    if (glm::all(glm::epsilonEqual(rotateValue, glm::quat(), 0.001f)))
+    {
+        return;
+    }
+
+    rotation *= rotateValue;
+    isModelUpdated = false;
+}
+
+void Transform::Scale(const glm::vec3& scaleValue)
+{
+    if (glm::all(glm::epsilonEqual(scaleValue, glm::vec3(), 0.001f)))
+    {
+        return;
+    }
+
+    position += scaleValue;
+    isModelUpdated = false;
+}
+
+glm::mat4x4 Transform::GetModelMatrix() const
+{
+    if (owner == nullptr || owner->GetParent() == nullptr)
+    {
+        return localModelMatrix;
+    }
+
+    return owner->GetParent()->transform->localModelMatrix * localModelMatrix;
+}
+
+glm::vec3 Transform::GetWorldPosition() const
+{
+    const glm::mat4x4 model = GetModelMatrix();
+
+    return {model[3][0], model[3][1], model[3][2]};
+}
+
+glm::vec3 Transform::GetForwardVector() const
+{
+    const glm::vec3 rotEulerRad = glm::eulerAngles(rotation);
+
+    glm::vec3 forward;
+
+    forward.x = glm::cos(rotEulerRad.x) * glm::cos(glm::radians(rotEulerRad.x));
+    forward.y = glm::sin(rotEulerRad.y);
+    forward.z = glm::sin(rotEulerRad.z) * glm::cos(glm::radians(rotEulerRad.x));
+
+    return glm::normalize(forward);
+}
+
+glm::vec3 Transform::GetRightVector() const
+{
+    return glm::normalize(glm::cross(GetForwardVector(), Transform::worldUp));
+}
+
+glm::vec3 Transform::GetUpVector() const
+{
+    return glm::normalize(glm::cross(GetRightVector(), GetForwardVector()));
 }
 
 void Transform::SetPosition(const glm::vec3& newPosition)
@@ -84,46 +157,6 @@ void Transform::SetScale(const glm::vec3& newScale)
 
     scale = newScale;
     isModelUpdated = false;
-}
-
-glm::mat4x4 Transform::GetModelMatrix() const
-{
-    if (owner == nullptr || owner->GetParent() == nullptr)
-    {
-        return localModelMatrix;
-    }
-
-    return owner->GetParent()->transform->localModelMatrix * localModelMatrix;
-}
-
-glm::vec3 Transform::GetWorldPosition() const
-{
-    const glm::mat4x4 model = GetModelMatrix();
-
-    return {model[3][0], model[3][1], model[3][2]};
-}
-
-glm::vec3 Transform::GetForwardVector() const
-{
-    const glm::vec3 rotEulerRad = glm::eulerAngles(rotation);
-
-    glm::vec3 forward;
-
-    forward.x = glm::cos(rotEulerRad.x) * glm::cos(glm::radians(rotEulerRad.x));
-    forward.y = glm::sin(rotEulerRad.y);
-    forward.z = glm::sin(rotEulerRad.z) * glm::cos(glm::radians(rotEulerRad.x));
-
-    return glm::normalize(forward);
-}
-
-glm::vec3 Transform::GetRightVector() const
-{
-    return glm::normalize(glm::cross(GetForwardVector(), Transform::worldUp));
-}
-
-glm::vec3 Transform::GetUpVector() const
-{
-    return glm::normalize(glm::cross(GetRightVector(), GetForwardVector()));
 }
 
 void Transform::UpdateLocalModelMatrix()
