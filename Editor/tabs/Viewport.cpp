@@ -13,6 +13,7 @@
 #include "imgui/ImGuizmo/ImGuizmo.h"
 #include "input/Input.h"
 #include "input/KeyCodes.h"
+#include "logger/Logger.h"
 #include "themes/EditorTheme.h"
 
 Viewport::Viewport(Editor* owner) : EditorTab(owner)
@@ -41,21 +42,22 @@ void Viewport::Tick()
         return;
     }
 
-    TickGuizmo();
-
     const ImVec2 viewportSize = ImGui::GetContentRegionAvail();
 
     width  = viewportSize.x;
     height = viewportSize.y;
     
     Renderer::SetViewport(0, 0, static_cast<int>(width), static_cast<int>(height));
-
-    if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused())
+    
+    if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && !ImGuizmo::IsOver())
     {
         TickViewportCamera();
     }
 
     ImGui::Image(reinterpret_cast<ImTextureID>(Renderer::GetViewportTextureID()), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
+
+    TickGuizmo();
+    
     ImGui::End();
 }
 
@@ -109,18 +111,33 @@ void Viewport::TickGuizmo()
         ImGuizmo::SetOrthographic(isOrthographic);
 
         glm::mat4x4 model = selected->transform->GetModelMatrix();
-        
-        ImGuizmo::SetRect(windowPos.x, windowPos.y, windowW, windowH);
-        ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), op, mode, glm::value_ptr(model));
 
-        // glm::vec3 position;
-        // glm::vec3 rotation;
-        // glm::vec3 scale;
-        // ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(model), glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale));
-        // 
-        // selected->transform->SetPosition(position);
-        // selected->transform->SetRotation(rotation);
-        // selected->transform->SetScale(scale);
+        ImGuizmo::SetDrawlist();
+        ImGuizmo::SetRect(windowPos.x, windowPos.y, windowW, windowH);
+        ImGuizmo::Manipulate(&view[0][0], &proj[0][0], op, mode, &model[0][0], nullptr, nullptr);
+
+        if (ImGuizmo::IsUsing())
+        {
+            glm::vec3 position;
+            glm::vec3 rotation;
+            glm::vec3 scale;
+            ImGuizmo::DecomposeMatrixToComponents(&model[0][0], &position.x, &rotation.x, &scale.x);
+            
+            switch(op)
+            {
+            case ImGuizmo::TRANSLATE:
+                selected->transform->SetPosition(position);
+                break;
+            case ImGuizmo::ROTATE:
+                selected->transform->SetRotation(rotation);
+                break;
+            case ImGuizmo::SCALE:
+                selected->transform->SetScale(scale);
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     const ImGuiStyle style = ImGui::GetStyle();
