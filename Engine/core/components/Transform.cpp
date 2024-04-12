@@ -69,7 +69,7 @@ void Transform::Scale(const glm::vec3& scaleValue)
         return;
     }
 
-    position += scaleValue;
+    scale *= scaleValue;
     isModelUpdated = false;
 }
 

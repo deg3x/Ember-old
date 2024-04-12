@@ -124,9 +124,10 @@ void Viewport::TickGuizmo()
         ImGuizmo::SetOrthographic(isOrthographic);
 
         glm::mat4x4 model = selected->transform->GetModelMatrix();
+        glm::mat4x4 delta;
 
         const bool shouldSnap = Input::GetKey(KEYCODE_LEFT_CONTROL);
-        bool isModified = ImGuizmo::Manipulate(&view[0][0], &proj[0][0], operation, mode, &model[0][0], nullptr, shouldSnap ? &snapValues[0] : nullptr);
+        bool isModified = ImGuizmo::Manipulate(&view[0][0], &proj[0][0], operation, mode, &model[0][0], &delta[0][0], shouldSnap ? &snapValues[0] : nullptr);
 
         if (ImGuizmo::IsUsing() && isModified)
         {
@@ -134,18 +135,19 @@ void Viewport::TickGuizmo()
             glm::vec3 rotation;
             glm::vec3 scale;
 
-            ImGuizmo::DecomposeMatrixToComponents(&model[0][0], &position.x, glm::value_ptr(rotation), &scale.x);
+            ImGuizmo::DecomposeMatrixToComponents(&delta[0][0], &position.x, &rotation.x, &scale.x);
             
             switch(operation)
             {
             case ImGuizmo::TRANSLATE:
-                selected->transform->SetPosition(position);
+                selected->transform->Translate(position);
                 break;
             case ImGuizmo::ROTATE:
-                selected->transform->SetRotationEuler(rotation);
+                glm::quat rotQuat(glm::radians(rotation));
+                selected->transform->Rotate(rotQuat);
                 break;
             case ImGuizmo::SCALE:
-                selected->transform->SetScale(scale);
+                selected->transform->Scale(scale);
                 break;
             default:
                 break;
