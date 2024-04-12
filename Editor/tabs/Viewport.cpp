@@ -65,6 +65,7 @@ void Viewport::TickGuizmo()
 {
     static ImGuizmo::OPERATION operation = ImGuizmo::OPERATION::TRANSLATE;
     static ImGuizmo::MODE mode           = ImGuizmo::MODE::WORLD;
+    static float snapValues[3];
 
     if (Input::GetKey(KEYCODE_W))
     {
@@ -83,12 +84,21 @@ void Viewport::TickGuizmo()
     {
     case ImGuizmo::TRANSLATE:
         ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeT);
+        snapValues[0] = 0.10f;
+        snapValues[1] = 0.10f;
+        snapValues[2] = 0.10f;
         break;
     case ImGuizmo::ROTATE:
         ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeR);
+        snapValues[0] = 1.00f;
+        snapValues[1] = 1.00f;
+        snapValues[2] = 1.00f;
         break;
     case ImGuizmo::SCALE:
         ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeS);
+        snapValues[0] = 0.10f;
+        snapValues[1] = 0.10f;
+        snapValues[2] = 0.10f;
         break;
     default:
         ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeT);
@@ -114,15 +124,17 @@ void Viewport::TickGuizmo()
         ImGuizmo::SetOrthographic(isOrthographic);
 
         glm::mat4x4 model = selected->transform->GetModelMatrix();
-        
-        ImGuizmo::Manipulate(&view[0][0], &proj[0][0], operation, mode, &model[0][0], nullptr, nullptr);
 
-        if (ImGuizmo::IsUsing())
+        const bool shouldSnap = Input::GetKey(KEYCODE_LEFT_CONTROL);
+        bool isModified = ImGuizmo::Manipulate(&view[0][0], &proj[0][0], operation, mode, &model[0][0], nullptr, shouldSnap ? &snapValues[0] : nullptr);
+
+        if (ImGuizmo::IsUsing() && isModified)
         {
             glm::vec3 position;
             glm::vec3 rotation;
             glm::vec3 scale;
-            ImGuizmo::DecomposeMatrixToComponents(&model[0][0], &position.x, &rotation.x, &scale.x);
+
+            ImGuizmo::DecomposeMatrixToComponents(&model[0][0], &position.x, glm::value_ptr(rotation), &scale.x);
             
             switch(operation)
             {
@@ -150,6 +162,8 @@ void Viewport::TickGuizmo()
     const ImVec2 viewGizmoPos  = {windowW - viewGizmoSize.x - offsetX, windowPos.y + 4 * style.FramePadding.y + ImGui::CalcTextSize("Viewport").y + offsetY};
         
     ImGuizmo::ViewManipulate(&view[0][0], &proj[0][0], operation, mode, &id[0][0], 1.0f, viewGizmoPos, viewGizmoSize, IM_COL32(0, 0, 0, 0));
+
+    // DECOMPOSE AND USE THE VIEW MANIPULATION
 }
 
 void Viewport::TickViewportCamera()
