@@ -104,6 +104,9 @@ void Viewport::TickGuizmo()
     
     const std::shared_ptr<Hierarchy> hierarchyTab = std::dynamic_pointer_cast<Hierarchy>(editor->FindTabByType(TabType::HIERARCHY));
     const std::shared_ptr<Object> selected = hierarchyTab->SelectedObject.lock();
+
+    ImGuizmo::SetDrawlist();
+    ImGuizmo::SetRect(windowPos.x, windowPos.y, windowW, windowH);
     
     if (selected)
     {
@@ -111,9 +114,7 @@ void Viewport::TickGuizmo()
         ImGuizmo::SetOrthographic(isOrthographic);
 
         glm::mat4x4 model = selected->transform->GetModelMatrix();
-
-        ImGuizmo::SetDrawlist();
-        ImGuizmo::SetRect(windowPos.x, windowPos.y, windowW, windowH);
+        
         ImGuizmo::Manipulate(&view[0][0], &proj[0][0], operation, mode, &model[0][0], nullptr, nullptr);
 
         if (ImGuizmo::IsUsing())
