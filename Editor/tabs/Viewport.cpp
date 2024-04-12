@@ -49,7 +49,7 @@ void Viewport::Tick()
     
     Renderer::SetViewport(0, 0, static_cast<int>(width), static_cast<int>(height));
     
-    if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && !ImGuizmo::IsOver())
+    if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && !ImGuizmo::IsOver() && !ImGuizmo::IsUsing())
     {
         TickViewportCamera();
     }
@@ -63,23 +63,23 @@ void Viewport::Tick()
 
 void Viewport::TickGuizmo()
 {
-    static ImGuizmo::OPERATION op = ImGuizmo::OPERATION::TRANSLATE;
-    constexpr ImGuizmo::MODE mode = ImGuizmo::MODE::WORLD;
+    static ImGuizmo::OPERATION operation = ImGuizmo::OPERATION::TRANSLATE;
+    static ImGuizmo::MODE mode           = ImGuizmo::MODE::WORLD;
 
     if (Input::GetKey(KEYCODE_W))
     {
-        op = ImGuizmo::OPERATION::TRANSLATE;
+        operation = ImGuizmo::OPERATION::TRANSLATE;
     }
     else if (Input::GetKey(KEYCODE_E))
     {
-        op = ImGuizmo::OPERATION::ROTATE;
+        operation = ImGuizmo::OPERATION::ROTATE;
     }
     else if (Input::GetKey(KEYCODE_R))
     {
-        op = ImGuizmo::OPERATION::SCALE;
+        operation = ImGuizmo::OPERATION::SCALE;
     }
 
-    switch(op)
+    switch(operation)
     {
     case ImGuizmo::TRANSLATE:
         ImGuizmo::SetGizmoSizeClipSpace(EditorTheme::ViewportGizmoSizeT);
@@ -114,7 +114,7 @@ void Viewport::TickGuizmo()
 
         ImGuizmo::SetDrawlist();
         ImGuizmo::SetRect(windowPos.x, windowPos.y, windowW, windowH);
-        ImGuizmo::Manipulate(&view[0][0], &proj[0][0], op, mode, &model[0][0], nullptr, nullptr);
+        ImGuizmo::Manipulate(&view[0][0], &proj[0][0], operation, mode, &model[0][0], nullptr, nullptr);
 
         if (ImGuizmo::IsUsing())
         {
@@ -123,7 +123,7 @@ void Viewport::TickGuizmo()
             glm::vec3 scale;
             ImGuizmo::DecomposeMatrixToComponents(&model[0][0], &position.x, &rotation.x, &scale.x);
             
-            switch(op)
+            switch(operation)
             {
             case ImGuizmo::TRANSLATE:
                 selected->transform->SetPosition(position);
@@ -148,7 +148,7 @@ void Viewport::TickGuizmo()
     const ImVec2 viewGizmoSize = {cubeDimension, cubeDimension};
     const ImVec2 viewGizmoPos  = {windowW - viewGizmoSize.x - offsetX, windowPos.y + 4 * style.FramePadding.y + ImGui::CalcTextSize("Viewport").y + offsetY};
         
-    ImGuizmo::ViewManipulate(glm::value_ptr(view), glm::value_ptr(proj), op, mode, glm::value_ptr(id), 1.0f, viewGizmoPos, viewGizmoSize, IM_COL32(0, 0, 0, 0));
+    ImGuizmo::ViewManipulate(&view[0][0], &proj[0][0], operation, mode, &id[0][0], 1.0f, viewGizmoPos, viewGizmoSize, IM_COL32(0, 0, 0, 0));
 }
 
 void Viewport::TickViewportCamera()
