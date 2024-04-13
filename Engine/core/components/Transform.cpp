@@ -5,26 +5,26 @@
 
 Transform::Transform()
 {
-    position = glm::vec3();
-    rotation = glm::quat();
-    scale = glm::vec3(1.0f, 1.0f, 1.0f);
-    pivotOffset = glm::vec3();
+    position = glm::vec3(0.0f, 0.0f, 0.0f);
+    rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+    scale    = glm::vec3(1.0f, 1.0f, 1.0f);
+    pivot    = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 Transform::Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale)
 {
     position = initPosition;
     rotation = initRotation;
-    scale = initScale;
-    pivotOffset = glm::vec3(0.0f, 0.0f, 0.0f);
+    scale    = initScale;
+    pivot    = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 Transform::Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale, const glm::vec3& initPivotOffset)
 {
     position = initPosition;
     rotation = initRotation;
-    scale = initScale;
-    pivotOffset = initPivotOffset;
+    scale    = initScale;
+    pivot    = initPivotOffset;
 }
 
 void Transform::Tick()
@@ -160,11 +160,11 @@ void Transform::UpdateLocalModelMatrix()
 
     model = glm::translate(model, position);
 
-    model = glm::translate(model, pivotOffset);
+    model = glm::translate(model, pivot);
     model = glm::rotate(model, rotEulerRad.x, WorldRight);
     model = glm::rotate(model, rotEulerRad.y, WorldUp);
     model = glm::rotate(model, rotEulerRad.z, WorldForward);
-    model = glm::translate(model, -pivotOffset);
+    model = glm::translate(model, -pivot);
 
     model = glm::scale(model, scale);
 

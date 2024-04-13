@@ -22,7 +22,7 @@ private:
     glm::vec3 position;
     glm::quat rotation;
     glm::vec3 scale;
-    glm::vec3 pivotOffset;
+    glm::vec3 pivot;
 
 private:
     bool isModelUpdated = false;

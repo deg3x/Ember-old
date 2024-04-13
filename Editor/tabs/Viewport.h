@@ -7,11 +7,16 @@ class FrameBuffer;
 class Viewport : public EditorTab
 {
 public:
-    inline static constexpr float cameraRotSpeed  = 5.0f;
-    inline static constexpr float cameraZoomSpeed = 3.0f;
+    inline static constexpr float CameraFreeSpeedRot = 3.0f;
+    inline static constexpr float CameraFreeSpeedMod = 1.0f;
+    inline static constexpr float CameraOrbitSpeed   = 5.0f;
+    inline static constexpr float CameraZoomSpeed    = 3.0f;
+    
+    inline static float CameraFreeSpeedMove = 5.0f;
 
 private:
     std::shared_ptr<Object> viewportCamera;
+    glm::vec3 cameraFocus = glm::vec3(0.0f, 0.0f, 0.0f);
     
 public:
     Viewport() = delete;
@@ -28,4 +33,7 @@ public:
 private:
     void TickGuizmo();
     void TickViewportCamera();
+    void CameraFreeMove();
+    void CameraOrbit();
+    void CameraZoom();
 };
