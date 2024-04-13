@@ -34,6 +34,6 @@ private:
     void TickGuizmo();
     void TickViewportCamera();
     void CameraFreeMove();
-    void CameraOrbit();
-    void CameraZoom();
+    void CameraOrbit() const;
+    void CameraZoom() const;
 };

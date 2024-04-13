@@ -255,7 +255,7 @@ void Viewport::CameraFreeMove()
     }
 }
 
-void Viewport::CameraOrbit()
+void Viewport::CameraOrbit() const
 {
     const std::shared_ptr<Transform> cameraTransform = viewportCamera->transform;
     
@@ -294,7 +294,7 @@ void Viewport::CameraOrbit()
     cameraTransform->SetPosition(newPosition);
 }
 
-void Viewport::CameraZoom()
+void Viewport::CameraZoom() const
 {
     const std::shared_ptr<Transform> cameraTransform = viewportCamera->transform;
     
