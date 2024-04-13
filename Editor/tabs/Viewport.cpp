@@ -24,8 +24,8 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     
     viewportCamera = std::make_shared<Object>("Camera");
     Camera::ActiveCamera = viewportCamera->CreateComponent<Camera>();
-    viewportCamera->transform->SetPosition({0.0f, 3.0f, 3.0f});
-    viewportCamera->transform->SetRotationEuler({0.0f, -90.0f, 0.0f});
+    viewportCamera->transform->SetPosition({3.0f, 2.0f, 4.5f});
+    viewportCamera->transform->SetRotationEuler({-160.0f, -30.0f, 180.0f});
 
     World::AddObject(viewportCamera);
 }
@@ -173,49 +173,111 @@ void Viewport::TickViewportCamera()
     const MouseData mouse = Input::Mouse;
 
     const std::shared_ptr<Transform> cameraTransform = viewportCamera->transform;
-    
+
+    static glm::vec3 focusPoint = glm::vec3(0.0f, 0.0f, 0.0f);
+    static float moveSpeed = 5.0f;
     glm::vec3 newPosition = cameraTransform->GetPosition();
+    
+    const float rotSpeed = mouse.sensitivity * Time::DeltaTime * cameraRotSpeed;
 
-    // Rotation around center
-    const float rotSpeed     = mouse.sensitivity * Time::DeltaTime * cameraRotSpeed;
-    const float angleYaw     = static_cast<float>(mouse.leftMouseDragDeltaX) * rotSpeed * -1.0f;
-    const float anglePitch   = static_cast<float>(mouse.leftMouseDragDeltaY) * rotSpeed;
-    const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
-    const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
-    const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
-    const float sinHalfPitch = glm::sin(anglePitch * 0.5f);
-    
-    const glm::vec3 upVector    = glm::vec3(0.0f, 1.0f, 0.0f);
-    const glm::vec3 rightVector = normalize(glm::cross(cameraTransform->GetPosition(), upVector));
-    
-    const glm::quat rotationYaw   = glm::quat(cosHalfYaw, upVector * sinHalfYaw);
-    const glm::quat rotationPitch = glm::quat(cosHalfPitch, rightVector * sinHalfPitch);
-    
-    bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_LEFT);
-    bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_LEFT);
-    applyPitch     &= glm::abs(glm::dot(upVector, glm::normalize(rotationPitch * cameraTransform->GetPosition()))) < 0.99f;
-    
-    newPosition = applyYaw ? rotationYaw * newPosition : newPosition;
-    newPosition = applyPitch ? rotationPitch * newPosition : newPosition;
-
-    // Distance from center
-    constexpr float minZoomDistance  = 1.0f;
-    constexpr float minDistanceSpeed = 5.0f;
-    constexpr float maxDistanceSpeed = 150.0f;
-    constexpr float minDistanceMult  = 1.0f;
-    constexpr float maxDistanceMult  = 5.0f;
-    
-    const float speedDistMultDelta = glm::clamp((glm::length(cameraTransform->GetPosition()) - minDistanceSpeed) / (maxDistanceSpeed - minDistanceSpeed), 0.0f, 1.0f); 
-    const float speedDistanceMult  = speedDistMultDelta * maxDistanceMult + (1.0f - speedDistMultDelta) * minDistanceMult;
+    if (Input::GetMouse(MOUSE_BTN_RIGHT))
+    {
+        glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
         
-    const float zoomSpeed         = mouse.sensitivityScroll * Time::DeltaTime * cameraZoomSpeed * speedDistanceMult;
-    const float distanceDelta     = static_cast<float>(mouse.mouseScrollDeltaYSmooth) * zoomSpeed * -1.0f;
-    const glm::vec3 zoomDirection = glm::normalize(newPosition);
-    
-    bool applyDistance = glm::length(newPosition + zoomDirection * distanceDelta) > minZoomDistance;
-    
-    newPosition = newPosition + (applyDistance ? zoomDirection * distanceDelta : glm::vec3(0.0));
+        if (Input::GetKey(KEYCODE_W))
+        {
+            offset += cameraTransform->GetForwardVector() * moveSpeed * Time::DeltaTime;
+        }
+        if (Input::GetKey(KEYCODE_D))
+        {
+            offset += cameraTransform->GetRightVector() * moveSpeed * Time::DeltaTime;
+        }
+        if (Input::GetKey(KEYCODE_E))
+        {
+            offset += cameraTransform->GetUpVector() * moveSpeed * Time::DeltaTime;
+        }
+        if (Input::GetKey(KEYCODE_S))
+        {
+            offset -= cameraTransform->GetForwardVector() * moveSpeed * Time::DeltaTime;
+        }
+        if (Input::GetKey(KEYCODE_A))
+        {
+            offset -= cameraTransform->GetRightVector() * moveSpeed * Time::DeltaTime;
+        }
+        if (Input::GetKey(KEYCODE_Q))
+        {
+            offset -= cameraTransform->GetUpVector() * moveSpeed * Time::DeltaTime;
+        }
 
-    // Apply new camera position
-    cameraTransform->SetPosition(newPosition);
+        focusPoint += offset;
+        cameraTransform->Translate(offset);
+
+        const float angleYaw     = static_cast<float>(mouse.rightMouseDragDeltaX) * rotSpeed * -1.0f;
+        const float anglePitch   = static_cast<float>(mouse.rightMouseDragDeltaY) * rotSpeed;
+        const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
+        const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
+        const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
+        const float sinHalfPitch = glm::sin(anglePitch * 0.5f);
+
+        const glm::vec3 rightVector = cameraTransform->GetRightVector();
+    
+        const glm::quat rotationYaw   = glm::quat(cosHalfYaw, Transform::WorldUp * sinHalfYaw);
+        const glm::quat rotationPitch = glm::quat(cosHalfPitch, -rightVector * sinHalfPitch);
+    
+        bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_RIGHT);
+        bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_RIGHT);
+        applyPitch     &= glm::abs(glm::dot(Transform::WorldUp, glm::normalize(rotationPitch * cameraTransform->GetPosition()))) < 0.99f;
+
+        if (applyYaw)
+        {
+            cameraTransform->Rotate(rotationYaw);
+        }
+        if (applyPitch)
+        {
+            cameraTransform->Rotate(rotationPitch);
+        }
+    }
+    else if (Input::GetKey(KEYCODE_LEFT_ALT))
+    {
+        const float angleYaw     = static_cast<float>(mouse.leftMouseDragDeltaX) * rotSpeed * -1.0f;
+        const float anglePitch   = static_cast<float>(mouse.leftMouseDragDeltaY) * rotSpeed;
+        const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
+        const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
+        const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
+        const float sinHalfPitch = glm::sin(anglePitch * 0.5f);
+        
+        const glm::vec3 upVector    = glm::vec3(0.0f, 1.0f, 0.0f);
+        const glm::vec3 rightVector = cameraTransform->GetRightVector();
+        
+        const glm::quat rotationYaw   = glm::quat(cosHalfYaw, upVector * sinHalfYaw);
+        const glm::quat rotationPitch = glm::quat(cosHalfPitch, rightVector * sinHalfPitch);
+        
+        bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_LEFT);
+        bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_LEFT);
+        applyPitch     &= glm::abs(glm::dot(upVector, glm::normalize(rotationPitch * cameraTransform->GetPosition()))) < 0.99f;
+        
+        newPosition = applyYaw ? rotationYaw * newPosition : newPosition;
+        newPosition = applyPitch ? rotationPitch * newPosition : newPosition;
+
+        // Distance from center
+        constexpr float minZoomDistance  = 1.0f;
+        constexpr float minDistanceSpeed = 5.0f;
+        constexpr float maxDistanceSpeed = 150.0f;
+        constexpr float minDistanceMult  = 1.0f;
+        constexpr float maxDistanceMult  = 5.0f;
+        
+        const float speedDistMultDelta = glm::clamp((glm::length(cameraTransform->GetPosition()) - minDistanceSpeed) / (maxDistanceSpeed - minDistanceSpeed), 0.0f, 1.0f); 
+        const float speedDistanceMult  = speedDistMultDelta * maxDistanceMult + (1.0f - speedDistMultDelta) * minDistanceMult;
+            
+        const float zoomSpeed         = mouse.sensitivityScroll * Time::DeltaTime * cameraZoomSpeed * speedDistanceMult;
+        const float distanceDelta     = static_cast<float>(mouse.mouseScrollDeltaYSmooth) * zoomSpeed * -1.0f;
+        const glm::vec3 zoomDirection = glm::normalize(newPosition);
+        
+        bool applyDistance = glm::length(newPosition + zoomDirection * distanceDelta) > minZoomDistance;
+        
+        newPosition = newPosition + (applyDistance ? zoomDirection * distanceDelta : glm::vec3(0.0));
+
+        // Apply new camera position
+        cameraTransform->SetPosition(newPosition);
+    }
 }

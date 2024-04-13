@@ -14,9 +14,9 @@ class ENGINE_API Transform : public Component
     MAKE_COMPONENT_TYPE(TRANSFORM)
 
 public:
-    static const glm::vec3 worldForward;
-    static const glm::vec3 worldRight;
-    static const glm::vec3 worldUp;
+    static const glm::vec3 WorldForward;
+    static const glm::vec3 WorldRight;
+    static const glm::vec3 WorldUp;
     
 private:
     glm::vec3 position;
