@@ -93,15 +93,7 @@ glm::vec3 Transform::GetWorldPosition() const
 
 glm::vec3 Transform::GetForwardVector() const
 {
-    const glm::vec3 rotEulerRad = glm::eulerAngles(rotation);
-
-    glm::vec3 forward;
-
-    forward.x = glm::cos(rotEulerRad.x) * glm::cos(glm::radians(rotEulerRad.x));
-    forward.y = glm::sin(rotEulerRad.y);
-    forward.z = glm::sin(rotEulerRad.z) * glm::cos(glm::radians(rotEulerRad.x));
-
-    return glm::normalize(forward);
+    return glm::normalize(rotation * worldForward);
 }
 
 glm::vec3 Transform::GetRightVector() const
