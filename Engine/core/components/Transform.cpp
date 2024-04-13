@@ -59,6 +59,7 @@ void Transform::Rotate(const glm::quat& rotateValue)
     }
 
     rotation *= rotateValue;
+    rotation = glm::normalize(rotation);
     isModelUpdated = false;
 }
 
@@ -161,16 +162,16 @@ void Transform::SetScale(const glm::vec3& newScale)
 
 void Transform::UpdateLocalModelMatrix()
 {
-    const glm::vec3 rotEuler = glm::degrees(glm::eulerAngles(rotation));
+    const glm::vec3 rotEulerRad = glm::eulerAngles(rotation);
 
     glm::mat4x4 model = glm::mat4x4(1.0f);
 
     model = glm::translate(model, position);
 
     model = glm::translate(model, pivotOffset);
-    model = glm::rotate(model, glm::radians(rotEuler.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(rotEuler.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(rotEuler.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::rotate(model, rotEulerRad.x, worldRight);
+    model = glm::rotate(model, rotEulerRad.y, worldUp);
+    model = glm::rotate(model, rotEulerRad.z, worldForward);
     model = glm::translate(model, -pivotOffset);
 
     model = glm::scale(model, scale);
