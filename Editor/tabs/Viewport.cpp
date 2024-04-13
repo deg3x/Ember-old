@@ -245,19 +245,26 @@ void Viewport::TickViewportCamera()
         const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
         const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
         const float sinHalfPitch = glm::sin(anglePitch * 0.5f);
-        
-        const glm::vec3 upVector    = glm::vec3(0.0f, 1.0f, 0.0f);
+
         const glm::vec3 rightVector = cameraTransform->GetRightVector();
         
-        const glm::quat rotationYaw   = glm::quat(cosHalfYaw, upVector * sinHalfYaw);
-        const glm::quat rotationPitch = glm::quat(cosHalfPitch, rightVector * sinHalfPitch);
+        const glm::quat rotationYaw   = glm::quat(cosHalfYaw, Transform::WorldUp * sinHalfYaw);
+        const glm::quat rotationPitch = glm::quat(cosHalfPitch, -rightVector * sinHalfPitch);
         
         bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_LEFT);
         bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_LEFT);
-        applyPitch     &= glm::abs(glm::dot(upVector, glm::normalize(rotationPitch * cameraTransform->GetPosition()))) < 0.99f;
-        
-        newPosition = applyYaw ? rotationYaw * newPosition : newPosition;
-        newPosition = applyPitch ? rotationPitch * newPosition : newPosition;
+        applyPitch     &= glm::abs(glm::dot(Transform::WorldUp, glm::normalize(rotationPitch * cameraTransform->GetPosition()))) < 0.99f;
+
+        if (applyYaw)
+        {
+            newPosition = rotationYaw * newPosition;
+            cameraTransform->Rotate(rotationYaw);
+        }
+        if (applyPitch)
+        {
+            newPosition = rotationPitch * newPosition;
+            cameraTransform->Rotate(rotationPitch);
+        }
 
         // Distance from center
         constexpr float minZoomDistance  = 1.0f;
