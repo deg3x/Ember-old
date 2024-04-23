@@ -7,6 +7,12 @@ struct ENGINE_API Vector3D
     float x;
     float y;
     float z;
+
+    static float Dot(const Vector3D& lhs, const Vector3D& rhs);
+    static float Length(const Vector3D& vector);
+    static float LengthSqr(const Vector3D& vector);
+    static Vector3D Cross(const Vector3D& lhs, const Vector3D& rhs);
+    static Vector3D Normalize(const Vector3D& vector);
     
     Vector3D& operator+=(const Vector3D& rhs);
     Vector3D& operator-=(const Vector3D& rhs);
