@@ -4,5 +4,6 @@
 
 struct ENGINE_API Vector2D
 {
-    
+    float x;
+    float y;
 };
