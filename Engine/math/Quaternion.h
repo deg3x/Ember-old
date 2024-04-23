@@ -8,6 +8,13 @@ struct ENGINE_API Quaternion
     float y;
     float z;
     float w;
+
+    static float Length(const Quaternion& quat);
+    static float LengthSqr(const Quaternion& quat);
+    static Quaternion Dot(const Quaternion& lhs, const Quaternion& rhs);
+    static Quaternion Inverse(const Quaternion& quat);
+    static Quaternion Normalize(const Quaternion& quat);
+    static Quaternion Conjugate(const Quaternion& quat);
     
     Quaternion& operator+=(const Quaternion& rhs);
     Quaternion& operator-=(const Quaternion& rhs);
@@ -21,57 +28,57 @@ struct ENGINE_API Quaternion
 
 inline Quaternion operator+(const Quaternion& lhs, const Quaternion& rhs)
 {
-    Quaternion result = lhs;
+    Quaternion ret = lhs;
 
-    result += rhs;
+    ret += rhs;
     
-    return result;
+    return ret;
 }
 
 inline Quaternion operator-(const Quaternion& lhs, const Quaternion& rhs)
 {
-    Quaternion result = lhs;
+    Quaternion ret = lhs;
 
-    result -= rhs;
+    ret -= rhs;
     
-    return result;
+    return ret;
 }
 
 inline Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs)
 {
-    Quaternion result = lhs;
+    Quaternion ret = lhs;
 
-    result *= rhs;
+    ret *= rhs;
     
-    return result;
+    return ret;
 }
 
 inline Quaternion operator/(const Quaternion& lhs, const Quaternion& rhs)
 {
-    Quaternion result = lhs;
+    Quaternion ret = lhs;
 
-    result /= rhs;
+    ret /= rhs;
     
-    return result;
+    return ret;
 }
 
 inline Quaternion operator/(const Quaternion& lhs, float rhs)
 {
-    Quaternion result = lhs;
+    Quaternion ret = lhs;
 
-    result /= rhs;
+    ret /= rhs;
     
-    return result;
+    return ret;
 }
 
 inline Quaternion operator/(float lhs, const Quaternion& rhs)
 {
-    Quaternion result;
+    Quaternion ret;
 
-    result.w = lhs / rhs.w;
-    result.x = lhs / rhs.x;
-    result.y = lhs / rhs.y;
-    result.z = lhs / rhs.z;
+    ret.w = lhs / rhs.w;
+    ret.x = lhs / rhs.x;
+    ret.y = lhs / rhs.y;
+    ret.z = lhs / rhs.z;
     
-    return result;
+    return ret;
 }
