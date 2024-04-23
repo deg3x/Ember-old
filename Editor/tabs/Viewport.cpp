@@ -21,7 +21,8 @@ Viewport::Viewport(Editor* owner) : EditorTab(owner)
     title  = "Viewport";
     flags |= ImGuiWindowFlags_NoScrollbar;
     flags |= ImGuiWindowFlags_NoMove;
-    
+
+    isControllingCamera = false;
     viewportCamera = std::make_shared<Object>("Camera");
     Camera::ActiveCamera = viewportCamera->CreateComponent<Camera>();
     viewportCamera->transform->SetPosition({3.0f, 2.0f, 4.5f});
@@ -67,17 +68,20 @@ void Viewport::TickGuizmo()
     static ImGuizmo::MODE mode           = ImGuizmo::MODE::WORLD;
     static float snapValues[3];
 
-    if (Input::GetKey(KEYCODE_W))
+    if (!isControllingCamera)
     {
-        operation = ImGuizmo::OPERATION::TRANSLATE;
-    }
-    else if (Input::GetKey(KEYCODE_E))
-    {
-        operation = ImGuizmo::OPERATION::ROTATE;
-    }
-    else if (Input::GetKey(KEYCODE_R))
-    {
-        operation = ImGuizmo::OPERATION::SCALE;
+        if (Input::GetKey(KEYCODE_W))
+        {
+            operation = ImGuizmo::OPERATION::TRANSLATE;
+        }
+        else if (Input::GetKey(KEYCODE_E))
+        {
+            operation = ImGuizmo::OPERATION::ROTATE;
+        }
+        else if (Input::GetKey(KEYCODE_R))
+        {
+            operation = ImGuizmo::OPERATION::SCALE;
+        }
     }
 
     switch(operation)
@@ -170,13 +174,17 @@ void Viewport::TickGuizmo()
 
 void Viewport::TickViewportCamera()
 {
+    isControllingCamera = false;
+    
     if (Input::GetMouse(MOUSE_BTN_RIGHT))
     {
         CameraFreeMove();
+        isControllingCamera = true;
     }
     else if (Input::GetKey(KEYCODE_LEFT_ALT))
     {
         CameraOrbit();
+        isControllingCamera = true;
     }
     else
     {

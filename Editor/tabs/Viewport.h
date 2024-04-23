@@ -15,6 +15,7 @@ public:
     inline static float CameraFreeSpeedMove = 5.0f;
 
 private:
+    bool isControllingCamera;
     std::shared_ptr<Object> viewportCamera;
     glm::vec3 cameraFocus = glm::vec3(0.0f, 0.0f, 0.0f);
     
