@@ -9,9 +9,9 @@ struct ENGINE_API Quaternion
     float z;
     float w;
 
+    static float Dot(const Quaternion& lhs, const Quaternion& rhs);
     static float Length(const Quaternion& quat);
     static float LengthSqr(const Quaternion& quat);
-    static Quaternion Dot(const Quaternion& lhs, const Quaternion& rhs);
     static Quaternion Inverse(const Quaternion& quat);
     static Quaternion Normalize(const Quaternion& quat);
     static Quaternion Conjugate(const Quaternion& quat);

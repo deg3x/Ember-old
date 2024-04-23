@@ -1,6 +1,11 @@
 #include "engine_pch.h"
 #include "Quaternion.h"
 
+float Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
+{
+    return lhs.w * rhs.w + lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
+}
+
 float Quaternion::Length(const Quaternion& quat)
 {
     // Shame... Shame...
@@ -10,18 +15,6 @@ float Quaternion::Length(const Quaternion& quat)
 float  Quaternion::LengthSqr(const Quaternion& quat)
 {
     return quat.w * quat.w + quat.x * quat.x + quat.y * quat.y + quat.z * quat.z;
-}
-
-Quaternion Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
-{
-    Quaternion ret;
-
-    ret.w = lhs.w * rhs.w;
-    ret.x = lhs.x * rhs.x;
-    ret.y = lhs.y * rhs.y;
-    ret.z = lhs.z * rhs.z;
-
-    return ret;
 }
 
 Quaternion Quaternion::Inverse(const Quaternion& quat)
