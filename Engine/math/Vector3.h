@@ -4,21 +4,21 @@
 
 struct ENGINE_API Vector3
 {
-    float x;
-    float y;
-    float z;
+    real x;
+    real y;
+    real z;
 
-    static float Dot(const Vector3& lhs, const Vector3& rhs);
-    static float Length(const Vector3& vector);
-    static float LengthSqr(const Vector3& vector);
+    static real Dot(const Vector3& lhs, const Vector3& rhs);
+    static real Length(const Vector3& vector);
+    static real LengthSqr(const Vector3& vector);
     static Vector3 Cross(const Vector3& lhs, const Vector3& rhs);
     static Vector3 Normalize(const Vector3& vector);
     
     Vector3& operator+=(const Vector3& rhs);
     Vector3& operator-=(const Vector3& rhs);
 
-    Vector3& operator*=(float rhs);
-    Vector3& operator/=(float rhs);
+    Vector3& operator*=(real rhs);
+    Vector3& operator/=(real rhs);
 };
 
 inline Vector3 operator+(const Vector3& lhs, const Vector3& rhs)
@@ -39,7 +39,7 @@ inline Vector3 operator-(const Vector3& lhs, const Vector3& rhs)
     return ret;
 }
 
-inline Vector3 operator/(const Vector3& lhs, float rhs)
+inline Vector3 operator/(const Vector3& lhs, real rhs)
 {
     Vector3 ret = lhs;
 
@@ -48,7 +48,7 @@ inline Vector3 operator/(const Vector3& lhs, float rhs)
     return ret;
 }
 
-inline Vector3 operator/(float lhs, const Vector3& rhs)
+inline Vector3 operator/(real lhs, const Vector3& rhs)
 {
     Vector3 ret;
 

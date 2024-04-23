@@ -3,17 +3,17 @@
 
 #include "Math.h"
 
-float Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
+real Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
 {
     return lhs.w * rhs.w + lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
 }
 
-float Quaternion::Length(const Quaternion& quat)
+real Quaternion::Length(const Quaternion& quat)
 {
     return Sqrt(LengthSqr(quat));
 }
 
-float  Quaternion::LengthSqr(const Quaternion& quat)
+real  Quaternion::LengthSqr(const Quaternion& quat)
 {
     return quat.w * quat.w + quat.x * quat.x + quat.y * quat.y + quat.z * quat.z;
 }
@@ -77,21 +77,21 @@ Quaternion& Quaternion::operator/=(const Quaternion& rhs)
     return *this;
 }
 
-Quaternion& Quaternion::operator+=(float rhs)
+Quaternion& Quaternion::operator+=(real rhs)
 {
     w += rhs;
 
     return *this;
 }
 
-Quaternion& Quaternion::operator-=(float rhs)
+Quaternion& Quaternion::operator-=(real rhs)
 {
     w -= rhs;
 
     return *this;
 }
 
-Quaternion& Quaternion::operator*=(float rhs)
+Quaternion& Quaternion::operator*=(real rhs)
 {
     w *= rhs;
     x *= rhs;
@@ -101,7 +101,7 @@ Quaternion& Quaternion::operator*=(float rhs)
     return *this;
 }
 
-Quaternion& Quaternion::operator/=(float rhs)
+Quaternion& Quaternion::operator/=(real rhs)
 {
     w /= rhs;
     x /= rhs;

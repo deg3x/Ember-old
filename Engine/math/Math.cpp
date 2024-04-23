@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "Math.h"
 
-float Sqrt(float num)
+real Sqrt(real num)
 {
     // Shameless implementation
     // Change in the future

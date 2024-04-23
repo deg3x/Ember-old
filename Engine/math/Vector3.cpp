@@ -3,17 +3,17 @@
 
 #include "Math.h"
 
-float Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
+real Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
 }
 
-float Vector3::Length(const Vector3& vector)
+real Vector3::Length(const Vector3& vector)
 {
     return Sqrt(LengthSqr(vector));
 }
 
-float Vector3::LengthSqr(const Vector3& vector)
+real Vector3::LengthSqr(const Vector3& vector)
 {
     return vector.x * vector.x + vector.y * vector.y + vector.z * vector.z;
 }
@@ -52,7 +52,7 @@ Vector3& Vector3::operator-=(const Vector3& rhs)
     return *this;
 }
 
-Vector3& Vector3::operator*=(float rhs)
+Vector3& Vector3::operator*=(real rhs)
 {
     x *= rhs;
     y *= rhs;
@@ -61,7 +61,7 @@ Vector3& Vector3::operator*=(float rhs)
     return *this;
 }
 
-Vector3& Vector3::operator/=(float rhs)
+Vector3& Vector3::operator/=(real rhs)
 {
     x /= rhs;
     y /= rhs;

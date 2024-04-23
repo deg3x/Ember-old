@@ -2,4 +2,4 @@
 
 #include "Definitions.h"
 
-float ENGINE_API Sqrt(float num);
+real ENGINE_API Sqrt(real num);
