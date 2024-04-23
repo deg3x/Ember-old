@@ -9,6 +9,8 @@ struct ENGINE_API Quaternion
     float z;
     float w;
 
+    Quaternion& Normalize();
+
     static float Dot(const Quaternion& lhs, const Quaternion& rhs);
     static float Length(const Quaternion& quat);
     static float LengthSqr(const Quaternion& quat);
