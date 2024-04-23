@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "Quaternion.h"
 
-#include "Math.h"
+#include "math/Math.h"
 
 real Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
 {

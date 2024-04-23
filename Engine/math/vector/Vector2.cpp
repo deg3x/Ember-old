@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "Vector2.h"
 
-#include "Math.h"
+#include "math/Math.h"
 
 float Vector2::Dot(const Vector2& lhs, const Vector2& rhs)
 {

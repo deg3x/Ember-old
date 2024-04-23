@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "Vector3.h"
 
-#include "Math.h"
+#include "math/Math.h"
 
 real Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 {
