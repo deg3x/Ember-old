@@ -1,6 +1,8 @@
 #include "engine_pch.h"
 #include "Vector3.h"
 
+#include "Math.h"
+
 float Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
@@ -8,7 +10,7 @@ float Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 
 float Vector3::Length(const Vector3& vector)
 {
-    return glm::sqrt(LengthSqr(vector));
+    return Sqrt(LengthSqr(vector));
 }
 
 float Vector3::LengthSqr(const Vector3& vector)

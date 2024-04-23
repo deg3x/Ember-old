@@ -1,6 +1,8 @@
 #include "engine_pch.h"
 #include "Quaternion.h"
 
+#include "Math.h"
+
 float Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
 {
     return lhs.w * rhs.w + lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
@@ -8,8 +10,7 @@ float Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
 
 float Quaternion::Length(const Quaternion& quat)
 {
-    // Shame... Shame...
-    return glm::sqrt(LengthSqr(quat));
+    return Sqrt(LengthSqr(quat));
 }
 
 float  Quaternion::LengthSqr(const Quaternion& quat)
