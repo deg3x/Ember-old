@@ -3,6 +3,16 @@
 
 #include "math/Math.h"
 
+Vector2& Vector2::Normalize()
+{
+    const real length = Length(*this);
+
+    x /= length;
+    y /= length;
+
+    return *this;
+}
+
 float Vector2::Dot(const Vector2& lhs, const Vector2& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y;

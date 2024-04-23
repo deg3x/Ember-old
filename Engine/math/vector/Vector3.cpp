@@ -3,6 +3,17 @@
 
 #include "math/Math.h"
 
+Vector3& Vector3::Normalize()
+{
+    const real length = Length(*this);
+
+    x /= length;
+    y /= length;
+    z /= length;
+
+    return *this;
+}
+
 real Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;

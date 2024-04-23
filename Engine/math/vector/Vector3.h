@@ -8,6 +8,8 @@ struct ENGINE_API Vector3
     real y;
     real z;
 
+    Vector3& Normalize();
+
     static real Dot(const Vector3& lhs, const Vector3& rhs);
     static real Length(const Vector3& vector);
     static real LengthSqr(const Vector3& vector);
