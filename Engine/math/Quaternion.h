@@ -20,6 +20,7 @@ struct ENGINE_API Quaternion
     Quaternion& operator-=(const Quaternion& rhs);
     Quaternion& operator*=(const Quaternion& rhs);
     Quaternion& operator/=(const Quaternion& rhs);
+    
     Quaternion& operator+=(float rhs);
     Quaternion& operator-=(float rhs);
     Quaternion& operator*=(float rhs);
@@ -58,6 +59,24 @@ inline Quaternion operator/(const Quaternion& lhs, const Quaternion& rhs)
     Quaternion ret = lhs;
 
     ret /= rhs;
+    
+    return ret;
+}
+
+inline Quaternion operator*(const Quaternion& lhs, float rhs)
+{
+    Quaternion ret = lhs;
+
+    ret *= rhs;
+    
+    return ret;
+}
+
+inline Quaternion operator*(float lhs, const Quaternion& rhs)
+{
+    Quaternion ret = rhs;
+
+    ret *= lhs;
     
     return ret;
 }
