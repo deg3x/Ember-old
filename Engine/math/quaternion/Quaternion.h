@@ -4,16 +4,16 @@
 
 struct ENGINE_API Quaternion
 {
-    float x;
-    float y;
-    float z;
-    float w;
+    real x;
+    real y;
+    real z;
+    real w;
 
     Quaternion& Normalize();
 
-    static float Dot(const Quaternion& lhs, const Quaternion& rhs);
-    static float Length(const Quaternion& quat);
-    static float LengthSqr(const Quaternion& quat);
+    static real Dot(const Quaternion& lhs, const Quaternion& rhs);
+    static real Length(const Quaternion& quat);
+    static real LengthSqr(const Quaternion& quat);
     static Quaternion Inverse(const Quaternion& quat);
     static Quaternion Normalize(const Quaternion& quat);
     static Quaternion Conjugate(const Quaternion& quat);
@@ -23,10 +23,10 @@ struct ENGINE_API Quaternion
     Quaternion& operator*=(const Quaternion& rhs);
     Quaternion& operator/=(const Quaternion& rhs);
     
-    Quaternion& operator+=(float rhs);
-    Quaternion& operator-=(float rhs);
-    Quaternion& operator*=(float rhs);
-    Quaternion& operator/=(float rhs);
+    Quaternion& operator+=(real rhs);
+    Quaternion& operator-=(real rhs);
+    Quaternion& operator*=(real rhs);
+    Quaternion& operator/=(real rhs);
 };
 
 inline Quaternion operator+(const Quaternion& lhs, const Quaternion& rhs)
@@ -65,7 +65,7 @@ inline Quaternion operator/(const Quaternion& lhs, const Quaternion& rhs)
     return ret;
 }
 
-inline Quaternion operator*(const Quaternion& lhs, float rhs)
+inline Quaternion operator*(const Quaternion& lhs, real rhs)
 {
     Quaternion ret = lhs;
 
@@ -74,7 +74,7 @@ inline Quaternion operator*(const Quaternion& lhs, float rhs)
     return ret;
 }
 
-inline Quaternion operator*(float lhs, const Quaternion& rhs)
+inline Quaternion operator*(real lhs, const Quaternion& rhs)
 {
     Quaternion ret = rhs;
 
@@ -83,7 +83,7 @@ inline Quaternion operator*(float lhs, const Quaternion& rhs)
     return ret;
 }
 
-inline Quaternion operator/(const Quaternion& lhs, float rhs)
+inline Quaternion operator/(const Quaternion& lhs, real rhs)
 {
     Quaternion ret = lhs;
 
@@ -92,7 +92,7 @@ inline Quaternion operator/(const Quaternion& lhs, float rhs)
     return ret;
 }
 
-inline Quaternion operator/(float lhs, const Quaternion& rhs)
+inline Quaternion operator/(real lhs, const Quaternion& rhs)
 {
     Quaternion ret;
 
