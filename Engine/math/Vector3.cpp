@@ -1,24 +1,24 @@
 #include "engine_pch.h"
-#include "Vector3D.h"
+#include "Vector3.h"
 
-float Vector3D::Dot(const Vector3D& lhs, const Vector3D& rhs)
+float Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
 }
 
-float Vector3D::Length(const Vector3D& vector)
+float Vector3::Length(const Vector3& vector)
 {
     return glm::sqrt(LengthSqr(vector));
 }
 
-float Vector3D::LengthSqr(const Vector3D& vector)
+float Vector3::LengthSqr(const Vector3& vector)
 {
     return vector.x * vector.x + vector.y * vector.y + vector.z * vector.z;
 }
 
-Vector3D Vector3D::Cross(const Vector3D& lhs, const Vector3D& rhs)
+Vector3 Vector3::Cross(const Vector3& lhs, const Vector3& rhs)
 {
-    Vector3D ret;
+    Vector3 ret;
 
     ret.x = lhs.y * rhs.z - rhs.y * lhs.z;
     ret.y = lhs.x * rhs.z - rhs.x * lhs.z;
@@ -27,12 +27,12 @@ Vector3D Vector3D::Cross(const Vector3D& lhs, const Vector3D& rhs)
     return ret;
 }
 
-Vector3D Vector3D::Normalize(const Vector3D& vector)
+Vector3 Vector3::Normalize(const Vector3& vector)
 {
     return vector / Length(vector);
 }
 
-Vector3D& Vector3D::operator+=(const Vector3D& rhs)
+Vector3& Vector3::operator+=(const Vector3& rhs)
 {
     x += rhs.x;
     y += rhs.y;
@@ -41,7 +41,7 @@ Vector3D& Vector3D::operator+=(const Vector3D& rhs)
     return *this;
 }
 
-Vector3D& Vector3D::operator-=(const Vector3D& rhs)
+Vector3& Vector3::operator-=(const Vector3& rhs)
 {
     x -= rhs.x;
     y -= rhs.y;
@@ -50,7 +50,7 @@ Vector3D& Vector3D::operator-=(const Vector3D& rhs)
     return *this;
 }
 
-Vector3D& Vector3D::operator*=(float rhs)
+Vector3& Vector3::operator*=(float rhs)
 {
     x *= rhs;
     y *= rhs;
@@ -59,7 +59,7 @@ Vector3D& Vector3D::operator*=(float rhs)
     return *this;
 }
 
-Vector3D& Vector3D::operator/=(float rhs)
+Vector3& Vector3::operator/=(float rhs)
 {
     x /= rhs;
     y /= rhs;
