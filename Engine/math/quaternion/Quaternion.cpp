@@ -15,6 +15,18 @@ Quaternion& Quaternion::Normalize()
     return *this;
 }
 
+Quaternion& Quaternion::Renormalize()
+{
+    const real length = FastInvSqrtApproxOne(LengthSqr(*this));
+
+    w /= length;
+    x /= length;
+    y /= length;
+    z /= length;
+
+    return *this;
+}
+
 real Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
 {
     return lhs.w * rhs.w + lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;

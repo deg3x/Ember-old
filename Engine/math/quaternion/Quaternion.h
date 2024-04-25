@@ -10,6 +10,7 @@ struct ENGINE_API Quaternion
     real w;
 
     Quaternion& Normalize();
+    Quaternion& Renormalize();
 
     static real Dot(const Quaternion& lhs, const Quaternion& rhs);
     static real Length(const Quaternion& quat);
