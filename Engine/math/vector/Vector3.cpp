@@ -2,6 +2,14 @@
 #include "Vector3.h"
 
 #include "math/Math.h"
+#include "math/quaternion/Quaternion.h"
+
+Vector3::Vector3(const Quaternion& quat)
+{
+    x = quat.x;
+    y = quat.y;
+    z = quat.z;
+}
 
 Vector3& Vector3::Normalize()
 {

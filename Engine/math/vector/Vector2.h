@@ -7,6 +7,9 @@ struct ENGINE_API Vector2
     real x;
     real y;
 
+    Vector2() : x(0.0), y(0.0) {}
+    Vector2(real x, real y) : x(x), y(y) {}
+    
     Vector2& Normalize();
 
     static real Dot(const Vector2& lhs, const Vector2& rhs);

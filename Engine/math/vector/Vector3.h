@@ -2,11 +2,17 @@
 
 #include "Definitions.h"
 
+struct Quaternion;
+
 struct ENGINE_API Vector3
 {
     real x;
     real y;
     real z;
+
+    Vector3() : x(0.0), y(0.0), z(0.0) {}
+    Vector3(real x, real y, real z) : x(x), y(y), z(z) {}
+    Vector3(const Quaternion& quat);
 
     Vector3& Normalize();
 

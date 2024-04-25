@@ -49,10 +49,7 @@ Quaternion& Quaternion::Renormalize()
 
 Vector3 Quaternion::Rotate(const Vector3& vector) const
 {
-    const Quaternion qVector = {0.0f, vector.x, vector.y, vector.z};
-    const Quaternion rotated = *this * qVector * Inverse(*this);
-
-    return {rotated.x, rotated.y, rotated.z};
+    return static_cast<Vector3>(*this * static_cast<Quaternion>(vector) * Inverse(*this));
 }
 
 real Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
