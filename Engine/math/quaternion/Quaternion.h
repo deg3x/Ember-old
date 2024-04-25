@@ -17,6 +17,7 @@ struct ENGINE_API Quaternion
     static real LengthSqr(const Quaternion& quat);
     static Quaternion Inverse(const Quaternion& quat);
     static Quaternion Normalize(const Quaternion& quat);
+    static Quaternion Renormalize(const Quaternion& quat);
     static Quaternion Conjugate(const Quaternion& quat);
     
     Quaternion& operator+=(const Quaternion& rhs);

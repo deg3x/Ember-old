@@ -52,6 +52,13 @@ Quaternion Quaternion::Normalize(const Quaternion& quat)
     return quat / Length(quat);
 }
 
+Quaternion Quaternion::Renormalize(const Quaternion& quat)
+{
+    const real length = FastInvSqrtApproxOne(LengthSqr(quat));
+
+    return quat / length;
+}
+
 Quaternion Quaternion::Conjugate(const Quaternion& quat)
 {
     Quaternion ret;
