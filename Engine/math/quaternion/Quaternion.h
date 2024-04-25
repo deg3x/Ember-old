@@ -5,10 +5,15 @@
 
 struct ENGINE_API Quaternion
 {
+    real w;
     real x;
     real y;
     real z;
-    real w;
+
+    Quaternion() : w(1.0), x(0.0), y(0.0), z(0.0) {}
+    Quaternion(real w, real x, real y, real z) : w(w), x(x), y(y), z(z) {}
+    Quaternion(const Vector3& vector);
+    Quaternion(const Vector3& axis, real angle);
 
     Quaternion& Normalize();
     Quaternion& Renormalize();

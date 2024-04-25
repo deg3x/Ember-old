@@ -3,6 +3,26 @@
 
 #include "math/Math.h"
 
+Quaternion::Quaternion(const Vector3& vector)
+{
+    w = 0.0;
+    x = vector.x;
+    y = vector.y;
+    z = vector.z;
+}
+
+Quaternion::Quaternion(const Vector3& axis, float angle)
+{
+    const real halfAngle    = angle * 0.5f;
+    const real halfAngleCos = Cos(halfAngle);
+    const real halfAngleSin = Sin(halfAngle);
+    
+    w = halfAngleCos;
+    x = halfAngleSin * axis.x;
+    y = halfAngleSin * axis.y;
+    z = halfAngleSin * axis.z;
+}
+
 Quaternion& Quaternion::Normalize()
 {
     const real length = Length(*this);

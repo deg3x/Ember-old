@@ -1,11 +1,11 @@
 #include "engine_pch.h"
 #include "Math.h"
 
-real Sqrt(real num)
+real Sqrt(real value)
 {
     // Shameless implementation
     // Change in the future
-    return glm::sqrt(num);
+    return glm::sqrt(value);
 }
 
 real FastInvSqrtApproxOne(real value)
@@ -15,4 +15,14 @@ real FastInvSqrtApproxOne(real value)
     constexpr real c =  0.375f;
 
     return a + b * value + c * value * value;
+}
+
+real Sin(real value)
+{
+    return glm::sin(value);
+}
+
+real Cos(real value)
+{
+    return glm::cos(value);
 }
