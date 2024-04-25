@@ -10,8 +10,9 @@ real Sqrt(real num)
 
 real FastInvSqrtApproxOne(real value)
 {
-    constexpr real a =  1.5f;
-    constexpr real b = -0.5f;
+    constexpr real a =  1.875f;
+    constexpr real b = -1.250f;
+    constexpr real c =  0.375f;
 
-    return a + b * value;
+    return a + b * value + c * value * value;
 }
