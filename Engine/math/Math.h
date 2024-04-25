@@ -7,3 +7,5 @@ real ENGINE_API FastInvSqrtApproxOne(real value);
 
 real ENGINE_API Sin(real value);
 real ENGINE_API Cos(real value);
+real ENGINE_API Asin(real value);
+real ENGINE_API Acos(real value);

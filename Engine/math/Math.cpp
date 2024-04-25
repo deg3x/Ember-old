@@ -26,3 +26,13 @@ real Cos(real value)
 {
     return glm::cos(value);
 }
+
+real Asin(real value)
+{
+    return glm::asin(value);
+}
+
+real Acos(real value)
+{
+    return glm::acos(value);
+}
