@@ -1,6 +1,8 @@
 #pragma once
 
-struct Matrix4x4
+#include "Definitions.h"
+
+struct ENGINE_API Matrix4x4
 {
     
 };
