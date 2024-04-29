@@ -1,6 +1,66 @@
 #pragma once
 
-struct Vector4
+#include "Definitions.h"
+
+struct ENGINE_API Vector4
 {
+    real x;
+    real y;
+    real z;
+    real w;
+
+    Vector4() : x(0.0), y(0.0), z(0.0), w(0.0) {}
+    Vector4(real x, real y, real z, real w) : x(x), y(y), z(z), w(w) {}
+
+    Vector4& Normalize();
+
+    static real Dot(const Vector4& lhs, const Vector4& rhs);
+    static real Length(const Vector4& vector);
+    static real LengthSqr(const Vector4& vector);
+    static Vector4 Normalize(const Vector4& vector);
     
+    Vector4& operator+=(const Vector4& rhs);
+    Vector4& operator-=(const Vector4& rhs);
+
+    Vector4& operator*=(real rhs);
+    Vector4& operator/=(real rhs);
 };
+
+inline Vector4 operator+(const Vector4& lhs, const Vector4& rhs)
+{
+    Vector4 ret = lhs;
+
+    ret += rhs;
+    
+    return ret;
+}
+
+inline Vector4 operator-(const Vector4& lhs, const Vector4& rhs)
+{
+    Vector4 ret = lhs;
+
+    ret -= rhs;
+    
+    return ret;
+}
+
+inline Vector4 operator/(const Vector4& lhs, real rhs)
+{
+    Vector4 ret = lhs;
+
+    ret /= rhs;
+    
+    return ret;
+}
+
+inline Vector4 operator/(real lhs, const Vector4& rhs)
+{
+    Vector4 ret;
+
+    ret.x = lhs / rhs.x;
+    ret.y = lhs / rhs.y;
+    ret.z = lhs / rhs.z;
+    ret.w = lhs / rhs.w;
+    
+    return ret;
+}
