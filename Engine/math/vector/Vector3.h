@@ -27,6 +27,8 @@ struct ENGINE_API Vector3
 
     Vector3& operator*=(real rhs);
     Vector3& operator/=(real rhs);
+
+    real operator[](int idx) const;
 };
 
 inline Vector3 operator+(const Vector3& lhs, const Vector3& rhs)

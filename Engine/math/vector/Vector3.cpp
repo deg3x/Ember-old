@@ -86,3 +86,8 @@ Vector3& Vector3::operator/=(real rhs)
 
     return *this;
 }
+
+float Vector3::operator[](int idx) const
+{
+    return *(&x + (idx % 3));
+}
