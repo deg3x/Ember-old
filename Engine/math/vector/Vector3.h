@@ -47,6 +47,24 @@ inline Vector3 operator-(const Vector3& lhs, const Vector3& rhs)
     return ret;
 }
 
+inline Vector3 operator*(const Vector3& lhs, real rhs)
+{
+    Vector3 ret = lhs;
+
+    ret *= rhs;
+    
+    return ret;
+}
+
+inline Vector3 operator*(real lhs, const Vector3& rhs)
+{
+    Vector3 ret = rhs;
+
+    ret *= lhs;
+    
+    return ret;
+}
+
 inline Vector3 operator/(const Vector3& lhs, real rhs)
 {
     Vector3 ret = lhs;

@@ -44,6 +44,24 @@ inline Vector4 operator-(const Vector4& lhs, const Vector4& rhs)
     return ret;
 }
 
+inline Vector4 operator*(const Vector4& lhs, real rhs)
+{
+    Vector4 ret = lhs;
+
+    ret *= rhs;
+    
+    return ret;
+}
+
+inline Vector4 operator*(real lhs, const Vector4& rhs)
+{
+    Vector4 ret = rhs;
+
+    ret *= lhs;
+    
+    return ret;
+}
+
 inline Vector4 operator/(const Vector4& lhs, real rhs)
 {
     Vector4 ret = lhs;

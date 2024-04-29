@@ -42,6 +42,24 @@ inline Vector2 operator-(const Vector2& lhs, const Vector2& rhs)
     return ret;
 }
 
+inline Vector2 operator*(const Vector2& lhs, real rhs)
+{
+    Vector2 ret = lhs;
+
+    ret *= rhs;
+    
+    return ret;
+}
+
+inline Vector2 operator*(real lhs, const Vector2& rhs)
+{
+    Vector2 ret = rhs;
+
+    ret *= lhs;
+    
+    return ret;
+}
+
 inline Vector2 operator/(const Vector2& lhs, real rhs)
 {
     Vector2 ret = lhs;
