@@ -5,12 +5,9 @@
 
 Vector4& Vector4::Normalize()
 {
-    const real length = Length(*this);
+    const real invLength = static_cast<real>(1.0) / Length(*this);
 
-    x /= length;
-    y /= length;
-    z /= length;
-    w /= length;
+    *this *= invLength;
 
     return *this;
 }
@@ -27,7 +24,7 @@ real Vector4::Length(const Vector4& vector)
 
 real Vector4::LengthSqr(const Vector4& vector)
 {
-    return Dot(vector, vector);
+    return vector.x * vector.x + vector.y * vector.y + vector.z * vector.z + vector.w * vector.w;
 }
 
 Vector4 Vector4::Normalize(const Vector4& vector)
@@ -67,10 +64,9 @@ Vector4& Vector4::operator*=(real rhs)
 
 Vector4& Vector4::operator/=(real rhs)
 {
-    x /= rhs;
-    y /= rhs;
-    z /= rhs;
-    w /= rhs;
+    const real invRhs = static_cast<real>(1.0) / rhs;
+    
+    *this *= invRhs;
 
     return *this;
 }

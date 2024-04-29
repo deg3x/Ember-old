@@ -5,10 +5,9 @@
 
 Vector2& Vector2::Normalize()
 {
-    const real length = Length(*this);
+    const real invLength = static_cast<real>(1.0) / Length(*this);
 
-    x /= length;
-    y /= length;
+    *this *= invLength;
 
     return *this;
 }
@@ -59,8 +58,9 @@ Vector2& Vector2::operator*=(float rhs)
 
 Vector2& Vector2::operator/=(float rhs)
 {
-    x /= rhs;
-    y /= rhs;
+    const real invRhs = static_cast<real>(1.0) / rhs;
+    
+    *this *= invRhs;
 
     return *this;
 }

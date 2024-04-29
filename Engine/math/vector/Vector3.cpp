@@ -13,11 +13,9 @@ Vector3::Vector3(const Quaternion& quat)
 
 Vector3& Vector3::Normalize()
 {
-    const real length = Length(*this);
+    const real invLength = static_cast<real>(1.0) / Length(*this);
 
-    x /= length;
-    y /= length;
-    z /= length;
+    *this *= invLength;
 
     return *this;
 }
@@ -82,9 +80,9 @@ Vector3& Vector3::operator*=(real rhs)
 
 Vector3& Vector3::operator/=(real rhs)
 {
-    x /= rhs;
-    y /= rhs;
-    z /= rhs;
+    const real invRhs = static_cast<real>(1.0) / rhs;
+    
+    *this *= invRhs;
 
     return *this;
 }
