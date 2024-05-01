@@ -21,7 +21,29 @@ Matrix4x4 Matrix4x4::Inverse() const
 
 Matrix4x4 Matrix4x4::Transpose() const
 {
-    return Matrix4x4();
+    Matrix4x4 transpose;
+
+    transpose[0][0] = (*this)[0][0];
+    transpose[0][1] = (*this)[1][0];
+    transpose[0][2] = (*this)[2][0];
+    transpose[0][3] = (*this)[3][0];
+
+    transpose[1][0] = (*this)[0][1];
+    transpose[1][1] = (*this)[1][1];
+    transpose[1][2] = (*this)[2][1];
+    transpose[1][3] = (*this)[3][1];
+
+    transpose[2][0] = (*this)[0][2];
+    transpose[2][1] = (*this)[1][2];
+    transpose[2][2] = (*this)[2][2];
+    transpose[2][3] = (*this)[3][2];
+
+    transpose[3][0] = (*this)[0][3];
+    transpose[3][1] = (*this)[1][3];
+    transpose[3][2] = (*this)[2][3];
+    transpose[3][3] = (*this)[3][3];
+    
+    return transpose;
 }
 
 Matrix4x4& Matrix4x4::operator+=(const Matrix4x4& rhs)
