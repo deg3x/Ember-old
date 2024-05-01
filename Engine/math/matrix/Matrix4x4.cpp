@@ -12,6 +12,14 @@ Matrix4x4::Matrix4x4()
     m[3] = Vector4(0.0, 0.0, 0.0, 1.0);
 }
 
+Matrix4x4::Matrix4x4(const Vector4& colA, const Vector4& colB, const Vector4& colC, const Vector4& colD)
+{
+    m[0] = colA;
+    m[1] = colB;
+    m[2] = colC;
+    m[3] = colD;
+}
+
 real Matrix4x4::Determinant() const
 {
     const real det2d_23 = m[2][2] * m[3][3] - m[2][3] * m[3][2];

@@ -10,6 +10,7 @@ private:
 
 public:
     Matrix4x4();
+    Matrix4x4(const Vector4& colA, const Vector4& colB, const Vector4& colC, const Vector4& colD);
 
     real Determinant() const;
     Matrix4x4 Inverse() const;
