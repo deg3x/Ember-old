@@ -8,6 +8,8 @@ constexpr real HALF_PI = 0.5 * PI;
 constexpr real RAD2DEG = 180.0 / PI;
 constexpr real DEG2RAD = PI / 180.0;
 
+constexpr float FLOAT_MIN = FLT_MIN;
+
 real ENGINE_API Sqrt(real value);
 real ENGINE_API FastInvSqrtApproxOne(real value);
 
@@ -15,3 +17,5 @@ real ENGINE_API Sin(real value);
 real ENGINE_API Cos(real value);
 real ENGINE_API Asin(real value);
 real ENGINE_API Acos(real value);
+
+bool ENGINE_API ApproxZero(real value);

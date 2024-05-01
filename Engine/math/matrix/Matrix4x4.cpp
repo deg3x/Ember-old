@@ -1,6 +1,9 @@
 #include "engine_pch.h"
 #include "Matrix4x4.h"
 
+#include "logger/Logger.h"
+#include "math/Math.h"
+
 Matrix4x4::Matrix4x4()
 {
     m[0] = Vector4(1.0, 0.0, 0.0, 0.0);
@@ -11,26 +14,105 @@ Matrix4x4::Matrix4x4()
 
 real Matrix4x4::Determinant() const
 {
-    const real det2d_23 = m[2][2] * m[3][3] - m[3][2] * m[2][3];
-    const real det2d_13 = m[2][1] * m[3][3] - m[3][1] * m[2][3];
-    const real det2d_12 = m[2][1] * m[3][2] - m[3][1] * m[2][2];
-    const real det2d_03 = m[2][0] * m[3][3] - m[3][3] * m[2][3];
-    const real det2d_02 = m[2][0] * m[3][2] - m[3][0] * m[2][2];
-    const real det2d_01 = m[2][0] * m[3][1] - m[3][0] * m[2][1];
+    const real det2d_23 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
+    const real det2d_13 = m[1][2] * m[3][3] - m[1][3] * m[3][2];
+    const real det2d_12 = m[1][2] * m[2][3] - m[1][3] * m[2][2];
+    const real det2d_03 = m[0][2] * m[3][3] - m[0][3] * m[3][2];
+    const real det2d_02 = m[0][2] * m[2][3] - m[0][3] * m[2][2];
+    const real det2d_01 = m[0][2] * m[1][3] - m[0][3] * m[1][2];
 
-    const real det3d_123 = m[1][1] * det2d_23 - m[1][2] * det2d_13 + m[1][3] * det2d_12;
-    const real det3d_023 = m[1][0] * det2d_23 - m[1][2] * det2d_03 + m[1][3] * det2d_02;
-    const real det3d_013 = m[1][0] * det2d_13 - m[1][1] * det2d_03 + m[1][3] * det2d_01;
-    const real det3d_012 = m[1][0] * det2d_12 - m[1][1] * det2d_02 + m[1][2] * det2d_01;
+    const real det3d_123 = m[1][1] * det2d_23 - m[2][1] * det2d_13 + m[3][1] * det2d_12;
+    const real det3d_023 = m[0][1] * det2d_23 - m[2][1] * det2d_03 + m[3][1] * det2d_02;
+    const real det3d_013 = m[0][1] * det2d_13 - m[1][1] * det2d_03 + m[3][1] * det2d_01;
+    const real det3d_012 = m[0][1] * det2d_12 - m[1][1] * det2d_02 + m[2][1] * det2d_01;
 
-    const real determinant = m[0][0] * det3d_123 - m[0][1] * det3d_023 + m[0][2] * det3d_013 - m[0][3] * det3d_012;
+    const real determinant = m[0][0] * det3d_123 - m[1][0] * det3d_023 + m[2][0] * det3d_013 - m[3][0] * det3d_012;
     
     return determinant;
 }
 
 Matrix4x4 Matrix4x4::Inverse() const
 {
-    return Matrix4x4();
+    Matrix4x4 inverse;
+
+    const real det_23_23 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
+    const real det_23_13 = m[1][2] * m[3][3] - m[1][3] * m[3][2];
+    const real det_23_12 = m[1][2] * m[2][3] - m[1][3] * m[2][2];
+    const real det_23_03 = m[0][2] * m[3][3] - m[0][3] * m[3][2];
+    const real det_23_02 = m[0][2] * m[2][3] - m[0][3] * m[2][2];
+    const real det_23_01 = m[0][2] * m[1][3] - m[0][3] * m[1][2];
+
+    const real det_123_123 = m[1][1] * det_23_23 - m[2][1] * det_23_13 + m[3][1] * det_23_12;
+    const real det_123_023 = m[0][1] * det_23_23 - m[2][1] * det_23_03 + m[3][1] * det_23_02;
+    const real det_123_013 = m[0][1] * det_23_13 - m[1][1] * det_23_03 + m[3][1] * det_23_01;
+    const real det_123_012 = m[0][1] * det_23_12 - m[1][1] * det_23_02 + m[2][1] * det_23_01;
+
+    const real determinant = m[0][0] * det_123_123 - m[1][0] * det_123_023 + m[2][0] * det_123_013 - m[3][0] * det_123_012;
+
+    if (ApproxZero(determinant))
+    {
+        LogEntry entry;
+        entry.context  = "Matrix4x4::Inverse";
+        entry.message  = "Attempting to inverse non-invertible matrix";
+        entry.category = LogCategory::ERROR;
+
+        Logger::Log(entry);
+        
+        return Matrix4x4();
+    }
+
+    const real det_13_23 = m[2][1] * m[3][3] - m[2][3] * m[3][1];
+    const real det_13_13 = m[1][1] * m[3][3] - m[1][3] * m[3][1];
+    const real det_13_12 = m[1][1] * m[2][3] - m[1][3] * m[2][1];
+    const real det_13_03 = m[0][1] * m[3][3] - m[0][3] * m[3][1];
+    const real det_13_02 = m[0][1] * m[2][3] - m[0][3] * m[2][1];
+    const real det_13_01 = m[0][1] * m[1][3] - m[0][3] * m[1][1];
+    
+    const real det_12_23 = m[2][1] * m[3][2] - m[2][2] * m[3][1];
+    const real det_12_13 = m[1][1] * m[3][2] - m[1][2] * m[3][1];
+    const real det_12_12 = m[1][1] * m[2][2] - m[1][2] * m[2][1];
+    const real det_12_03 = m[0][1] * m[3][2] - m[0][2] * m[3][1];
+    const real det_12_02 = m[0][1] * m[2][2] - m[0][2] * m[2][1];
+    const real det_12_01 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
+
+    const real det_023_123 = m[1][0] * det_23_23 - m[2][0] * det_23_13 + m[3][0] * det_23_12;
+    const real det_023_023 = m[0][0] * det_23_23 - m[2][0] * det_23_03 + m[3][0] * det_23_02;
+    const real det_023_013 = m[0][0] * det_23_13 - m[1][0] * det_23_03 + m[3][0] * det_23_01;
+    const real det_023_012 = m[0][0] * det_23_12 - m[1][0] * det_23_02 + m[2][0] * det_23_01;
+
+    const real det_013_123 = m[1][0] * det_13_23 - m[2][0] * det_13_13 + m[3][0] * det_13_12;
+    const real det_013_023 = m[0][0] * det_13_23 - m[2][0] * det_13_03 + m[3][0] * det_13_02;
+    const real det_013_013 = m[0][0] * det_13_13 - m[1][0] * det_13_03 + m[3][0] * det_13_01;
+    const real det_013_012 = m[0][0] * det_13_12 - m[1][0] * det_13_02 + m[2][0] * det_13_01;
+
+    const real det_012_123 = m[1][0] * det_12_23 - m[2][0] * det_12_13 + m[3][0] * det_12_12;
+    const real det_012_023 = m[0][0] * det_12_23 - m[2][0] * det_12_03 + m[3][0] * det_12_02;
+    const real det_012_013 = m[0][0] * det_12_13 - m[1][0] * det_12_03 + m[3][0] * det_12_01;
+    const real det_012_012 = m[0][0] * det_12_12 - m[1][0] * det_12_02 + m[2][0] * det_12_01;
+
+    const real invDet = static_cast<real>(1.0) / determinant;
+
+    inverse.m[0][0] =  det_123_123 * invDet;
+    inverse.m[0][1] = -det_123_023 * invDet;
+    inverse.m[0][2] =  det_123_013 * invDet;
+    inverse.m[0][3] = -det_123_012 * invDet;
+
+    inverse.m[1][0] = -det_023_123 * invDet;
+    inverse.m[1][1] =  det_023_023 * invDet;
+    inverse.m[1][2] = -det_023_013 * invDet;
+    inverse.m[1][3] =  det_023_012 * invDet;
+
+    inverse.m[2][0] =  det_013_123 * invDet;
+    inverse.m[2][1] = -det_013_023 * invDet;
+    inverse.m[2][2] =  det_013_013 * invDet;
+    inverse.m[2][3] = -det_013_012 * invDet;
+
+    inverse.m[3][0] = -det_012_123 * invDet;
+    inverse.m[3][1] =  det_012_023 * invDet;
+    inverse.m[3][2] = -det_012_013 * invDet;
+    inverse.m[3][3] =  det_012_012 * invDet;
+    
+    return inverse;
 }
 
 Matrix4x4 Matrix4x4::Transpose() const

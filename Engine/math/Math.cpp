@@ -36,3 +36,8 @@ real Acos(real value)
 {
     return glm::acos(value);
 }
+
+bool ApproxZero(real value)
+{
+    return (value > -FLOAT_MIN && value < FLOAT_MIN);
+}
