@@ -71,7 +71,12 @@ Vector4& Vector4::operator/=(real rhs)
     return *this;
 }
 
-float Vector4::operator[](int idx) const
+float& Vector4::operator[](int idx)
+{
+    return *(&x + (idx % 4));
+}
+
+const float& Vector4::operator[](int idx) const
 {
     return *(&x + (idx % 4));
 }

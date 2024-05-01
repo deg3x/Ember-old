@@ -65,7 +65,12 @@ Vector2& Vector2::operator/=(float rhs)
     return *this;
 }
 
-float Vector2::operator[](int idx) const
+real& Vector2::operator[](int idx)
+{
+    return *(&x + (idx % 2));
+}
+
+const float& Vector2::operator[](int idx) const
 {
     return *(&x + (idx % 2));
 }

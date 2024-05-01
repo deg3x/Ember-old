@@ -25,7 +25,8 @@ struct ENGINE_API Vector4
     Vector4& operator*=(real rhs);
     Vector4& operator/=(real rhs);
 
-    real operator[](int idx) const;
+    real& operator[](int idx);
+    const real& operator[](int idx) const;
 };
 
 inline Vector4 operator+(const Vector4& lhs, const Vector4& rhs)

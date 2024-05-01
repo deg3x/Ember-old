@@ -23,7 +23,8 @@ struct ENGINE_API Vector2
     Vector2& operator*=(real rhs);
     Vector2& operator/=(real rhs);
 
-    real operator[](int idx) const;
+    real& operator[](int idx);
+    const real& operator[](int idx) const;
 };
 
 inline Vector2 operator+(const Vector2& lhs, const Vector2& rhs)
