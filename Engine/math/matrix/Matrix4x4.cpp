@@ -25,16 +25,12 @@ real Matrix4x4::Determinant() const
     const real det3d_023 = m[0][1] * det2d_23 - m[2][1] * det2d_03 + m[3][1] * det2d_02;
     const real det3d_013 = m[0][1] * det2d_13 - m[1][1] * det2d_03 + m[3][1] * det2d_01;
     const real det3d_012 = m[0][1] * det2d_12 - m[1][1] * det2d_02 + m[2][1] * det2d_01;
-
-    const real determinant = m[0][0] * det3d_123 - m[1][0] * det3d_023 + m[2][0] * det3d_013 - m[3][0] * det3d_012;
     
-    return determinant;
+    return m[0][0] * det3d_123 - m[1][0] * det3d_023 + m[2][0] * det3d_013 - m[3][0] * det3d_012;
 }
 
 Matrix4x4 Matrix4x4::Inverse() const
 {
-    Matrix4x4 inverse;
-
     const real det_23_23 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
     const real det_23_13 = m[1][2] * m[3][3] - m[1][3] * m[3][2];
     const real det_23_12 = m[1][2] * m[2][3] - m[1][3] * m[2][2];
@@ -91,7 +87,9 @@ Matrix4x4 Matrix4x4::Inverse() const
     const real det_012_012 = m[0][0] * det_12_12 - m[1][0] * det_12_02 + m[2][0] * det_12_01;
 
     const real invDet = static_cast<real>(1.0) / determinant;
-
+    
+    Matrix4x4 inverse;
+    
     inverse.m[0][0] =  det_123_123 * invDet;
     inverse.m[0][1] = -det_123_023 * invDet;
     inverse.m[0][2] =  det_123_013 * invDet;
