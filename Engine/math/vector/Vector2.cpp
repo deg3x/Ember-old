@@ -12,17 +12,17 @@ Vector2& Vector2::Normalize()
     return *this;
 }
 
-float Vector2::Dot(const Vector2& lhs, const Vector2& rhs)
+real Vector2::Dot(const Vector2& lhs, const Vector2& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y;
 }
 
-float Vector2::Length(const Vector2& vector)
+real Vector2::Length(const Vector2& vector)
 {
     return Sqrt(LengthSqr(vector));
 }
 
-float Vector2::LengthSqr(const Vector2& vector)
+real Vector2::LengthSqr(const Vector2& vector)
 {
     return vector.x * vector.x + vector.y * vector.y;
 }
@@ -48,7 +48,7 @@ Vector2& Vector2::operator-=(const Vector2& rhs)
     return *this;
 }
 
-Vector2& Vector2::operator*=(float rhs)
+Vector2& Vector2::operator*=(real rhs)
 {
     x *= rhs;
     y *= rhs;
@@ -56,7 +56,7 @@ Vector2& Vector2::operator*=(float rhs)
     return *this;
 }
 
-Vector2& Vector2::operator/=(float rhs)
+Vector2& Vector2::operator/=(real rhs)
 {
     const real invRhs = static_cast<real>(1.0) / rhs;
     
@@ -70,7 +70,7 @@ real& Vector2::operator[](int idx)
     return *(&x + (idx % 2));
 }
 
-const float& Vector2::operator[](int idx) const
+const real& Vector2::operator[](int idx) const
 {
     return *(&x + (idx % 2));
 }

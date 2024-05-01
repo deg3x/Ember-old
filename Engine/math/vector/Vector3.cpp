@@ -87,12 +87,12 @@ Vector3& Vector3::operator/=(real rhs)
     return *this;
 }
 
-float& Vector3::operator[](int idx)
+real& Vector3::operator[](int idx)
 {
     return *(&x + (idx % 3));
 }
 
-const float& Vector3::operator[](int idx) const
+const real& Vector3::operator[](int idx) const
 {
     return *(&x + (idx % 3));
 }
