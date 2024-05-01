@@ -6,7 +6,7 @@
 struct ENGINE_API Matrix4x4
 {
 private:
-    Vector4 values[4];
+    Vector4 m[4];
 
 public:
     Matrix4x4();
