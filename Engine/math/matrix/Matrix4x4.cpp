@@ -150,7 +150,13 @@ Matrix4x4 Matrix4x4::Transpose() const
 
 Matrix4x4 Matrix4x4::CreateTranslation(const Vector3& translation)
 {
-    return Matrix4x4();
+    Matrix4x4 ret = Matrix4x4();
+
+    ret[3][0] = translation.x;
+    ret[3][1] = translation.y;
+    ret[3][2] = translation.z;
+    
+    return ret;
 }
 
 Matrix4x4 Matrix4x4::CreateScale(const Vector3& scale)
