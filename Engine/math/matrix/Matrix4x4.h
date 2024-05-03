@@ -4,6 +4,8 @@
 #include "math/vector/Vector3.h"
 #include "math/vector/Vector4.h"
 
+struct Quaternion;
+
 struct ENGINE_API Matrix4x4
 {
 private:
@@ -11,6 +13,7 @@ private:
 
 public:
     Matrix4x4();
+    Matrix4x4(const Quaternion& quat);
     Matrix4x4(const Vector4& colA, const Vector4& colB, const Vector4& colC, const Vector4& colD);
 
     real Determinant() const;

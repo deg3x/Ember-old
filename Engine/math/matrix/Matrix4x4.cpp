@@ -3,6 +3,7 @@
 
 #include "logger/Logger.h"
 #include "math/Math.h"
+#include "math/quaternion/Quaternion.h"
 
 Matrix4x4::Matrix4x4()
 {
@@ -10,6 +11,30 @@ Matrix4x4::Matrix4x4()
     m[1] = Vector4(0.0, 1.0, 0.0, 0.0);
     m[2] = Vector4(0.0, 0.0, 1.0, 0.0);
     m[3] = Vector4(0.0, 0.0, 0.0, 1.0);
+}
+
+Matrix4x4::Matrix4x4(const Quaternion& quat)
+{
+    const real ww = quat.w * quat.w;
+    const real wx = quat.w * quat.x;
+    const real wy = quat.w * quat.y;
+    const real wz = quat.w * quat.z;
+    const real xx = quat.x * quat.x;
+    const real xy = quat.x * quat.y;
+    const real xz = quat.x * quat.z;
+    const real yy = quat.y * quat.y;
+    const real yz = quat.y * quat.z;
+    const real zz = quat.z * quat.z;
+    
+    m[0][0] = static_cast<real>(2.0) * (ww + xx) - static_cast<real>(1.0);
+    m[0][1] = static_cast<real>(2.0) * (xy + wz);
+    m[0][2] = static_cast<real>(2.0) * (xz - wy);
+    m[1][0] = static_cast<real>(2.0) * (xy - wz);
+    m[1][1] = static_cast<real>(2.0) * (ww + yy) - static_cast<real>(1.0);
+    m[1][2] = static_cast<real>(2.0) * (wx + yz);
+    m[2][0] = static_cast<real>(2.0) * (wy + xz);
+    m[2][1] = static_cast<real>(2.0) * (yz - wx);
+    m[2][2] = static_cast<real>(2.0) * (ww + zz) - static_cast<real>(1.0);
 }
 
 Matrix4x4::Matrix4x4(const Vector4& colA, const Vector4& colB, const Vector4& colC, const Vector4& colD)
