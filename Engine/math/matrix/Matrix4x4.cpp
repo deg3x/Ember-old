@@ -161,7 +161,13 @@ Matrix4x4 Matrix4x4::CreateTranslation(const Vector3& translation)
 
 Matrix4x4 Matrix4x4::CreateScale(const Vector3& scale)
 {
-    return Matrix4x4();
+    Matrix4x4 ret = Matrix4x4();
+
+    ret[0][0] = scale.x;
+    ret[1][1] = scale.y;
+    ret[2][2] = scale.z;
+    
+    return ret;
 }
 
 Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
