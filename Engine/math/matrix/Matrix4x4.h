@@ -17,6 +17,13 @@ public:
     Matrix4x4 Inverse() const;
     Matrix4x4 Transpose() const;
 
+    static Matrix4x4 CreateTranslation(const Vector3& translation);
+    static Matrix4x4 CreateScale(const Vector3& scale);
+    static Matrix4x4 CreateRotationEuler(const Vector3& angles);
+    static Matrix4x4 CreateRotationEulerX(real angle);
+    static Matrix4x4 CreateRotationEulerY(real angle);
+    static Matrix4x4 CreateRotationEulerZ(real angle);
+
     Matrix4x4& operator+=(const Matrix4x4& rhs);
     Matrix4x4& operator-=(const Matrix4x4& rhs);
     Matrix4x4& operator*=(const Matrix4x4& rhs);

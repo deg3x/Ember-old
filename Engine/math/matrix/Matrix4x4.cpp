@@ -148,6 +148,36 @@ Matrix4x4 Matrix4x4::Transpose() const
     return transpose;
 }
 
+Matrix4x4 Matrix4x4::CreateTranslation(const Vector3& translation)
+{
+    return Matrix4x4();
+}
+
+Matrix4x4 Matrix4x4::CreateScale(const Vector3& scale)
+{
+    return Matrix4x4();
+}
+
+Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
+{
+    return Matrix4x4();
+}
+
+Matrix4x4 Matrix4x4::CreateRotationEulerX(float angle)
+{
+    return Matrix4x4();
+}
+
+Matrix4x4 Matrix4x4::CreateRotationEulerY(float angle)
+{
+    return Matrix4x4();
+}
+
+Matrix4x4 Matrix4x4::CreateRotationEulerZ(float angle)
+{
+    return Matrix4x4();
+}
+
 Matrix4x4& Matrix4x4::operator+=(const Matrix4x4& rhs)
 {
     m[0] += rhs.m[0];
