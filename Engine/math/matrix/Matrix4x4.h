@@ -53,3 +53,15 @@ inline Matrix4x4 operator*(const Matrix4x4& lhs, const Matrix4x4& rhs)
 
     return ret;
 }
+
+inline Vector4 operator*(const Matrix4x4& lhs, const Vector4& rhs)
+{
+    Vector4 ret;
+
+    ret.x = lhs[0][0] * rhs.x + lhs[1][0] * rhs.y + lhs[2][0] * rhs.z + lhs[3][0] * rhs.w;
+    ret.y = lhs[0][1] * rhs.x + lhs[1][1] * rhs.y + lhs[2][1] * rhs.z + lhs[3][1] * rhs.w;
+    ret.z = lhs[0][2] * rhs.x + lhs[1][2] * rhs.y + lhs[2][2] * rhs.z + lhs[3][2] * rhs.w;
+    ret.w = lhs[0][3] * rhs.x + lhs[1][3] * rhs.y + lhs[2][3] * rhs.z + lhs[3][3] * rhs.w;
+
+    return ret;
+}
