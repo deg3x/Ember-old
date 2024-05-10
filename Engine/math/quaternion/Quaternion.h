@@ -3,6 +3,8 @@
 #include "Definitions.h"
 #include "math/vector/Vector3.h"
 
+struct Matrix4x4;
+
 struct ENGINE_API Quaternion
 {
     real w;
@@ -14,6 +16,7 @@ struct ENGINE_API Quaternion
     Quaternion(real w, real x, real y, real z) : w(w), x(x), y(y), z(z) {}
     Quaternion(const Vector3& vector);
     Quaternion(const Vector3& axis, real angle);
+    Quaternion(const Matrix4x4& matrix);
 
     Quaternion& Normalize();
     Quaternion& Renormalize();

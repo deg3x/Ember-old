@@ -2,6 +2,7 @@
 #include "Quaternion.h"
 
 #include "math/Math.h"
+#include "math/matrix/Matrix4x4.h"
 
 Quaternion::Quaternion(const Vector3& vector)
 {
@@ -21,6 +22,11 @@ Quaternion::Quaternion(const Vector3& axis, float angle)
     x = halfAngleSin * axis.x;
     y = halfAngleSin * axis.y;
     z = halfAngleSin * axis.z;
+}
+
+Quaternion::Quaternion(const Matrix4x4& matrix)
+{
+    
 }
 
 Quaternion& Quaternion::Normalize()
