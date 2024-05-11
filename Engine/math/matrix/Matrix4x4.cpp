@@ -208,8 +208,8 @@ Matrix4x4 Matrix4x4::CreateRotationEulerX(real angle)
     const real angleSin = Sin(angle);
 
     ret[1][1] =  angleCos;
-    ret[1][2] =  angleSin;
-    ret[2][1] = -angleSin;
+    ret[1][2] = -angleSin;
+    ret[2][1] =  angleSin;
     ret[2][2] =  angleCos;
     
     return ret;
@@ -223,8 +223,8 @@ Matrix4x4 Matrix4x4::CreateRotationEulerY(real angle)
     const real angleSin = Sin(angle);
 
     ret[0][0] =  angleCos;
-    ret[0][2] = -angleSin;
-    ret[2][0] =  angleSin;
+    ret[0][2] =  angleSin;
+    ret[2][0] = -angleSin;
     ret[2][2] =  angleCos;
     
     return ret;
@@ -238,8 +238,8 @@ Matrix4x4 Matrix4x4::CreateRotationEulerZ(real angle)
     const real angleSin = Sin(angle);
 
     ret[0][0] =  angleCos;
-    ret[0][1] =  angleSin;
-    ret[1][0] = -angleSin;
+    ret[0][1] = -angleSin;
+    ret[1][0] =  angleSin;
     ret[1][1] =  angleCos;
     
     return ret;
