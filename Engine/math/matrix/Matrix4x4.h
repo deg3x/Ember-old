@@ -6,6 +6,8 @@
 
 struct Quaternion;
 
+// Matrices are stored in a column first layout
+// We are using a left handed coordinate system
 struct ENGINE_API Matrix4x4
 {
 private:
