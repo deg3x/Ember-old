@@ -202,7 +202,17 @@ Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
 
 Matrix4x4 Matrix4x4::CreateRotationEulerX(float angle)
 {
-    return Matrix4x4();
+    Matrix4x4 ret = Matrix4x4();
+
+    const real angleCos = Cos(angle);
+    const real angleSin = Sin(angle);
+
+    ret[1][1] =  angleCos;
+    ret[1][2] =  angleSin;
+    ret[2][1] = -angleSin;
+    ret[2][2] =  angleCos;
+    
+    return ret;
 }
 
 Matrix4x4 Matrix4x4::CreateRotationEulerY(float angle)
