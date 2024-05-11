@@ -200,7 +200,7 @@ Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
     return Matrix4x4();
 }
 
-Matrix4x4 Matrix4x4::CreateRotationEulerX(float angle)
+Matrix4x4 Matrix4x4::CreateRotationEulerX(real angle)
 {
     Matrix4x4 ret = Matrix4x4();
 
@@ -215,7 +215,7 @@ Matrix4x4 Matrix4x4::CreateRotationEulerX(float angle)
     return ret;
 }
 
-Matrix4x4 Matrix4x4::CreateRotationEulerY(float angle)
+Matrix4x4 Matrix4x4::CreateRotationEulerY(real angle)
 {
     Matrix4x4 ret = Matrix4x4();
 
@@ -230,7 +230,7 @@ Matrix4x4 Matrix4x4::CreateRotationEulerY(float angle)
     return ret;
 }
 
-Matrix4x4 Matrix4x4::CreateRotationEulerZ(float angle)
+Matrix4x4 Matrix4x4::CreateRotationEulerZ(real angle)
 {
     Matrix4x4 ret = Matrix4x4();
 
