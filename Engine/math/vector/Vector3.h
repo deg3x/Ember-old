@@ -12,7 +12,7 @@ struct ENGINE_API Vector3
 
     Vector3() : x(0.0), y(0.0), z(0.0) {}
     Vector3(real x, real y, real z) : x(x), y(y), z(z) {}
-    Vector3(const Quaternion& quat);
+    explicit Vector3(const Quaternion& quat);
 
     Vector3& Normalize();
     Vector3 Rotate(const Vector3& axis, real angle) const;
