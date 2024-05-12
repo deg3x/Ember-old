@@ -20,6 +20,13 @@ Vector3& Vector3::Normalize()
     return *this;
 }
 
+Vector3 Vector3::Rotate(const Vector3& axis, real angle) const
+{
+    const Quaternion quat = Quaternion(axis, angle);
+
+    return quat.RotateVector(*this);
+}
+
 real Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;

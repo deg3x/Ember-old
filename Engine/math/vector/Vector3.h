@@ -15,6 +15,7 @@ struct ENGINE_API Vector3
     Vector3(const Quaternion& quat);
 
     Vector3& Normalize();
+    Vector3 Rotate(const Vector3& axis, real angle) const;
 
     static real Dot(const Vector3& lhs, const Vector3& rhs);
     static real Length(const Vector3& vector);
