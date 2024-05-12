@@ -20,7 +20,7 @@ struct ENGINE_API Quaternion
 
     Quaternion& Normalize();
     Quaternion& Renormalize();
-    Vector3 Rotate(const Vector3& vector) const;
+    Vector3 RotateVector(const Vector3& vector) const;
 
     static real Dot(const Quaternion& lhs, const Quaternion& rhs);
     static real Length(const Quaternion& quat);
