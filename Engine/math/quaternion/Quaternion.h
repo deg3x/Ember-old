@@ -18,6 +18,7 @@ struct ENGINE_API Quaternion
     Quaternion(const Vector3& axis, real angle);
     Quaternion(const Matrix4x4& matrix);
 
+    Quaternion Inverse() const;
     Quaternion& Normalize();
     Quaternion& Renormalize();
     Vector3 RotateVector(const Vector3& vector) const;
@@ -79,7 +80,7 @@ inline Quaternion operator/(const Quaternion& lhs, const Quaternion& rhs)
 
 inline Vector3 operator*(const Quaternion& lhs, const Vector3& rhs)
 {
-    const Vector3 ret = Vector3(lhs * Quaternion(rhs) * Quaternion::Inverse(lhs));
+    const Vector3 ret = Vector3(lhs * Quaternion(rhs) * lhs.Inverse());
 
     return ret;
 }

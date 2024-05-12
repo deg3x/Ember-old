@@ -29,6 +29,11 @@ Quaternion::Quaternion(const Matrix4x4& matrix)
     
 }
 
+Quaternion Quaternion::Inverse() const
+{
+    return Conjugate(*this) / LengthSqr(*this);
+}
+
 Quaternion& Quaternion::Normalize()
 {
     const real length = Length(*this);
