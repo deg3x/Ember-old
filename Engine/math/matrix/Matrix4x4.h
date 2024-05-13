@@ -24,6 +24,7 @@ public:
 
     static Matrix4x4 CreateTranslation(const Vector3& translation);
     static Matrix4x4 CreateScale(const Vector3& scale);
+    static Matrix4x4 CreateRotationAxisAngle(const Vector3& axis, real angle);
     static Matrix4x4 CreateRotationEuler(const Vector3& angles);
     static Matrix4x4 CreateRotationEulerX(real angle);
     static Matrix4x4 CreateRotationEulerY(real angle);

@@ -195,6 +195,11 @@ Matrix4x4 Matrix4x4::CreateScale(const Vector3& scale)
     return ret;
 }
 
+Matrix4x4 Matrix4x4::CreateRotationAxisAngle(const Vector3& axis, float angle)
+{
+    return Matrix4x4();
+}
+
 Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
 {
     const Matrix4x4 ret = CreateRotationEulerZ(angles[2]) * CreateRotationEulerY(angles[1]) * CreateRotationEulerX(angles[0]);
