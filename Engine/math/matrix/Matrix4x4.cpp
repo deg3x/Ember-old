@@ -195,9 +195,30 @@ Matrix4x4 Matrix4x4::CreateScale(const Vector3& scale)
     return ret;
 }
 
-Matrix4x4 Matrix4x4::CreateRotationAxisAngle(const Vector3& axis, float angle)
+Matrix4x4 Matrix4x4::CreateRotationAxisAngle(const Vector3& axis, real angle)
 {
-    return Matrix4x4();
+    const real cos = Cos(angle);
+    const real sin = Sin(angle);
+    const real xSin = axis.x * sin;
+    const real ySin = axis.y * sin;
+    const real zSin = axis.z * sin;
+    const real oneMinusCos = static_cast<real>(1.0) - cos;
+
+    Matrix4x4 ret;
+
+    ret[0][0] = axis.x * axis.x * oneMinusCos + cos;
+    ret[0][1] = axis.x * axis.y * oneMinusCos + zSin;
+    ret[0][2] = axis.x * axis.z * oneMinusCos - ySin;
+
+    ret[1][0] = axis.x * axis.y * oneMinusCos - zSin;
+    ret[1][1] = axis.y * axis.y * oneMinusCos + cos;
+    ret[1][2] = axis.y * axis.z * oneMinusCos + xSin;
+    
+    ret[2][0] = axis.x * axis.z * oneMinusCos + ySin;
+    ret[2][1] = axis.y * axis.z * oneMinusCos - xSin;
+    ret[2][2] = axis.z * axis.z * oneMinusCos + cos;
+    
+    return ret;
 }
 
 Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
