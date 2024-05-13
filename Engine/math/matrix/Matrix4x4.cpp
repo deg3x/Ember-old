@@ -221,9 +221,29 @@ Matrix4x4 Matrix4x4::CreateRotationAxisAngle(const Vector3& axis, real angle)
     return ret;
 }
 
+// Rotates around X -> Y -> Z in this order
 Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
 {
-    const Matrix4x4 ret = CreateRotationEulerZ(angles[2]) * CreateRotationEulerY(angles[1]) * CreateRotationEulerX(angles[0]);
+    const real cosX = Cos(angles[0]);
+    const real cosY = Cos(angles[1]);
+    const real cosZ = Cos(angles[2]);
+    const real sinX = Sin(angles[0]);
+    const real sinY = Sin(angles[1]);
+    const real sinZ = Sin(angles[2]);
+
+    Matrix4x4 ret;
+
+    ret[0][0] =  cosY * cosZ;
+    ret[0][1] = -sinZ * cosY;
+    ret[0][2] =  sinY;
+    
+    ret[1][0] =  sinY * sinX * cosZ + cosX * sinZ;
+    ret[1][1] = -sinY * sinX * sinZ + cosX * cosZ;
+    ret[1][2] = -cosY * sinX;
+
+    ret[2][0] = -sinY * cosX * cosZ + sinX * sinZ;
+    ret[2][1] =  sinY * cosX * sinZ + sinX * cosZ;
+    ret[2][2] =  cosY * cosX;
 
     return ret;
 }
