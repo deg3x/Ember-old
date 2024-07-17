@@ -1,6 +1,7 @@
 #include "engine_pch.h"
 #include "Quaternion.h"
 
+#include "logger/Logger.h"
 #include "math/Math.h"
 #include "math/matrix/Matrix4x4.h"
 
@@ -26,21 +27,62 @@ Quaternion::Quaternion(const Vector3& axis, float angle)
 
 Quaternion::Quaternion(const Matrix4x4& matrix)
 {
-    const real trace = matrix[0][0] + matrix[1][1] + matrix[2][2] + matrix[3][3];
-    
-    if (ApproxZero(trace))
+    const real fourWSqr =   matrix[0][0] + matrix[1][1] + matrix[2][2] + matrix[3][3];
+    const real fourXSqr =   matrix[0][0] - matrix[1][1] - matrix[2][2] + matrix[3][3];
+    const real fourYSqr = - matrix[0][0] + matrix[1][1] - matrix[2][2] + matrix[3][3];
+    const real fourZSqr = - matrix[0][0] - matrix[1][1] + matrix[2][2] + matrix[3][3];
+
+    real maxComp   = fourWSqr;
+    uint8_t maxIdx = 0;
+
+    if (fourXSqr > maxComp)
     {
-        // TODO: Handle this case
-        return;
+        maxComp = fourXSqr;
+        maxIdx  = 1;
+    }
+    if (fourYSqr > maxComp)
+    {
+        maxComp = fourYSqr;
+        maxIdx  = 2;
+    }
+    if (fourZSqr > maxComp)
+    {
+        maxComp = fourZSqr;
+        maxIdx  = 3;
     }
 
-    const real traceSqrt = Sqrt(trace);
-    const real invDoubleTraceSqrt = static_cast<real>(1.0) / (static_cast<real>(2.0) * traceSqrt);
-    
-    w = static_cast<real>(0.5) * Sqrt(trace);
-    x = (matrix[1][2] - matrix[2][1]) * invDoubleTraceSqrt;
-    y = (matrix[2][0] - matrix[0][2]) * invDoubleTraceSqrt;
-    z = (matrix[0][1] - matrix[1][0]) * invDoubleTraceSqrt;
+    const real maxSqrt = Sqrt(maxComp);
+    const real invTwoMaxSqrt = static_cast<real>(1.0) / static_cast<real>(2.0) * maxSqrt;
+
+    switch (maxIdx)
+    {
+    case 0:
+        w = static_cast<real>(0.5) * maxSqrt;
+        x = (matrix[1][2] - matrix[2][1]) * invTwoMaxSqrt;
+        y = (matrix[2][0] - matrix[0][2]) * invTwoMaxSqrt;
+        z = (matrix[0][1] - matrix[1][0]) * invTwoMaxSqrt;
+        return;
+    case 1:
+        w = (matrix[1][2] - matrix[2][1]) * invTwoMaxSqrt;
+        x = static_cast<real>(0.5) * maxSqrt;
+        y = (matrix[0][1] + matrix[1][0]) * invTwoMaxSqrt;
+        z = (matrix[0][2] + matrix[2][0]) * invTwoMaxSqrt;
+        return;
+    case 2:
+        w = (matrix[2][0] - matrix[0][2]) * invTwoMaxSqrt;
+        x = (matrix[0][1] + matrix[1][0]) * invTwoMaxSqrt;
+        y = static_cast<real>(0.5) * maxSqrt;
+        z = (matrix[1][2] + matrix[2][1]) * invTwoMaxSqrt;
+        return;
+    case 3:
+        w = (matrix[0][1] - matrix[1][0]) * invTwoMaxSqrt;
+        x = (matrix[0][2] + matrix[2][0]) * invTwoMaxSqrt;
+        y = (matrix[1][2] + matrix[2][1]) * invTwoMaxSqrt;
+        z = static_cast<real>(0.5) * maxSqrt;
+        return;
+    default:
+        Logger::Log(LogCategory::ERROR, "Unexpected index in matrix to quaternion conversion", "Quaternion(const Matrix4x4&)");
+    }
 }
 
 Quaternion Quaternion::Inverse() const
