@@ -26,7 +26,21 @@ Quaternion::Quaternion(const Vector3& axis, float angle)
 
 Quaternion::Quaternion(const Matrix4x4& matrix)
 {
+    const real trace = matrix[0][0] + matrix[1][1] + matrix[2][2] + matrix[3][3];
     
+    if (ApproxZero(trace))
+    {
+        // TODO: Handle this case
+        return;
+    }
+
+    const real traceSqrt = Sqrt(trace);
+    const real invDoubleTraceSqrt = static_cast<real>(1.0) / (static_cast<real>(2.0) * traceSqrt);
+    
+    w = static_cast<real>(0.5) * Sqrt(trace);
+    x = (matrix[1][2] - matrix[2][1]) * invDoubleTraceSqrt;
+    y = (matrix[2][0] - matrix[0][2]) * invDoubleTraceSqrt;
+    z = (matrix[0][1] - matrix[1][0]) * invDoubleTraceSqrt;
 }
 
 Quaternion Quaternion::Inverse() const
