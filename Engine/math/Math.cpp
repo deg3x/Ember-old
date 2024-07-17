@@ -39,5 +39,5 @@ real Acos(real value)
 
 bool ApproxZero(real value)
 {
-    return (value > -FLOAT_MIN && value < FLOAT_MIN);
+    return (value > -REAL_MIN && value < REAL_MIN);
 }

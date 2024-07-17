@@ -1,6 +1,12 @@
 #pragma once
 
-#define real float
+//#define DOUBLE_PRECISION
+
+#ifdef DOUBLE_PRECISION
+    #define real double
+#else
+    #define real float
+#endif
 
 #if defined(_WIN32)
     #if defined(_MSC_VER)
