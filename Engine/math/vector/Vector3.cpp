@@ -11,6 +11,16 @@ Vector3::Vector3(const Quaternion& quat)
     z = quat.z;
 }
 
+float Vector3::Length()
+{
+    return Sqrt(x * x + y * y + z * z);
+}
+
+float Vector3::LengthSqr()
+{
+    return x * x + y * y + z * z;
+}
+
 Vector3& Vector3::Normalize()
 {
     const real invLength = static_cast<real>(1.0) / Length(*this);
@@ -34,7 +44,7 @@ real Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 
 real Vector3::Length(const Vector3& vector)
 {
-    return Sqrt(LengthSqr(vector));
+    return Sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
 }
 
 real Vector3::LengthSqr(const Vector3& vector)
