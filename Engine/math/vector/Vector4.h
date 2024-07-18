@@ -12,6 +12,8 @@ struct ENGINE_API Vector4
     Vector4() : x(0.0), y(0.0), z(0.0), w(0.0) {}
     Vector4(real x, real y, real z, real w) : x(x), y(y), z(z), w(w) {}
 
+    real Length() const;
+    real LengthSqr() const;
     Vector4& Normalize();
 
     static real Dot(const Vector4& lhs, const Vector4& rhs);

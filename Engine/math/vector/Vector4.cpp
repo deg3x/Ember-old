@@ -3,6 +3,16 @@
 
 #include "math/Math.h"
 
+real Vector4::Length() const
+{
+    return Sqrt(x * x + y * y + z * z + w * w);
+}
+
+real Vector4::LengthSqr() const
+{
+    return x * x + y * y + z * z + w * w;
+}
+
 Vector4& Vector4::Normalize()
 {
     const real invLength = static_cast<real>(1.0) / Length(*this);
@@ -19,7 +29,7 @@ real Vector4::Dot(const Vector4& lhs, const Vector4& rhs)
 
 real Vector4::Length(const Vector4& vector)
 {
-    return Sqrt(LengthSqr(vector));
+    return Sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z + vector.w * vector.w);
 }
 
 real Vector4::LengthSqr(const Vector4& vector)

@@ -11,12 +11,12 @@ Vector3::Vector3(const Quaternion& quat)
     z = quat.z;
 }
 
-float Vector3::Length()
+real Vector3::Length() const
 {
     return Sqrt(x * x + y * y + z * z);
 }
 
-float Vector3::LengthSqr()
+real Vector3::LengthSqr() const
 {
     return x * x + y * y + z * z;
 }

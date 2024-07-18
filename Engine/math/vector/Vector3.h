@@ -14,8 +14,8 @@ struct ENGINE_API Vector3
     Vector3(real x, real y, real z) : x(x), y(y), z(z) {}
     explicit Vector3(const Quaternion& quat);
 
-    real Length();
-    real LengthSqr();
+    real Length() const;
+    real LengthSqr() const;
     Vector3& Normalize();
     Vector3 Rotate(const Vector3& axis, real angle) const;
 
