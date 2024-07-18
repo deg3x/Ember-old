@@ -119,6 +119,10 @@ Vector3 Quaternion::RotateVector(const Vector3& vector) const
     return Vector3(*this * Quaternion(vector) * Inverse(*this));
 }
 
+Vector3 Quaternion::ToEuler() const
+{
+}
+
 real Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
 {
     return lhs.w * rhs.w + lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
@@ -161,6 +165,14 @@ Quaternion Quaternion::Conjugate(const Quaternion& quat)
     ret.z = -quat.z;
 
     return ret;
+}
+
+Vector3 Quaternion::ToEuler(const Quaternion& quat)
+{
+}
+
+Quaternion Quaternion::FromEuler(float pitch, float yaw, float roll)
+{
 }
 
 Quaternion& Quaternion::operator+=(const Quaternion& rhs)
