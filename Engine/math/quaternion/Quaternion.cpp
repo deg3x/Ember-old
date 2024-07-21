@@ -184,10 +184,10 @@ Quaternion Quaternion::FromEuler(real pitch, real yaw, real roll)
     const real sinR = Sin(roll * static_cast<real>(0.5));
     
     const Quaternion ret = {
-        cosP * cosY * cosR - sinP * sinY * sinR,
-        cosY * cosR * sinP + cosP * sinY * sinR,
-        cosP * cosR * sinY - cosY * sinP * sinR,
-        cosR * sinP * sinY + cosP * cosY * sinR,
+        cosP * cosY * cosR + sinP * sinY * sinR,
+        sinP * cosY * cosR - cosP * sinY * sinR,
+        cosP * sinY * cosR + sinP * cosY * sinR,
+        cosP * cosY * sinR - sinP * sinY * cosR,
     };
     
     return ret;
