@@ -5,6 +5,9 @@
 
 struct Matrix4x4;
 
+// NOTE: Some of the member functions work under the assumption
+// that the quaternions are already normalized (for simplicity and efficiency).
+// We shouldn't really be working with non-normalized quaternions anyway.
 struct ENGINE_API Quaternion
 {
     real w;
