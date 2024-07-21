@@ -13,7 +13,7 @@ Quaternion::Quaternion(const Vector3& vector)
     z = vector.z;
 }
 
-Quaternion::Quaternion(const Vector3& axis, float angle)
+Quaternion::Quaternion(const Vector3& axis, real angle)
 {
     const real halfAngle    = angle * 0.5f;
     const real halfAngleCos = Cos(halfAngle);
@@ -173,9 +173,24 @@ Vector3 Quaternion::ToEuler(const Quaternion& quat)
     return {0, 0, 0};
 }
 
-Quaternion Quaternion::FromEuler(float pitch, float yaw, float roll)
+Quaternion Quaternion::FromEuler(real pitch, real yaw, real roll)
 {
-    return {0, 0, 0, 0};
+    // We rotate in X -> Y -> Z by pitch, yaw, roll angles (in radians) respectively
+    const real cosP = Cos(pitch * static_cast<real>(0.5));
+    const real cosY = Cos(yaw * static_cast<real>(0.5));
+    const real cosR = Cos(roll * static_cast<real>(0.5));
+    const real sinP = Sin(pitch * static_cast<real>(0.5));
+    const real sinY = Sin(yaw * static_cast<real>(0.5));
+    const real sinR = Sin(roll * static_cast<real>(0.5));
+    
+    const Quaternion ret = {
+        cosP * cosY * cosR - sinP * sinY * sinR,
+        cosY * cosR * sinP + cosP * sinY * sinR,
+        cosP * cosR * sinY - cosY * sinP * sinR,
+        cosR * sinP * sinY + cosP * cosY * sinR,
+    };
+    
+    return ret;
 }
 
 Quaternion& Quaternion::operator+=(const Quaternion& rhs)
