@@ -17,10 +17,8 @@ struct MouseData
 {
     double posX;
     double posY;
-    double leftMouseDragDeltaX;
-    double leftMouseDragDeltaY;
-    double rightMouseDragDeltaX;
-    double rightMouseDragDeltaY;
+    double mouseDeltaX;
+    double mouseDeltaY;
     double mouseScrollDeltaX;
     double mouseScrollDeltaY;
     double mouseScrollDeltaXSmooth;

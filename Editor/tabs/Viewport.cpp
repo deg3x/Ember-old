@@ -237,8 +237,8 @@ void Viewport::CameraFreeMove()
     cameraFocus += offset;
     cameraTransform->Translate(offset);
 
-    const float angleYaw     = static_cast<float>(mouse.rightMouseDragDeltaX) * rotSpeed * -1.0f;
-    const float anglePitch   = static_cast<float>(mouse.rightMouseDragDeltaY) * rotSpeed;
+    const float angleYaw     = static_cast<float>(mouse.mouseDeltaX) * rotSpeed * -1.0f;
+    const float anglePitch   = static_cast<float>(mouse.mouseDeltaY) * rotSpeed;
     const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
     const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
     const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
@@ -270,8 +270,8 @@ void Viewport::CameraOrbit() const
     const MouseData mouse = Input::Mouse;
     const float rotSpeed  = mouse.sensitivity * Time::DeltaTime * CameraOrbitSpeed;
     
-    const float angleYaw     = static_cast<float>(mouse.leftMouseDragDeltaX) * rotSpeed * -1.0f;
-    const float anglePitch   = static_cast<float>(mouse.leftMouseDragDeltaY) * rotSpeed;
+    const float angleYaw     = static_cast<float>(mouse.mouseDeltaX) * rotSpeed * -1.0f;
+    const float anglePitch   = static_cast<float>(mouse.mouseDeltaY) * rotSpeed;
     const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
     const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
     const float cosHalfPitch = glm::cos(anglePitch * 0.5f);

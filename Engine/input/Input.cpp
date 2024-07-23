@@ -103,10 +103,8 @@ void Input::UpdateMouseData()
     glm::dvec2 mousePos;
     glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
 
-    Mouse.leftMouseDragDeltaX  = mousePos.x - Mouse.posX;
-    Mouse.leftMouseDragDeltaY  = mousePos.y - Mouse.posY;
-    Mouse.rightMouseDragDeltaX = mousePos.x - Mouse.posX;
-    Mouse.rightMouseDragDeltaY = mousePos.y - Mouse.posY;
+    Mouse.mouseDeltaX  = mousePos.x - Mouse.posX;
+    Mouse.mouseDeltaY  = mousePos.y - Mouse.posY;
     
     Mouse.posX = mousePos.x;
     Mouse.posY = mousePos.y;
