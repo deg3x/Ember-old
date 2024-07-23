@@ -17,14 +17,14 @@ struct MouseData
 {
     double posX;
     double posY;
-    double mouseDeltaX;
-    double mouseDeltaY;
-    double mouseScrollDeltaX;
-    double mouseScrollDeltaY;
-    double mouseScrollDeltaXSmooth;
-    double mouseScrollDeltaYSmooth;
-    double lastMouseScrollDeltaX;
-    double lastMouseScrollDeltaY;
+    double posDeltaX;
+    double posDeltaY;
+    double scrollDeltaX;
+    double scrollDeltaY;
+    double scrollDeltaXSmooth;
+    double scrollDeltaYSmooth;
+    double scrollDeltaLastX;
+    double scrollDeltaLastY;
     float sensitivity;
     float sensitivityScroll;
     bool leftButtonPressed;

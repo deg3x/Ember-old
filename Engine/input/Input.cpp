@@ -103,8 +103,8 @@ void Input::UpdateMouseData()
     glm::dvec2 mousePos;
     glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
 
-    Mouse.mouseDeltaX  = mousePos.x - Mouse.posX;
-    Mouse.mouseDeltaY  = mousePos.y - Mouse.posY;
+    Mouse.posDeltaX  = mousePos.x - Mouse.posX;
+    Mouse.posDeltaY  = mousePos.y - Mouse.posY;
     
     Mouse.posX = mousePos.x;
     Mouse.posY = mousePos.y;
@@ -113,20 +113,20 @@ void Input::UpdateMouseData()
     float smoothing = glm::clamp(currentScrollResetTimer / scrollResetTimer, 0.0f, 1.0f);
     smoothing *= smoothing;
     
-    Mouse.mouseScrollDeltaX       = 0.0f;
-    Mouse.mouseScrollDeltaY       = 0.0f;
-    Mouse.mouseScrollDeltaXSmooth = smoothing * Mouse.lastMouseScrollDeltaX;
-    Mouse.mouseScrollDeltaYSmooth = smoothing * Mouse.lastMouseScrollDeltaY;
+    Mouse.scrollDeltaX       = 0.0f;
+    Mouse.scrollDeltaY       = 0.0f;
+    Mouse.scrollDeltaXSmooth = smoothing * Mouse.scrollDeltaLastX;
+    Mouse.scrollDeltaYSmooth = smoothing * Mouse.scrollDeltaLastY;
 }
 
 void Input::ScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 {
-    Mouse.mouseScrollDeltaX       = xOffset;
-    Mouse.mouseScrollDeltaY       = yOffset;
-    Mouse.mouseScrollDeltaXSmooth = xOffset;
-    Mouse.mouseScrollDeltaYSmooth = yOffset;
-    Mouse.lastMouseScrollDeltaX   = xOffset;
-    Mouse.lastMouseScrollDeltaY   = yOffset;
+    Mouse.scrollDeltaX       = xOffset;
+    Mouse.scrollDeltaY       = yOffset;
+    Mouse.scrollDeltaXSmooth = xOffset;
+    Mouse.scrollDeltaYSmooth = yOffset;
+    Mouse.scrollDeltaLastX   = xOffset;
+    Mouse.scrollDeltaLastY   = yOffset;
 
     currentScrollResetTimer = scrollResetTimer;
 }

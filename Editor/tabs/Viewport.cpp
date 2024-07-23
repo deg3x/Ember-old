@@ -202,7 +202,7 @@ void Viewport::CameraFreeMove()
     glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
 
     const float moveSpeedStep  = mouse.sensitivityScroll * Time::DeltaTime * CameraFreeSpeedMod;
-    const float moveSpeedDelta = static_cast<float>(mouse.mouseScrollDeltaYSmooth) * moveSpeedStep;
+    const float moveSpeedDelta = static_cast<float>(mouse.scrollDeltaYSmooth) * moveSpeedStep;
 
     if (moveSpeedDelta > FLT_EPSILON || moveSpeedDelta < -FLT_EPSILON)
     {
@@ -237,8 +237,8 @@ void Viewport::CameraFreeMove()
     cameraFocus += offset;
     cameraTransform->Translate(offset);
 
-    const float angleYaw     = static_cast<float>(mouse.mouseDeltaX) * rotSpeed * -1.0f;
-    const float anglePitch   = static_cast<float>(mouse.mouseDeltaY) * rotSpeed;
+    const float angleYaw     = static_cast<float>(mouse.posDeltaX) * rotSpeed * -1.0f;
+    const float anglePitch   = static_cast<float>(mouse.posDeltaY) * rotSpeed;
     const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
     const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
     const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
@@ -270,8 +270,8 @@ void Viewport::CameraOrbit() const
     const MouseData mouse = Input::Mouse;
     const float rotSpeed  = mouse.sensitivity * Time::DeltaTime * CameraOrbitSpeed;
     
-    const float angleYaw     = static_cast<float>(mouse.mouseDeltaX) * rotSpeed * -1.0f;
-    const float anglePitch   = static_cast<float>(mouse.mouseDeltaY) * rotSpeed;
+    const float angleYaw     = static_cast<float>(mouse.posDeltaX) * rotSpeed * -1.0f;
+    const float anglePitch   = static_cast<float>(mouse.posDeltaY) * rotSpeed;
     const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
     const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
     const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
@@ -319,7 +319,7 @@ void Viewport::CameraZoom() const
     const float speedDistanceMult  = speedDistMultDelta * maxDistanceMult + (1.0f - speedDistMultDelta) * minDistanceMult;
         
     const float zoomSpeed         = mouse.sensitivityScroll * Time::DeltaTime * CameraZoomSpeed * speedDistanceMult;
-    const float distanceDelta     = static_cast<float>(mouse.mouseScrollDeltaYSmooth) * zoomSpeed * -1.0f;
+    const float distanceDelta     = static_cast<float>(mouse.scrollDeltaYSmooth) * zoomSpeed * -1.0f;
     const glm::vec3 zoomDirection = glm::normalize(newPosition);
     
     const bool applyDistance = glm::length(newPosition + zoomDirection * distanceDelta) > minZoomDistance;
