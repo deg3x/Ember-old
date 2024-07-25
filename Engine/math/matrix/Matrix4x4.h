@@ -21,6 +21,7 @@ public:
     real Determinant() const;
     Matrix4x4 Inverse() const;
     Matrix4x4 Transpose() const;
+    Vector3 ToEuler() const;
 
     static Matrix4x4 CreateTranslation(const Vector3& translation);
     static Matrix4x4 CreateScale(const Vector3& scale);
@@ -29,6 +30,7 @@ public:
     static Matrix4x4 CreateRotationEulerX(real angle);
     static Matrix4x4 CreateRotationEulerY(real angle);
     static Matrix4x4 CreateRotationEulerZ(real angle);
+    static Vector3 ToEuler(const Matrix4x4& matrix);
 
     Matrix4x4& operator+=(const Matrix4x4& rhs);
     Matrix4x4& operator-=(const Matrix4x4& rhs);

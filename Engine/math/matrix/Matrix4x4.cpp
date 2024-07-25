@@ -173,6 +173,15 @@ Matrix4x4 Matrix4x4::Transpose() const
     return transpose;
 }
 
+Vector3 Matrix4x4::ToEuler() const
+{
+    const real pitch = -Atan2(m[1][2], m[2][2]);
+    const real yaw   =  Asin(m[0][2]);
+    const real roll  = -Atan2(m[0][0], m[0][1]);
+
+    return { pitch, yaw, roll };
+}
+
 Matrix4x4 Matrix4x4::CreateTranslation(const Vector3& translation)
 {
     Matrix4x4 ret = Matrix4x4();
@@ -291,6 +300,15 @@ Matrix4x4 Matrix4x4::CreateRotationEulerZ(real angle)
     ret[1][1] =  angleCos;
     
     return ret;
+}
+
+Vector3 Matrix4x4::ToEuler(const Matrix4x4& matrix)
+{
+    const real pitch = -Atan2(matrix.m[1][2], matrix.m[2][2]);
+    const real yaw   =  Asin(matrix.m[0][2]);
+    const real roll  = -Atan2(matrix.m[0][0], matrix.m[0][1]);
+
+    return { pitch, yaw, roll };
 }
 
 Matrix4x4& Matrix4x4::operator+=(const Matrix4x4& rhs)
