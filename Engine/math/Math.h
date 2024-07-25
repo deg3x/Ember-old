@@ -25,7 +25,12 @@ real ENGINE_API FastInvSqrtApproxOne(real value);
 
 real ENGINE_API Sin(real value);
 real ENGINE_API Cos(real value);
+real ENGINE_API Tan(real value);
 real ENGINE_API Asin(real value);
 real ENGINE_API Acos(real value);
+real ENGINE_API Atan(real value);
+real ENGINE_API Atan2(real sinAngle, real cosAngle);
+
+
 
 bool ENGINE_API ApproxZero(real value);

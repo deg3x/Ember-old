@@ -27,6 +27,12 @@ real Cos(real value)
     return glm::cos(value);
 }
 
+
+inline float Tan(float value)
+{
+    return glm::tan(value);
+}
+
 real Asin(real value)
 {
     return glm::asin(value);
@@ -35,6 +41,16 @@ real Asin(real value)
 real Acos(real value)
 {
     return glm::acos(value);
+}
+
+inline float Atan(float value)
+{
+    return glm::atan(value);
+}
+
+inline float Atan2(float sinAngle, float cosAngle)
+{
+    return glm::atan(sinAngle, cosAngle);
 }
 
 bool ApproxZero(real value)
