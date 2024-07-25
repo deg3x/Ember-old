@@ -2,7 +2,7 @@
 
 #include "Definitions.h"
 
-#ifdef DOUBLE_PRECISION
+#ifdef EMBER_DOUBLE_PRECISION
     constexpr real PI       = 3.1415926535897932384626433832795;
     constexpr real TWO_PI   = 2.0 * PI;
     constexpr real HALF_PI  = 0.5 * PI;
