@@ -2,7 +2,7 @@
 
 //#define DOUBLE_PRECISION
 
-#ifdef DOUBLE_PRECISION
+#ifdef EMBER_DOUBLE_PRECISION
     #define real double
 #else
     #define real float
