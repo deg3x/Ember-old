@@ -34,6 +34,8 @@ struct ENGINE_API Quaternion
     static Quaternion Normalize(const Quaternion& quat);
     static Quaternion Renormalize(const Quaternion& quat);
     static Quaternion Conjugate(const Quaternion& quat);
+    
+    static Quaternion FromEuler(const Vector3& angles);
     static Quaternion FromEuler(real pitch, real yaw, real roll);
     
     Quaternion& operator+=(const Quaternion& rhs);

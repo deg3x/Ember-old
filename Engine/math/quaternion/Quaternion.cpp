@@ -180,6 +180,11 @@ Quaternion Quaternion::Conjugate(const Quaternion& quat)
     return ret;
 }
 
+Quaternion Quaternion::FromEuler(const Vector3& angles)
+{
+    return FromEuler(angles.x, angles.y, angles.z);
+}
+
 Quaternion Quaternion::FromEuler(real pitch, real yaw, real roll)
 {
     // We rotate in X -> Y -> Z by pitch, yaw, roll angles (in radians) respectively

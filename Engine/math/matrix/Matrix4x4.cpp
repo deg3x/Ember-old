@@ -236,15 +236,20 @@ Matrix4x4 Matrix4x4::CreateRotation(const Vector3& axis, real angle)
     return ret;
 }
 
-// Rotates around X -> Y -> Z in this order
 Matrix4x4 Matrix4x4::FromEuler(const Vector3& angles)
 {
-    const real cosX = Cos(angles[0]);
-    const real cosY = Cos(angles[1]);
-    const real cosZ = Cos(angles[2]);
-    const real sinX = Sin(angles[0]);
-    const real sinY = Sin(angles[1]);
-    const real sinZ = Sin(angles[2]);
+    return FromEuler(angles.x, angles.y, angles.z);
+}
+
+// Rotates around X -> Y -> Z in this order
+Matrix4x4 Matrix4x4::FromEuler(real pitch, real yaw, real roll)
+{
+    const real cosX = Cos(pitch);
+    const real cosY = Cos(yaw);
+    const real cosZ = Cos(roll);
+    const real sinX = Sin(pitch);
+    const real sinY = Sin(yaw);
+    const real sinZ = Sin(roll);
 
     Matrix4x4 ret;
 

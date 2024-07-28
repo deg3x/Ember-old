@@ -26,7 +26,9 @@ public:
     static Matrix4x4 CreateTranslation(const Vector3& translation);
     static Matrix4x4 CreateScale(const Vector3& scale);
     static Matrix4x4 CreateRotation(const Vector3& axis, real angle);
+    
     static Matrix4x4 FromEuler(const Vector3& angles);
+    static Matrix4x4 FromEuler(real pitch, real yaw, real roll);
     static Matrix4x4 FromEulerX(real pitch);
     static Matrix4x4 FromEulerY(real yaw);
     static Matrix4x4 FromEulerZ(real roll);
