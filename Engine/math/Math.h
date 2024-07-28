@@ -22,15 +22,18 @@
     constexpr real EPSILON  = 1.192092896e-07f;
 #endif
 
+real ENGINE_API Abs(real value);
+real ENGINE_API Sign(real value);
 real ENGINE_API Sqrt(real value);
 real ENGINE_API FastInvSqrtApproxOne(real value);
 
-real ENGINE_API Sin(real value);
-real ENGINE_API Cos(real value);
-real ENGINE_API Tan(real value);
-real ENGINE_API Asin(real value);
-real ENGINE_API Acos(real value);
-real ENGINE_API Atan(real value);
+real ENGINE_API Sin(real angle);
+real ENGINE_API Cos(real angle);
+real ENGINE_API Tan(real angle);
+real ENGINE_API Asin(real sinAngle);
+real ENGINE_API Acos(real cosAngle);
+real ENGINE_API Atan(real tanAngle);
 real ENGINE_API Atan2(real sinAngle, real cosAngle);
 
 bool ENGINE_API ApproxZero(real value);
+bool ENGINE_API ApproxEqual(real valueA, real valueB, real error = EPSILON);

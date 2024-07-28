@@ -121,7 +121,19 @@ Vector3 Quaternion::RotateVector(const Vector3& vector) const
 
 Vector3 Quaternion::ToEuler() const
 {
-    return {0, 0, 0};
+    // Check if pitch is +/- 90 degrees, in which case we require special handling.
+    const real pitchTest = w * x + y * z;
+
+    if (ApproxEqual(Abs(pitchTest), 0.5))
+    {
+        return { HALF_PI, Sign(pitchTest) * Atan2(y, x), 0.0 };
+    }
+    
+    real pitch = Atan2(static_cast<real>(2.0) * (w * x + y * z), static_cast<real>(1.0) - static_cast<real>(2.0) * (x * x + y * y));
+    real yaw   = -Asin(static_cast<real>(2.0) * (x * z - w * y));
+    real roll  = Atan2(static_cast<real>(2.0) * (w * z + x * y), static_cast<real>(1.0) - static_cast<real>(2.0) * (y * y + z * z));
+
+    return { pitch, yaw, roll };
 }
 
 real Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
