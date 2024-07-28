@@ -25,12 +25,11 @@ public:
 
     static Matrix4x4 CreateTranslation(const Vector3& translation);
     static Matrix4x4 CreateScale(const Vector3& scale);
-    static Matrix4x4 CreateRotationAxisAngle(const Vector3& axis, real angle);
-    static Matrix4x4 CreateRotationEuler(const Vector3& angles);
-    static Matrix4x4 CreateRotationEulerX(real angle);
-    static Matrix4x4 CreateRotationEulerY(real angle);
-    static Matrix4x4 CreateRotationEulerZ(real angle);
-    static Vector3 ToEuler(const Matrix4x4& matrix);
+    static Matrix4x4 CreateRotation(const Vector3& axis, real angle);
+    static Matrix4x4 FromEuler(const Vector3& angles);
+    static Matrix4x4 FromEulerX(real pitch);
+    static Matrix4x4 FromEulerY(real yaw);
+    static Matrix4x4 FromEulerZ(real roll);
 
     Matrix4x4& operator+=(const Matrix4x4& rhs);
     Matrix4x4& operator-=(const Matrix4x4& rhs);

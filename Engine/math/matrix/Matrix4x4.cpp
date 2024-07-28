@@ -210,7 +210,7 @@ Matrix4x4 Matrix4x4::CreateScale(const Vector3& scale)
     return ret;
 }
 
-Matrix4x4 Matrix4x4::CreateRotationAxisAngle(const Vector3& axis, real angle)
+Matrix4x4 Matrix4x4::CreateRotation(const Vector3& axis, real angle)
 {
     const real cos = Cos(angle);
     const real sin = Sin(angle);
@@ -237,7 +237,7 @@ Matrix4x4 Matrix4x4::CreateRotationAxisAngle(const Vector3& axis, real angle)
 }
 
 // Rotates around X -> Y -> Z in this order
-Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
+Matrix4x4 Matrix4x4::FromEuler(const Vector3& angles)
 {
     const real cosX = Cos(angles[0]);
     const real cosY = Cos(angles[1]);
@@ -263,12 +263,12 @@ Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
     return ret;
 }
 
-Matrix4x4 Matrix4x4::CreateRotationEulerX(real angle)
+Matrix4x4 Matrix4x4::FromEulerX(real pitch)
 {
     Matrix4x4 ret = Matrix4x4();
 
-    const real angleCos = Cos(angle);
-    const real angleSin = Sin(angle);
+    const real angleCos = Cos(pitch);
+    const real angleSin = Sin(pitch);
 
     ret[1][1] =  angleCos;
     ret[1][2] =  angleSin;
@@ -278,12 +278,12 @@ Matrix4x4 Matrix4x4::CreateRotationEulerX(real angle)
     return ret;
 }
 
-Matrix4x4 Matrix4x4::CreateRotationEulerY(real angle)
+Matrix4x4 Matrix4x4::FromEulerY(real yaw)
 {
     Matrix4x4 ret = Matrix4x4();
 
-    const real angleCos = Cos(angle);
-    const real angleSin = Sin(angle);
+    const real angleCos = Cos(yaw);
+    const real angleSin = Sin(yaw);
 
     ret[0][0] =  angleCos;
     ret[0][2] = -angleSin;
@@ -293,12 +293,12 @@ Matrix4x4 Matrix4x4::CreateRotationEulerY(real angle)
     return ret;
 }
 
-Matrix4x4 Matrix4x4::CreateRotationEulerZ(real angle)
+Matrix4x4 Matrix4x4::FromEulerZ(real roll)
 {
     Matrix4x4 ret = Matrix4x4();
 
-    const real angleCos = Cos(angle);
-    const real angleSin = Sin(angle);
+    const real angleCos = Cos(roll);
+    const real angleSin = Sin(roll);
 
     ret[0][0] =  angleCos;
     ret[0][1] =  angleSin;
@@ -306,15 +306,6 @@ Matrix4x4 Matrix4x4::CreateRotationEulerZ(real angle)
     ret[1][1] =  angleCos;
     
     return ret;
-}
-
-Vector3 Matrix4x4::ToEuler(const Matrix4x4& matrix)
-{
-    const real pitch = -Atan2(matrix.m[1][2], matrix.m[2][2]);
-    const real yaw   =  Asin(matrix.m[0][2]);
-    const real roll  = -Atan2(matrix.m[0][0], matrix.m[0][1]);
-
-    return { pitch, yaw, roll };
 }
 
 Matrix4x4& Matrix4x4::operator+=(const Matrix4x4& rhs)

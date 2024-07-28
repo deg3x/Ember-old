@@ -180,11 +180,6 @@ Quaternion Quaternion::Conjugate(const Quaternion& quat)
     return ret;
 }
 
-Vector3 Quaternion::ToEuler(const Quaternion& quat)
-{
-    return {0, 0, 0};
-}
-
 Quaternion Quaternion::FromEuler(real pitch, real yaw, real roll)
 {
     // We rotate in X -> Y -> Z by pitch, yaw, roll angles (in radians) respectively
