@@ -177,7 +177,7 @@ Vector3 Matrix4x4::ToEuler() const
 {
     const real pitch = -Atan2(m[1][2], m[2][2]);
     const real yaw   =  Asin(m[0][2]);
-    const real roll  = -Atan2(m[0][0], m[0][1]);
+    const real roll  = -Atan2(m[0][1], m[0][0]);
 
     return { pitch, yaw, roll };
 }
