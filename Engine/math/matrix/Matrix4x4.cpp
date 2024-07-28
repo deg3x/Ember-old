@@ -29,12 +29,18 @@ Matrix4x4::Matrix4x4(const Quaternion& quat)
     m[0][0] = static_cast<real>(2.0) * (ww + xx) - static_cast<real>(1.0);
     m[0][1] = static_cast<real>(2.0) * (xy + wz);
     m[0][2] = static_cast<real>(2.0) * (xz - wy);
+    m[0][3] = 0.0;
     m[1][0] = static_cast<real>(2.0) * (xy - wz);
     m[1][1] = static_cast<real>(2.0) * (ww + yy) - static_cast<real>(1.0);
     m[1][2] = static_cast<real>(2.0) * (wx + yz);
+    m[1][3] = 0.0;
     m[2][0] = static_cast<real>(2.0) * (wy + xz);
     m[2][1] = static_cast<real>(2.0) * (yz - wx);
     m[2][2] = static_cast<real>(2.0) * (ww + zz) - static_cast<real>(1.0);
+    m[3][0] = 0.0;
+    m[3][1] = 0.0;
+    m[3][2] = 0.0;
+    m[3][3] = static_cast<real>(1.0);
 }
 
 Matrix4x4::Matrix4x4(const Vector4& colA, const Vector4& colB, const Vector4& colC, const Vector4& colD)
