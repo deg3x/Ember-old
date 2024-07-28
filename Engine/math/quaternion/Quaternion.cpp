@@ -52,7 +52,7 @@ Quaternion::Quaternion(const Matrix4x4& matrix)
     }
 
     const real maxSqrt = Sqrt(maxComp);
-    const real invTwoMaxSqrt = static_cast<real>(1.0) / static_cast<real>(2.0) * maxSqrt;
+    const real invTwoMaxSqrt = static_cast<real>(1.0) / (static_cast<real>(2.0) * maxSqrt);
 
     switch (maxIdx)
     {
