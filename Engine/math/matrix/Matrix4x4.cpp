@@ -181,9 +181,9 @@ Matrix4x4 Matrix4x4::Transpose() const
 
 Vector3 Matrix4x4::ToEuler() const
 {
-    const real pitch = -Atan2(m[1][2], m[2][2]);
-    const real yaw   =  Asin(m[0][2]);
-    const real roll  = -Atan2(m[0][1], m[0][0]);
+    const real pitch =  Atan2(m[1][2], m[2][2]);
+    const real yaw   = -Asin(m[0][2]);
+    const real roll  =  Atan2(m[0][1], m[0][0]);
 
     return { pitch, yaw, roll };
 }
@@ -249,15 +249,15 @@ Matrix4x4 Matrix4x4::CreateRotationEuler(const Vector3& angles)
     Matrix4x4 ret;
 
     ret[0][0] =  cosY * cosZ;
-    ret[0][1] = -sinZ * cosY;
-    ret[0][2] =  sinY;
+    ret[0][1] =  sinZ * cosY;
+    ret[0][2] = -sinY;
     
-    ret[1][0] =  sinY * sinX * cosZ + cosX * sinZ;
-    ret[1][1] = -sinY * sinX * sinZ + cosX * cosZ;
-    ret[1][2] = -cosY * sinX;
+    ret[1][0] =  sinY * sinX * cosZ - cosX * sinZ;
+    ret[1][1] =  sinY * sinX * sinZ + cosX * cosZ;
+    ret[1][2] =  cosY * sinX;
 
-    ret[2][0] = -sinY * cosX * cosZ + sinX * sinZ;
-    ret[2][1] =  sinY * cosX * sinZ + sinX * cosZ;
+    ret[2][0] =  sinY * cosX * cosZ + sinX * sinZ;
+    ret[2][1] =  sinY * cosX * sinZ - sinX * cosZ;
     ret[2][2] =  cosY * cosX;
 
     return ret;
@@ -271,8 +271,8 @@ Matrix4x4 Matrix4x4::CreateRotationEulerX(real angle)
     const real angleSin = Sin(angle);
 
     ret[1][1] =  angleCos;
-    ret[1][2] = -angleSin;
-    ret[2][1] =  angleSin;
+    ret[1][2] =  angleSin;
+    ret[2][1] = -angleSin;
     ret[2][2] =  angleCos;
     
     return ret;
@@ -286,8 +286,8 @@ Matrix4x4 Matrix4x4::CreateRotationEulerY(real angle)
     const real angleSin = Sin(angle);
 
     ret[0][0] =  angleCos;
-    ret[0][2] =  angleSin;
-    ret[2][0] = -angleSin;
+    ret[0][2] = -angleSin;
+    ret[2][0] =  angleSin;
     ret[2][2] =  angleCos;
     
     return ret;
@@ -301,8 +301,8 @@ Matrix4x4 Matrix4x4::CreateRotationEulerZ(real angle)
     const real angleSin = Sin(angle);
 
     ret[0][0] =  angleCos;
-    ret[0][1] = -angleSin;
-    ret[1][0] =  angleSin;
+    ret[0][1] =  angleSin;
+    ret[1][0] = -angleSin;
     ret[1][1] =  angleCos;
     
     return ret;
