@@ -48,7 +48,7 @@ real Cos(real angle)
 }
 
 
-inline float Tan(float angle)
+real Tan(real angle)
 {
     return glm::tan(angle);
 }
@@ -63,22 +63,42 @@ real Acos(real cosAngle)
     return glm::acos(cosAngle);
 }
 
-float Atan(float tanAngle)
+real Atan(real tanAngle)
 {
     return glm::atan(tanAngle);
 }
 
-float Atan2(float sinAngle, float cosAngle)
+real Atan2(real sinAngle, real cosAngle)
 {
     return glm::atan(sinAngle, cosAngle);
 }
 
-bool ApproxZero(real value)
+bool ApproxZero(real value, real error)
 {
-    return (value > -EPSILON && value < EPSILON);
+    return (value > -error && value < error);
 }
 
-bool ENGINE_API ApproxEqual(real valueA, real valueB, real error)
+bool ApproxEqual(real valueA, real valueB, real error)
 {
     return (valueA + error > valueB) && (valueA - error < valueB);
+}
+
+real Clamp(real value, real rangeMin, real rangeMax)
+{
+    if (value > rangeMax)
+    {
+        return rangeMax;
+    }
+    
+    if (value < rangeMin)
+    {
+        return rangeMin;
+    }
+    
+    return value;
+}
+
+real Saturate(real value)
+{
+    return Clamp(value, 0.0, 1.0);
 }

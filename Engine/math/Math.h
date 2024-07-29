@@ -35,5 +35,8 @@ real ENGINE_API Acos(real cosAngle);
 real ENGINE_API Atan(real tanAngle);
 real ENGINE_API Atan2(real sinAngle, real cosAngle);
 
-bool ENGINE_API ApproxZero(real value);
+bool ENGINE_API ApproxZero(real value, real error = EPSILON);
 bool ENGINE_API ApproxEqual(real valueA, real valueB, real error = EPSILON);
+
+real ENGINE_API Clamp(real value, real rangeMin, real rangeMax);
+real ENGINE_API Saturate(real value);
