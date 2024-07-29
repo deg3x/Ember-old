@@ -169,9 +169,9 @@ Quaternion Quaternion::Normalize(const Quaternion& quat)
 
 Quaternion Quaternion::Renormalize(const Quaternion& quat)
 {
-    const real length = FastInvSqrtApproxOne(LengthSqr(quat));
+    const real invLength = FastInvSqrtApproxOne(LengthSqr(quat));
 
-    return quat / length;
+    return quat * invLength;
 }
 
 Quaternion Quaternion::Conjugate(const Quaternion& quat)
