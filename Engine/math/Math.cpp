@@ -1,12 +1,12 @@
 #include "engine_pch.h"
 #include "Math.h"
 
-real ENGINE_API Abs(real value)
+real Abs(real value)
 {
     return value < 0.0 ? -value : value;
 }
 
-real ENGINE_API Sign(real value)
+real Sign(real value)
 {
     if (value < 0.0)
     {
@@ -63,12 +63,12 @@ real Acos(real cosAngle)
     return glm::acos(cosAngle);
 }
 
-inline float Atan(float tanAngle)
+float Atan(float tanAngle)
 {
     return glm::atan(tanAngle);
 }
 
-inline float Atan2(float sinAngle, float cosAngle)
+float Atan2(float sinAngle, float cosAngle)
 {
     return glm::atan(sinAngle, cosAngle);
 }

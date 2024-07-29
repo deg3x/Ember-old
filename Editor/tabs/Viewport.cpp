@@ -138,8 +138,11 @@ void Viewport::TickGuizmo()
             glm::vec3 position;
             glm::vec3 rotation;
             glm::vec3 scale;
+            
+            glm::quat rotationQuat;
 
             ImGuizmo::DecomposeMatrixToComponents(&delta[0][0], &position.x, &rotation.x, &scale.x);
+            
             
             switch(operation)
             {
@@ -147,8 +150,8 @@ void Viewport::TickGuizmo()
                 selected->transform->Translate(position);
                 break;
             case ImGuizmo::ROTATE:
-                glm::quat rotQuat(glm::radians(rotation));
-                selected->transform->Rotate(rotQuat);
+                rotationQuat = glm::radians(rotation);
+                selected->transform->Rotate(rotationQuat);
                 break;
             case ImGuizmo::SCALE:
                 selected->transform->Scale(scale);

@@ -97,7 +97,7 @@ project (ENGINE_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
+            "{COPY} %{wks.location}/ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
         }
 
     elseif os.target() == "macosx" then
@@ -105,6 +105,8 @@ project (ENGINE_PROJ_NAME)
         libdirs (ENGINE_LIBS_PATH_OSX)
         includedirs (ENGINE_INCL_PATH_OSX)
         -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
+
+        os.execute("pwd")
 
         pchheader "Engine/engine_pch.h"
         pchsource "Engine/engine_pch.cpp"
@@ -116,7 +118,7 @@ project (ENGINE_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
         }
 
     end
@@ -132,8 +134,8 @@ project (ENGINE_PROJ_NAME)
         if os.target() == "windows" then
             postbuildcommands
             {
-                "{MKDIR} %{wks.location}bin/" .. EDITOR_PROJ_NAME .. "/Debug",
-                "{COPY} %{wks.location}bin/" .. ENGINE_PROJ_NAME .. "/Debug/" .. ENGINE_PROJ_NAME .. ".dll bin/" .. EDITOR_PROJ_NAME .. "/Debug"
+                "{MKDIR} %{wks.location}/bin/" .. EDITOR_PROJ_NAME .. "/Debug",
+                "{COPY} %{wks.location}/bin/" .. ENGINE_PROJ_NAME .. "/Debug/" .. ENGINE_PROJ_NAME .. ".dll bin/" .. EDITOR_PROJ_NAME .. "/Debug"
             }
         elseif os.target() == "macosx" then
             --postbuildcommands
@@ -151,8 +153,8 @@ project (ENGINE_PROJ_NAME)
         if os.target() == "windows" then
             postbuildcommands
             {
-                "{MKDIR} %{wks.location}bin/" .. EDITOR_PROJ_NAME .. "/Release",
-                "{COPY} %{wks.location}bin/" .. ENGINE_PROJ_NAME .. "/Release/" .. ENGINE_PROJ_NAME .. ".dll bin/" .. EDITOR_PROJ_NAME .. "/Release"
+                "{MKDIR} %{wks.location}/bin/" .. EDITOR_PROJ_NAME .. "/Release",
+                "{COPY} %{wks.location}/bin/" .. ENGINE_PROJ_NAME .. "/Release/" .. ENGINE_PROJ_NAME .. ".dll bin/" .. EDITOR_PROJ_NAME .. "/Release"
             }
         elseif os.target() == "macosx" then
             --postbuildcommands
@@ -190,8 +192,8 @@ project (EDITOR_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}",
-            "{COPY} %{wks.location}ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
+            "{COPY} %{wks.location}/ThirdParty/libraries/windows/assimp-vc142-mt.dll %{cfg.targetdir}",
+            "{COPY} %{wks.location}/ThirdParty/libraries/windows/glfw3.dll %{cfg.targetdir}"
         }
 
         -- removefiles (ENGINE_FILES_EXCLUDE_WIN)
@@ -210,10 +212,10 @@ project (EDITOR_PROJ_NAME)
 
         postbuildcommands
         {
-            "{COPY} %{wks.location}ThirdParty/libraries/osx/libassimp.5.2.4.dylib %{cfg.targetdir}",
-            "{COPY} %{wks.location}ThirdParty/libraries/osx/libassimp.5.dylib %{cfg.targetdir}",
-            "{COPY} %{wks.location}ThirdParty/libraries/osx/libassimp.dylib %{cfg.targetdir}",
-            "{COPY} %{wks.location}ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.2.4.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.5.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libassimp.dylib %{cfg.targetdir}",
+            "{COPY} %{wks.location}/ThirdParty/libraries/osx/libglfw.3.dylib %{cfg.targetdir}"
         }
 
         -- removefiles (ENGINE_FILES_EXCLUDE_OSX)
