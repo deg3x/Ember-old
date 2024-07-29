@@ -30,8 +30,6 @@ void Window::Initialize()
     glfwWindowHint(GLFW_COCOA_GRAPHICS_SWITCHING, GLFW_FALSE);
 #endif
 
-    VideoMode mode = Screen::GetCurrentVideoMode();
-
     const std::string iconPath = PathBuilder::GetPath("./Data/images/ember/ember_icon_64.png");
     
     windowData.icon         = new GLFWimage();

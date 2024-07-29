@@ -480,6 +480,8 @@ void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
             DrawRowLabelDragInt(property.name, property.value.intVal);
             material->SetProperty(property.name, property.value.intVal);
             break;
+        case MaterialProperty::PropertyType::BOOLEAN:
+            break;
         case MaterialProperty::PropertyType::FLOAT:
             DrawRowLabelDragFloat(property.name, property.value.floatVal);
             material->SetProperty(property.name, property.value.floatVal);
@@ -502,9 +504,17 @@ void Inspector::DrawMaterialElements(const std::shared_ptr<Material>& material)
     {
         switch(property.type)
         {
+        case MaterialProperty::PropertyType::INTEGER:
+            break;
         case MaterialProperty::PropertyType::BOOLEAN:
             DrawRowLabelCheckbox(property.name, property.value.boolVal);
             material->SetProperty(property.name, property.value.boolVal);
+            break;
+        case MaterialProperty::PropertyType::FLOAT:
+            break;
+        case MaterialProperty::PropertyType::VECTOR3:
+            break;
+        case MaterialProperty::PropertyType::VECTOR4:
             break;
         case MaterialProperty::PropertyType::MATRIX4X4:
             break;
