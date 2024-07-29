@@ -357,6 +357,24 @@ Matrix4x4 Matrix4x4::Perspective(real fovX, real aspectRatio, real near, real fa
     return ret;
 }
 
+Matrix4x4 Matrix4x4::Orthographic(real left, real right, real bottom, real top, real near, real far)
+{
+    Matrix4x4 ret = Matrix4x4();
+
+    const real invRightMinusLeft = static_cast<real>(1.0) / (right - left);
+    const real invTopMinusBottom = static_cast<real>(1.0) / (top - bottom);
+    const real invFarMinusNear   = static_cast<real>(1.0) / (far - near);
+
+    ret[0][0] = static_cast<real>(2.0) * invRightMinusLeft;
+    ret[1][1] = static_cast<real>(2.0) * invTopMinusBottom;
+    ret[2][2] = static_cast<real>(2.0) * invFarMinusNear;
+    ret[3][0] = -(right + left) * invRightMinusLeft; 
+    ret[3][1] = -(top + bottom) * invTopMinusBottom; 
+    ret[3][2] = -(far + near) * invFarMinusNear;
+
+    return ret;
+}
+
 Matrix4x4& Matrix4x4::operator+=(const Matrix4x4& rhs)
 {
     m[0] += rhs.m[0];

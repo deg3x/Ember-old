@@ -40,6 +40,7 @@ public:
 
     static Matrix4x4 LookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
     static Matrix4x4 Perspective(real fovX, real aspectRatio, real near, real far);
+    static Matrix4x4 Orthographic(real left, real right, real bottom, real top, real near, real far);
 
     Matrix4x4& operator+=(const Matrix4x4& rhs);
     Matrix4x4& operator-=(const Matrix4x4& rhs);
