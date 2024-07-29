@@ -5,12 +5,12 @@
 #include "math/Math.h"
 #include "math/quaternion/Quaternion.h"
 
-Matrix4x4::Matrix4x4()
+Matrix4x4::Matrix4x4(real diagonal)
 {
-    m[0] = Vector4(1.0, 0.0, 0.0, 0.0);
-    m[1] = Vector4(0.0, 1.0, 0.0, 0.0);
-    m[2] = Vector4(0.0, 0.0, 1.0, 0.0);
-    m[3] = Vector4(0.0, 0.0, 0.0, 1.0);
+    m[0] = Vector4(diagonal, 0.0, 0.0, 0.0);
+    m[1] = Vector4(0.0, diagonal, 0.0, 0.0);
+    m[2] = Vector4(0.0, 0.0, diagonal, 0.0);
+    m[3] = Vector4(0.0, 0.0, 0.0, diagonal);
 }
 
 Matrix4x4::Matrix4x4(const Quaternion& quat)
@@ -219,7 +219,7 @@ Matrix4x4 Matrix4x4::CreateRotation(const Vector3& axis, real angle)
     const real zSin = axis.z * sin;
     const real oneMinusCos = static_cast<real>(1.0) - cos;
 
-    Matrix4x4 ret;
+    Matrix4x4 ret = Matrix4x4();
 
     ret[0][0] = axis.x * axis.x * oneMinusCos + cos;
     ret[0][1] = axis.x * axis.y * oneMinusCos + zSin;
@@ -251,7 +251,7 @@ Matrix4x4 Matrix4x4::FromEuler(real pitch, real yaw, real roll)
     const real sinY = Sin(yaw);
     const real sinZ = Sin(roll);
 
-    Matrix4x4 ret;
+    Matrix4x4 ret = Matrix4x4();
 
     ret[0][0] =  cosY * cosZ;
     ret[0][1] =  sinZ * cosY;

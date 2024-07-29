@@ -11,10 +11,15 @@ struct Quaternion;
 struct ENGINE_API Matrix4x4
 {
 private:
-    Vector4 m[4];
+    Vector4 m[4] = {
+        {1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0},
+    };
 
 public:
-    Matrix4x4();
+    Matrix4x4(real diagonal = 1.0);
     Matrix4x4(const Quaternion& quat);
     Matrix4x4(const Vector4& colA, const Vector4& colB, const Vector4& colC, const Vector4& colD);
 
