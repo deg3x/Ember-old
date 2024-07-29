@@ -313,6 +313,33 @@ Matrix4x4 Matrix4x4::FromEulerZ(real roll)
     return ret;
 }
 
+Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vector3& up)
+{
+    const Vector3 forward = (target - eye).Normalize();
+    const Vector3 right   = Vector3::Cross(up, forward).Normalize();
+    const Vector3 localUp = Vector3::Cross(forward, right).Normalize();
+
+    Matrix4x4 ret = Matrix4x4();
+
+    ret[0][0] = right.x;
+    ret[0][1] = localUp.x;
+    ret[0][2] = forward.x;
+    
+    ret[1][0] = right.y;
+    ret[1][1] = localUp.y;
+    ret[1][2] = forward.y;
+    
+    ret[2][0] = right.z;
+    ret[2][1] = localUp.z;
+    ret[2][2] = forward.z;
+
+    ret[3][0] = -Vector3::Dot(right, eye);
+    ret[3][1] = -Vector3::Dot(localUp, eye);
+    ret[3][2] = -Vector3::Dot(forward, eye);
+
+    return ret;
+}
+
 Matrix4x4& Matrix4x4::operator+=(const Matrix4x4& rhs)
 {
     m[0] += rhs.m[0];
