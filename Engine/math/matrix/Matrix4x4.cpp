@@ -340,6 +340,23 @@ Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vec
     return ret;
 }
 
+Matrix4x4 Matrix4x4::Perspective(real fovX, real aspectRatio, real near, real far)
+{
+    const real invHalfFovTan  = static_cast<real>(1.0) / Tan(fovX * static_cast<real>(0.5));
+    const real invAspectRatio = static_cast<real>(1.0) / aspectRatio;
+    const real farMinusNear   = far - near;
+
+    Matrix4x4 ret = Matrix4x4(0.0);
+
+    ret[0][0] = invHalfFovTan;
+    ret[1][1] = invHalfFovTan * invAspectRatio;
+    ret[2][2] = (far + near) / farMinusNear;
+    ret[2][3] = static_cast<real>(-1.0);
+    ret[3][2] = static_cast<real>(-2.0) * far * near / farMinusNear;
+
+    return ret;
+}
+
 Matrix4x4& Matrix4x4::operator+=(const Matrix4x4& rhs)
 {
     m[0] += rhs.m[0];
