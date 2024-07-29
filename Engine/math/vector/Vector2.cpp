@@ -44,7 +44,7 @@ Vector2 Vector2::Normalize(const Vector2& vector)
 
 Vector2 Vector2::operator-() const
 {
-    return Vector2(-x, -y);
+    return { -x, -y };
 }
 
 Vector2& Vector2::operator+=(const Vector2& rhs)

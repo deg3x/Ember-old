@@ -21,13 +21,25 @@ real Vector3::LengthSqr() const
     return x * x + y * y + z * z;
 }
 
-Vector3& Vector3::Normalize()
+Vector3 Vector3::Normalize() const
 {
     const real invLength = static_cast<real>(1.0) / Length(*this);
 
-    *this *= invLength;
+    return *this * invLength;
+}
 
-    return *this;
+bool Vector3::IsEqual(const Vector3& vector, real error) const
+{
+    return ApproxEqual(x, vector.x, error)
+        && ApproxEqual(y, vector.y, error)
+        && ApproxEqual(z, vector.z, error);
+}
+
+bool Vector3::IsZero(real error) const
+{
+    return ApproxZero(x, error)
+        && ApproxZero(y, error)
+        && ApproxZero(z, error);
 }
 
 Vector3 Vector3::Rotate(const Vector3& axis, real angle) const
@@ -68,6 +80,11 @@ Vector3 Vector3::Normalize(const Vector3& vector)
     return vector / Length(vector);
 }
 
+Vector3 Vector3::operator-() const
+{
+    return { -x, -y, -z };
+}
+
 Vector3& Vector3::operator+=(const Vector3& rhs)
 {
     x += rhs.x;
@@ -82,6 +99,15 @@ Vector3& Vector3::operator-=(const Vector3& rhs)
     x -= rhs.x;
     y -= rhs.y;
     z -= rhs.z;
+
+    return *this;
+}
+
+Vector3& Vector3::operator*=(const Vector3& rhs)
+{
+    x *= rhs.x;
+    y *= rhs.y;
+    z *= rhs.z;
 
     return *this;
 }

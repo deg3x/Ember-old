@@ -14,15 +14,21 @@ struct ENGINE_API Vector4
 
     real Length() const;
     real LengthSqr() const;
-    Vector4& Normalize();
+    Vector4 Normalize() const;
+
+    bool IsEqual(const Vector4& vector, real error = EPSILON) const;
+    bool IsZero(real error = EPSILON) const;
 
     static real Dot(const Vector4& lhs, const Vector4& rhs);
     static real Length(const Vector4& vector);
     static real LengthSqr(const Vector4& vector);
     static Vector4 Normalize(const Vector4& vector);
+
+    Vector4 operator-() const;
     
     Vector4& operator+=(const Vector4& rhs);
     Vector4& operator-=(const Vector4& rhs);
+    Vector4& operator*=(const Vector4& rhs);
 
     Vector4& operator*=(real rhs);
     Vector4& operator/=(real rhs);
@@ -45,6 +51,15 @@ inline Vector4 operator-(const Vector4& lhs, const Vector4& rhs)
     Vector4 ret = lhs;
 
     ret -= rhs;
+    
+    return ret;
+}
+
+inline Vector4 operator*(const Vector4& lhs, const Vector4& rhs)
+{
+    Vector4 ret = lhs;
+
+    ret *= rhs;
     
     return ret;
 }

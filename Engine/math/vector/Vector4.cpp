@@ -13,13 +13,27 @@ real Vector4::LengthSqr() const
     return x * x + y * y + z * z + w * w;
 }
 
-Vector4& Vector4::Normalize()
+Vector4 Vector4::Normalize() const
 {
     const real invLength = static_cast<real>(1.0) / Length(*this);
 
-    *this *= invLength;
+    return *this * invLength;
+}
 
-    return *this;
+bool Vector4::IsEqual(const Vector4& vector, real error) const
+{
+    return ApproxEqual(x, vector.x, error)
+        && ApproxEqual(y, vector.y, error)
+        && ApproxEqual(z, vector.z, error)
+        && ApproxEqual(w, vector.w, error);
+}
+
+bool Vector4::IsZero(real error) const
+{
+    return ApproxZero(x, error)
+        && ApproxZero(y, error)
+        && ApproxZero(z, error)
+        && ApproxZero(w, error);
 }
 
 real Vector4::Dot(const Vector4& lhs, const Vector4& rhs)
@@ -42,6 +56,11 @@ Vector4 Vector4::Normalize(const Vector4& vector)
     return vector / Length(vector);
 }
 
+Vector4 Vector4::operator-() const
+{
+    return { -x, -y, -z, -w };
+}
+
 Vector4& Vector4::operator+=(const Vector4& rhs)
 {
     x += rhs.x;
@@ -58,6 +77,16 @@ Vector4& Vector4::operator-=(const Vector4& rhs)
     y -= rhs.y;
     z -= rhs.z;
     w -= rhs.w;
+
+    return *this;
+}
+
+Vector4& Vector4::operator*=(const Vector4& rhs)
+{
+    x *= rhs.x;
+    y *= rhs.y;
+    z *= rhs.z;
+    w *= rhs.w;
 
     return *this;
 }

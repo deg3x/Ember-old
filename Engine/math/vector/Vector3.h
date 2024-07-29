@@ -16,7 +16,11 @@ struct ENGINE_API Vector3
 
     real Length() const;
     real LengthSqr() const;
-    Vector3& Normalize();
+    Vector3 Normalize() const;
+
+    bool IsEqual(const Vector3& vector, real error = EPSILON) const;
+    bool IsZero(real error = EPSILON) const;
+    
     Vector3 Rotate(const Vector3& axis, real angle) const;
 
     static real Dot(const Vector3& lhs, const Vector3& rhs);
@@ -24,9 +28,12 @@ struct ENGINE_API Vector3
     static real LengthSqr(const Vector3& vector);
     static Vector3 Cross(const Vector3& lhs, const Vector3& rhs);
     static Vector3 Normalize(const Vector3& vector);
+
+    Vector3 operator-() const;
     
     Vector3& operator+=(const Vector3& rhs);
     Vector3& operator-=(const Vector3& rhs);
+    Vector3& operator*=(const Vector3& rhs);
 
     Vector3& operator*=(real rhs);
     Vector3& operator/=(real rhs);
@@ -49,6 +56,15 @@ inline Vector3 operator-(const Vector3& lhs, const Vector3& rhs)
     Vector3 ret = lhs;
 
     ret -= rhs;
+    
+    return ret;
+}
+
+inline Vector3 operator*(const Vector3& lhs, const Vector3& rhs)
+{
+    Vector3 ret = lhs;
+
+    ret *= rhs;
     
     return ret;
 }
