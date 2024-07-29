@@ -3,13 +3,23 @@
 
 #include "math/Math.h"
 
-Vector2& Vector2::Normalize()
+Vector2 Vector2::Normalize() const
 {
     const real invLength = static_cast<real>(1.0) / Length(*this);
 
-    *this *= invLength;
+    return *this * invLength;
+}
 
-    return *this;
+bool Vector2::IsEqual(const Vector2& vector, real error) const
+{
+    return ApproxEqual(x, vector.x, error)
+        && ApproxEqual(y, vector.y, error);
+}
+
+bool Vector2::IsZero(real error) const
+{
+    return ApproxZero(x, error)
+        && ApproxZero(y, error);
 }
 
 real Vector2::Dot(const Vector2& lhs, const Vector2& rhs)
@@ -32,6 +42,11 @@ Vector2 Vector2::Normalize(const Vector2& vector)
     return vector / Length(vector);
 }
 
+Vector2 Vector2::operator-() const
+{
+    return Vector2(-x, -y);
+}
+
 Vector2& Vector2::operator+=(const Vector2& rhs)
 {
     x += rhs.x;
@@ -45,6 +60,14 @@ Vector2& Vector2::operator-=(const Vector2& rhs)
     x -= rhs.x;
     y -= rhs.y;
 
+    return *this;
+}
+
+Vector2& Vector2::operator*=(const Vector2& rhs)
+{
+    x *= rhs.x;
+    y *= rhs.y;
+    
     return *this;
 }
 
