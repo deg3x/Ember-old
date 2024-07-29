@@ -24,6 +24,7 @@ struct ENGINE_API Quaternion
     Quaternion Inverse() const;
     Quaternion Normalize() const;
     Quaternion Renormalize() const;
+    Quaternion Conjugate() const;
     Vector3 RotateVector(const Vector3& vector) const;
     Vector3 ToEuler() const;
 

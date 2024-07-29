@@ -104,6 +104,18 @@ Quaternion Quaternion::Renormalize() const
     return *this * invLength;
 }
 
+Quaternion Quaternion::Conjugate() const
+{
+    Quaternion ret;
+
+    ret.w =  w;
+    ret.x = -x;
+    ret.y = -y;
+    ret.z = -z;
+
+    return ret;
+}
+
 Vector3 Quaternion::RotateVector(const Vector3& vector) const
 {
     return Vector3(*this * Quaternion(vector) * Inverse(*this));
