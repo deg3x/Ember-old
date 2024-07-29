@@ -313,6 +313,20 @@ Matrix4x4 Matrix4x4::FromEulerZ(real roll)
     return ret;
 }
 
+Matrix4x4 Matrix4x4::Model(const Vector3& position, const Vector3& rotation, const Vector3& scale, const Vector3& pivot)
+{
+    const Vector3 rotEulerRad = rotation * DEG2RAD;
+    
+    Matrix4x4 model = CreateTranslation(position);
+
+    model *= CreateTranslation(pivot);
+    model *= FromEuler(rotEulerRad);
+    model *= CreateTranslation(-pivot);
+    model *= CreateScale(scale);
+
+    return model;
+}
+
 Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vector3& up)
 {
     const Vector3 forward = (target - eye).Normalize();
