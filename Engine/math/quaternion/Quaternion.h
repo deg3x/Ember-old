@@ -22,10 +22,13 @@ struct ENGINE_API Quaternion
     Quaternion(const Matrix4x4& matrix);
 
     Quaternion Inverse() const;
-    Quaternion& Normalize();
-    Quaternion& Renormalize();
+    Quaternion Normalize() const;
+    Quaternion Renormalize() const;
     Vector3 RotateVector(const Vector3& vector) const;
     Vector3 ToEuler() const;
+
+    bool IsEqual(const Quaternion& quat, real error = EPSILON) const;
+    bool IsZero(real error = EPSILON) const;
 
     static real Dot(const Quaternion& lhs, const Quaternion& rhs);
     static real Length(const Quaternion& quat);
@@ -37,6 +40,8 @@ struct ENGINE_API Quaternion
     
     static Quaternion FromEuler(const Vector3& angles);
     static Quaternion FromEuler(real pitch, real yaw, real roll);
+
+    Quaternion operator-() const;
     
     Quaternion& operator+=(const Quaternion& rhs);
     Quaternion& operator-=(const Quaternion& rhs);

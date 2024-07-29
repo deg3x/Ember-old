@@ -90,28 +90,18 @@ Quaternion Quaternion::Inverse() const
     return Conjugate(*this) / LengthSqr(*this);
 }
 
-Quaternion& Quaternion::Normalize()
+Quaternion Quaternion::Normalize() const
 {
-    const real length = Length(*this);
+    const real invLength = static_cast<real>(1.0) / Length(*this);
 
-    w /= length;
-    x /= length;
-    y /= length;
-    z /= length;
-
-    return *this;
+    return *this * invLength;
 }
 
-Quaternion& Quaternion::Renormalize()
+Quaternion Quaternion::Renormalize() const
 {
-    const real length = FastInvSqrtApproxOne(LengthSqr(*this));
+    const real invLength = FastInvSqrtApproxOne(LengthSqr(*this));
 
-    w /= length;
-    x /= length;
-    y /= length;
-    z /= length;
-
-    return *this;
+    return *this * invLength;
 }
 
 Vector3 Quaternion::RotateVector(const Vector3& vector) const
@@ -134,6 +124,22 @@ Vector3 Quaternion::ToEuler() const
     real roll  = Atan2(static_cast<real>(2.0) * (w * z + x * y), static_cast<real>(1.0) - static_cast<real>(2.0) * (y * y + z * z));
 
     return { pitch, yaw, roll };
+}
+
+bool Quaternion::IsEqual(const Quaternion& quat, float error) const
+{
+    return ApproxEqual(w, quat.w, error)
+        && ApproxEqual(x, quat.x, error)
+        && ApproxEqual(y, quat.y, error)
+        && ApproxEqual(z, quat.z, error);
+}
+
+bool Quaternion::IsZero(float error) const
+{
+    return ApproxZero(w, error)
+        && ApproxZero(x, error)
+        && ApproxZero(y, error)
+        && ApproxZero(z, error);
 }
 
 real Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
@@ -203,6 +209,11 @@ Quaternion Quaternion::FromEuler(real pitch, real yaw, real roll)
     };
     
     return ret;
+}
+
+Quaternion Quaternion::operator-() const
+{
+    return {-w, -x, -y, -z};
 }
 
 Quaternion& Quaternion::operator+=(const Quaternion& rhs)
