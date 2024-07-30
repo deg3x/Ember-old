@@ -10,8 +10,8 @@ struct ENGINE_API Vector3
     real y;
     real z;
 
-    Vector3() : x(0.0), y(0.0), z(0.0) {}
-    Vector3(real x, real y, real z) : x(x), y(y), z(z) {}
+    constexpr Vector3() : x(0.0), y(0.0), z(0.0) {}
+    constexpr Vector3(real x, real y, real z) : x(x), y(y), z(z) {}
     explicit Vector3(const Quaternion& quat);
 
     real Length() const;

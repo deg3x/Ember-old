@@ -7,8 +7,8 @@ struct ENGINE_API Vector2
     real x;
     real y;
 
-    Vector2() : x(0.0), y(0.0) {}
-    Vector2(real x, real y) : x(x), y(y) {}
+    constexpr Vector2() : x(0.0), y(0.0) {}
+    constexpr Vector2(real x, real y) : x(x), y(y) {}
     
     Vector2 Normalize() const;
     

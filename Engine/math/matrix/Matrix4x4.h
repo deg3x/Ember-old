@@ -19,7 +19,7 @@ private:
     };
 
 public:
-    Matrix4x4(real diagonal = 1.0);
+    constexpr Matrix4x4(real diagonal = 1.0);
     Matrix4x4(const Quaternion& quat);
     Matrix4x4(const Vector4& colA, const Vector4& colB, const Vector4& colC, const Vector4& colD);
 

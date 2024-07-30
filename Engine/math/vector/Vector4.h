@@ -9,8 +9,8 @@ struct ENGINE_API Vector4
     real z;
     real w;
 
-    Vector4() : x(0.0), y(0.0), z(0.0), w(0.0) {}
-    Vector4(real x, real y, real z, real w) : x(x), y(y), z(z), w(w) {}
+    constexpr Vector4() : x(0.0), y(0.0), z(0.0), w(0.0) {}
+    constexpr Vector4(real x, real y, real z, real w) : x(x), y(y), z(z), w(w) {}
 
     real Length() const;
     real LengthSqr() const;

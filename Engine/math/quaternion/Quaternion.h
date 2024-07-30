@@ -15,8 +15,8 @@ struct ENGINE_API Quaternion
     real y;
     real z;
 
-    Quaternion() : w(1.0), x(0.0), y(0.0), z(0.0) {}
-    Quaternion(real w, real x, real y, real z) : w(w), x(x), y(y), z(z) {}
+    constexpr Quaternion() : w(1.0), x(0.0), y(0.0), z(0.0) {}
+    constexpr Quaternion(real w, real x, real y, real z) : w(w), x(x), y(y), z(z) {}
     explicit Quaternion(const Vector3& vector);
     Quaternion(const Vector3& axis, real angle);
     Quaternion(const Matrix4x4& matrix);

@@ -5,7 +5,7 @@
 #include "math/Math.h"
 #include "math/quaternion/Quaternion.h"
 
-Matrix4x4::Matrix4x4(real diagonal)
+constexpr Matrix4x4::Matrix4x4(real diagonal)
 {
     m[0] = Vector4(diagonal, 0.0, 0.0, 0.0);
     m[1] = Vector4(0.0, diagonal, 0.0, 0.0);
