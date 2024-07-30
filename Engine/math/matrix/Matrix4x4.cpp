@@ -313,14 +313,14 @@ Matrix4x4 Matrix4x4::FromEulerZ(real roll)
     return ret;
 }
 
-Matrix4x4 Matrix4x4::Model(const Vector3& position, const Vector3& rotation, const Vector3& scale, const Vector3& pivot)
+Matrix4x4 Matrix4x4::Model(const Vector3& position, const Quaternion& rotation, const Vector3& scale, const Vector3& pivot)
 {
-    const Vector3 rotEulerRad = rotation * DEG2RAD;
+    const Vector3 rotationEuler = rotation.ToEuler();
     
     Matrix4x4 model = CreateTranslation(position);
 
     model *= CreateTranslation(pivot);
-    model *= FromEuler(rotEulerRad);
+    model *= FromEuler(rotationEuler);
     model *= CreateTranslation(-pivot);
     model *= CreateScale(scale);
 
