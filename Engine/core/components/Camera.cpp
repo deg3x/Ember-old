@@ -17,14 +17,18 @@ Camera::Camera()
     projectionType   = CameraProjection::PERSPECTIVE;
 }
 
-glm::mat4x4 Camera::GetViewMatrix() const
+Matrix4x4 Camera::GetViewMatrix() const
 {
-    const glm::mat4x4 viewMatrix = glm::lookAt(owner->transform->GetPosition(), owner->transform->GetPosition() + owner->transform->GetForwardVector(), owner->transform->GetUpVector());
+    const Vector3 eye = owner->transform->GetPosition();
+    const Vector3 dir = owner->transform->GetForwardVector();
+    const Vector3 up  = owner->transform->GetUpVector();
+    
+    const Matrix4x4 viewMatrix = Matrix4x4::LookAt(eye, eye + dir, up);
 
     return viewMatrix;
 }
 
-glm::mat4x4 Camera::GetProjectionMatrix() const
+Matrix4x4 Camera::GetProjectionMatrix() const
 {
     int viewportWidth;
     int viewportHeight;
@@ -36,11 +40,20 @@ glm::mat4x4 Camera::GetProjectionMatrix() const
     switch(projectionType)
     {
     case CameraProjection::PERSPECTIVE:
-        return glm::perspective(glm::radians(perspectiveFOV), aspectRatio, nearClipping, farClipping);
+        return Matrix4x4::Perspective(perspectiveFOV * DEG2RAD, aspectRatio, nearClipping, farClipping);
+        //return glm::perspective(glm::radians(perspectiveFOV), aspectRatio, nearClipping, farClipping);
     case CameraProjection::ORTHOGRAPHIC:
-        return glm::ortho(-aspectRatio * orthographicSize, aspectRatio * orthographicSize, -orthographicSize, orthographicSize, nearClipping, farClipping);
+        return Matrix4x4::Orthographic(
+            -aspectRatio * orthographicSize,
+            aspectRatio * orthographicSize,
+            -orthographicSize,
+            orthographicSize,
+            nearClipping,
+            farClipping
+        );
+        //return glm::ortho(-aspectRatio * orthographicSize, aspectRatio * orthographicSize, -orthographicSize, orthographicSize, nearClipping, farClipping);
     default:
         Logger::Log(LogCategory::ERROR, "Unknown camera projection type", "Camera::GetProjectionMatrix");
-        return glm::identity<glm::mat4x4>();
+        return Matrix4x4();
     }
 }

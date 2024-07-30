@@ -1,6 +1,8 @@
 #include "engine_pch.h"
 #include "Math.h"
 
+#include "glm/glm.hpp"
+
 real Abs(real value)
 {
     return value < 0.0 ? -value : value;

@@ -10,27 +10,27 @@ void ProceduralMesh::GenerateQuad(const std::shared_ptr<Mesh>& targetMesh)
 
     VertexData data;
     
-    data.position = glm::vec3(-1.0f, 1.0f, 0.0f);
-    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-    data.uv = glm::vec2(0.0f, 1.0f);
+    data.position = Vector3(-1.0f, 1.0f, 0.0f);
+    data.normal = Vector3(0.0f, 0.0f, -1.0f);
+    data.uv = Vector2(0.0f, 1.0f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(-1.0f, -1.0f, 0.0f);
-    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-    data.uv = glm::vec2(0.0f, 0.0f);
+    data.position = Vector3(-1.0f, -1.0f, 0.0f);
+    data.normal = Vector3(0.0f, 0.0f, -1.0f);
+    data.uv = Vector2(0.0f, 0.0f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(1.0f, 1.0f, 0.0f);
-    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-    data.uv = glm::vec2(1.0f, 1.0f);
+    data.position = Vector3(1.0f, 1.0f, 0.0f);
+    data.normal = Vector3(0.0f, 0.0f, -1.0f);
+    data.uv = Vector2(1.0f, 1.0f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(1.0f, -1.0f, 0.0f);
-    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-    data.uv = glm::vec2(1.0f, 0.0f);
+    data.position = Vector3(1.0f, -1.0f, 0.0f);
+    data.normal = Vector3(0.0f, 0.0f, -1.0f);
+    data.uv = Vector2(1.0f, 0.0f);
 
     vertexData.push_back(data);
 
@@ -54,152 +54,152 @@ void ProceduralMesh::GenerateCube(const std::shared_ptr<Mesh>& targetMesh)
     VertexData data;
 
     // Front
-    data.position = glm::vec3(-0.5f, -0.5f, -0.5f);
-    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-    data.uv = glm::vec2(0.25f, 0.66f);
+    data.position = Vector3(-0.5f, -0.5f, -0.5f);
+    data.normal = Vector3(0.0f, 0.0f, -1.0f);
+    data.uv = Vector2(0.25f, 0.66f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(0.5f, -0.5f, -0.5f);
-    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-    data.uv = glm::vec2(0.25f, 0.33f);
+    data.position = Vector3(0.5f, -0.5f, -0.5f);
+    data.normal = Vector3(0.0f, 0.0f, -1.0f);
+    data.uv = Vector2(0.25f, 0.33f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(-0.5f, 0.5f, -0.5f);
-    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-    data.uv = glm::vec2(0.0f, 0.66f);
+    data.position = Vector3(-0.5f, 0.5f, -0.5f);
+    data.normal = Vector3(0.0f, 0.0f, -1.0f);
+    data.uv = Vector2(0.0f, 0.66f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(0.5f, 0.5f, -0.5f);
-    data.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-    data.uv = glm::vec2(0.0f, 0.33f);
+    data.position = Vector3(0.5f, 0.5f, -0.5f);
+    data.normal = Vector3(0.0f, 0.0f, -1.0f);
+    data.uv = Vector2(0.0f, 0.33f);
 
     vertexData.push_back(data);
 
     // Right
-    data.position = glm::vec3(0.5f, -0.5f, -0.5f);
-    data.normal = glm::vec3(1.0f, 0.0f, 0.0f);
-    data.uv = glm::vec2(0.25f, 0.33f);
+    data.position = Vector3(0.5f, -0.5f, -0.5f);
+    data.normal = Vector3(1.0f, 0.0f, 0.0f);
+    data.uv = Vector2(0.25f, 0.33f);
 
     vertexData.push_back(data);
     
-    data.position = glm::vec3(0.5f, -0.5f, 0.5f);
-    data.normal = glm::vec3(1.0f, 0.0f, 0.0f);
-    data.uv = glm::vec2(0.5f, 0.33f);
+    data.position = Vector3(0.5f, -0.5f, 0.5f);
+    data.normal = Vector3(1.0f, 0.0f, 0.0f);
+    data.uv = Vector2(0.5f, 0.33f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(0.5f, 0.5f, -0.5f);
-    data.normal = glm::vec3(1.0f, 0.0f, 0.0f);
-    data.uv = glm::vec2(0.25f, 0.0f);
+    data.position = Vector3(0.5f, 0.5f, -0.5f);
+    data.normal = Vector3(1.0f, 0.0f, 0.0f);
+    data.uv = Vector2(0.25f, 0.0f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(0.5f, 0.5f, 0.5f);
-    data.normal = glm::vec3(1.0f, 0.0f, 0.0f);
-    data.uv = glm::vec2(0.5f, 0.0f);
+    data.position = Vector3(0.5f, 0.5f, 0.5f);
+    data.normal = Vector3(1.0f, 0.0f, 0.0f);
+    data.uv = Vector2(0.5f, 0.0f);
 
     vertexData.push_back(data);
 
     // Back
-    data.position = glm::vec3(0.5f, -0.5f, 0.5f);
-    data.normal = glm::vec3(0.0f, 0.0f, 1.0f);
-    data.uv = glm::vec2(0.5f, 0.33f);
+    data.position = Vector3(0.5f, -0.5f, 0.5f);
+    data.normal = Vector3(0.0f, 0.0f, 1.0f);
+    data.uv = Vector2(0.5f, 0.33f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(-0.5f, -0.5f, 0.5f);
-    data.normal = glm::vec3(0.0f, 0.0f, 1.0f);
-    data.uv = glm::vec2(0.5f, 0.66f);
+    data.position = Vector3(-0.5f, -0.5f, 0.5f);
+    data.normal = Vector3(0.0f, 0.0f, 1.0f);
+    data.uv = Vector2(0.5f, 0.66f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(0.5f, 0.5f, 0.5f);
-    data.normal = glm::vec3(0.0f, 0.0f, 1.0f);
-    data.uv = glm::vec2(0.75f, 0.33f);
+    data.position = Vector3(0.5f, 0.5f, 0.5f);
+    data.normal = Vector3(0.0f, 0.0f, 1.0f);
+    data.uv = Vector2(0.75f, 0.33f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(-0.5f, 0.5f, 0.5f);
-    data.normal = glm::vec3(0.0f, 0.0f, 1.0f);
-    data.uv = glm::vec2(0.75f, 0.66f);
+    data.position = Vector3(-0.5f, 0.5f, 0.5f);
+    data.normal = Vector3(0.0f, 0.0f, 1.0f);
+    data.uv = Vector2(0.75f, 0.66f);
 
     vertexData.push_back(data);
 
     // Left
-    data.position = glm::vec3(-0.5f, -0.5f, 0.5f);
-    data.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
-    data.uv = glm::vec2(0.5f, 0.66f);
+    data.position = Vector3(-0.5f, -0.5f, 0.5f);
+    data.normal = Vector3(-1.0f, 0.0f, 0.0f);
+    data.uv = Vector2(0.5f, 0.66f);
 
     vertexData.push_back(data);
     
-    data.position = glm::vec3(-0.5f, -0.5f, -0.5f);
-    data.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
-    data.uv = glm::vec2(0.25f, 0.66f);
+    data.position = Vector3(-0.5f, -0.5f, -0.5f);
+    data.normal = Vector3(-1.0f, 0.0f, 0.0f);
+    data.uv = Vector2(0.25f, 0.66f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(-0.5f, 0.5f, 0.5f);
-    data.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
-    data.uv = glm::vec2(0.5f, 1.0f);
+    data.position = Vector3(-0.5f, 0.5f, 0.5f);
+    data.normal = Vector3(-1.0f, 0.0f, 0.0f);
+    data.uv = Vector2(0.5f, 1.0f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(-0.5f, 0.5f, -0.5f);
-    data.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
-    data.uv = glm::vec2(0.25f, 1.0f);
+    data.position = Vector3(-0.5f, 0.5f, -0.5f);
+    data.normal = Vector3(-1.0f, 0.0f, 0.0f);
+    data.uv = Vector2(0.25f, 1.0f);
 
     vertexData.push_back(data);
 
     // Bottom
-    data.position = glm::vec3(-0.5f, -0.5f, 0.5f);
-    data.normal = glm::vec3(0.0f, -1.0f, 0.0f);
-    data.uv = glm::vec2(0.5f, 0.66f);
+    data.position = Vector3(-0.5f, -0.5f, 0.5f);
+    data.normal = Vector3(0.0f, -1.0f, 0.0f);
+    data.uv = Vector2(0.5f, 0.66f);
 
     vertexData.push_back(data);
     
-    data.position = glm::vec3(0.5f, -0.5f, 0.5f);
-    data.normal = glm::vec3(0.0f, -1.0f, 0.0f);
-    data.uv = glm::vec2(0.5f, 0.33f);
+    data.position = Vector3(0.5f, -0.5f, 0.5f);
+    data.normal = Vector3(0.0f, -1.0f, 0.0f);
+    data.uv = Vector2(0.5f, 0.33f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(-0.5f, -0.5f, -0.5f);
-    data.normal = glm::vec3(0.0f, -1.0f, 0.0f);
-    data.uv = glm::vec2(0.25f, 0.66f);
+    data.position = Vector3(-0.5f, -0.5f, -0.5f);
+    data.normal = Vector3(0.0f, -1.0f, 0.0f);
+    data.uv = Vector2(0.25f, 0.66f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(0.5f, -0.5f, -0.5f);
-    data.normal = glm::vec3(0.0f, -1.0f, 0.0f);
-    data.uv = glm::vec2(0.25f, 0.33f);
+    data.position = Vector3(0.5f, -0.5f, -0.5f);
+    data.normal = Vector3(0.0f, -1.0f, 0.0f);
+    data.uv = Vector2(0.25f, 0.33f);
 
     vertexData.push_back(data);
 
     // Top
-    data.position = glm::vec3(-0.5f, 0.5f, -0.5f);
-    data.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-    data.uv = glm::vec2(1.0f, 0.66f);
+    data.position = Vector3(-0.5f, 0.5f, -0.5f);
+    data.normal = Vector3(0.0f, 1.0f, 0.0f);
+    data.uv = Vector2(1.0f, 0.66f);
 
     vertexData.push_back(data);
     
-    data.position = glm::vec3(0.5f, 0.5f, -0.5f);
-    data.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-    data.uv = glm::vec2(1.0f, 0.33f);
+    data.position = Vector3(0.5f, 0.5f, -0.5f);
+    data.normal = Vector3(0.0f, 1.0f, 0.0f);
+    data.uv = Vector2(1.0f, 0.33f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(-0.5f, 0.5f, 0.5f);
-    data.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-    data.uv = glm::vec2(0.75f, 0.66f);
+    data.position = Vector3(-0.5f, 0.5f, 0.5f);
+    data.normal = Vector3(0.0f, 1.0f, 0.0f);
+    data.uv = Vector2(0.75f, 0.66f);
 
     vertexData.push_back(data);
 
-    data.position = glm::vec3(0.5f, 0.5f, 0.5f);
-    data.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-    data.uv = glm::vec2(0.75f, 0.33f);
+    data.position = Vector3(0.5f, 0.5f, 0.5f);
+    data.normal = Vector3(0.0f, 1.0f, 0.0f);
+    data.uv = Vector2(0.75f, 0.33f);
 
     vertexData.push_back(data);
     ////////
@@ -241,9 +241,9 @@ void ProceduralMesh::GeneratePlane(int resolution, float size, const std::shared
 
             VertexData currentVertex;
             
-            currentVertex.position = glm::vec3(currentPosX, 0.0f, currentPosZ);
-            currentVertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-            currentVertex.uv = glm::vec2((float)j / (float)resolution, (float)i / (float)resolution);
+            currentVertex.position = Vector3(currentPosX, 0.0f, currentPosZ);
+            currentVertex.normal = Vector3(0.0f, 1.0f, 0.0f);
+            currentVertex.uv = Vector2((float)j / (float)resolution, (float)i / (float)resolution);
 
             vertexData.push_back(currentVertex);
         }
@@ -279,27 +279,27 @@ void ProceduralMesh::GenerateSphere(int sectors, int stacks, float radius, const
     std::vector<VertexData> vertexData;
     std::vector<unsigned int> indices;
 
-    glm::vec3 vertPos;
-    const float stackStep  = glm::pi<float>() / static_cast<float>(stacks);
-    const float sectorStep = 2.0f * glm::pi<float>() / static_cast<float>(sectors);
+    Vector3 vertPos;
+    const float stackStep  = PI / static_cast<float>(stacks);
+    const float sectorStep = TWO_PI / static_cast<float>(sectors);
 
     // Generate vertex data
     for (int i = 0; i <= stacks; i++)
     {
-        const float stackAngle = (glm::pi<float>() * 0.5f) - (i * stackStep);
-        const float sectorRadius = radius * glm::cos(stackAngle);
-        vertPos.z = radius * glm::sin(stackAngle);
+        const float stackAngle = HALF_PI - (i * stackStep);
+        const float sectorRadius = radius * Cos(stackAngle);
+        vertPos.z = radius * Sin(stackAngle);
 
         for (int j = 0; j <= sectors; j++)
         {
-            vertPos.x = sectorRadius * glm::cos(j * sectorStep);
-            vertPos.y = sectorRadius * glm::sin(j * sectorStep);
+            vertPos.x = sectorRadius * Cos(j * sectorStep);
+            vertPos.y = sectorRadius * Sin(j * sectorStep);
 
             VertexData currentVertex;
 
-            currentVertex.position = glm::vec3(vertPos.x, vertPos.y, vertPos.z);
-            currentVertex.normal = glm::normalize(currentVertex.position);
-            currentVertex.uv = glm::vec2(static_cast<float>(j) / static_cast<float>(sectors), static_cast<float>(i) / static_cast<float>(stacks));
+            currentVertex.position = Vector3(vertPos.x, vertPos.y, vertPos.z);
+            currentVertex.normal = Vector3::Normalize(currentVertex.position);
+            currentVertex.uv = Vector2(static_cast<float>(j) / static_cast<float>(sectors), static_cast<float>(i) / static_cast<float>(stacks));
 
             vertexData.push_back(currentVertex);
         }
@@ -344,18 +344,18 @@ void ProceduralMesh::GenerateTangentsBitangents(const std::shared_ptr<Mesh>& tar
         VertexData& vert2 = targetMesh->vertexData[targetMesh->indices[i + 1]];
         VertexData& vert3 = targetMesh->vertexData[targetMesh->indices[i + 2]];
         
-        const glm::vec3 dPos1 = vert2.position - vert1.position;
-        const glm::vec3 dPos2 = vert3.position - vert1.position;
-        const glm::vec2 dUV1  = vert2.uv - vert1.uv;
-        const glm::vec2 dUV2  = vert3.uv - vert1.uv;
+        const Vector3 dPos1 = vert2.position - vert1.position;
+        const Vector3 dPos2 = vert3.position - vert1.position;
+        const Vector2 dUV1  = vert2.uv - vert1.uv;
+        const Vector2 dUV2  = vert3.uv - vert1.uv;
 
         const float invDet = 1.0f / (dUV1.x * dUV2.y - dUV1.y * dUV2.x);
 
-        glm::vec3 tangent = invDet * (dUV2.y * dPos1 - dUV1.y * dPos2);
-        glm::vec3 bitangent = invDet * (dUV1.x * dPos2 - dUV2.x * dPos1);
+        Vector3 tangent = invDet * (dUV2.y * dPos1 - dUV1.y * dPos2);
+        Vector3 bitangent = invDet * (dUV1.x * dPos2 - dUV2.x * dPos1);
 
-        tangent   = glm::normalize(tangent);
-        bitangent = glm::normalize(bitangent);
+        tangent   = tangent.Normalize();
+        bitangent = bitangent.Normalize();
 
         vert1.tangent   = tangent;
         vert1.bitangent = bitangent;

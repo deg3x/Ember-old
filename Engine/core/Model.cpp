@@ -98,7 +98,7 @@ namespace
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
         {
             VertexData vertex;
-            glm::vec3 vector;
+            Vector3 vector;
 
             vector.x = mesh->mVertices[i].x;
             vector.y = mesh->mVertices[i].y;
@@ -128,7 +128,7 @@ namespace
 
             if (mesh->mTextureCoords[0])
             {
-                glm::vec2 v;
+                Vector2 v;
 
                 v.x = mesh->mTextureCoords[0][i].x;
                 v.y = mesh->mTextureCoords[0][i].y;
@@ -136,7 +136,7 @@ namespace
             }
             else
             {
-                vertex.uv = glm::vec2(0.0f, 0.0f);
+                vertex.uv = Vector2(0.0f, 0.0f);
             }
 
             vertices.push_back(vertex);
@@ -182,7 +182,7 @@ namespace
         }
         else
         {
-            meshMat->SetProperty("albedo", glm::vec3(0.85f, 0.1f, 0.1f));
+            meshMat->SetProperty("albedo", Vector3(0.85f, 0.1f, 0.1f));
         }
         
         if (!normalMaps.empty())

@@ -24,22 +24,22 @@ struct MaterialProperty
         int intVal;
         bool boolVal;
         float floatVal;
-        glm::vec3 vector3Val;
-        glm::vec4 vector4Val;
-        glm::mat4x4 matrixVal;
+        Vector3 vector3Val;
+        Vector4 vector4Val;
+        Matrix4x4 matrixVal;
     };
 
     std::string name;
     PropertyValue value;
     PropertyType type;
 
-    MaterialProperty() = default;
+    MaterialProperty() : name(""), value({.intVal = 0}), type(PropertyType::INTEGER) {}
     MaterialProperty(const std::string& newName, int newValue) : name(newName), value({.intVal = newValue}), type(PropertyType::INTEGER) {}
     MaterialProperty(const std::string& newName, bool newValue) : name(newName), value({.boolVal = newValue}), type(PropertyType::BOOLEAN) {}
     MaterialProperty(const std::string& newName, float newValue) : name(newName), value({.floatVal = newValue}), type(PropertyType::FLOAT) {}
-    MaterialProperty(const std::string& newName, const glm::vec3& newValue) : name(newName), value({.vector3Val = newValue}), type(PropertyType::VECTOR3) {}
-    MaterialProperty(const std::string& newName, const glm::vec4& newValue) : name(newName), value({.vector4Val = newValue}), type(PropertyType::VECTOR4) {}
-    MaterialProperty(const std::string& newName, const glm::mat4x4& newValue) : name(newName), value({.matrixVal = newValue}), type(PropertyType::MATRIX4X4) {}
+    MaterialProperty(const std::string& newName, const Vector3& newValue) : name(newName), value({.vector3Val = newValue}), type(PropertyType::VECTOR3) {}
+    MaterialProperty(const std::string& newName, const Vector4& newValue) : name(newName), value({.vector4Val = newValue}), type(PropertyType::VECTOR4) {}
+    MaterialProperty(const std::string& newName, const Matrix4x4& newValue) : name(newName), value({.matrixVal = newValue}), type(PropertyType::MATRIX4X4) {}
 
     ////// Unordered set required functionality
     bool operator==(const MaterialProperty& other) const
@@ -98,9 +98,9 @@ public:
     void SetBool(const std::string& name, bool value) const;
     void SetInt(const std::string& name, int value) const;
     void SetFloat(const std::string& name, float value) const;
-    void SetVector3(const std::string& name, const glm::vec3& vector) const;
-    void SetVector4(const std::string& name, const glm::vec4& vector) const;
-    void SetMatrix4x4(const std::string& name, const glm::mat4x4& matrix) const;
+    void SetVector3(const std::string& name, const Vector3& vector) const;
+    void SetVector4(const std::string& name, const Vector4& vector) const;
+    void SetMatrix4x4(const std::string& name, const Matrix4x4& matrix) const;
 
     inline void SetShader(const std::shared_ptr<Shader>& newShader)
     {

@@ -17,7 +17,7 @@ public:
 private:
     bool isControllingCamera;
     std::shared_ptr<Object> viewportCamera;
-    glm::vec3 cameraFocus = glm::vec3(0.0f, 0.0f, 0.0f);
+    Vector3 cameraFocus = Vector3(0.0f, 0.0f, 0.0f);
     
 public:
     Viewport() = delete;

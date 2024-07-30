@@ -112,9 +112,9 @@ void Viewport::TickGuizmo()
     const float windowW    = ImGui::GetWindowWidth();
     const float windowH    = ImGui::GetWindowHeight();
 
-    glm::mat4x4 view = Camera::ActiveCamera->GetViewMatrix();
-    glm::mat4x4 proj = Camera::ActiveCamera->GetProjectionMatrix();
-    glm::mat4x4 id   = glm::mat4x4(1.0f);
+    Matrix4x4 view = Camera::ActiveCamera->GetViewMatrix();
+    Matrix4x4 proj = Camera::ActiveCamera->GetProjectionMatrix();
+    Matrix4x4 id   = Matrix4x4(1.0f);
     
     const std::shared_ptr<Hierarchy> hierarchyTab = std::dynamic_pointer_cast<Hierarchy>(editor->FindTabByType(TabType::HIERARCHY));
     const std::shared_ptr<Object> selected = hierarchyTab->SelectedObject.lock();
@@ -127,22 +127,21 @@ void Viewport::TickGuizmo()
         const bool isOrthographic = Camera::ActiveCamera->projectionType == CameraProjection::ORTHOGRAPHIC;
         ImGuizmo::SetOrthographic(isOrthographic);
 
-        glm::mat4x4 model = selected->transform->GetModelMatrix();
-        glm::mat4x4 delta;
+        Matrix4x4 model = selected->transform->GetModelMatrix();
+        Matrix4x4 delta;
 
         const bool shouldSnap = Input::GetKey(KEYCODE_LEFT_CONTROL);
         bool isModified = ImGuizmo::Manipulate(&view[0][0], &proj[0][0], operation, mode, &model[0][0], &delta[0][0], shouldSnap ? &snapValues[0] : nullptr);
 
         if (ImGuizmo::IsUsing() && isModified)
         {
-            glm::vec3 position;
-            glm::vec3 rotation;
-            glm::vec3 scale;
+            Vector3 position;
+            Vector3 rotation;
+            Vector3 scale;
             
-            glm::quat rotationQuat;
+            Quaternion rotationQuat;
 
             ImGuizmo::DecomposeMatrixToComponents(&delta[0][0], &position.x, &rotation.x, &scale.x);
-            
             
             switch(operation)
             {
@@ -150,7 +149,7 @@ void Viewport::TickGuizmo()
                 selected->transform->Translate(position);
                 break;
             case ImGuizmo::ROTATE:
-                rotationQuat = glm::radians(rotation);
+                rotationQuat = Quaternion(rotation * DEG2RAD);
                 selected->transform->Rotate(rotationQuat);
                 break;
             case ImGuizmo::SCALE:
@@ -166,7 +165,7 @@ void Viewport::TickGuizmo()
 
     constexpr float offsetX    = 20.0f;
     constexpr float offsetY    = 10.0f;
-    const float cubeDimension  = glm::clamp(windowW * 0.07f, 50.0f, 200.0f);
+    const float cubeDimension  = Clamp(windowW * 0.07f, 50.0f, 200.0f);
     const ImVec2 viewGizmoSize = {cubeDimension, cubeDimension};
     const ImVec2 viewGizmoPos  = {windowW - viewGizmoSize.x - offsetX, windowPos.y + 4 * style.FramePadding.y + ImGui::CalcTextSize("Viewport").y + offsetY};
         
@@ -202,14 +201,14 @@ void Viewport::CameraFreeMove()
     const MouseData mouse = Input::Mouse;
     const float rotSpeed  = mouse.sensitivity * Time::DeltaTime * CameraFreeSpeedRot;
 
-    glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
+    Vector3 offset = Vector3(0.0f, 0.0f, 0.0f);
 
     const float moveSpeedStep  = mouse.sensitivityScroll * Time::DeltaTime * CameraFreeSpeedMod;
     const float moveSpeedDelta = static_cast<float>(mouse.scrollDeltaYSmooth) * moveSpeedStep;
 
     if (moveSpeedDelta > FLT_EPSILON || moveSpeedDelta < -FLT_EPSILON)
     {
-        CameraFreeSpeedMove = glm::clamp(CameraFreeSpeedMove + moveSpeedDelta, 2.0f, 30.0f);
+        CameraFreeSpeedMove = Clamp(CameraFreeSpeedMove + moveSpeedDelta, 2.0f, 30.0f);
     }
         
     if (Input::GetKey(KEYCODE_W))
@@ -242,19 +241,19 @@ void Viewport::CameraFreeMove()
 
     const float angleYaw     = static_cast<float>(mouse.posDeltaX) * rotSpeed * -1.0f;
     const float anglePitch   = static_cast<float>(mouse.posDeltaY) * rotSpeed;
-    const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
-    const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
-    const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
-    const float sinHalfPitch = glm::sin(anglePitch * 0.5f);
+    const float cosHalfYaw   = Cos(angleYaw * 0.5f);
+    const float sinHalfYaw   = Sin(angleYaw * 0.5f);
+    const float cosHalfPitch = Cos(anglePitch * 0.5f);
+    const float sinHalfPitch = Sin(anglePitch * 0.5f);
 
-    const glm::vec3 rightVector = cameraTransform->GetRightVector();
+    const Vector3 rightVector = cameraTransform->GetRightVector();
 
-    const glm::quat rotationYaw   = glm::quat(cosHalfYaw, Transform::WorldUp * sinHalfYaw);
-    const glm::quat rotationPitch = glm::quat(cosHalfPitch, -rightVector * sinHalfPitch);
+    const Quaternion rotationYaw   = Quaternion(Transform::WorldUp * sinHalfYaw, cosHalfYaw);
+    const Quaternion rotationPitch = Quaternion(-rightVector * sinHalfPitch, cosHalfPitch);
 
     bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_RIGHT);
     bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_RIGHT);
-    applyPitch     &= glm::abs(glm::dot(Transform::WorldUp, glm::normalize(rotationPitch * cameraTransform->GetPosition()))) < 0.99f;
+    applyPitch     &= Abs(Vector3::Dot(Transform::WorldUp, (rotationPitch * cameraTransform->GetPosition()).Normalize())) < 0.99f;
 
     if (applyYaw)
     {
@@ -275,21 +274,21 @@ void Viewport::CameraOrbit() const
     
     const float angleYaw     = static_cast<float>(mouse.posDeltaX) * rotSpeed * -1.0f;
     const float anglePitch   = static_cast<float>(mouse.posDeltaY) * rotSpeed;
-    const float cosHalfYaw   = glm::cos(angleYaw * 0.5f);
-    const float sinHalfYaw   = glm::sin(angleYaw * 0.5f);
-    const float cosHalfPitch = glm::cos(anglePitch * 0.5f);
-    const float sinHalfPitch = glm::sin(anglePitch * 0.5f);
+    const float cosHalfYaw   = Cos(angleYaw * 0.5f);
+    const float sinHalfYaw   = Sin(angleYaw * 0.5f);
+    const float cosHalfPitch = Cos(anglePitch * 0.5f);
+    const float sinHalfPitch = Sin(anglePitch * 0.5f);
 
-    const glm::vec3 rightVector = cameraTransform->GetRightVector();
+    const Vector3 rightVector = cameraTransform->GetRightVector();
     
-    const glm::quat rotationYaw   = glm::quat(cosHalfYaw, Transform::WorldUp * sinHalfYaw);
-    const glm::quat rotationPitch = glm::quat(cosHalfPitch, -rightVector * sinHalfPitch);
+    const Quaternion rotationYaw   = Quaternion(Transform::WorldUp * sinHalfYaw, cosHalfYaw);
+    const Quaternion rotationPitch = Quaternion(-rightVector * sinHalfPitch, cosHalfPitch);
     
     bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_LEFT);
     bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_LEFT);
-    applyPitch     &= glm::abs(glm::dot(Transform::WorldUp, glm::normalize(rotationPitch * cameraTransform->GetPosition()))) < 0.99f;
+    applyPitch     &= Abs(Vector3::Dot(Transform::WorldUp, (rotationPitch * cameraTransform->GetPosition()).Normalize())) < 0.99f;
 
-    glm::vec3 newPosition = cameraTransform->GetPosition();
+    Vector3 newPosition = cameraTransform->GetPosition();
     
     if (applyYaw)
     {
@@ -310,7 +309,7 @@ void Viewport::CameraZoom() const
     const std::shared_ptr<Transform> cameraTransform = viewportCamera->transform;
     
     const MouseData mouse = Input::Mouse;
-    glm::vec3 newPosition = cameraTransform->GetPosition();
+    Vector3 newPosition = cameraTransform->GetPosition();
     
     constexpr float minZoomDistance  = 1.0f;
     constexpr float minDistanceSpeed = 5.0f;
@@ -318,16 +317,16 @@ void Viewport::CameraZoom() const
     constexpr float minDistanceMult  = 1.0f;
     constexpr float maxDistanceMult  = 5.0f;
     
-    const float speedDistMultDelta = glm::clamp((glm::length(cameraTransform->GetPosition()) - minDistanceSpeed) / (maxDistanceSpeed - minDistanceSpeed), 0.0f, 1.0f); 
+    const float speedDistMultDelta = Clamp(((cameraTransform->GetPosition()).Length() - minDistanceSpeed) / (maxDistanceSpeed - minDistanceSpeed), 0.0f, 1.0f); 
     const float speedDistanceMult  = speedDistMultDelta * maxDistanceMult + (1.0f - speedDistMultDelta) * minDistanceMult;
         
-    const float zoomSpeed         = mouse.sensitivityScroll * Time::DeltaTime * CameraZoomSpeed * speedDistanceMult;
-    const float distanceDelta     = static_cast<float>(mouse.scrollDeltaYSmooth) * zoomSpeed * -1.0f;
-    const glm::vec3 zoomDirection = glm::normalize(newPosition);
+    const float zoomSpeed       = mouse.sensitivityScroll * Time::DeltaTime * CameraZoomSpeed * speedDistanceMult;
+    const float distanceDelta   = static_cast<float>(mouse.scrollDeltaYSmooth) * zoomSpeed * -1.0f;
+    const Vector3 zoomDirection = newPosition.Normalize();
     
-    const bool applyDistance = glm::length(newPosition + zoomDirection * distanceDelta) > minZoomDistance;
+    const bool applyDistance = (newPosition + zoomDirection * distanceDelta).Length() > minZoomDistance;
     
-    newPosition = newPosition + (applyDistance ? zoomDirection * distanceDelta : glm::vec3(0.0));
+    newPosition = newPosition + (applyDistance ? zoomDirection * distanceDelta : Vector3());
 
     cameraTransform->SetPosition(newPosition);
 }

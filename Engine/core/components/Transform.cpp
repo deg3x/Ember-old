@@ -5,21 +5,21 @@
 
 Transform::Transform()
 {
-    position = glm::vec3(0.0f, 0.0f, 0.0f);
-    rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
-    scale    = glm::vec3(1.0f, 1.0f, 1.0f);
-    pivot    = glm::vec3(0.0f, 0.0f, 0.0f);
+    position = Vector3(0.0f, 0.0f, 0.0f);
+    rotation = Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+    scale    = Vector3(1.0f, 1.0f, 1.0f);
+    pivot    = Vector3(0.0f, 0.0f, 0.0f);
 }
 
-Transform::Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale)
+Transform::Transform(const Vector3& initPosition, const Quaternion& initRotation, const Vector3& initScale)
 {
     position = initPosition;
     rotation = initRotation;
     scale    = initScale;
-    pivot    = glm::vec3(0.0f, 0.0f, 0.0f);
+    pivot    = Vector3(0.0f, 0.0f, 0.0f);
 }
 
-Transform::Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale, const glm::vec3& initPivotOffset)
+Transform::Transform(const Vector3& initPosition, const Quaternion& initRotation, const Vector3& initScale, const Vector3& initPivotOffset)
 {
     position = initPosition;
     rotation = initRotation;
@@ -40,9 +40,9 @@ void Transform::Tick()
     UpdateLocalModelMatrix();
 }
 
-void Transform::Translate(const glm::vec3& translateValue)
+void Transform::Translate(const Vector3& translateValue)
 {
-    if (glm::all(glm::epsilonEqual(translateValue, glm::vec3(), 0.001f)))
+    if (translateValue.IsZero(0.001f))
     {
         return;
     }
@@ -51,21 +51,21 @@ void Transform::Translate(const glm::vec3& translateValue)
     isModelUpdated = false;
 }
 
-void Transform::Rotate(const glm::quat& rotateValue)
+void Transform::Rotate(const Quaternion& rotateValue)
 {
-    if (glm::all(glm::epsilonEqual(rotateValue, glm::quat(), 0.001f)))
+    if (rotateValue.IsZero(0.001f))
     {
         return;
     }
 
     rotation = rotateValue * rotation;
-    rotation = glm::normalize(rotation);
+    rotation = rotation.Renormalize();
     isModelUpdated = false;
 }
 
-void Transform::Scale(const glm::vec3& scaleValue)
+void Transform::Scale(const Vector3& scaleValue)
 {
-    if (glm::all(glm::epsilonEqual(scaleValue, glm::vec3(), 0.001f)))
+    if (scaleValue.IsZero(0.001f))
     {
         return;
     }
@@ -74,7 +74,7 @@ void Transform::Scale(const glm::vec3& scaleValue)
     isModelUpdated = false;
 }
 
-glm::mat4x4 Transform::GetModelMatrix(CoordSpace space) const
+Matrix4x4 Transform::GetModelMatrix(CoordSpace space) const
 {
     if (owner == nullptr || owner->GetParent() == nullptr || space == CoordSpace::LOCAL)
     {
@@ -84,31 +84,31 @@ glm::mat4x4 Transform::GetModelMatrix(CoordSpace space) const
     return owner->GetParent()->transform->localModelMatrix * localModelMatrix;
 }
 
-glm::vec3 Transform::GetWorldPosition() const
+Vector3 Transform::GetWorldPosition() const
 {
-    const glm::mat4x4 model = GetModelMatrix();
+    const Matrix4x4 model = GetModelMatrix();
 
     return {model[3][0], model[3][1], model[3][2]};
 }
 
-glm::vec3 Transform::GetForwardVector() const
+Vector3 Transform::GetForwardVector() const
 {
-    return glm::normalize(rotation * WorldForward);
+    return (rotation * WorldForward).Normalize();
 }
 
-glm::vec3 Transform::GetRightVector() const
+Vector3 Transform::GetRightVector() const
 {
-    return glm::normalize(rotation * -WorldRight);
+    return (rotation * -WorldRight).Normalize();
 }
 
-glm::vec3 Transform::GetUpVector() const
+Vector3 Transform::GetUpVector() const
 {
-    return glm::normalize(rotation * WorldUp);
+    return (rotation * WorldUp).Normalize();
 }
 
-void Transform::SetPosition(const glm::vec3& newPosition)
+void Transform::SetPosition(const Vector3& newPosition)
 {
-    if (glm::all(glm::epsilonEqual(position, newPosition, 0.001f)))
+    if (position.IsEqual(newPosition, 0.001f))
     {
         return;
     }
@@ -117,9 +117,9 @@ void Transform::SetPosition(const glm::vec3& newPosition)
     isModelUpdated = false;
 }
 
-void Transform::SetRotation(const glm::quat& newRotation)
+void Transform::SetRotation(const Quaternion& newRotation)
 {
-    if (glm::all(glm::epsilonEqual(rotation, newRotation, 0.001f)))
+    if (rotation.IsEqual(newRotation, 0.001f))
     {
         return;
     }
@@ -128,11 +128,11 @@ void Transform::SetRotation(const glm::quat& newRotation)
     isModelUpdated = false;
 }
 
-void Transform::SetRotationEuler(const glm::vec3& newRotation)
+void Transform::SetRotationEuler(const Vector3& newRotation)
 {
-    const glm::quat rotQuat(glm::radians(newRotation));
+    const Quaternion rotQuat(newRotation * DEG2RAD);
     
-    if (glm::all(glm::epsilonEqual(rotation, rotQuat, 0.001f)))
+    if (rotation.IsEqual(rotQuat, 0.001f))
     {
         return;
     }
@@ -141,9 +141,9 @@ void Transform::SetRotationEuler(const glm::vec3& newRotation)
     isModelUpdated = false;
 }
 
-void Transform::SetScale(const glm::vec3& newScale)
+void Transform::SetScale(const Vector3& newScale)
 {
-    if (glm::all(glm::epsilonEqual(scale, newScale, 0.001f)))
+    if (scale.IsEqual(newScale, 0.001f))
     {
         return;
     }
@@ -154,23 +154,19 @@ void Transform::SetScale(const glm::vec3& newScale)
 
 void Transform::UpdateLocalModelMatrix()
 {
-    const glm::vec3 rotEulerRad = glm::eulerAngles(rotation);
+    //model = glm::translate(model, position);
 
-    glm::mat4x4 model = glm::mat4x4(1.0f);
+    //model = glm::translate(model, pivot);
+    //model = glm::rotate(model, rotEulerRad.x, WorldRight);
+    //model = glm::rotate(model, rotEulerRad.y, WorldUp);
+    //model = glm::rotate(model, rotEulerRad.z, WorldForward);
+    //model = glm::translate(model, -pivot);
 
-    model = glm::translate(model, position);
+    //model = glm::scale(model, scale);
 
-    model = glm::translate(model, pivot);
-    model = glm::rotate(model, rotEulerRad.x, WorldRight);
-    model = glm::rotate(model, rotEulerRad.y, WorldUp);
-    model = glm::rotate(model, rotEulerRad.z, WorldForward);
-    model = glm::translate(model, -pivot);
-
-    model = glm::scale(model, scale);
-
-    localModelMatrix = model;
+    localModelMatrix = Matrix4x4::Model(position, rotation, scale, pivot);
 }
 
-const glm::vec3 Transform::WorldForward = glm::vec3(0.0f, 0.0f, 1.0f);
-const glm::vec3 Transform::WorldRight = glm::vec3(1.0f, 0.0f, 0.0f);
-const glm::vec3 Transform::WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+const Vector3 Transform::WorldForward = Vector3(0.0f, 0.0f, 1.0f);
+const Vector3 Transform::WorldRight = Vector3(1.0f, 0.0f, 0.0f);
+const Vector3 Transform::WorldUp = Vector3(0.0f, 1.0f, 0.0f);

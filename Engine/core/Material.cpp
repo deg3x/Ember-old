@@ -25,8 +25,8 @@ void Material::SetupShaderVariables(const Transform& objectTransform, const Came
 {
     shader->Use();
 
-    const glm::mat4x4 modelMatrix  = objectTransform.GetModelMatrix();
-    const glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(modelMatrix));
+    const Matrix4x4 modelMatrix  = objectTransform.GetModelMatrix();
+    const Matrix4x4 normalMatrix = modelMatrix.Inverse().Transpose();
 
     shader->SetMatrix4x4("model", modelMatrix);
     shader->SetMatrix4x4("view", camera.GetViewMatrix());
@@ -90,17 +90,17 @@ void Material::SetFloat(const std::string& name, float value) const
     shader->SetFloat(name, value);
 }
 
-void Material::SetVector3(const std::string& name, const glm::vec3& vector) const
+void Material::SetVector3(const std::string& name, const Vector3& vector) const
 {
     shader->SetVector3(name, vector);
 }
 
-void Material::SetVector4(const std::string& name, const glm::vec4& vector) const
+void Material::SetVector4(const std::string& name, const Vector4& vector) const
 {
     shader->SetVector4(name, vector);
 }
 
-void Material::SetMatrix4x4(const std::string& name, const glm::mat4x4& matrix) const
+void Material::SetMatrix4x4(const std::string& name, const Matrix4x4& matrix) const
 {
     shader->SetMatrix4x4(name, matrix);
 }

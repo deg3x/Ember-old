@@ -136,7 +136,7 @@ void Inspector::DrawTransform()
             ImGui::TableSetupColumn("##no_label", ImGuiTableColumnFlags_None, compColWidthSecondTransf);
 
             // FIX THESE BEFORE SUBMITTING
-            glm::vec3 placeholder;
+            Vector3 placeholder;
 
             placeholder = selection->transform->GetPosition();
             DrawTransformVector("Position", &placeholder);
@@ -158,7 +158,7 @@ void Inspector::DrawTransform()
     }
 }
 
-void Inspector::DrawTransformVector(const std::string& label, glm::vec3* vector)
+void Inspector::DrawTransformVector(const std::string& label, Vector3* vector)
 {
     ImGui::TableNextRow();
 
@@ -353,16 +353,16 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
     switch (lightComponent->type)
     {
     case LightType::DIRECTIONAL:
-        color   = glm::value_ptr(lightComponent->directional.color);
-        ambient = glm::value_ptr(lightComponent->directional.ambient);
+        color   = &lightComponent->directional.color.x;
+        ambient = &lightComponent->directional.ambient.x;
     
         DrawRowLabelColor3("Color", color);
         DrawRowLabelColor3("Ambient", ambient);
         DrawRowLabelDragFloat("Intensity", lightComponent->directional.intensity);
         break;
     case LightType::POINT:
-        color   = glm::value_ptr(lightComponent->point.color);
-        ambient = glm::value_ptr(lightComponent->point.ambient);
+        color   = &lightComponent->point.color.x;
+        ambient = &lightComponent->point.ambient.x;
     
         DrawRowLabelColor3("Color", color);
         DrawRowLabelColor3("Ambient", ambient);
@@ -372,8 +372,8 @@ void Inspector::DrawLightElements(const std::shared_ptr<Light>& lightComponent)
         DrawRowLabelDragFloat("Quadratic", lightComponent->point.quadraticAttenuation);
         break;
     case LightType::SPOTLIGHT:
-        color   = glm::value_ptr(lightComponent->spot.color);
-        ambient = glm::value_ptr(lightComponent->spot.ambient);
+        color   = &lightComponent->spot.color.x;
+        ambient = &lightComponent->spot.ambient.x;
     
         DrawRowLabelColor3("Color", color);
         DrawRowLabelColor3("Ambient", ambient);
@@ -544,7 +544,7 @@ void Inspector::DrawAddComponentButton()
 {
     const float buttonWidthMin = ImGui::CalcTextSize("Add component").x + 20.0f;
     const float buttonWidthMax = buttonWidthMin + 100.0f;
-    const float buttonWidth    = glm::clamp(ImGui::GetContentRegionAvail().x * 0.6f, buttonWidthMin, buttonWidthMax);
+    const float buttonWidth    = Clamp(ImGui::GetContentRegionAvail().x * 0.6f, buttonWidthMin, buttonWidthMax);
     
     const ImVec2 buttonSize = {buttonWidth, 30.0f};
     const float buttonPosX = (ImGui::GetContentRegionAvail().x - buttonSize.x) * 0.5f;
@@ -623,7 +623,7 @@ void Inspector::DrawRowLabelDragFloat(const std::string& label, float& target)
     ImGui::DragFloat(("##" + label).c_str(), &target, compDragFloatSpeed, 0, 0, "%.3f");
 }
 
-void Inspector::DrawRowLabelDragFloat3(const std::string& label, glm::vec3& target)
+void Inspector::DrawRowLabelDragFloat3(const std::string& label, Vector3& target)
 {
     DrawRowLabel(label);
 
@@ -637,7 +637,7 @@ void Inspector::DrawRowLabelDragFloat3(const std::string& label, glm::vec3& targ
     target = { intermediate[0], intermediate[1], intermediate[2] };
 }
 
-void Inspector::DrawRowLabelDragFloat4(const std::string& label, glm::vec4& target)
+void Inspector::DrawRowLabelDragFloat4(const std::string& label, Vector4& target)
 {
     DrawRowLabel(label);
 
@@ -689,7 +689,7 @@ void Inspector::DrawRowLabelTexture(const std::string& label, unsigned id)
     constexpr float imgMinSize = 60.0f;
     constexpr float imgMaxSize = 120.0f;
 
-    const float imgSize    = glm::clamp(ImGui::GetContentRegionAvail().x * 0.4f, imgMinSize, imgMaxSize);
+    const float imgSize    = Clamp(ImGui::GetContentRegionAvail().x * 0.4f, imgMinSize, imgMaxSize);
     const ImVec2 imgSize2D = { imgSize, imgSize };
 
     DrawRowLabel(label);

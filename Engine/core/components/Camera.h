@@ -25,6 +25,6 @@ public:
 public:
     Camera();
 
-    glm::mat4x4 GetViewMatrix() const;
-    glm::mat4x4 GetProjectionMatrix() const;
+    Matrix4x4 GetViewMatrix() const;
+    Matrix4x4 GetProjectionMatrix() const;
 };

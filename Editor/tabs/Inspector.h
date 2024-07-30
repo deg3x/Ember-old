@@ -37,7 +37,7 @@ private:
     void DrawHeader();
     void DrawComponents();
     void DrawTransform();
-    void DrawTransformVector(const std::string& label, glm::vec3* vector);
+    void DrawTransformVector(const std::string& label, Vector3* vector);
     void DrawCamera(const std::shared_ptr<Camera>& cameraComponent);
     void DrawCameraElements(const std::shared_ptr<Camera>& cameraComponent);
     void DrawLight(const std::shared_ptr<Light>& lightComponent);
@@ -52,8 +52,8 @@ private:
     void DrawRowLabelCheckbox(const std::string& label, bool& target);
     void DrawRowLabelDragInt(const std::string& label, int& target);
     void DrawRowLabelDragFloat(const std::string& label, float& target);
-    void DrawRowLabelDragFloat3(const std::string& label, glm::vec3& target);
-    void DrawRowLabelDragFloat4(const std::string& label, glm::vec4& target);
+    void DrawRowLabelDragFloat3(const std::string& label, Vector3& target);
+    void DrawRowLabelDragFloat4(const std::string& label, Vector4& target);
     void DrawRowLabelColor3(const std::string& label, float target[3]);
     void DrawRowLabelText(const std::string& label, const std::string& text);
     void DrawRowLabelTexture(const std::string& label, unsigned int id);

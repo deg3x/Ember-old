@@ -14,62 +14,62 @@ class ENGINE_API Transform : public Component
     MAKE_COMPONENT_TYPE(TRANSFORM)
 
 public:
-    static const glm::vec3 WorldForward;
-    static const glm::vec3 WorldRight;
-    static const glm::vec3 WorldUp;
+    static const Vector3 WorldForward;
+    static const Vector3 WorldRight;
+    static const Vector3 WorldUp;
     
 private:
-    glm::vec3 position;
-    glm::quat rotation;
-    glm::vec3 scale;
-    glm::vec3 pivot;
+    Vector3 position;
+    Quaternion rotation;
+    Vector3 scale;
+    Vector3 pivot;
 
 private:
     bool isModelUpdated = false;
-    glm::mat4x4 localModelMatrix = glm::mat4x4(1.0f);
+    Matrix4x4 localModelMatrix = Matrix4x4();
     
 public:
     Transform();
-    Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale);
-    Transform(const glm::vec3& initPosition, const glm::quat& initRotation, const glm::vec3& initScale, const glm::vec3& initPivotOffset);
+    Transform(const Vector3& initPosition, const Quaternion& initRotation, const Vector3& initScale);
+    Transform(const Vector3& initPosition, const Quaternion& initRotation, const Vector3& initScale, const Vector3& initPivotOffset);
     virtual ~Transform() = default;
 
     void Tick() override;
 
-    void Translate(const glm::vec3& translateValue);
-    void Rotate(const glm::quat& rotateValue);
-    void Scale(const glm::vec3& scaleValue);
+    void Translate(const Vector3& translateValue);
+    void Rotate(const Quaternion& rotateValue);
+    void Scale(const Vector3& scaleValue);
 
-    inline glm::vec3 GetPosition() const
+    inline Vector3 GetPosition() const
     {
         return position;
     }
 
-    inline glm::quat GetRotation() const
+    inline Quaternion GetRotation() const
     {
         return rotation;
     }
     
-    inline glm::vec3 GetRotationEuler() const
+    inline Vector3 GetRotationEuler() const
     {
-        return glm::degrees(glm::eulerAngles(rotation));
+        return rotation.ToEuler() * RAD2DEG;
     }
 
-    inline glm::vec3 GetScale() const
+    inline Vector3 GetScale() const
     {
         return scale;
     }
     
-    glm::mat4x4 GetModelMatrix(CoordSpace space = CoordSpace::WORLD) const;
-    glm::vec3 GetWorldPosition() const;
-    glm::vec3 GetForwardVector() const;
-    glm::vec3 GetRightVector() const;
-    glm::vec3 GetUpVector() const;
+    Matrix4x4 GetModelMatrix(CoordSpace space = CoordSpace::WORLD) const;
+    Vector3 GetWorldPosition() const;
+    Vector3 GetForwardVector() const;
+    Vector3 GetRightVector() const;
+    Vector3 GetUpVector() const;
 
-    void SetPosition(const glm::vec3& newPosition);
-    void SetRotation(const glm::quat& newRotation);
-    void SetRotationEuler(const glm::vec3& newRotation);
-    void SetScale(const glm::vec3& newScale);
+    void SetPosition(const Vector3& newPosition);
+    void SetRotation(const Quaternion& newRotation);
+    void SetRotationEuler(const Vector3& newRotation);
+    void SetScale(const Vector3& newScale);
 
 private:
     void UpdateLocalModelMatrix();

@@ -9,17 +9,17 @@ enum class LightType : uint8_t
 
 struct DirectionalLightData
 {
-    glm::vec3 color;
-    glm::vec3 ambient;
-    glm::vec3 direction;
+    Vector3 color;
+    Vector3 ambient;
+    Vector3 direction;
     float intensity;
 };
 
 struct PointLightData
 {
-    glm::vec3 color;
-    glm::vec3 ambient;
-    glm::vec3 position;
+    Vector3 color;
+    Vector3 ambient;
+    Vector3 position;
     float intensity;
     float constantAttenuation;
     float linearAttenuation;
@@ -28,10 +28,10 @@ struct PointLightData
 
 struct SpotLightData
 {
-    glm::vec3 color;
-    glm::vec3 ambient;
-    glm::vec3 position;
-    glm::vec3 direction;
+    Vector3 color;
+    Vector3 ambient;
+    Vector3 position;
+    Vector3 direction;
     float intensity;
     float constantAttenuation;
     float linearAttenuation;

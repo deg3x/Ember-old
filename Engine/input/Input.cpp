@@ -81,13 +81,14 @@ bool Input::GetMouseDrag(int mouseBtn)
     }
 }
 
-glm::dvec2 Input::GetMousePos()
+Vector2 Input::GetMousePos()
 {
-    glm::dvec2 mousePos;
+    double mousePosX;
+    double mousePosY;
 
-    glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
+    glfwGetCursorPos(Window::GetWindow(), &mousePosX, &mousePosY);
 
-    return mousePos;
+    return Vector2(static_cast<real>(mousePosX), static_cast<real>(mousePosY));
 }
 
 void Input::UpdateMouseData()
@@ -100,17 +101,18 @@ void Input::UpdateMouseData()
     Mouse.rightButtonPressed  = GetMouse(MOUSE_BTN_RIGHT);
     Mouse.middleButtonPressed = GetMouse(MOUSE_BTN_MIDDLE);
 
-    glm::dvec2 mousePos;
-    glfwGetCursorPos(Window::GetWindow(), &mousePos.x, &mousePos.y);
+    double mousePosX;
+    double mousePosY;
+    glfwGetCursorPos(Window::GetWindow(), &mousePosX, &mousePosY);
 
-    Mouse.posDeltaX  = mousePos.x - Mouse.posX;
-    Mouse.posDeltaY  = mousePos.y - Mouse.posY;
+    Mouse.posDeltaX  = mousePosX - Mouse.posX;
+    Mouse.posDeltaY  = mousePosY - Mouse.posY;
     
-    Mouse.posX = mousePos.x;
-    Mouse.posY = mousePos.y;
+    Mouse.posX = mousePosX;
+    Mouse.posY = mousePosY;
 
     // Reset scroll delta. Will be updated in glfwPollEvents() that gets called after UpdateMouseData().
-    float smoothing = glm::clamp(currentScrollResetTimer / scrollResetTimer, 0.0f, 1.0f);
+    float smoothing = Saturate(currentScrollResetTimer / scrollResetTimer);
     smoothing *= smoothing;
     
     Mouse.scrollDeltaX       = 0.0f;

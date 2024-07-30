@@ -9,6 +9,13 @@
 #include <type_traits>
 #include <unordered_set>
 
-#include "glm/glm.hpp"
-#include "glm/gtc/constants.hpp"
-#include "glm/gtc/type_ptr.hpp"
+//#include "glm/glm.hpp"
+//#include "glm/gtc/constants.hpp"
+//#include "glm/gtc/type_ptr.hpp"
+
+#include "math/Math.h"
+#include "math/vector/Vector2.h"
+#include "math/vector/Vector3.h"
+#include "math/vector/Vector4.h"
+#include "math/matrix/Matrix4x4.h"
+#include "math/quaternion/Quaternion.h"
