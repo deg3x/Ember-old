@@ -365,7 +365,7 @@ Matrix4x4 Matrix4x4::Perspective(real fovX, real aspectRatio, real near, real fa
     ret[0][0] = invHalfFovTan;
     ret[1][1] = invHalfFovTan * invAspectRatio;
     ret[2][2] = (far + near) / farMinusNear;
-    ret[2][3] = static_cast<real>(-1.0);
+    ret[2][3] = static_cast<real>(1.0);
     ret[3][2] = static_cast<real>(-2.0) * far * near / farMinusNear;
 
     return ret;
