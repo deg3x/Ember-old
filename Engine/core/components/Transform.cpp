@@ -130,7 +130,7 @@ void Transform::SetRotation(const Quaternion& newRotation)
 
 void Transform::SetRotationEuler(const Vector3& newRotation)
 {
-    const Quaternion rotQuat(newRotation * DEG2RAD);
+    const Quaternion rotQuat = Quaternion::FromEuler(newRotation * DEG2RAD);
     
     if (rotation.IsEqual(rotQuat, 0.001f))
     {
