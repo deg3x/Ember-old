@@ -335,19 +335,19 @@ Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vec
 
     Matrix4x4 ret = Matrix4x4();
 
-    ret[0][0] = right.x;
-    ret[0][1] = localUp.x;
-    ret[0][2] = forward.x;
+    ret[0][0] = -right.x;
+    ret[0][1] =  localUp.x;
+    ret[0][2] =  forward.x;
     
-    ret[1][0] = right.y;
-    ret[1][1] = localUp.y;
-    ret[1][2] = forward.y;
+    ret[1][0] = -right.y;
+    ret[1][1] =  localUp.y;
+    ret[1][2] =  forward.y;
     
-    ret[2][0] = right.z;
-    ret[2][1] = localUp.z;
-    ret[2][2] = forward.z;
+    ret[2][0] = -right.z;
+    ret[2][1] =  localUp.z;
+    ret[2][2] =  forward.z;
 
-    ret[3][0] = -Vector3::Dot(right, eye);
+    ret[3][0] =  Vector3::Dot(right, eye);
     ret[3][1] = -Vector3::Dot(localUp, eye);
     ret[3][2] = -Vector3::Dot(forward, eye);
 
