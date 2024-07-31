@@ -49,8 +49,8 @@ void Viewport::Tick()
     height = viewportSize.y;
     
     Renderer::SetViewport(0, 0, static_cast<int>(width), static_cast<int>(height));
-    
-    if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && !ImGuizmo::IsOver() && !ImGuizmo::IsUsing())
+
+    if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && !ImGuizmo::IsUsing())
     {
         TickViewportCamera();
     }
