@@ -250,10 +250,19 @@ Quaternion& Quaternion::operator-=(const Quaternion& rhs)
 
 Quaternion& Quaternion::operator*=(const Quaternion& rhs)
 {
-    w = w * rhs.w - x * rhs.x - y * rhs.y - z * rhs.z;
-    x = w * rhs.x + x * rhs.w + y * rhs.z - z * rhs.y;
-    y = w * rhs.y - x * rhs.z + y * rhs.w + z * rhs.x;
-    z = w * rhs.z + x * rhs.y - y * rhs.x + z * rhs.w;
+    Quaternion result;
+
+    result.w = w * rhs.w - x * rhs.x - y * rhs.y - z * rhs.z;
+    result.x = w * rhs.x + x * rhs.w + y * rhs.z - z * rhs.y;
+    result.y = w * rhs.y - x * rhs.z + y * rhs.w + z * rhs.x;
+    result.z = w * rhs.z + x * rhs.y - y * rhs.x + z * rhs.w;
+
+    w = result.w;
+    x = result.x;
+    y = result.y;
+    z = result.z;
+
+    *this = Renormalize(*this);
 
     return *this;
 }

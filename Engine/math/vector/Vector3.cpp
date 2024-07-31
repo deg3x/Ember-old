@@ -69,7 +69,7 @@ Vector3 Vector3::Cross(const Vector3& lhs, const Vector3& rhs)
     Vector3 ret;
 
     ret.x = lhs.y * rhs.z - rhs.y * lhs.z;
-    ret.y = lhs.x * rhs.z - rhs.x * lhs.z;
+    ret.y = rhs.x * lhs.z - lhs.x * rhs.z;
     ret.z = lhs.x * rhs.y - rhs.x * lhs.y;
 
     return ret;
