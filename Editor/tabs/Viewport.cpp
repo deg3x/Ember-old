@@ -149,7 +149,7 @@ void Viewport::TickGuizmo()
                 selected->transform->Translate(position);
                 break;
             case ImGuizmo::ROTATE:
-                rotationQuat = Quaternion(rotation * DEG2RAD);
+                rotationQuat = Quaternion::FromEuler(rotation * DEG2RAD);
                 selected->transform->Rotate(rotationQuat);
                 break;
             case ImGuizmo::SCALE:
