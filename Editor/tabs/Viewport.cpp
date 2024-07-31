@@ -239,17 +239,13 @@ void Viewport::CameraFreeMove()
     cameraFocus += offset;
     cameraTransform->Translate(offset);
 
-    const float angleYaw     = static_cast<float>(mouse.posDeltaX) * rotSpeed * -1.0f;
-    const float anglePitch   = static_cast<float>(mouse.posDeltaY) * rotSpeed;
-    const float cosHalfYaw   = Cos(angleYaw * 0.5f);
-    const float sinHalfYaw   = Sin(angleYaw * 0.5f);
-    const float cosHalfPitch = Cos(anglePitch * 0.5f);
-    const float sinHalfPitch = Sin(anglePitch * 0.5f);
+    const float angleYaw   = static_cast<float>(mouse.posDeltaX) * rotSpeed * -1.0f;
+    const float anglePitch = static_cast<float>(mouse.posDeltaY) * rotSpeed;
 
     const Vector3 rightVector = cameraTransform->GetRightVector();
 
-    const Quaternion rotationYaw   = Quaternion(Transform::WorldUp * sinHalfYaw, cosHalfYaw);
-    const Quaternion rotationPitch = Quaternion(-rightVector * sinHalfPitch, cosHalfPitch);
+    const Quaternion rotationYaw   = Quaternion(Transform::WorldUp, angleYaw);
+    const Quaternion rotationPitch = Quaternion(-rightVector, anglePitch);
 
     bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_RIGHT);
     bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_RIGHT);
@@ -270,19 +266,21 @@ void Viewport::CameraOrbit() const
     const std::shared_ptr<Transform> cameraTransform = viewportCamera->transform;
     
     const MouseData mouse = Input::Mouse;
+
+    if (Abs(static_cast<real>(mouse.posDeltaX)) < EPSILON && Abs(static_cast<real>(mouse.posDeltaY)) < EPSILON)
+    {
+        return;
+    }
+    
     const float rotSpeed  = mouse.sensitivity * Time::DeltaTime * CameraOrbitSpeed;
     
-    const float angleYaw     = static_cast<float>(mouse.posDeltaX) * rotSpeed * -1.0f;
-    const float anglePitch   = static_cast<float>(mouse.posDeltaY) * rotSpeed;
-    const float cosHalfYaw   = Cos(angleYaw * 0.5f);
-    const float sinHalfYaw   = Sin(angleYaw * 0.5f);
-    const float cosHalfPitch = Cos(anglePitch * 0.5f);
-    const float sinHalfPitch = Sin(anglePitch * 0.5f);
+    const float angleYaw   = static_cast<float>(mouse.posDeltaX) * rotSpeed * -1.0f;
+    const float anglePitch = static_cast<float>(mouse.posDeltaY) * rotSpeed;
 
     const Vector3 rightVector = cameraTransform->GetRightVector();
     
-    const Quaternion rotationYaw   = Quaternion(Transform::WorldUp * sinHalfYaw, cosHalfYaw);
-    const Quaternion rotationPitch = Quaternion(-rightVector * sinHalfPitch, cosHalfPitch);
+    const Quaternion rotationYaw   = Quaternion(Transform::WorldUp, angleYaw);
+    const Quaternion rotationPitch = Quaternion(-rightVector, anglePitch);
     
     bool applyYaw   = Input::GetMouseDrag(MOUSE_BTN_LEFT);
     bool applyPitch = Input::GetMouseDrag(MOUSE_BTN_LEFT);

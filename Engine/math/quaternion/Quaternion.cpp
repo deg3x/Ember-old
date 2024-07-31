@@ -262,8 +262,6 @@ Quaternion& Quaternion::operator*=(const Quaternion& rhs)
     y = result.y;
     z = result.z;
 
-    *this = Renormalize(*this);
-
     return *this;
 }
 

@@ -7,9 +7,9 @@ class FrameBuffer;
 class Viewport : public EditorTab
 {
 public:
-    inline static constexpr float CameraFreeSpeedRot = 3.0f;
+    inline static constexpr float CameraFreeSpeedRot = 2.0f;
     inline static constexpr float CameraFreeSpeedMod = 1.0f;
-    inline static constexpr float CameraOrbitSpeed   = 5.0f;
+    inline static constexpr float CameraOrbitSpeed   = 3.0f;
     inline static constexpr float CameraZoomSpeed    = 3.0f;
     
     inline static float CameraFreeSpeedMove = 5.0f;
