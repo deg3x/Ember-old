@@ -41,8 +41,8 @@ void ProceduralMesh::GenerateQuad(const std::shared_ptr<Mesh>& targetMesh)
     indices.push_back(2);
     indices.push_back(3);
 
+    GenerateTangentsBitangents(vertexData, indices);
     targetMesh->SetMeshData(vertexData, indices);
-    GenerateTangentsBitangents(targetMesh);
 }
 
 void ProceduralMesh::GenerateCube(const std::shared_ptr<Mesh>& targetMesh)
@@ -215,8 +215,8 @@ void ProceduralMesh::GenerateCube(const std::shared_ptr<Mesh>& targetMesh)
         indices.push_back(2 + i * 4);
     }
 
+    GenerateTangentsBitangents(vertexData, indices);
     targetMesh->SetMeshData(vertexData, indices);
-    GenerateTangentsBitangents(targetMesh);
 }
 
 void ProceduralMesh::GeneratePlane(int resolution, float size, const std::shared_ptr<Mesh>& targetMesh)
@@ -270,8 +270,8 @@ void ProceduralMesh::GeneratePlane(int resolution, float size, const std::shared
         }
     }
 
+    GenerateTangentsBitangents(vertexData, indices);
     targetMesh->SetMeshData(vertexData, indices);
-    GenerateTangentsBitangents(targetMesh);
 }
 
 void ProceduralMesh::GenerateSphere(int sectors, int stacks, float radius, const std::shared_ptr<Mesh>& targetMesh)
@@ -332,17 +332,17 @@ void ProceduralMesh::GenerateSphere(int sectors, int stacks, float radius, const
         }
     }
 
+    GenerateTangentsBitangents(vertexData, indices);
     targetMesh->SetMeshData(vertexData, indices);
-    GenerateTangentsBitangents(targetMesh);
 }
 
-void ProceduralMesh::GenerateTangentsBitangents(const std::shared_ptr<Mesh>& targetMesh)
+void ProceduralMesh::GenerateTangentsBitangents(std::vector<VertexData>& vertexData, const std::vector<unsigned int>& indices)
 {
-    for (size_t i = 0; i < targetMesh->indices.size(); i += 3)
+    for (size_t i = 0; i < indices.size(); i += 3)
     {
-        VertexData& vert1 = targetMesh->vertexData[targetMesh->indices[i]];
-        VertexData& vert2 = targetMesh->vertexData[targetMesh->indices[i + 1]];
-        VertexData& vert3 = targetMesh->vertexData[targetMesh->indices[i + 2]];
+        VertexData& vert1 = vertexData[indices[i]];
+        VertexData& vert2 = vertexData[indices[i + 1]];
+        VertexData& vert3 = vertexData[indices[i + 2]];
         
         const Vector3 dPos1 = vert2.position - vert1.position;
         const Vector3 dPos2 = vert3.position - vert1.position;

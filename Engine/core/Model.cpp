@@ -227,8 +227,6 @@ namespace
             meshMat->SetProperty("hasMapEmission", true);
         }
 
-        std::shared_ptr<Mesh> ret = std::make_shared<Mesh>(vertices, indices, meshMat);
-
         if (!hasNormals)
         {
             Logger::Log(LogCategory::WARNING, "Imported mesh contains no normals", "Model::ProcessMesh");
@@ -237,9 +235,10 @@ namespace
         if (!hasTangents)
         {
             Logger::Log(LogCategory::WARNING, "Imported mesh contains no tangents/bitangents. Attempting to generate...", "Model::ProcessMesh");
-            ProceduralMesh::GenerateTangentsBitangents(ret);
+            ProceduralMesh::GenerateTangentsBitangents(vertices, indices);
         }
         
+        std::shared_ptr<Mesh> ret = std::make_shared<Mesh>(vertices, indices, meshMat);
         loadedMeshes.push_back(ret);
     }
 
