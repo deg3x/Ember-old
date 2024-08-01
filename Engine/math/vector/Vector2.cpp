@@ -22,6 +22,13 @@ bool Vector2::IsZero(real error) const
         && ApproxZero(y, error);
 }
 
+std::string Vector2::ToString() const
+{
+    return "{ "
+        + std::to_string(x) + ", "
+        + std::to_string(y) + " }";
+}
+
 real Vector2::Dot(const Vector2& lhs, const Vector2& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y;

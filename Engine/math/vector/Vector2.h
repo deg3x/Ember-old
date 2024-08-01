@@ -14,6 +14,8 @@ struct ENGINE_API Vector2
     
     bool IsEqual(const Vector2& vector, real error = EPSILON) const;
     bool IsZero(real error = EPSILON) const;
+    
+    std::string ToString() const;
 
     static real Dot(const Vector2& lhs, const Vector2& rhs);
     static real Length(const Vector2& vector);

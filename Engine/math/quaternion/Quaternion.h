@@ -31,6 +31,8 @@ struct ENGINE_API Quaternion
     bool IsEqual(const Quaternion& quat, real error = EPSILON) const;
     bool IsZero(real error = EPSILON) const;
 
+    std::string ToString() const;
+
     static real Dot(const Quaternion& lhs, const Quaternion& rhs);
     static real Length(const Quaternion& quat);
     static real LengthSqr(const Quaternion& quat);

@@ -49,6 +49,14 @@ Vector3 Vector3::Rotate(const Vector3& axis, real angle) const
     return quat.RotateVector(*this);
 }
 
+std::string Vector3::ToString() const
+{
+    return "{ "
+        + std::to_string(x) + ", "
+        + std::to_string(y) + ", "
+        + std::to_string(z) + " }";
+}
+
 real Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;

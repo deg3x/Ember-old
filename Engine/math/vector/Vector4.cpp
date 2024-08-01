@@ -36,6 +36,15 @@ bool Vector4::IsZero(real error) const
         && ApproxZero(w, error);
 }
 
+std::string Vector4::ToString() const
+{
+    return "{ "
+        + std::to_string(x) + ", "
+        + std::to_string(y) + ", "
+        + std::to_string(z) + ", "
+        + std::to_string(w) + " }";
+}
+
 real Vector4::Dot(const Vector4& lhs, const Vector4& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;

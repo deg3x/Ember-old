@@ -22,6 +22,8 @@ struct ENGINE_API Vector3
     bool IsZero(real error = EPSILON) const;
     
     Vector3 Rotate(const Vector3& axis, real angle) const;
+    
+    std::string ToString() const;
 
     static real Dot(const Vector3& lhs, const Vector3& rhs);
     static real Length(const Vector3& vector);

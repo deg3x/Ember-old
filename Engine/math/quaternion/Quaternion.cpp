@@ -154,6 +154,15 @@ bool Quaternion::IsZero(float error) const
         && ApproxZero(z, error);
 }
 
+std::string Quaternion::ToString() const
+{
+    return "{ "
+        + std::to_string(w) + ", "
+        + std::to_string(x) + ", "
+        + std::to_string(y) + ", "
+        + std::to_string(z) + " }";
+}
+
 real Quaternion::Dot(const Quaternion& lhs, const Quaternion& rhs)
 {
     return lhs.w * rhs.w + lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
