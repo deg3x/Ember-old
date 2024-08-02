@@ -40,25 +40,10 @@ public:
     void Rotate(const Quaternion& rotateValue);
     void Scale(const Vector3& scaleValue);
 
-    inline Vector3 GetPosition() const
-    {
-        return position;
-    }
-
-    inline Quaternion GetRotation() const
-    {
-        return rotation;
-    }
-    
-    inline Vector3 GetRotationEuler() const
-    {
-        return rotation.ToEuler() * RAD2DEG;
-    }
-
-    inline Vector3 GetScale() const
-    {
-        return scale;
-    }
+    Vector3 GetPosition(CoordSpace space = CoordSpace::LOCAL) const;
+    Quaternion GetRotation(CoordSpace space = CoordSpace::LOCAL) const;
+    Vector3 GetRotationEuler(CoordSpace space = CoordSpace::LOCAL) const;
+    Vector3 GetScale(CoordSpace space = CoordSpace::LOCAL) const;
     
     Matrix4x4 GetModelMatrix(CoordSpace space = CoordSpace::WORLD) const;
     Vector3 GetWorldPosition() const;

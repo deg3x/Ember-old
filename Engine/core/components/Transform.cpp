@@ -74,6 +74,59 @@ void Transform::Scale(const Vector3& scaleValue)
     isModelUpdated = false;
 }
 
+Vector3 Transform::GetPosition(CoordSpace space) const
+{
+    if (space == CoordSpace::LOCAL)
+    {
+        return position;
+    }
+
+    const std::shared_ptr<Object> parent = owner->GetParent();
+    if (parent == nullptr)
+    {
+        return position;
+    }
+
+    return parent->transform->GetPosition(space) + position;
+}
+
+Quaternion Transform::GetRotation(CoordSpace space) const
+{
+    if (space == CoordSpace::LOCAL)
+    {
+        return rotation;
+    }
+    
+    const std::shared_ptr<Object> parent = owner->GetParent();
+    if (parent == nullptr)
+    {
+        return rotation;
+    }
+
+    return parent->transform->GetRotation(space) * rotation;
+}
+
+Vector3 Transform::GetRotationEuler(CoordSpace space) const
+{
+    return GetRotation(space).ToEuler() * RAD2DEG;
+}
+
+Vector3 Transform::GetScale(CoordSpace space) const
+{
+    if (space == CoordSpace::LOCAL)
+    {
+        return scale;
+    }
+    
+    const std::shared_ptr<Object> parent = owner->GetParent();
+    if (parent == nullptr)
+    {
+        return scale;
+    }
+
+    return parent->transform->GetScale(space) * scale;
+}
+
 Matrix4x4 Transform::GetModelMatrix(CoordSpace space) const
 {
     if (owner == nullptr || owner->GetParent() == nullptr || space == CoordSpace::LOCAL)
