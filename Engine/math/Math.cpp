@@ -75,6 +75,21 @@ real Atan2(real sinAngle, real cosAngle)
     return glm::atan(sinAngle, cosAngle);
 }
 
+real AngleWrap(real angle)
+{
+    while (angle < TWO_PI)
+    {
+        angle += TWO_PI;
+    }
+    
+    while (angle > TWO_PI)
+    {
+        angle -= TWO_PI;
+    }
+
+    return angle;
+}
+
 bool ApproxZero(real value, real error)
 {
     return (value > -error && value < error);
