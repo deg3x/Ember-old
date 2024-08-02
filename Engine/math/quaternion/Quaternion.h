@@ -95,7 +95,7 @@ inline Quaternion operator/(const Quaternion& lhs, const Quaternion& rhs)
 
 inline Vector3 operator*(const Quaternion& lhs, const Vector3& rhs)
 {
-    const Vector3 ret = Vector3(lhs * Quaternion(rhs) * lhs.Inverse());
+    const Vector3 ret = Vector3(lhs * Quaternion(rhs) * lhs.Conjugate());
 
     return ret;
 }

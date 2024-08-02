@@ -40,14 +40,22 @@ void Transform::Tick()
     UpdateLocalModelMatrix();
 }
 
-void Transform::Translate(const Vector3& translateValue)
+void Transform::Translate(const Vector3& translateValue, CoordSpace space)
 {
     if (translateValue.IsZero(0.001f))
     {
         return;
     }
 
-    position += translateValue;
+    Vector3 translate = translateValue;
+    
+    if (space == CoordSpace::WORLD && owner->GetParent() != nullptr)
+    {
+        const Quaternion parentRot = owner->GetParent()->transform->GetRotation(CoordSpace::WORLD);
+        translate = parentRot.Conjugate() * translateValue;
+    }
+
+    position += translate;
     isModelUpdated = false;
 }
 
@@ -58,17 +66,15 @@ void Transform::Rotate(const Quaternion& rotateValue, CoordSpace space)
         return;
     }
 
-    if (space == CoordSpace::LOCAL || owner->GetParent() == nullptr)
-    {
-        rotation = rotateValue * rotation;
-    }
-    else if (space == CoordSpace::WORLD)
+    Quaternion rotate = rotateValue;
+    
+    if (space == CoordSpace::WORLD && owner->GetParent() != nullptr)
     {
         const Quaternion parentRot = owner->GetParent()->transform->GetRotation(CoordSpace::WORLD);
-        
-        rotation = parentRot.Conjugate() * rotateValue * parentRot * rotation;
+        rotate = parentRot.Conjugate() * rotateValue * parentRot;
     }
 
+    rotation = rotate * rotation;
     rotation = rotation.Renormalize();
     isModelUpdated = false;
 }
