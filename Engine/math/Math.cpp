@@ -1,7 +1,7 @@
 #include "engine_pch.h"
 #include "Math.h"
 
-#include "glm/glm.hpp"
+#include <cmath>
 
 static real FastCosZeroToHalfPi(real angle);
 
@@ -27,9 +27,7 @@ real Sign(real value)
 
 real Sqrt(real value)
 {
-    // Shameless implementation
-    // Change in the future
-    return glm::sqrt(value);
+    return std::sqrt(value);
 }
 
 real FastInvSqrtApproxOne(real value)
@@ -43,37 +41,37 @@ real FastInvSqrtApproxOne(real value)
 
 real Sin(real angle)
 {
-    return glm::sin(angle);
+    return std::sin(angle);
 }
 
 real Cos(real angle)
 {
-    return glm::cos(angle);
+    return std::cos(angle);
 }
 
 real Tan(real angle)
 {
-    return glm::tan(angle);
+    return std::tan(angle);
 }
 
 real Asin(real sinAngle)
 {
-    return glm::asin(sinAngle);
+    return std::asin(sinAngle);
 }
 
 real Acos(real cosAngle)
 {
-    return glm::acos(cosAngle);
+    return std::acos(cosAngle);
 }
 
 real Atan(real tanAngle)
 {
-    return glm::atan(tanAngle);
+    return std::atan(tanAngle);
 }
 
 real Atan2(real sinAngle, real cosAngle)
 {
-    return glm::atan(sinAngle, cosAngle);
+    return std::atan2(sinAngle, cosAngle);
 }
 
 real FastSin(real angle)
