@@ -81,7 +81,7 @@ Matrix4x4 Transform::GetModelMatrix(CoordSpace space) const
         return localModelMatrix;
     }
 
-    return owner->GetParent()->transform->localModelMatrix * localModelMatrix;
+    return owner->GetParent()->transform->GetModelMatrix() * localModelMatrix;
 }
 
 Vector3 Transform::GetWorldPosition() const
