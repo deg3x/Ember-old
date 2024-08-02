@@ -17,7 +17,6 @@ Only 64-bit targets are supported.
 The following libraries are used (and are already included):
 * **GLFW** is used for managing the running windows.
 * **OpenGL** (4.1) is the main graphics API (may be replaced by a modern API/RHI).
-* **GLM** is used as the base mathematics library (may be replaced with a custom solution in the future).
 * The project uses the **Premake** (v5.0.0-beta2) build system.
 
 Precompiled Premake binaries for Windows and OS X are also included.
@@ -37,6 +36,7 @@ There is also a command to clean the generated solution/projects:
 ![Alt text](./Data/images/engine_media.png "Engine")
 
 ## Feature List
+- [X] Custom mathematics library
 - [x] Multiple textures (diffuse, normals, etc.)
 - [ ] Shadows
 - [x] Cubemaps
