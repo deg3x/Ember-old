@@ -38,6 +38,8 @@ real ENGINE_API Asin(real sinAngle);
 real ENGINE_API Acos(real cosAngle);
 real ENGINE_API Atan(real tanAngle);
 real ENGINE_API Atan2(real sinAngle, real cosAngle);
+real ENGINE_API FastSin(real angle);
+real ENGINE_API FastCos(real angle);
 
 real ENGINE_API AngleWrap(real angle);
 

@@ -3,6 +3,8 @@
 
 #include "glm/glm.hpp"
 
+static real FastCosZeroToHalfPi(real angle);
+
 real Abs(real value)
 {
     return value < 0.0 ? -value : value;
@@ -49,7 +51,6 @@ real Cos(real angle)
     return glm::cos(angle);
 }
 
-
 real Tan(real angle)
 {
     return glm::tan(angle);
@@ -73,6 +74,31 @@ real Atan(real tanAngle)
 real Atan2(real sinAngle, real cosAngle)
 {
     return glm::atan(sinAngle, cosAngle);
+}
+
+real FastSin(real angle)
+{
+    return Cos(angle - HALF_PI);
+}
+
+real FastCos(real angle)
+{
+    const real angleWrapped = AngleWrap(angle);
+    
+    if (angleWrapped < HALF_PI)
+    {
+        return FastCosZeroToHalfPi(angleWrapped);
+    }
+    if (angleWrapped < PI)
+    {
+        return -FastCosZeroToHalfPi(PI - angleWrapped);
+    }
+    if (angleWrapped < static_cast<real>(3) * HALF_PI)
+    {
+        return -FastCosZeroToHalfPi(angleWrapped - PI);
+    }
+
+    return FastCosZeroToHalfPi(TWO_PI - angleWrapped);
 }
 
 real AngleWrap(real angle)
@@ -118,4 +144,13 @@ real Clamp(real value, real rangeMin, real rangeMax)
 real Saturate(real value)
 {
     return Clamp(value, 0.0, 1.0);
+}
+
+real FastCosZeroToHalfPi(real angle)
+{
+    constexpr real a0 = static_cast<real>(1);
+    constexpr real a2 = static_cast<real>(2) * INV_PI - static_cast<real>(12) * INV_PI_SQR;
+    constexpr real a3 = static_cast<real>(16) * INV_PI_CUBE - static_cast<real>(4) * INV_PI_SQR;
+
+    return a0 + a2 * angle * angle + a3 * angle * angle * angle;
 }
