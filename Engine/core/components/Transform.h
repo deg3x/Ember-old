@@ -37,7 +37,7 @@ public:
     void Tick() override;
 
     void Translate(const Vector3& translateValue);
-    void Rotate(const Quaternion& rotateValue);
+    void Rotate(const Quaternion& rotateValue, CoordSpace space = CoordSpace::LOCAL);
     void Scale(const Vector3& scaleValue);
 
     Vector3 GetPosition(CoordSpace space = CoordSpace::LOCAL) const;

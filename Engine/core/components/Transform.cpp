@@ -51,14 +51,24 @@ void Transform::Translate(const Vector3& translateValue)
     isModelUpdated = false;
 }
 
-void Transform::Rotate(const Quaternion& rotateValue)
+void Transform::Rotate(const Quaternion& rotateValue, CoordSpace space)
 {
     if (rotateValue.IsZero(0.001f))
     {
         return;
     }
 
-    rotation = rotateValue * rotation;
+    if (space == CoordSpace::LOCAL || owner->GetParent() == nullptr)
+    {
+        rotation = rotateValue * rotation;
+    }
+    else if (space == CoordSpace::WORLD)
+    {
+        const Quaternion parentRot = owner->GetParent()->transform->GetRotation(CoordSpace::WORLD);
+        
+        rotation = parentRot.Conjugate() * rotateValue * parentRot * rotation;
+    }
+
     rotation = rotation.Renormalize();
     isModelUpdated = false;
 }
@@ -87,7 +97,7 @@ Vector3 Transform::GetPosition(CoordSpace space) const
         return position;
     }
 
-    return parent->transform->GetPosition(space) + position;
+    return parent->transform->GetPosition(CoordSpace::WORLD) + position;
 }
 
 Quaternion Transform::GetRotation(CoordSpace space) const
@@ -103,7 +113,7 @@ Quaternion Transform::GetRotation(CoordSpace space) const
         return rotation;
     }
 
-    return parent->transform->GetRotation(space) * rotation;
+    return parent->transform->GetRotation(CoordSpace::WORLD) * rotation;
 }
 
 Vector3 Transform::GetRotationEuler(CoordSpace space) const
@@ -124,7 +134,7 @@ Vector3 Transform::GetScale(CoordSpace space) const
         return scale;
     }
 
-    return parent->transform->GetScale(space) * scale;
+    return parent->transform->GetScale(CoordSpace::WORLD) * scale;
 }
 
 Matrix4x4 Transform::GetModelMatrix(CoordSpace space) const
