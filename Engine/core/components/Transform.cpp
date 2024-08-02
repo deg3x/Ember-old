@@ -154,16 +154,6 @@ void Transform::SetScale(const Vector3& newScale)
 
 void Transform::UpdateLocalModelMatrix()
 {
-    //model = glm::translate(model, position);
-
-    //model = glm::translate(model, pivot);
-    //model = glm::rotate(model, rotEulerRad.x, WorldRight);
-    //model = glm::rotate(model, rotEulerRad.y, WorldUp);
-    //model = glm::rotate(model, rotEulerRad.z, WorldForward);
-    //model = glm::translate(model, -pivot);
-
-    //model = glm::scale(model, scale);
-
     localModelMatrix = Matrix4x4::Model(position, rotation, scale, pivot);
 }
 
