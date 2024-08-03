@@ -15,9 +15,11 @@ Only 64-bit targets are supported.
 
 ## Dependencies
 The following libraries are used (and are already included):
-* **GLFW** is used for managing the running windows.
-* **OpenGL** (4.1) is the main graphics API (may be replaced by a modern API/RHI).
-* The project uses the **Premake** (v5.0.0-beta2) build system.
+* **GLFW** for managing platform windows.
+* **OpenGL** (4.1) as the main graphics API (may be replaced by a modern API/RHI).
+* **Premake** (v5.0.0-beta2) as a build system.
+* **Assimp** for model loading.
+* **RapidJSON** for JSON file parsing/manipulation.
 
 Precompiled Premake binaries for Windows and OS X are also included.
 
