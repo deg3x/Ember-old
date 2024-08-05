@@ -1,6 +1,7 @@
 ﻿#include "editor_pch.h"
 #include "EditorTheme.h"
 
+#include "EditorThemeLoader.h"
 #include "imgui/imgui.h"
 #include "imgui/ImGuizmo/ImGuizmo.h"
 
@@ -14,7 +15,7 @@ void EditorTheme::ApplyTheme()
     FontLight   = io.Fonts->AddFontFromFileTTF(PathBuilder::GetPath("./Data/fonts/Roboto/Roboto-Light.ttf").c_str(), 16);
     FontBold    = io.Fonts->AddFontFromFileTTF(PathBuilder::GetPath("./Data/fonts/Roboto/Roboto-Bold.ttf").c_str(), 16);
     
-    ImVec4* colors = ImGui::GetStyle().Colors;
+    /*ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text]                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImGuiCol_TextDisabled]           = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
     colors[ImGuiCol_WindowBg]               = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
@@ -69,7 +70,7 @@ void EditorTheme::ApplyTheme()
     colors[ImGuiCol_NavHighlight]           = ImVec4(1.00f, 0.00f, 0.00f, 1.00f);
     colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 0.00f, 0.00f, 0.70f);
     colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(1.00f, 0.00f, 0.00f, 0.20f);
-    colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(1.00f, 0.00f, 0.00f, 0.35f);
+    colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(1.00f, 0.00f, 0.00f, 0.35f);*/
 
     ImGuiStyle& style = ImGui::GetStyle();
     style.WindowPadding                     = ImVec2(6.00f, 6.00f);
@@ -116,4 +117,6 @@ void EditorTheme::ApplyTheme()
     gizmoStyle.ScaleLineCircleSize        = 7.0f;
 
     ImGuizmo::AllowAxisFlip(false);
+
+    EditorThemeLoader::LoadTheme();
 }

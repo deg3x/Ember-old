@@ -3,5 +3,5 @@
 class EditorThemeLoader
 {
 public:
-    
+    static void LoadTheme();
 };
