@@ -2,8 +2,6 @@
 #include "EditorTheme.h"
 
 #include "EditorThemeLoader.h"
-#include "imgui/imgui.h"
-#include "imgui/ImGuizmo/ImGuizmo.h"
 
 #include "utils/PathBuilder.h"
 

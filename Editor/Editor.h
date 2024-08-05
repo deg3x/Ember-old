@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "tabs/EditorTab.h"
-#include "imgui/imgui.h"
 
 class Editor
 {

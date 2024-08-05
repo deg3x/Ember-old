@@ -13,7 +13,6 @@
 #include "imgui/ImGuizmo/ImGuizmo.h"
 #include "input/Input.h"
 #include "input/KeyCodes.h"
-#include "logger/Logger.h"
 #include "themes/EditorTheme.h"
 
 Viewport::Viewport(Editor* owner) : EditorTab(owner)
