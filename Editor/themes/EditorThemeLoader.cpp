@@ -1,6 +1,8 @@
 ﻿#include "editor_pch.h"
 #include "EditorThemeLoader.h"
 
+#include "imgui/imgui.h"
+
 #include "logger/Logger.h"
 #include "rapidjson/document.h"
 #include "utils/PathBuilder.h"

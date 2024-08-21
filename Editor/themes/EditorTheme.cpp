@@ -1,6 +1,8 @@
 ﻿#include "editor_pch.h"
 #include "EditorTheme.h"
 
+#include "imgui/ImGuizmo/ImGuizmo.h"
+
 #include "EditorThemeLoader.h"
 
 #include "utils/PathBuilder.h"
