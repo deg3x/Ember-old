@@ -362,6 +362,8 @@ MigrationBackup/
 *.xcodeproj
 *.xcworkspace
 
+cmake-build-debug/
+
 !Data/**/*.obj
 
 editor.ini
