@@ -26,7 +26,7 @@ set(EDITOR_LIBS_OSX "glfw.3")
 set(EDITOR_INCL_PATH "${ENGINE_DIR}" "${EDITOR_DIR}" "${CMAKE_SOURCE_DIR}/ThirdParty/includes/universal")
 set(EDITOR_INCL_PATH_WIN "${CMAKE_SOURCE_DIR}/ThirdParty/includes/windows")
 set(EDITOR_INCL_PATH_OSX "${CMAKE_SOURCE_DIR}/ThirdParty/includes/osx")
-set(EDITOR_LIBS_PATH_WIN "${CMAKE_SOURCE_DIR}/ThirdParty/libraries/windows")# "${ENGINE_BIN_DIR}/Debug" "${ENGINE_BIN_DIR}/Release")
+set(EDITOR_LIBS_PATH_WIN "${CMAKE_SOURCE_DIR}/ThirdParty/libraries/windows")
 set(EDITOR_LIBS_PATH_OSX "${CMAKE_SOURCE_DIR}/ThirdParty/libraries/osx")
 
 file(GLOB_RECURSE ENGINE_CPP_FILES "${ENGINE_DIR}/*.cpp")
@@ -63,17 +63,9 @@ if (WIN32)
     
     add_custom_command(
         TARGET ${ENGINE_TARGET_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${ENGINE_LIBS_PATH_WIN}/glfw3.dll ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy ${ENGINE_LIBS_PATH_WIN}/glfw3.dll $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>
     )
     
-    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        #add_custom_command(
-        #    TARGET ${ENGINE_TARGET_NAME} POST_BUILD
-        #    COMMAND ${CMAKE_COMMAND} -E copy ${${ENGINE_TARGET_NAME}_BINARY_DIR}/${ENGINE_TARGET_NAME}.dll ${${EDITOR_TARGET_NAME}_BINARY_DIR}/.
-        #)
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    endif()
-
 elseif (APPLE)
     target_link_libraries(${ENGINE_TARGET_NAME} PRIVATE ${ENGINE_LIBS_OSX})
     target_include_directories(${ENGINE_TARGET_NAME} PRIVATE ${ENGINE_INCL_PATH_OSX})
@@ -81,7 +73,7 @@ elseif (APPLE)
     
     add_custom_command(
         TARGET ${ENGINE_TARGET_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${ENGINE_LIBS_PATH_OSX}/libglfw.3.dylib ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy ${ENGINE_LIBS_PATH_OSX}/libglfw.3.dylib $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>
     )
 endif()
 
@@ -111,8 +103,9 @@ if (WIN32)
     
     add_custom_command(
         TARGET ${EDITOR_TARGET_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_WIN}/glfw3.dll ${CMAKE_CURRENT_BINARY_DIR}
-        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_WIN}/assimp-vc142-mt.dll ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_WIN}/glfw3.dll $<TARGET_FILE_DIR:${EDITOR_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_WIN}/assimp-vc142-mt.dll $<TARGET_FILE_DIR:${EDITOR_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>/Engine.dll $<TARGET_FILE_DIR:${EDITOR_TARGET_NAME}>
     )
 elseif (APPLE)
     target_link_libraries(${EDITOR_TARGET_NAME} PRIVATE ${EDITOR_LIBS_OSX})
@@ -121,8 +114,9 @@ elseif (APPLE)
     
     add_custom_command(
         TARGET ${EDITOR_TARGET_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_OSX}/libglfw.3.dylib ${CMAKE_CURRENT_BINARY_DIR}
-        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_OSX}/libassimp.5.2.4.dylib ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_OSX}/libglfw.3.dylib $<TARGET_FILE_DIR:${EDITOR_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_OSX}/libassimp.5.2.4.dylib $<TARGET_FILE_DIR:${EDITOR_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>/Engine.dylib $<TARGET_FILE_DIR:${EDITOR_TARGET_NAME}>
     )
 endif()
 
