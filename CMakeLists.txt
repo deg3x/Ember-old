@@ -64,6 +64,7 @@ if (WIN32)
     add_custom_command(
         TARGET ${ENGINE_TARGET_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${ENGINE_LIBS_PATH_WIN}/glfw3.dll $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_WIN}/assimp-vc142-mt.dll $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>
     )
     
 elseif (APPLE)
@@ -74,6 +75,7 @@ elseif (APPLE)
     add_custom_command(
         TARGET ${ENGINE_TARGET_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${ENGINE_LIBS_PATH_OSX}/libglfw.3.dylib $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy ${EDITOR_LIBS_PATH_OSX}/libassimp.5.2.4.dylib $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>
     )
 endif()
 
@@ -119,6 +121,8 @@ elseif (APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE_DIR:${ENGINE_TARGET_NAME}>/Engine.dylib $<TARGET_FILE_DIR:${EDITOR_TARGET_NAME}>
     )
 endif()
+
+add_dependencies(${EDITOR_TARGET_NAME} ${ENGINE_TARGET_NAME})
 
 set_target_properties(
     ${EDITOR_TARGET_NAME} PROPERTIES
