@@ -287,15 +287,15 @@ void Viewport::CameraOrbit() const
 
     Vector3 newPosition = cameraTransform->GetPosition();
     
-    if (applyYaw)
-    {
-        newPosition = rotationYaw * newPosition;
-        cameraTransform->Rotate(rotationYaw);
-    }
     if (applyPitch)
     {
         newPosition = rotationPitch * newPosition;
         cameraTransform->Rotate(rotationPitch);
+    }
+    if (applyYaw)
+    {
+        newPosition = rotationYaw * newPosition;
+        cameraTransform->Rotate(rotationYaw);
     }
 
     cameraTransform->SetPosition(newPosition);
