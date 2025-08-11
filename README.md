@@ -3,7 +3,8 @@
 ## DISCLAIMER
 **A complete rework of Ember is under development, with a focus on high-performance, data-driven practices.**\
 **The new version is written in C, using a Vulkan back-end and maintaining a minimal set of dependencies.**\
-**This repository will not receive further updates.**
+**This repository will not receive further updates.** \
+[Link to the new version](https://github.com/deg3x/ember)
 
 ## Overview
 Ember engine is a project that I started in order to dive into Engine/Graphics programming. \
