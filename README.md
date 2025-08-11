@@ -1,5 +1,10 @@
 ![Alt text](./Data/images/ember/ember_banner.png "Ember Logo")
 
+## DISCLAIMER
+**A complete rework of Ember is under development, with a focus on high-performance, data-driven practices.**\
+**The new version is written in C, using a Vulkan back-end and maintaining a minimal set of dependencies.**\
+**This repository will not receive further updates.**
+
 ## Overview
 Ember engine is a project that I started in order to dive into Engine/Graphics programming. \
 Although it lacks in features compared to commercial and other open source solutions, it serves as an excellent base
